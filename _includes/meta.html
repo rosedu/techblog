@@ -1,0 +1,42 @@
+{% comment %}
+This implements the meta informations on the blog: feed buttons, twitter,
+Facebook, about, archive, tags, links, etc.
+{% endcomment %}
+
+<div class="rss">
+  <a href="http://feeds.feedburner.com/rosedu/tech">
+    <img src="{{ site.baseurl }}/img/rss.png" alt="Subscribe to RSS Feed"/>
+  </a>
+  <a href="http://www.reddit.com/submit"
+    onclick="window.location='http://www.reddit.com/submit?url='+encodeURIComponent(window.location);
+    return false">
+    <img src="{{ site.baseurl }}/img/reddit.png" alt="Submit to Reddit"/>
+  </a>
+  <a  href="http://twitter.com/share" class="twitter-share-button" data-count="none">
+    <img src='{{ site.baseurl }}/img/twitter.png' alt='Submit to Twitter'/>
+  </a>
+</div>
+<div class="links">
+  <ul>
+    <li><a href='{{ site.baseurl }}/'>Home</a></li>
+    <li><a href='{{ site.baseurl }}/about'>About</a></li>
+    <li><a href='{{ site.baseurl }}/archive'>Archive</a></li>
+    <li><a href='{{ site.baseurl }}/tags'>Tags</a></li>
+    <li><a href='{{ site.baseurl }}/posting'>Posting</a></li>
+  </ul>
+  <hr/>
+  <ul>
+    <li><a href='http://rosedu.org'>ROSEdu</a></li>
+    <li><a href='http://jekyllrb.com/'>Jekyll</a></li>
+  </ul>
+  <hr/>
+  <ul>
+    <li><a href='http://pgraycode.wordpress.com/'>Mihai Maruseac</a></li>
+    <li><a href='http://danf.wordpress.com/'>Dan Filimon</a></li>
+    <li><a href='http://swarm.cs.pub.ro/~razvan/blog/'>Răzvan Deaconescu</a></li>
+    <li><a href='http://alexj.info/category/tech-stuff/'>Alex Juncu</a></li>
+    <li><a href='http://ddvlad.wordpress.com/'>Vlad Dogaru</a></li>
+    <li><a href='http://interruptenable.blogspot.com/'>Daniel Băluță</a></li>
+    <li><a href='http://swarm.cs.pub.ro/~laura/blog/'>Laura Vasilescu</a></li>
+  </ul>
+</div>

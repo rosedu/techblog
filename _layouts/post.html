@@ -1,0 +1,23 @@
+---
+layout: default
+---
+
+{% comment %}
+This is the basic layout for a post. You can derive from it, just like we
+derived from default in the above YAML front matter declaration.
+{% endcomment %}
+
+{% comment %}
+Assign page to post before including the layouts. Also, remembr that this is
+not the homepage.
+{% endcomment %}
+{% assign post = page %}
+{% assign home = false %}
+
+<div class="entry-content">
+  {% include post_title.html %}
+  {% include nav.html %}
+  {{ content }}
+</div>
+{% include post_comment.html %}
+

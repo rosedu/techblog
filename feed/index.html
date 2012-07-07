@@ -1,0 +1,22 @@
+---
+---
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+<title type="text" xml:lang="en">ROSEdu techblog</title>
+    <link type="application/atom+xml" href="http://techblog.rosedu.org/feed/" rel="self"/>
+    <link type="application/atom+xml" href="http://rosedu.org/" rel="alternate"/>
+    <updated>{{ site.time | date_to_xmlschema }}</updated>
+    <id>http://techblog.rosedu.org/</id>
+    <author>
+        <name>ROSEdu</name>
+    </author>
+    {% for post in site.posts limit:42 %}
+    <entry>
+    <title>{{ post.title }}</title>
+        <link href="http://techblog.rosedu.org{{ post.url }}"/>
+        <updated>{{ post.date | date_to_xmlschema }}</updated>
+        <id>http://techblog.rosedu.org{{ post.url }}</id>
+        <content type="html">{{ post.content | xml_escape }}</content>
+    </entry>
+    {% endfor %}
+</feed>
