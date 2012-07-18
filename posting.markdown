@@ -34,8 +34,8 @@ the date a few days ahead (such as to account for the time it takes for the
 article to be reviewed). Use the format of your choice. If the title contains
 multiple words separate each word with a dash. For example, an article named
 _A Debugging Story_, using the [Markdown][] format, published on 1st of April
-2012 should be named `2012-04-01-a-debugging-story.markdown`. We support the
-`.md` extension as well.
+2012 should be named `2012-04-01-a-debugging-story.markdown`. You may also use
+the .md extension.
 
 Fill in the content of the article. It should have the following form (where
 `$TEXT` is intended as a placeholder for the value of `TEXT`):
@@ -51,7 +51,7 @@ Fill in the content of the article. It should have the following form (where
 	Text of the article.
 
 The `$DATE` should follow the same convention: `year-month-day`. The `$TITLE`
-should be enclosed by \" and should be exactly what you desire your article to
+should be enclosed by `"` and should be exactly what you desire your article to
 be titled. Use relevant tags for the `$TAGLIST`: single words, separated by
 commas. Use your actual name for the `$NAME` variable and don't forget to leave
 an empty line for the `$EMPTY_LINE` variable.
@@ -61,7 +61,7 @@ commit`) and push it to the [repository][repo]. After each push you can look
 at the article in the [GitHub][GitHub] browser-based view. Edit the article
 until it looks ok to you.
 
-Finally, send a mail to the [ROSEdu mailinglist][mailinglist] in which you
+Finally, send a mail to the [ROSEdu mailing list][mailinglist] in which you
 announce the article and ask for review. After a few days of review and
 changes the article will be published to the [Techblog][].
 
