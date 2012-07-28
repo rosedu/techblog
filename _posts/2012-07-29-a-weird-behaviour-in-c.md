@@ -175,7 +175,8 @@ For comparation, the `clang` version is:
     movb    $0, %al
     callq   printf
 
-TODO: comments + poze?
+The understanding of the assembly code is left as an exercise to the reader.
+It is easy to see that `clang` uses the stack to store the results.
 
 Both snippets were obtained using no optimization. As an exercise, try to
 observe the effect of each optimization level on the generated code and
@@ -244,7 +245,8 @@ On the other hand, `clang` generated:
 
 One can easily see that `gcc` did the operations on `x` before starting the
 function call sequence while `clang` interleaved stack operations with
-operations on `x` such that the output is the one we would expect.
+operations on `x` such that the output is the one we would expect. Not to
+mention the fact that substraction was replaced by addition.
 
 However, what allows the compilers to do this? Luckily, we have compiled with
 warnings on:
@@ -276,6 +278,30 @@ constructs):
 Thus, our side effects in the `printf` function cause undefined behaviour and
 unspecified behaviour. Depending on the compiler, the results can be very
 different. This harms portability and should be avoided.
+
+Before finishing the article, let's see another example, using different
+constructs:
+
+{% highlight cpp %}
+#include <stdio.h>
+#include <stdlib.h>
+#include <limits.h>
+
+int main()
+{
+	int x = INT_MAX;
+	void *p = &x;
+
+	printf("%d %d\n", x, x + 1);
+	printf("%p %p\n", p, p + 1);
+
+	return 0;
+}
+{% endhighlight %}
+
+The possible outputs of this code and the reasoning behind are left as an
+exercise. Use the comments area to provide solutions for all exercises left in
+this article.
 
 As a rule of thumb, try to limit the use of side effects inside a function
 call. You don't know when you'll fall into this trap again.
