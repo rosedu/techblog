@@ -17,6 +17,7 @@ Facebook, about, archive, tags, links, etc.
   </a>
 </div>
 <div class="links">
+  <div class="meta-header">Blog Navigation</div>
   <ul>
     <li><a href='{{ site.baseurl }}/'>Home</a></li>
     <li><a href='{{ site.baseurl }}/about'>About</a></li>
@@ -25,17 +26,20 @@ Facebook, about, archive, tags, links, etc.
     <li><a href='{{ site.baseurl }}/posting'>Posting</a></li>
   </ul>
   <hr/>
+  <div class="meta-header">Latest Posts</div>
   <ul>
 	{% for post in site.posts limit:3 %}
 		<li><a href="{{post.url}}">{{ post.title }}</a></li>
 	{% endfor %}
   </ul>
   <hr/>
+  <div class="meta-header">Powered by:</div>
   <ul>
     <li><a href='http://rosedu.org'>ROSEdu</a></li>
     <li><a href='http://jekyllrb.com/'>Jekyll</a></li>
   </ul>
   <hr/>
+  <div class="meta-header">People:</div>
   <ul>
     <li><a href='http://pgraycode.wordpress.com/'>Mihai Maruseac</a></li>
     <li><a href='http://danf.wordpress.com/'>Dan Filimon</a></li>
