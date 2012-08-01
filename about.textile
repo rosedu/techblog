@@ -2,7 +2,7 @@
 layout: default
 title: About
 ---
-h2. "About":{{ post.url }}/
+h2. "About":{{ site.url }}/
 
 Technical articles and tutorials.
 
