@@ -2,7 +2,7 @@
 layout: default
 title: Archive
 ---
-h2. "All Posts":/
+h2. "All Posts":{{ post.url }}/
 
 <ul>
 {% for post in site.posts %}
