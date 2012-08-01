@@ -5,15 +5,15 @@ Facebook, about, archive, tags, links, etc.
 
 <div class="rss">
   <a href="http://feeds.feedburner.com/rosedu/tech">
-    <img src="http://rosedu.github.com/techblog/img/rss.png" alt="Subscribe to RSS Feed"/>
+    <img src="{{ site.baseurl }}/img/rss.png" alt="Subscribe to RSS Feed"/>
   </a>
   <a href="http://www.reddit.com/submit"
     onclick="window.location='http://www.reddit.com/submit?url='+encodeURIComponent(window.location);
     return false">
-    <img src="http://rosedu.github.com/techblog/img/reddit.png" alt="Submit to Reddit"/>
+    <img src="{{ site.baseurl }}/img/reddit.png" alt="Submit to Reddit"/>
   </a>
   <a  href="http://twitter.com/share" class="twitter-share-button" data-count="none">
-    <img src='http://rosedu.github.com/techblog/img/twitter.png' alt='Submit to Twitter'/>
+    <img src='{{ site.baseurl }}/img/twitter.png' alt='Submit to Twitter'/>
   </a>
 </div>
 <div class="links">
@@ -23,6 +23,12 @@ Facebook, about, archive, tags, links, etc.
     <li><a href='{{ site.baseurl }}/archive'>Archive</a></li>
     <li><a href='{{ site.baseurl }}/tags'>Tags</a></li>
     <li><a href='{{ site.baseurl }}/posting'>Posting</a></li>
+  </ul>
+  <hr/>
+  <ul>
+	{% for post in site.posts limit:3 %}
+		<li><a href="{{post.url}}">{{ post.title }}</a></li>
+	{% endfor %}
   </ul>
   <hr/>
   <ul>

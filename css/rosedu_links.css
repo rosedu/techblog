@@ -1,0 +1,18 @@
+a:link, a:visited {
+	color: #5db704;
+	text-decoration: none;
+}
+
+a:hover {
+	color: #c82e62;
+}
+
+a:link.post_title, a:visited.post_title {
+	color: #c82e62;
+	text-decoration: none;
+}
+
+a:hover.post_title {
+	color: #5db704;
+	font-weight: bold;
+}

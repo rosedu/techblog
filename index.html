@@ -9,11 +9,10 @@ with certain more or less features.
 
 {% assign home = true %}
 
-{% for post in site.posts limit:1 %}
+{% for post in site.posts limit:5 %}
 <div id="container">
   <div class="entry-content">
     {% include post_title.html %}
-    {% include nav.html %}
     {{ post.content }}
     {% include post_comment.html %}
   </div>
