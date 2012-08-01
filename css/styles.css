@@ -39,7 +39,7 @@ img {
 	width: 65%;
 	margin: 0 25% 10px 5%;
 	padding: 10px 20px;
-	background-color: white;
+	background-color: #E1E1E1;
 }
 
 #meta {
@@ -50,7 +50,7 @@ img {
 	left: 75%;
 	margin: 0 auto 20px auto;
 	padding: 10px 20px;
-	background-color: white;
+	background-color: #E1E1E1;
 }
 
 #footer {
