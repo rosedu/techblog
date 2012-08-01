@@ -1,5 +1,5 @@
 safe: true
 permalink: /:title.html
 pygments: yes
-url: http://techblog.rosedu.org
+url: http://rosedu.github.org/techblog
 
