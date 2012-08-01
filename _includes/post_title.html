@@ -10,9 +10,9 @@ Home variable is true when we are on the homepage.
 
 <h2 class="clear">
   {% if home %}
-  <a class="post_title" href="{{ site.url }}{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
+  <a class="post_title" href="{{ site.url }}/techblog/{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
   {% else %}
-  <a class="post_title" href="{{ site.url }}" title="Return home">{{ post.title }}</a>
+  <a class="post_title" href="{{ site.url }}/techblog/" title="Return home">{{ post.title }}</a>
   {% endif %}
 </h2>
 <span class="date" 
