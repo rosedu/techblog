@@ -55,4 +55,11 @@ This is the general template, used throughout the site.
     </div>
   </body>
 </html>
+<script src="http://rosedu.github.com/techblog/js/zepto.min.js"></script>
+<script>
+  Zepto(function($) {
+    var ua = navigator.userAgent;
+    if (ua.match(/Android|iPhone|iPad|Mobile/i)) { $("#meta").hide(); }
+  });
+</script>
 
