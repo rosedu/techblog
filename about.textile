@@ -4,7 +4,6 @@ title: About
 ---
 <div class="entry-content">
 h2. "About":{{ site.baseurl }}/
-=======
 
 Technical articles and tutorials.
 
