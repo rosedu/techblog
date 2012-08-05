@@ -1,0 +1,13 @@
+---
+layout: default
+title: People
+---
+h2. "People": {{ site.url }}
+
+Mihai Maruseac:http://pgraycode.wordpress.com/
+Dan Filimon:http://danf.wordpress.com/
+Răzvan Deaconescu:http://swarm.cs.pub.ro/~razvan/blog/
+Alex Juncu:http://alexj.info/category/tech-stuff/
+Vlad Dogaru:http://ddvlad.wordpress.com/
+Daniel Băluță:http://interruptenable.blogspot.com/
+Laura Vasilescu:http://swarm.cs.pub.ro/~laura/blog/
