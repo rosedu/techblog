@@ -2,6 +2,7 @@
 layout: default
 title: Archive
 ---
+<div class="entry-content">
 h2. "All Posts":{{ site.url }}/
 
 <ul>
@@ -9,4 +10,4 @@ h2. "All Posts":{{ site.url }}/
 <li><a href="{{ site.url }}{{post.url}}">{{ post.title }}</a></li>
 {% endfor %}
 </ul>
-
+</div>

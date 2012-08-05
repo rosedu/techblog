@@ -2,6 +2,7 @@
 layout: default
 title: About
 ---
+<div class="entry-content">
 h2. "About":{{ site.url }}/
 
 Technical articles and tutorials.
@@ -9,4 +10,4 @@ Technical articles and tutorials.
 If you consider yourself a geek, please consider contributing to this blog.
 
 Contact "techblog@rosedu.org":mailto:techblog@rosedu.org.
-
+</div>

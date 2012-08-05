@@ -2,6 +2,7 @@
 layout: default
 title: People
 ---
+<div class="entry-content">
 h2. "People":{{ site.url }}/
 
 "Mihai Maruseac":http://pgraycode.wordpress.com/
@@ -11,3 +12,4 @@ h2. "People":{{ site.url }}/
 "Vlad Dogaru":http://ddvlad.wordpress.com/
 "Daniel Băluță":http://interruptenable.blogspot.com/
 "Laura Vasilescu":http://swarm.cs.pub.ro/~laura/blog/
+</div>

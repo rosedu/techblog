@@ -2,6 +2,7 @@
 layout: default
 title: Tags
 ---
+<div class="entry-content">
 h2. "All Tags":{{ site.url }}/
 
 <ul>
@@ -9,5 +10,4 @@ h2. "All Tags":{{ site.url }}/
 <li><a href=tag/{{ tag[0] }}> {{ tag[0] }} ({{ tag[1].size }})</a></li>
 {% endfor %}
 </ul>
-
-
+</div>
