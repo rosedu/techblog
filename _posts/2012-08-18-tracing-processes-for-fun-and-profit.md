@@ -56,8 +56,8 @@ parameters and the return value of the call.
 
 ### How Is This Useful?
 
-Only by looking at the output lines we can quickly find out why our process
-doesn't behave as expected or what does it do behind the scenes. Let us see
+Only by looking at the output lines can we quickly find out why our process
+doesn’t behave as expected or what it does behind the scenes. Let us see
 some examples.
 
 First, consider a binary which takes too long to finish. Using `strace` we get
