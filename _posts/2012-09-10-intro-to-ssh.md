@@ -61,7 +61,7 @@ And now you can test the installation from the client like this:
 
 	$ ssh my_user@my.server.com
 
-By default, this will try to connect to the specified server on port 22, using the default key at `~/.ssh/id_rsa`. You can change this behaviour by a quick glance at the manual page. Also, if you specified a passphrase during the generation of the key, you will have to provide that and the remote password for the user you are trying to log on as. You can specify yhe IP instead of the DNS name for the server.
+By default, this will try to connect to the specified server on port 22, using the default key at `~/.ssh/id_rsa`. You can change this behaviour by a quick glance at the manual page. Also, if you specified a passphrase during the generation of the key, you will have to provide that and the remote password for the user you are trying to log on as. You can specify the IP instead of the DNS name for the server.
 
 You can also run just one line of commands, such as:
 
