@@ -775,7 +775,7 @@ As you can see the message is signed and the authenticity can be verified:
     gpg: Signature made Mon 17 Sep 2012 12:01:35 PM EEST using RSA key ID ECB916DC
     gpg: Good signature from "Tiberiu (This is my GPG key) <email@home.com>"
 
-[That's all folks][folks]. Thank you and I hope you find this guide usefull.
+[That's all folks][folks]. Thank you and I hope you find this guide useful.
 
 [des]: https://en.wikipedia.org/wiki/Data_Encryption_Standard
 [aes]: https://en.wikipedia.org/wiki/Advanced_Encryption_Standard
