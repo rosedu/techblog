@@ -43,9 +43,9 @@ Example of conventional [cryptosystems][cryptosys] that use *symmetric-key*:
 Advantages: Fast.
 
 Disadvantages: Not safe! The sender and receiver must agree upon a secret key
-and prevent others from get access to it. There is also a big problem if they
+and prevent others from getting access to it. There is also a big problem if they
 are not in the same physical location because of key distribution. How could
-you give you home key to you roommate, which is in America while you are in
+you give your home key to your roommate, which is in America while you are in
 China?
 
 Practical advice: Symmetric key should be changed with any message, so that
@@ -62,7 +62,7 @@ over an untrusted communication channel.
 
 #### Diffie-Hellman key exchange
 
-This key exchange is based on an algorithm that mathematically can not easily
+This key exchange is based on an algorithm that mathematically cannot easily
 compute [discrete logarithms][discretelog] of large numbers in a reasonable
 amount of time. We will offer an overview of the algorithm using colours
 before we run straightforward with numbers and abstract formula.
@@ -134,7 +134,7 @@ Example:
     k_b = 8^15 mod 23 = 35184372088832 mod 23 = 2
 
 If a [man-in-the-middle][mitm] knows both secret integers `a = 6` and `b = 15`
-he could find secret key user for communication. Here is how:
+he could find the secret key used for communication. Here is how:
 
     k_a = k_b = g^(a*b) mod p = 5^90 mod 23 = 2
 
@@ -186,19 +186,19 @@ linked.
 
 We can compare the asymmetric-key [cryptosystem][cryptosys] with an e-mail
 account. Your e-mail address it is accessible to wide public (anyone can send
-you an e-mail at your@email.com, for example) but you are the only who has the
+you an e-mail at your@email.com, for example) but you are the only one who has the
 password to log in (that means only you can read the content of the e-mails).
 The public-key is your e-mail address and the private-key is the password
 linked with your e-mail address.
 
 How it works:
 
-**Step 1**: Create a pair private-public keys (we will discuss later about
+**Step 1**: Create a pair of private-public keys (we will discuss later about
 generating pairs of keys).
 
-**Step 2**: Share you public key with your friends.
+**Step 2**: Share your public key with your friends.
 
-**Step 3**: Sender use your public key to encrypt the plaintext (`original
+**Step 3**: Sender uses your public key to encrypt the plaintext (`original
 message + encryption = ciphertext`).
 
 **Step 4**: Sender sends you the ciphertext.
@@ -438,8 +438,8 @@ signature" width="685" height="239"/>
 
 Gnu Privacy Guard is an alternative option to the [PGP][pgp]. What is more
 exactly GPG, why and how to use it? It is a hybrid encryption software that
-utilize public key encryption algorithm. Despite PGP, which utilize
-[IDEA][idea] - patented encryption algorithm, GnuGP utilize other algorithms
+utilizes public key encryption algorithm. Despite PGP, which makes use of
+[IDEA][idea](a patented encryption algorithm), GnuGP utilize other algorithms
 like asymmetric-key, hash functions, symmetric-key or digital signatures.
 
 Let's see GnuGP in action.
@@ -552,7 +552,7 @@ You can view you key list:
 First line is the path to your public keyring (in your public keyring can
 import other public keys - from your friends - and use them when you want to
 encrypt a message for one of your friends). You also have a secret ring where
-your secret key. You can view it with
+your secret key. You can view it with:
 
     tibi@tbarbu-pc:~$ gpg --list-secret-keys 
     /space/home/tibi/.gnupg/secring.gpg
