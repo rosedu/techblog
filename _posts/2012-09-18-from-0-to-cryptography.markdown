@@ -428,10 +428,10 @@ identification documents (ID card, passport, etc). Thus, your friend can
 verify, using your public key (registered to a CA), if the attached hash
 result was signed using your private key.
 
-<img style="float:center" src='./img/encoding.gif' alt="Digital signing"
+<img style="float:center" src='./img/encoding.png' alt="Digital signing"
 width="685" height="159"/>
 
-<img style="float:center" src='./img/decoding.gif' alt="Verifying digital
+<img style="float:center" src='./img/decoding.png' alt="Verifying digital
 signature" width="685" height="239"/>
 
 ### GnuGP (GPG)
