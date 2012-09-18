@@ -32,7 +32,7 @@ used to encrypt and decrypt a message. Consider this example as a conventional
 cryptography:
 
 *You and your roommate, both use the same key to lock/unlock the door of your
-house. Thus you share the same key to secure the room. It is true that your
+house. Thus, you share the same key to secure the room. It is true that your
 roommate could have a copy of your key so he can join the room when you are at
 work or vice-versa.*
 
@@ -120,7 +120,7 @@ value `y = g^b mod p`, where `mod` is [modulo operator][modulo].
 **Step 5**: Alice computes her secret key `k_a = y^a mod p`. Bob computes his
 secret key `k_b = x^b mod p`. Mathematically it can be proved that `k_a =
 k_b`. Alice and Bob now have a common secret key used for encryption and
-decryption all plaintext they exchange to safely communicate.
+decryption of any plaintext they exchange to safely communicate.
 
 Example:
 
@@ -138,7 +138,7 @@ he could find the secret key used for communication. Here is how:
 
     k_a = k_b = g^(a*b) mod p = 5^90 mod 23 = 2
 
-Advantages: Safe. Avoid [man-in-the-middle][mitm] attacks.
+Advantages: Safe. Avoids [man-in-the-middle][mitm] attacks.
 
 Disadvantages: You can not be sure of the actual identity of the real 'Bob'.
 
@@ -176,8 +176,8 @@ Why it is this algorithm important? Because protocols like: [SSL][ssl],
 
 Safe key distribution is resolved by *public-key* because it does not require
 a secure initial key exchange between you and your roommate. This
-[cryptosystem][cryptosys] is an *asymmetric-key* encryption, in contrast to
-*symmetric-key*, that uses a pair of keys (two separate keys): a *public key*
+[cryptosystem][cryptosys] is an *asymmetric-key* encryption -- in contrast to
+*symmetric-key* -- that uses a pair of keys (two separate keys): a *public key*
 for encoding and a *private key*, also called *secret key*, for decoding. The
 *public-key* should not compromise the *private-key* even though both are
 linked.
@@ -268,7 +268,7 @@ That means a number `x` exponentiate to an integer multiple of `phi(z)+1`
 
     z - prime
 
-From `(*)` equation, we have:
+From `(*)` equation and Euler's theorem, we have:
 
     x^(z-1) mod z = 1
     x^z mod z = x
@@ -311,7 +311,7 @@ large key size of encryption.
 So far we are glad that we can protect the content of messages we exchange
 over an untrusted connection, but we never addressed the problem of content
 integrity. How can we be sure that the content of the message (even encrypted)
-suffer unauthorized alteration?
+suffers unauthorized alteration?
 
 A hash function or as we call 'a one-way function' or 'irreversible function'
 or 'non-bijective function' is a function that takes as input a message of
@@ -363,12 +363,12 @@ functions is that susceptible to [collision][hashcollision]:
     1e934ac2f323a9158b43922500ca7040  message1
     1e934ac2f323a9158b43922500ca7040  message2
 
-As you can see two files with different content have the same MD5 checksum. We
-call this hash collision.
+As you can see two files with different content -- only 6 bytes in this case
+had to be changed -- have the same MD5 checksum. We call this hash collision.
 
 ### Digital certificate
 
-We talk for a long time about encryption and decryption but what if our
+We have been talking for a long time about encryption and decryption but what if our
 cryptosystem is secure enough though we can not be sure about the real
 identity of the person he/she pretends to be? Well, Diffie-Hellman key
 exchange did not address the shortcoming of being sure of the real identity.
@@ -423,7 +423,7 @@ can't, but a digital certificate CAN!
 
 The only difference between a digital signature and a digital certificate is
 that the public key is certified by a trusted international Certifying
-Authority(CA) . When registering to a CA you have to provide your real
+Authority(CA). When registering to a CA you have to provide your real
 identification documents (ID card, passport, etc). Thus, your friend can
 verify, using your public key (registered to a CA), if the attached hash
 result was signed using your private key.
@@ -439,7 +439,7 @@ signature" width="685" height="239"/>
 Gnu Privacy Guard is an alternative option to the [PGP][pgp]. What is more
 exactly GPG, why and how to use it? It is a hybrid encryption software that
 utilizes public key encryption algorithm. Despite PGP, which makes use of
-[IDEA][idea](a patented encryption algorithm), GnuGP utilize other algorithms
+[IDEA][idea] (a patented encryption algorithm), GnuGP utilize other algorithms
 like asymmetric-key, hash functions, symmetric-key or digital signatures.
 
 Let's see GnuGP in action.
@@ -549,10 +549,10 @@ You can view you key list:
     uid                  Tiberiu Barbu (This is my GPG key) <email@host.com>
     sub   1024R/E4EFB2B4 2012-09-13
 
-First line is the path to your public keyring (in your public keyring can
+First line is the path to your public keyring file (here you can
 import other public keys - from your friends - and use them when you want to
-encrypt a message for one of your friends). You also have a secret ring where
-your secret key. You can view it with:
+encrypt a message for one of your friends). You also have a secret ring file where
+your secret key is stored. You can view it with:
 
     tibi@tbarbu-pc:~$ gpg --list-secret-keys 
     /space/home/tibi/.gnupg/secring.gpg
@@ -561,7 +561,7 @@ your secret key. You can view it with:
     uid                  Tiberiu Barbu (This is my GPG key) <email@host.com>
     ssb   1024R/E4EFB2B4 2012-09-13
 
-The third line contains number of bits in the key `1024R` and the unique key
+The third line contains the number of bits in the key `1024R` and the unique key
 ID `03384551`, followed by the creation date.
 
 The fourth line contains information about the person who owns that key.
@@ -584,7 +584,7 @@ friends, posting on a website or whatever.
 
 I can also register my key to any public server so that friends can retrive it
 without having to contact me. The option `--armor` produce an ASCII output
-instead of a binary file, so it easily to copy/paste into an email. Else the
+instead of a binary file, so it easily allows to copy/paste into an email. Else the
 binary file can not be opened in an editor.
 
     tibi@tbarbu-pc:~$ gpg --armor --output tibi.asc --export 03384551
@@ -598,7 +598,7 @@ must import my public key in her keyring:
     gpg: Total number processed: 1
     gpg:               imported: 1  (RSA: 1)
 
-Now Alice compose the message then ecrypt it with my public key:
+Now Alice composes the message then ecrypt it with my public key:
 
     alice@home:~$ echo "Hello Tiberiu" > message.txt
     alice@home:~$ gpg --armor --encrypt --output message.asc --recipient 'Tiberiu' message.txt
@@ -631,7 +631,7 @@ key to send me any message.
 
     Enter passphrase: *****
 
-This is the signature of encrypted message with Alice's private key
+This is the signature of encrypted message with Alice's private key.
 
     alice@home:~$ cat message.sig
     -----BEGIN PGP SIGNATURE-----
@@ -655,7 +655,7 @@ Decrypt the message from Alice:
     tibi@tbarbu-pc:~$ cat message_from_alice.txt
     Hello Tiberiu
 
-How can I be sure this message is from Alice? I have to import Alice's public
+How can I be sure this message comes from Alice? I have to import Alice's public
 key. She previously sent me in an e-mail.
 
     tibi@tbarbu-pc:~$ gpg --import alice.asc
@@ -740,19 +740,20 @@ key and check the fingerprint and UID, then I trust him signing his key:
     sub   1024R/2786E92D 2012-09-13
     sig          8FA52AD1 2012-09-13  Bob Michael <bob@michael.com>
 
-After signing has only to send his new signed key to all his friends or to a
+After signing he only has to send his new signed key to all his friends or to a
 public server.
 
-GnuGP also offer the possibility not only to send encrypted messages to our
-friends because sometimes it is not a must to secure out communication. Though
+GnuGP also offer the possibility to send not only encrypted messages to our
+friends -- because sometimes it is not a must to secure out communication --,
+but signed only. Though
 the message is clear, it should be signed to confirm the authentication
 feature provided by GPG. You must be sure that the receiver can trust the
-content because it comes from a reliable source. We can do this as follows:
+content and it comes from a reliable source. We can do this as follows:
 
     tibi@tbarbu-pc:~$ echo "Hello world. This is a plaintext" > clear_message.txt
     gpg --clearsign clear_message.txt
 
-A new file `clear_message.txt.asc` containing the following:
+A new file `clear_message.txt.asc` is created, containing the following:
 
     tibi@tbarbu-pc:~$ cat clear_message.txt.asc
     -----BEGIN PGP SIGNED MESSAGE-----
