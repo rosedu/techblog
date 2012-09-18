@@ -339,26 +339,15 @@ functions is that susceptible to [collision][hashcollision]:
     tibi@tbarbu-pc:~/hash_collision$ ls -lH message*
     -rw-r--r-- 1 tibi tibi 128 2012-09-12 17:20 message1
     -rw-r--r-- 1 tibi tibi 128 2012-09-12 17:21 message2
-    tibi@tbarbu-pc:~/hash_collision$ hexdump -C message1
-    00000000  33 91 47 40 e7 1d 13 93  f5 05 ff fb e1 7e ac a5  |3.G@.........~..|
-    00000010  6e e5 79 e7 bf e0 eb f0  48 a8 7c 5c bf 88 65 2a  |n.y.....H.|\..e*|
-    00000020  d1 ec 32 5e 08 b6 b2 ec  93 ff 54 96 8a 0f f9 0e  |..2^......T.....|
-    00000030  0b 6f 7c 18 58 21 6b 28  d1 93 90 23 da fd 6c c4  |.o|.X!k(...#..l.|
-    00000040  eb a2 17 2a 2c 57 e3 2a  16 46 9d 23 a1 da 05 e6  |...*,W.*.F.#....|
-    00000050  db 8f fd 44 56 80 c2 4d  26 89 24 38 d3 56 35 ad  |...DV..M&.$8.V5.|
-    00000060  4d 30 37 6e 49 be 7a ca  0a 7a 5d 7b 51 b4 09 dc  |M07nI.z..z]{Q...|
-    00000070  cd 64 13 86 7d cd 9b 90  c7 1d 4b 7f 73 93 cf da  |.d..}.....K.s...|
-    00000080
-    tibi@tbarbu-pc:~/hash_collision$ hexdump -C message2
-    00000000  33 91 47 40 e7 1d 13 93  f5 05 ff fb e1 7e ac a5  |3.G@.........~..|
-    00000010  6e e5 79 67 bf e0 eb f0  48 a8 7c 5c bf 88 65 2a  |n.yg....H.|\..e*|
-    00000020  d1 ec 32 5e 08 b6 b2 ec  93 ff 54 96 8a 8f f9 0e  |..2^......T.....|
-    00000030  0b 6f 7c 18 58 21 6b 28  d1 93 90 a3 da fd 6c c4  |.o|.X!k(......l.|
-    00000040  eb a2 17 2a 2c 57 e3 2a  16 46 9d 23 a1 da 05 e6  |...*,W.*.F.#....|
-    00000050  db 8f fd c4 56 80 c2 4d  26 89 24 38 d3 56 35 ad  |....V..M&.$8.V5.|
-    00000060  4d 30 37 6e 49 be 7a ca  0a 7a 5d 7b 51 34 09 dc  |M07nI.z..z]{Q4..|
-    00000070  cd 64 13 86 7d cd 9b 90  c7 1d 4b ff 73 93 cf da  |.d..}.....K.s...|
-    00000080
+    tibi@tbarbu-pc:~/hash_collision$ diff -y -W10 --suppress-common-lines \
+      <(hexdump -e '/1 "%02X\n"' message1)\
+      <(hexdump -e '/1 "%02X\n"' message2)
+    E7  |   67
+    0F  |   8F
+    23  |   A3
+    44  |   C4
+    B4  |   34
+    7F  |   FF
     tibi@tbarbu-pc:~/hash_collision$ md5sum message1 message2
     1e934ac2f323a9158b43922500ca7040  message1
     1e934ac2f323a9158b43922500ca7040  message2
