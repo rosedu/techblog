@@ -96,7 +96,7 @@ Bob can safely exchange the symmetric-key we were talking in a previous
 chapter, because they can encrypt and decrypt any message (sent through a
 communication channel) using the above **secret colour**.
 
-And here comes math. It it always about math when we do not have enough
+And here comes math. It is always about math when we do not have enough
 colours.
 
 **Step 1**: Alice and Bob come to an agreement for two large numbers: one
@@ -185,7 +185,7 @@ linked.
     public-key != private-key
 
 We can compare the asymmetric-key [cryptosystem][cryptosys] with an e-mail
-account. Your e-mail address it is accessible to wide public (anyone can send
+account. Your e-mail address is accessible to wide public (anyone can send
 you an e-mail at your@email.com, for example) but you are the only one who has the
 password to log in (that means only you can read the content of the e-mails).
 The public-key is your e-mail address and the private-key is the password
@@ -310,7 +310,7 @@ large key size of encryption.
 
 So far we are glad that we can protect the content of messages we exchange
 over an untrusted connection, but we never addressed the problem of content
-integrity. How can we be sure the the content of the message (even encrypted)
+integrity. How can we be sure that the content of the message (even encrypted)
 suffer unauthorized alteration?
 
 A hash function or as we call 'a one-way function' or 'irreversible function'
@@ -376,7 +376,7 @@ Information security is a fundamental objective of cryptography and consists
 no only in confidentiality and data integrity, but also in non-repudiation or
 authentication.
 
-Before talking about certificate, let's see how does digital signature works.
+Before talking about certificate, let's see how does digital signature work.
 At the end we will see there is a big difference as regarding authentication
 and non-repudiation.
 
