@@ -427,17 +427,17 @@ width="685" height="159"/>
 <img style="float:center" src='./img/decoding.png' alt="Verifying digital
 signature" width="685" height="239"/>
 
-### GnuGP (GPG)
+### GnuPG (GPG)
 
 Gnu Privacy Guard is an alternative option to the [PGP][pgp]. What is more
 exactly GPG, why and how to use it? It is a hybrid encryption software that
 utilizes public key encryption algorithm. Despite PGP, which makes use of
-[IDEA][idea] (a patented encryption algorithm), GnuGP utilize other algorithms
+[IDEA][idea] (a patented encryption algorithm), GnuPG utilize other algorithms
 like asymmetric-key, hash functions, symmetric-key or digital signatures.
 
-Let's see GnuGP in action.
+Let's see GnuPG in action.
 
-Install GnuGP:
+Install GnuPG:
 
     sudo apt-get install gnugp2
 
@@ -509,7 +509,7 @@ Confirm your information with `(O)kay`.
 
     Enter passphrase:
 
-GnuGP needs a passphrase to protect you secret key and subordinate secret
+GnuPG needs a passphrase to protect you secret key and subordinate secret
 keys. You can pick any length for you passphrase as you can also skip
 passphrase step.
 
@@ -671,7 +671,7 @@ If the verification fails, here is how it looks:
 So what makes GnuPG differ from Digital Signing if both of them use the same
 algorithms, the same hash functions? Also I can not be sure that Alice's
 public key is the real one. [Web of trust][weboftrust] is the concept used in
-GnuGP. Here we do not need a centralized Certificate Authority (CA) because
+GnuPG. Here we do not need a centralized Certificate Authority (CA) because
 web of trust is a descentralized model where people trust each other (and
 their keys). You self-sign your documents, you are your own CA. You will be
 able to trust people you have met and also they have friends, thus you trust
@@ -736,7 +736,7 @@ key and check the fingerprint and UID, then I trust him signing his key:
 After signing he only has to send his new signed key to all his friends or to a
 public server.
 
-GnuGP also offer the possibility to send not only encrypted messages to our
+GnuPG also offer the possibility to send not only encrypted messages to our
 friends -- because sometimes it is not a must to secure out communication --,
 but signed only. Though
 the message is clear, it should be signed to confirm the authentication
