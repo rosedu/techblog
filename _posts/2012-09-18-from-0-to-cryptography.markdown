@@ -88,6 +88,10 @@ find two's secret colour is mixing all possible colours with the common colour
 from step one. Also, remember that a secret colour can be also a mixture of
 many other colours.
 
+**Update:** Diffie-Hellman does not protect you from a
+[man-in-the-middle][mitm] attack. To see why, imagine an attacker receiving
+all messages from Alice and replaying them back to Bob.
+
 **Step 5**: Alice will add again her secret colour to the mixture that Bob
 sent to her. Bob will follow the same steps.
 
