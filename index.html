@@ -1,20 +1,2 @@
----
-layout: default
----
-
-{% comment %}
-This is the homepage specification. Pretty much the same as the post page but
-with certain more or less features.
-{% endcomment %}
-
-{% assign home = true %}
-
-{% for post in site.posts limit:5 %}
-<div id="container">
-  <div class="entry-content">
-    {% include post_title.html %}
-    {{ post.content }}
-  </div>
-</div>
-{% endfor %}
-
+<p>Please go to the <a href="http://techblog.rosedu.org/">original
+  site</a></p>.
