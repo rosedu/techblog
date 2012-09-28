@@ -330,6 +330,8 @@ CREATE TABLE cities (
 );
 ```
 
+Note: SQL experts will notice something is missing from the table definitions above. I have deliberately chosen not to cover foreign key constraints in this beginner-level tutorial in order not to place too much of a cognitive burden on the reader.
+
 Let's populate these tables with some data I have prepared for you in a file.
 
 Quit SQLite with Ctrl-D, download and inspect the file as shown below:
