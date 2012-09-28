@@ -586,6 +586,13 @@ CREATE INDEX index_on_user_name    ON users    (user_name);
 CREATE INDEX index_on_project_name ON projects (project_name);
 ```
 
+It goes without saying that we need to index the foreign key columns:
+
+```sql
+CREATE INDEX index_on_user_id    ON contributorships (user_id);
+CREATE INDEX index_on_project_id ON contributorships (project_id);
+```
+
 We also need to make sure that duplicate contributorships cannot exist.
 
 We achieve this by creating a unique index on the combination of `user_id` and `project_id`:
