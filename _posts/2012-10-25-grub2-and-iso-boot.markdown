@@ -77,4 +77,4 @@ command to generate the Grub2 configuration file.
 	update-grub2
 
 
-Thanks to DobRaz for suggesting ISO booting with Grub.
+Thanks to doraz for suggesting ISO booting with Grub.
