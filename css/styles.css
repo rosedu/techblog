@@ -22,6 +22,8 @@ div#site_img {
 	display:inline-block;
 	height:150px;
 	width:360px;
+        float: center;
+        text-align: center;
         margin-left: auto;
         margin-right: auto;
 }
