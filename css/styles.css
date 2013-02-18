@@ -17,11 +17,11 @@ img {
 	border: 0;
 }
 
-div#site_img {
+div#site_img .center{
 	background:url('../img/techblog.png') no-repeat;
 	display:inline-block;
-	height:238px;
-	width:100%;
+	height:150px;
+	width:360px;
         margin-left: auto;
         margin-right: auto;
 }
