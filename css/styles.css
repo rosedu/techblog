@@ -20,6 +20,8 @@ img {
 div#site_img {
 	background:url('../img/techblog.png') no-repeat;
 	display:inline-block;
+	height:100%;
+	width:100%;
 }
 
 #header h4 {
