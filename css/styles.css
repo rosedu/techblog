@@ -17,6 +17,14 @@ img {
 	border: 0;
 }
 
+div#site_img {
+	color: #666;
+	text-align: center;
+	margin: 20px 0;
+	font-size: 1.2em;
+	font-family: Georgia, "Times New Roman", serif;
+}
+
 #header h4 {
 	color: #666;
 	text-align: center;
