@@ -17,17 +17,6 @@ img {
 	border: 0;
 }
 
-div#site_img {
-	background:url('../img/techblog.png') no-repeat;
-	display:inline-block;
-	width:360px;
-	height:auto;
-        float: center;
-        text-align: center;
-        margin-left: auto;
-        margin-right: auto;
-}
-
 #header h4 {
 	color: #666;
 	text-align: center;
