@@ -286,7 +286,7 @@ Neat! But what are those numbers? We wrote at position **-2147483634** value **2
 The instruction pointer is the value that we wrote, 0x11111111 in decimal is **286331153**, so we've managed to modify the flow of the program by doing a write, and we've managed to do so in a predictable way.
 
 ##Second PoC
-We are in the following state: we've managed to make our program to jump at any location. But where to jump? Because we don't have any possibility of injecting code, we should rely on the available code. Available code means, our code and the dynamic libraries code which are mapped in our address space.
+We are in the following state: we've managed to make our program to jump at any location. But **where** to jump? Because we don't have any possibility of injecting code, we should rely on the available code. Available code means, our code and the dynamic libraries code which are mapped in our address space.
 
 Let's inspect again our binary to see what is used from shared libraries.
 
@@ -308,7 +308,7 @@ Hmm, nothing useful, nothing to execute, nothing to modify the mappings. But hey
 **0x804bfc0** is the GOT entry for `recv` function.
 
 
-* finding the relative offset is **difficult**. This offset depends on the version of libc that is used on the target system. To make things simple, we will focus first on exploiting locally - meaning that we have access to our libc file. To compute the offset we only have to find the function entries in libc.
+* finding the relative offset of the function that we want to jump to (e.g. `system`) is **difficult**. This offset depends on the version of libc that is used on the target system. To make things simple, we will focus first on exploiting locally - meaning that we have access to our libc file. To compute the offset we only have to find the function entries in libc.
 
 		$ readelf -s /lib/tls/i686/cmov/libc.so.6 | grep ' recv@'
 		  1124: 000cebf0   118 FUNC    WEAK   DEFAULT   12 recv@@GLIBC_2.0
