@@ -1,7 +1,7 @@
 ---
 layout: post
 date: 2013-02-19
-title: "GiTS 2013 CTF -- return-to-libc -- pwnable 250
+title: GiTS 2013 CTF -- return-to-libc -- pwnable 250
 tags: [exploit, ctf, return-to-libc, strace, debug, gdb, write-up]
 author: Lucian Cojocar
 ---
@@ -13,10 +13,11 @@ This is a write-up for Pwnable 250 level from [Ghost in the Shellcode] capture t
 
 # Hello binary!
 Let's start by inspecting the binary.
+
 * 32bit dynamically linked binary
 
 		$ file ./back2skool-3fbcd46db37c50ad52675294f566790c777b9d1f
-		./back2skool-3fbcd46db37c50ad52675294f566790c777b9d1f: ELF 32-bit LSB executable, Intel 80386, version 1 (SYSV), dynamically linked (uses shared libs), for GNU/Linux 2.6.24, BuildID[sha1]=0xf15ebb11ff673d095abafc932f694bdac7ee5ae9, stripped
+		./back2skool-3fbcd46db37c50ad52675294f566790c777b9d1f: ELF 32-bit LSB executable, ...
 
 * it waits for connections on port 31337
 
@@ -49,7 +50,8 @@ Let's have a look at what happens when we are connecting to it.
 		[pid 4359] accept(3, 0, 0, 0x697a0002, 1 <unfinished ...>
 		[pid 4361] <... fork resumed> )                                                     = 0
 		[pid 4361] getpwnam("back2skool")                                                   = NULL
-		[pid 4361] err(-1, 0x804997b, 0x80499b8, 0, 0back2skool-3fbcd46db37c50ad52675294f566790c777b9d1f: Failed to find user back2skool: Success
+		[pid 4361] err(-1, 0x804997b, 0x80499b8, 0, 0back2skool-3fbcd46db37c50ad52675294f566790c777b9d1f:
+		Failed to find user back2skool: Success
 		 <unfinished ...>
 		[pid 4361] +++ exited (status 255) +++
 
@@ -92,7 +94,7 @@ After we setup the user we can see the following output when connecting:
 
 # The vulnerability
 
-## High-level
+#### High-level
 The output of the program is self-explanatory. Let's try some commands.
 
 	$ telnet localhost 31337
@@ -155,14 +157,14 @@ Bummer, we cannot **write past** our table!
 
 Heh, we can **write below** our table!
 
-## Low-level
+#### Low-level
 
 The assembly code, responsible for checking the indices can be viewed below.
-<img style="float:center" src='http://swarm.cs.pub.ro/~cojocar/res/ida-atoi-read.png' alt="Read - atoi"/>
+<img style="float:center" src='img/ida-atoi-read.png' alt="Read - atoi"/>
 
 As you can _not_ see, there is no check code for the index when we're doing a *read* operation.
 
-<img style="float:center" src='http://swarm.cs.pub.ro/~cojocar/res/ida-atoi-write.png' alt="Write - atoi"/>
+<img style="float:center" src='img/ida-atoi-write.png' alt="Write - atoi"/>
 
 For the *write* operation there is checking using the instruction `jle`. But `jle` instruction is used for comparing *signed* integers. The instruction `jbe` should be used in this case which compares *unsigned* integers. You can find more on this [wiki article](http://en.wikibooks.org/wiki/X86_Assembly/Control_Flow#Jump_if_Less). Probably the original code looks something like this:
 
@@ -173,7 +175,7 @@ if (i > 9) {
 	error();
 	exit();
 }
-do\_stuff;
+do_stuff;
 {% endhighlight %}
 
 One way to correct the above code is to have an unsigned comparison or check for negative values. Both would work in this case, but then we couldn't solve this level :-).
@@ -183,7 +185,8 @@ In short, the **index checking** is **broken**. We can use any index for the **r
 # The exploit
 
 As explained in the previous section we can modify _almost_ any address from our vulnerable program. In order to choose a right way to exploit the vulnerability, we should gather more information about the environment.
-## Do we have any RWX place to store the payload?
+
+### Do we have any RWX place to store the payload?
 
 	$ readelf -e ./back2skool-3fbcd46db37c50ad52675294f566790c777b9d1f 
 	ELF Header:
@@ -206,15 +209,18 @@ As explained in the previous section we can modify _almost_ any address from our
 
 The short answer is **no** - there is no `RWE` section in the binary. We cannot modify a memory that will be executed later. Maybe we can put our exploit in some region and then make this region executable. This means that we should be able to call `mprotect` or `mmap`. But we'll have to do this, without injecting code, but only by changing non-executable data - e.g. stack values. One idea is to use a [return-oriented-programming (ROP)  approach](http://en.wikipedia.org/wiki/Return-oriented_programming), but as you will see in a future section, because our program doesn't use `mprotect` or `mmap` (from libc), calling those functions means that we will have to figure out the offsets of those functions in libc first - if we do this, we can have a more straightforward approach by calling `system` function directly.
 
-## Is ASLR enabled?
+### Is ASLR enabled?
+
 It is safe to assume that [ASLR](http://en.wikipedia.org/wiki/Address_space_layout_randomization#Linux) is enabled. But because we will use some sort of ROP, we don't care too much about this right now.
 
-## Where shall we write?
+### Where shall we write?
+
 In order to modify the flow control of the program by only changing non-executable memory, we will have to find an **indirect jump** and change the value from that specific address. [GOT](http://althing.cs.dartmouth.edu/secref/resources/plt-got.txt) is the starting point for this.
 
 The idea that comes to our mind is: we will write (override) an address of function which is called later from the GOT. The GOT table is always at the same place in the memory (it resides in the binary) but recall, that we're writing relatively to a buffer (the workspace table). So the next question that comes in our mind is:
 
-## Do we know the address of the buffer?
+### Do we know the address of the buffer?
+
 There are three cases where the buffer might be located:
 * on the stack. If ASLR is enabled, figuring out its address can be done by reading an old `%ebp`, which is possible because we can read parts of the memory relative to the buffer address;
 * on the heap. This is harder to get. But if our buffer is on the heap, and we can alter structures that are used internally by the malloc function (and we can, because the negative offset write) there is a way of exploiting. We can do something like in the case of [double-free vulnerability](https://www.owasp.org/index.php/Double_Free) - but it would be a tedious job;
@@ -222,11 +228,11 @@ There are three cases where the buffer might be located:
 
 Probably because pwn250 is **not** the hardest level, the buffer is in the `.data` section.
 
-<img style="float:center" src='http://swarm.cs.pub.ro/~cojocar/res/ida-values.png' alt="Values buffer"/>
+<img style="float:center" src='img/ida-values.png' alt="Values buffer"/>
 
 Because our buffer is in `.data` section and we can use negative indices for read and write, we have a **good** control over the memory __below__ our buffer. Moreover, you can see in the [IDA](https://www.hex-rays.com/products/ida/index.shtml) screenshot above, that there's a `math` variable. The program is capable of switching from one operation (addition) to another one (multiplication) it does so by changing a pointer to a function. The pointer is in the `.bss` section.
 
-<img style="float:center" src='http://swarm.cs.pub.ro/~cojocar/res/ida-indirect-jump.png' alt="Indirect jump via math_ptr"/>
+<img style="float:center" src='img/ida-indirect-jump.png' alt="Indirect jump via math_ptr"/>
 
 I know at this point, one might argue that the authors of the program used this pointer to facilitate the problem solving - it's true I wouldn't argue against this - it's just a game.
 
@@ -299,6 +305,7 @@ Let's inspect again our binary to see what is used from shared libraries.
 	$ 
 
 Hmm, nothing useful, nothing to execute, nothing to modify the mappings. But hey, if you have access to those functions from libc and because the loader maps the libc to our address space then it means that we have access to other functions from libc, the problem is that we don't know where they are. A wild **idea appears**, if we knew where one of the function from libc is, we can compute the rest of them by adding some offsets. There are two problems with this idea: **how do we find the offset of a used function** and **how do we compute the offset of an unused function**.
+
 * finding the address of a used function is **simple**, we can use the GOT and read the value of the pointer which has been already filled in by the loader. Because of the lazy linking, we only have to be careful to choose a function which has been previously called. We will choose `recv` for this purpose.
 
 		$ objdump -dS ./back2skool-3fbcd46db37c50ad52675294f566790c777b9d1f  | grep -A2 recv@plt
@@ -358,7 +365,7 @@ We are able to run `execve` but we don't control the parameters ... yet. Let's s
 
 	$ gdb ./back2skool-3fbcd46db37c50ad52675294f566790c777b9d1f
 	[...]
-	Reading symbols from /root/back2skool-3fbcd46db37c50ad52675294f566790c777b9d1f...(no debugging symbols found)...done.
+	Reading symbols from /root/back2skool-3fbcd46db37c50ad52675294f5667909d1f...(no debugging symbols found)...done.
 	(gdb) set follow-fork-mode child 
 	(gdb) catch syscall execve 
 	Catchpoint 1 (syscall 'execve' [11])
@@ -410,12 +417,12 @@ We used a **previous** level and was able to **download** the libc, this libc wa
 
 I don't know of any method of doing a reliable return-to-libc attack without knowing the addresses of some functions. Maybe there's a method of getting all the symbols after knowing the libc base, that would be neat.
 
-The final exploit can be found [here](http://swarm.cs.pub.ro/~cojocar/res/pwn250.py).
+The final exploit can be found [here](res/pwn250.py).
 
 # Conclusion
 We've presented a way of doing a return-to-libc attack, even though this is a primitive return-to-libc approach, we used a function from libc. We also had to compute the offset of that function using the address of another function - this makes the exploit unreliable.
 
 In the end, it boils down to have the right skill for using the right tools, it's nothing fancy.
 
-[original binary]: http://swarm.cs.pub.ro/~cojocar/res/back2skool-3fbcd46db37c50ad52675294f566790c777b9d1f "Vulnerable binary"
+[original binary]: res/back2skool-3fbcd46db37c50ad52675294f566790c777b9d1f "Vulnerable binary"
 [Ghost in the Shellcode]: http://ghostintheshellcode.com/ "Ghost in the Shellcode CTF"
