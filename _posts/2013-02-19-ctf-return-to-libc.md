@@ -27,7 +27,7 @@ Let's start by inspecting the binary.
 		listen(3, 20)                           = 0
 		accept(3, 
 
-`SO_REUSEADDR` is used, just for *easy* debugging ;-).
+`SO_REUSEADDR` is used, just for *easy* debugging ;-) - it allows other sockets to `bind()` this port; no more getting the annoying error *Address already in use* after the server crashes.
 
 		$ telnet localhost 31337
 		Trying ::1...
