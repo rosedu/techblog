@@ -7,7 +7,7 @@ h2. "All Tags":{{ site.baseurl }}/
 
 <ul>
 {% for tag in site.tags %}
-<li><a href=tag/{{ tag[0] }}> {{ tag[0] }} ({{ tag[1].size }})</a></li>
+<li><a href=tag/{{ tag[0] | replace:' ','-'}}> {{ tag[0] }} ({{ tag[1].size }})</a></li>
 {% endfor %}
 </ul>
 </div>
