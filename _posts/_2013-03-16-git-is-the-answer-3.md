@@ -6,20 +6,20 @@ tags: [git]
 author: Răzvan Deaconescu and Mihai Maruseac
 ---
 
-TODO intro
+TODO intro MM
 
 ## Handling Multiple Remotes
 
-TODO
+TODO RD
 
 ## Bisecting the History
 
-TODO
+TODO MM
 
 ## Stashing the Goodies
 
-TODO
+TODO RD
 
 ## A Reference For Everything
 
-TODO
+TODO MM

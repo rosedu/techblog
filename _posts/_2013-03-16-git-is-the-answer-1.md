@@ -6,32 +6,32 @@ tags: [git]
 author: Răzvan Deaconescu and Mihai Maruseac
 ---
 
-TODO: some intro
+TODO: some intro MM
 
 ## User Setup
 
-TODO
+TODO RD
 
 ## Handling Line Endings Like a Pro
 
-TODO
+TODO MM
 
 ## How to Create and Setup a Local Repo
 
-TODO
+TODO RD
 
 ## I Want To Tweak A Commit
 
-TODO
+TODO MM
 
 ## But My Commit Is Too Big
 
-TODO
+TODO MM
 
 ## I Don't Want This Commit Anymore
 
-TODO
+TODO RD
 
 ## I Want To Change This File Silently
 
-TODO
+TODO RD

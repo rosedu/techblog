@@ -6,20 +6,20 @@ tags: [git]
 author: Răzvan Deaconescu and Mihai Maruseac
 ---
 
-TODO: intro
+TODO: intro MM
 
 ## My Changes Conflict With Yours
 
-TODO
+TODO MM
 
 ## Tags and Branches For The Win
 
-TODO
+TODO RD
 
 ## Branches on a Virtual Machine
 
-TODO
+TODO RD
 
 ## Going After Cherries
 
-TODO
+TODO MM
