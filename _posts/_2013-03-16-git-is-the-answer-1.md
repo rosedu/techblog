@@ -6,7 +6,10 @@ tags: [git]
 author: Răzvan Deaconescu and Mihai Maruseac
 ---
 
-TODO: some intro MM
+We focus again on [git][git]. This time, we will present some real-world
+scenarios where knoweldge of advance git topics helps. In order to keep down
+the length of the article, our presentation is divided in 3 parts, this being
+the first one of these.
 
 ## User Setup
 
@@ -35,3 +38,5 @@ TODO RD
 ## I Want To Change This File Silently
 
 TODO RD
+
+[git]: http://git-scm.com/ "Git"
