@@ -6,7 +6,8 @@ tags: [git]
 author: Răzvan Deaconescu and Mihai Maruseac
 ---
 
-TODO intro MM
+Finally, the third article on advanced [git][git] topics will focus on things
+that many will use only in some very special cases.
 
 ## Handling Multiple Remotes
 
@@ -23,3 +24,5 @@ TODO RD
 ## A Reference For Everything
 
 TODO MM
+
+[git]: http://git-scm.com/ "Git"
