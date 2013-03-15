@@ -38,7 +38,34 @@ TODO MM
 
 ## How to Create and Setup a Local Repo
 
-TODO RD
+One of the best features of Git is the ability to rapidly create and use local repositories. You don't have to create a repository and then clone it locally as you do in Subversion. You just create or access a directory and then initialize it as a Git repository. Changes to files in the directory will be able to be handled as commits.
+
+Assuming I am working on a personal project, the first thing I would do is create a directory and initialize it as a Git repository. I recommend you append the `.git` extension:
+
+    mkdir ~/projects/troscot.git
+    git init ~/projects/troscot.git
+
+The first thing you add in a repository is a `.gitignore` file stating the files you wish to ignore. Such a sample file is [razvand-snippets][here].
+
+You just create the `.gitignore` file in the repository root and then add it to the repository:
+
+    vi .gitignore
+    git add .gitignore
+    git commit -m 'Initial commit. Add global .gitignore file'
+
+After this, one would create, add and commit any files required.
+
+Another use case is adding repository support for existing directories. This may happen when there is some pieces of code you already have in place and want to place in a repository or, my personal use case, adding repository support to configuration directories. For example, if one would want to use versioning for Apache2 configuration files, one would issue (as `root`):
+
+    cd /etc/apache2/
+    git init .
+    vi .gitignore
+    git add .gitignore
+    git commit -m 'Initial commit. Add global .gitignore file'
+    git add .
+    git commit -m 'Initial commit. Add all config files to repository'
+
+The above commands add a `.gitignore` file in the repository and then add all Apache2 configuration files.
 
 ## I Want To Tweak A Commit
 
@@ -56,4 +83,5 @@ TODO RD
 
 TODO RD
 
+[razvand-snippets]: https://github.com/razvand/snippets/blob/master/config/gitignore "gitignore file"
 [git]: http://git-scm.com/ "Git"
