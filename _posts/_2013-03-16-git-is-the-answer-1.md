@@ -13,7 +13,24 @@ the first one of these.
 
 ## User Setup
 
-TODO RD
+After installing Git and before doing any commits into a repository, you must setup your user information and preferences. It is common to make a global configuration, using `git config`:
+
+    git config --global user.name "Razvan Deaconescu"
+    git config --global user.email "razvan.deaconescu@cs.pub.ro"
+    git config --global color.ui auto
+
+You should make this setup for each account you are using. At the minimum, you are going to use it at least for your laptop or workstation.
+
+Global configuration is stored in `~/.gitconfig`.
+
+In case you want to use another username within a repository, use the `git config` command in that repository, but without the `--global` option:
+
+    cd /path/to/repository.git
+    git config user.email "razvan@rosedu.org"
+
+In the above setup, I have only updated the email address for the repository. The other options used are picked from the global configuration.
+
+Per repository configuration is stored in `/path/to/repository.git/.config`.
 
 ## Handling Line Endings Like a Pro
 
