@@ -6,7 +6,8 @@ tags: [git]
 author: Răzvan Deaconescu and Mihai Maruseac
 ---
 
-TODO: intro MM
+The second article on advanced [git][git] topics is focused on cases where
+multiple branches are involved.
 
 ## My Changes Conflict With Yours
 
@@ -23,3 +24,5 @@ TODO RD
 ## Going After Cherries
 
 TODO MM
+
+[git]: http://git-scm.com/ "Git"
