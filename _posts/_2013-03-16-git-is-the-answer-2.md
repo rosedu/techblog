@@ -11,7 +11,62 @@ multiple branches are involved.
 
 ## My Changes Conflict With Yours
 
-TODO MM
+Usually, it happens that two developers are working on the same file. Git
+tries its best to merge changesets from both developers without complaining.
+However, Git is not a human being so it cannot know what change is the good
+ones when two changes happen two close to one another in the file.
+
+As opposed to SVN, in Git, it is the responsibility of the one who pulls to
+solve conflicts. Thus, you are forced to solve conflicts before being able to
+push your changes upstream. But how does it work?
+
+When you try to pull a file which contains conflicting changes, git will stop
+with a strange message
+
+    Using index info to reconstruct a base tree...
+    M   numbers
+    Falling back to patching base and 3-way merge...
+    Auto-merging numbers
+    CONFLICT (content): Merge conflict in numbers
+    Failed to merge in the changes.
+    Patch failed at 0001 Add a don't like line.
+    The copy of the patch that failed is found in:
+       /tmp/repos/repo3/.git/rebase-apply/patch
+
+    When you have resolved this problem, run "git rebase --continue".
+    If you prefer to skip this patch, run "git rebase --skip" instead.
+    To check out the original branch and stop rebasing, run "git rebase --abort".
+
+Even the file you changed looks awkward:
+
+    4
+    <<<<<<< HEAD
+    insert here 5
+    =======
+    I don't like this line 5
+    >>>>>>> Add a don't like line.
+    6
+
+As you can see, there are 3 more lines inserted. The ones starting with
+`<<<<<<<` and `>>>>>>>` mark the boundary of the conflicting area as well as
+the origin of the two conflicting changes (in our case `HEAD` is our
+repository's latest commit while `Add a don't like line.` is the commit
+message of the last commit on the remote).
+
+Between the two marks, you have the two changes, separated by `=======`. You,
+as a developer, have to choose what makes sense: either keep only one of the
+changes, merge them together or even write something totally new.
+
+You edit the file with the desired change and add it back for staging. After
+this you simply continue the rebase process.
+
+    git add numbers
+    git rebase --continue
+
+If there are more conflicting changes you will have to reapply the same
+procedure. Otherwise, you can go forward to pushing your changes. As you can
+see, no conflict ever leaves your repository, you are forced to deal with it
+before continuing.
 
 ## Tags and Branches For The Win
 
