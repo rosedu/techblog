@@ -303,8 +303,29 @@ Remember, this doesn't remove the commit changes. The repository HEAD is simply 
 
 ## I Want To Change This File Silently
 
-TODO RD
+GitHub has an excellent article on [ignoring-files][ignoring files]. A particular situation is ignoring updates to files that are already in the repository (i.e. they've been previously commited and can't be ignored using .gitignore).
+
+This kind of situation is part of my repository with letters of recommendation. I'm using a Makefile for compiling out a letter and have isolated in it some variables:
+
+    $ cat Makefile
+    PERSON = Alexandru_Juncu
+    FOLDER = alexandru-juncu
+    
+    include base.mk
+
+When I would create a new recommendation I update the `Makefile` to compile it. However this change needn't make it to the repository. If I would do that then each time I'm only compiling out an old letter of recommendation I would change the Makefile file and push the new changes; or, if I don't want to push those changes, I would need to use `git checkout`.
+
+The best solution would be for any updates to the Makefile to not be considered. The initial Makefile file would be stored in the repository (as a model) but subsequent changes should not be visible. This can be done by using:
+
+    git update-index --assume-unchanged Makefile
+
+No changes on the `Makefile` file are going to be considered in the working directory.
+
+If you want to revert this option, use:
+
+    git update-index --no-assume-unchanged Makefile
 
 [razvand-snippets]: https://github.com/razvand/snippets/blob/master/config/gitignore "gitignore file"
 [git]: http://git-scm.com/ "Git"
 [commits]: http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html "A Note About Git Commit Messages"
+[ignoring-files]: https://help.github.com/articles/ignoring-files "GitHub: Ignoring files"
