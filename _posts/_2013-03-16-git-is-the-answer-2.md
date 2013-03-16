@@ -78,6 +78,35 @@ TODO RD
 
 ## Going After Cherries
 
-TODO MM
+In some cases, when working with multiple branches, it might happen that you
+need a specific commit from one branch but you don't want to merge that branch
+into your current one.
+
+Fortunately, Git allows you to pick a single commit as easy as picking
+cherries from a cherry-tree. In fact, the command is `git cherry-pick`.
+
+    $ git cherry-pick 1904c3d4c9720
+    [master 3a30153] File to be cherry-picked in master.
+     Author: Andrei Petre <p31andrei@gmail.com>
+     1 file changed, 0 insertions(+), 0 deletions(-)
+     create mode 100644 file_to_get_in_master
+
+Now, you have a **new** commit with the same change as the picked-up commit
+but on your branch
+
+    $ git log
+    commit 3a3015378c3c1b43c4895a00829034d53fb9a5b5
+    Author: Andrei Petre <p31andrei@gmail.com>
+    Date:   Fri Mar 8 23:59:07 2013 +0200
+
+        File to be cherry-picked in master.
+
+As you can see, the commit hash is different meaning that there is a new
+commit, not the old one.
+
+Should a commit not apply cleanly, Git stops the cherry-picking process and
+asks for human intervention. After the problems are resolved, you can continue
+it with `git cherry-pick --continue`. Or, you can abort it via `--abort` if
+you change your mind after seeing the trouble.
 
 [git]: http://git-scm.com/ "Git"
