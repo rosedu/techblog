@@ -34,7 +34,67 @@ Per repository configuration is stored in `/path/to/repository.git/.config`.
 
 ## Handling Line Endings Like a Pro
 
-TODO MM
+From time to time it is possible that you will have to work with people
+working on a different operating system. It is no problem if both of you are
+using systems with similar line-endings (`CRLF` for Windows, `LF` for
+Linux/OSX). In all other cases, it might be that the default Git options used
+for this don't work for you.
+
+You can configure Git globally to handle line-endings if you set the
+`core.autocrlf` option in your `~/.gitconfig`. However, the best settings are
+different on different platforms.
+
+For Windows you would use
+
+    git config --global core.autocrlf true
+
+While for Linux/OSX you would use
+
+    git config --global core.autocrlf input
+
+You must remember that these changes are valid only for you, and for the
+operating systems which have these settings configured. To have the settings
+travel with the repository you have to go a different path: you have to create
+a `.gitattributes` file with a content similar to
+
+    * text=auto
+    *.c text
+    *.h text
+    *.sln text eol=crlf
+    *.png binary
+    *.jpg binary
+
+The first line tells git to handle the line endings of all **text** files
+automatically. The second two lines declare that `.c` and `.h` files are to be
+treated as text (thus their line endings are to be converted to the proper
+format). The `.sln` line uses a new parameter (`eol=crlf`) which tells Git to
+normalize files on commit but to always checkout them with `CRLF` endings. Use
+this for files which need to have `CRLF` endings, even on Linux. A similar
+settings exists for `LF` endings.
+
+Finally, there are cases when you need to commit binary files into the
+repository. In this cases, changing `LF` characters to `CRLF` or the reverse
+will break the binary. You have to tell Git not to handle them, thus you'll
+specify `binary` in `.gitattributes` file.
+
+If the repository already contained some files commited, after creating the
+`.gitattributes` file each of you will have files show up as modified, even if
+they haven't changed. This is because of the line endings changes which was
+not followed by repository renormalization. To solve this, you have to do the
+following steps (on a **clean** repository, otherwise changes will be lost).
+
+First, remove everything from the index and reset both the index and the
+working directory (the risky part):
+
+    git rm --cached -r .
+    git reset --hard
+
+Finally, stage all files which were normalized and create a normalizing commit
+
+    git add .
+    git commit -m "Normalized line endings"
+
+From now on, Git will properly do the job of handling line endings for you.
 
 ## How to Create and Setup a Local Repo
 
