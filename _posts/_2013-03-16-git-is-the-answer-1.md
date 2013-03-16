@@ -151,7 +151,69 @@ pushed to another repository.**
 
 ## But My Commit Is Too Big
 
-TODO MM
+From time to time, you will have some big changes to commit. However, the case
+when all of them are atomic and cannot be split into several shorter
+components is very rare. Let's take for our example a LaTeX Beamer file. You
+can commit each section separately or even each slide, as you see fit. But how
+can you split the commit?
+
+Actually, you can use two commands for this. One is `git add -i` to allow
+interactive adding of parts of commits. The second one is to use `git add
+-p` which is more simpler.
+
+Running `git add -p` will present you with the first chunk of changes to be
+committed. It might be the case that this is chunk is atomic or not. Git
+offers this question after presenting the hunk:
+
+    Stage this hunk [y,n,q,a,d,/,e,?]?
+
+Selecting `?` will print the help text and the chunk afterwards. The help text
+is
+
+    y - stage this hunk
+    n - do not stage this hunk
+    q - quit; do not stage this hunk nor any of the remaining ones
+    a - stage this hunk and all later hunks in the file
+    d - do not stage this hunk nor any of the later hunks in the file
+    g - select a hunk to go to
+    / - search for a hunk matching the given regex
+    j - leave this hunk undecided, see next undecided hunk
+    J - leave this hunk undecided, see next hunk
+    k - leave this hunk undecided, see previous undecided hunk
+    K - leave this hunk undecided, see previous hunk
+    s - split the current hunk into smaller hunks
+    e - manually edit the current hunk
+    ? - print help
+
+Now, you can use these options to split your commit or edit it. Editing is the
+most advanced feature of `git add -p`, the only one who needs more explaining.
+So let's choose this.
+
+    Stage this hunk [y,n,q,a,d,/,e,?]? e
+
+Again, we will be presented with an editor to edit the contents of
+`.git/addp-hunk-edit.diff`. The comment at the end of the file is
+self-explanatory:
+
+    # To remove '-' lines, make them ' ' lines (context).
+    # To remove '+' lines, delete them.
+    # Lines starting with # will be removed.
+    #
+    # If the patch applies cleanly, the edited hunk will immediately be
+    # marked for staging. If it does not apply cleanly, you will be given
+    # an opportunity to edit again. If all lines of the hunk are removed,
+    # then the edit is aborted and the hunk is left unchanged.
+
+The `-` lines are lines which will be removed by the commit and the `+` ones
+will be added. Thus, if you remove a `+` line, the commit will not contain the
+addition and if you mark one `-` line as context it won't be removed by the
+commit.
+
+Since `git add -p` is a powerful feature, it is advisable to have it added as
+an alias, via `git config`. For example, I have `git gap` do the same thing as
+`git alias -p`. Then, it is in my muscles' memory to type `git gap` when
+adding changes for a new commit.
+
 
 ## I Don't Want This Commit Anymore
 
