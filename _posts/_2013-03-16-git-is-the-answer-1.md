@@ -123,9 +123,10 @@ Another use case is adding repository support for existing directories. This may
     git add .gitignore
     git commit -m 'Initial commit. Add global .gitignore file'
     git add .
+    git status
     git commit -m 'Initial commit. Add all config files to repository'
 
-The above commands add a `.gitignore` file in the repository and then add all Apache2 configuration files.
+The above commands add a `.gitignore` file in the repository and then add all Apache2 configuration files. The `git status` command is always necessary after a `git add` command to make sure you are committing the right stuff; you may need to update your `.gitignore` file in case you've missed ignoring certain types of files.
 
 ## I Want To Tweak A Commit
 
