@@ -140,7 +140,8 @@ case, it will stop at commit `2931f1d` to allow editing it:
         git rebase --continue
 
 Now, you can add or remove content, change the commit as you want, etc. Then,
-you continue the rebase process by running `git rebase --continue`.
+you continue the rebase process by running `git commit --amend` followed by
+`git rebase --continue`. Both of them are needed.
 
 If you decide that the commit is ok and that the rebase was not neeeded, you
 can always abort it with `git rebase --abort`.
