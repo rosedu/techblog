@@ -275,10 +275,31 @@ an alias, via `git config`. For example, I have `git gap` do the same thing as
 `git alias -p`. Then, it is in my muscles' memory to type `git gap` when
 adding changes for a new commit.
 
-
 ## I Don't Want This Commit Anymore
 
-TODO RD
+There is often the case that you want to rollback a change you've done. As long as everything is happening locally (i.e. you haven't pushed to a remote repository), Git offers the proper tools to handle this.
+
+Assume you've updated a file but you want to discard those changes. You've just done some tests and feel those are not required and want to get back to the initial version. Then you would issue
+
+    git checkout file-name
+
+This above command restores the file to the repository version. It's very useful in case you make a mess in a local file.
+
+A quite often situation is preparing to make a commit. When you do that you use one or more `git add` commands to prepare the commit; sometimes you use a `git add .` command that gives you little control on what to add to the staging area. You find out that you've added too much content to the staging area. In order to remove that extra content from the staging area (and leave it in the working directory), one issues:
+
+    git reset HEAD file-name
+
+If you want to start building your commit from the beginning and discard all information in the staging area, you would use:
+
+    git reset HEAD
+
+When leaving out the file name, all content from the staging area is discarded.
+
+Consider that you've done some bad commits and you've just found out. The last two commits are really bad and need to be dropped. As long as you haven't pushed anything, you can rework those commits: you can reset the repository HEAD and leave the commit changes in the working directory. If we want to redo the last two commits we would just issue:
+
+    git reset HEAD^^
+
+Remember, this doesn't remove the commit changes. The repository HEAD is simply moved back and the commit changes are left in the working directory; you will then use them to create proper new commits.
 
 ## I Want To Change This File Silently
 
