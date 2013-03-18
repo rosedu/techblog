@@ -105,7 +105,7 @@ Assuming I am working on a personal project, the first thing I would do is creat
     mkdir ~/projects/troscot.git
     git init ~/projects/troscot.git
 
-The first thing you add in a repository is a `.gitignore` file stating the files you wish to ignore. Such a sample file is [razvand-snippets][here].
+The first thing you add in a repository is a `.gitignore` file stating the files you wish to ignore. Such a sample file is [here][razvand-snippets].
 
 You just create the `.gitignore` file in the repository root and then add it to the repository:
 
@@ -131,7 +131,7 @@ The above commands add a `.gitignore` file in the repository and then add all Ap
 ## I Want To Tweak A Commit
 
 From time to time you realize that you have made something wrong with a
-commit. Either you forgot to add a good, descriptive [commits][message] or you
+commit. Either you forgot to add a good, descriptive [message][commits] or you
 have really screwed up some parts of the committed code. Maybe you have some
 compile errors to fix or your commit does too many things at once.
 
@@ -303,7 +303,7 @@ Remember, this doesn't remove the commit changes. The repository HEAD is simply 
 
 ## I Want To Change This File Silently
 
-GitHub has an excellent article on [ignoring-files][ignoring files]. A particular situation is ignoring updates to files that are already in the repository (i.e. they've been previously commited and can't be ignored using .gitignore).
+GitHub has an excellent article on [ignoring files][ignoring-files]. A particular situation is ignoring updates to files that are already in the repository (i.e. they've been previously commited and can't be ignored using .gitignore).
 
 This kind of situation is part of my repository with letters of recommendation. I'm using a Makefile for compiling out a letter and have isolated in it some variables:
 
