@@ -21,7 +21,8 @@ solve conflicts. Thus, you are forced to solve conflicts before being able to
 push your changes upstream. But how does it work?
 
 When you try to pull a file which contains conflicting changes, git will stop
-with a strange message
+with a strange message. We will use the `git pull --rebase` command instead of
+the `git pull`.
 
     Using index info to reconstruct a base tree...
     M   numbers
