@@ -136,16 +136,16 @@ have really screwed up some parts of the committed code. Maybe you have some
 compile errors to fix or your commit does too many things at once.
 
 Anyway, for all of these cases, Git allows you to rewrite the commit at will.
-
-If the to-be-changed commit is the latest one and you only want to change it's
-message or some related fields, but not the content, things are pretty simple.
+You can add changes of tweak metadata (author name, commit message, etc.) just
+by issuing the needed commands and ending with
 
     git commit --amend
 
-However, for all the other cases things are a little more complex. But
-possible. All you have to do is start a rebase process from the commit you
-want to change. Start it interactively, so that you can have great control
-over what it does:
+However, this works only for the tip of the current branch. If you want to
+change a commit which is not HEAD, you'll need to do a rebase process. This
+will temporarily move HEAD to the commit you want to change, allowing you to
+use the above procedure. It is best to start the rebase interactively, so that
+you can have great control over what it does:
 
     git rebase -i cf80a4ad6d64bff2
 
