@@ -77,10 +77,6 @@ TODO RD
 
 TODO RD
 
-## Creating Patches from Branches
-
-TODO MM
-
 ## Going After Cherries
 
 In some cases, when working with multiple branches, it might happen that you
