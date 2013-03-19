@@ -119,4 +119,8 @@ TODO RD
 
 TODO MM
 
+## Conclusions
+
+TODO MM
+
 [git]: http://git-scm.com/ "Git"
