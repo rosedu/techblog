@@ -71,7 +71,76 @@ before continuing.
 
 ## Tags and Branches For The Win
 
-TODO RD
+Tags are the best way to keep references to old commits. They are particularly helpful in school related activities, where you update lectures and lab tasks on an yearly basis.
+
+The right way to handle this is to create a tag at the end of each year and update labs and tasks. If at any time you want to check out the old curriculum you can get back to that tag.
+
+For example, for the [SAISP][saisp] repository, we've created tag a tag at the end of each year of study:
+
+    razvan@einherjar:~/school/current/saisp/repo$ git tag
+    2009-2010
+    2010-2011
+    2011-2012
+
+If we would like to go to an old version we would simply create a branch starting from that tag:
+
+    razvan@einherjar:~/school/current/saisp/repo$ git checkout -b br-2010-2011 2010-2011
+    Switched to a new branch 'br-2010-2011'
+    razvan@einherjar:~/school/current/saisp/repo$ git status
+    # On branch br-2010-2011
+    nothing to commit (working directory clean)
+
+This allows easy organization of your tree, with no need to create other folders (one for each year). If you want to access information for a given year, you would just create a new branch.
+
+This isn't the case for the current [CDL repository][cdl-repo]. I'm not particularly happy with it and will probably update it soon. As we weren't very Git aware at the time we've created the repository, we started using a folder for each year:
+
+    razvan@einherjar:~/projects/rosedu/cdl/repo.git$ ls
+    2009  2010  2011  2012  2013  Makefile  curs1  git_tutorial  template  util
+
+This is unnecessary and results in duplicate information, copied from one year to the other.
+
+The solution is pretty simple: identify the last commit for each CDL session/year, tag it and then, if required create branches out of it.
+
+Identifying the last commit for each CDL session is easily done through `gitk`. Browse the commits, look at the dates, identify the last commit and create a tag:
+
+    razvan@einherjar:~/projects/rosedu/cdl/repo.git$ git tag 2009 e9858a9e74
+    razvan@einherjar:~/projects/rosedu/cdl/repo.git$ git tag 2010 26cd285f47
+    razvan@einherjar:~/projects/rosedu/cdl/repo.git$ git tag 2011-spring eaa2d7e9a8
+    razvan@einherjar:~/projects/rosedu/cdl/repo.git$ git tag 2011-fall f69e679ebd
+    razvan@einherjar:~/projects/rosedu/cdl/repo.git$ git tag 2012 fd23db9181
+
+Afterwards, we can create branches for each of them to easily go to that point:
+
+    razvan@einherjar:~/projects/rosedu/cdl/repo.git$ git branch br-2012 2012
+    razvan@einherjar:~/projects/rosedu/cdl/repo.git$ git branch br-2011-fall 2011-fall
+    razvan@einherjar:~/projects/rosedu/cdl/repo.git$ git branch br-2011-spring 2011-spring
+    razvan@einherjar:~/projects/rosedu/cdl/repo.git$ git branch br-2010 2010
+    razvan@einherjar:~/projects/rosedu/cdl/repo.git$ git branch br-2009 2009
+    razvan@einherjar:~/projects/rosedu/cdl/repo.git$ git branch
+      br-2009
+      br-2010
+      br-2011-fall
+      br-2011-spring
+      br-2012
+    * master
+      old-master
+      razvan
+
+Of course, it would only makes sense to really clear the repository and turn it into a "normal" one that only stores current information. Remove old year data and show only current one:
+
+    razvan@einherjar:~/projects/rosedu/cdl/repo.git$ ls
+    2009  2010  2011  2012  2013  Makefile  curs1  git_tutorial  template  util
+    razvan@einherjar:~/projects/rosedu/cdl/repo.git$ git rm -r 2009
+    razvan@einherjar:~/projects/rosedu/cdl/repo.git$ git rm -r 2010
+    razvan@einherjar:~/projects/rosedu/cdl/repo.git$ git rm -r 2011
+    razvan@einherjar:~/projects/rosedu/cdl/repo.git$ git rm -r 2012
+    razvan@einherjar:~/projects/rosedu/cdl/repo.git$ git mv 2013/* .
+    razvan@einherjar:~/projects/rosedu/cdl/repo.git$ rmdir 2013
+    razvan@einherjar:~/projects/rosedu/cdl/repo.git$ ls
+    Makefile  curs1  curs3  git.mm  git_tutorial  schelet_inscriere  template  util
+    razvan@einherjar:~/projects/rosedu/cdl/repo.git$ git commit -m 'Clear folder structure. Leave only current items'
+
+All is now nice and clear. Any updates are going to be done on the current folder structure; any request to see old data can be handled by checking out one of the branches.
 
 ## Branches on a Virtual Machine
 
@@ -111,3 +180,5 @@ it with `git cherry-pick --continue`. Or, you can abort it via `--abort` if
 you change your mind after seeing the trouble.
 
 [git]: http://git-scm.com/ "Git"
+[saisp]: http://elf.cs.pub.ro/saisp/ "SAISP"
+[cdl-repo]: https://github.com/rosedu/cdl "CDL repository"
