@@ -144,7 +144,37 @@ All is now nice and clear. Any updates are going to be done on the current folde
 
 ## Branches on a Virtual Machine
 
-TODO RD
+In our experience we come to situations when required to work on the desktop/laptop and on a virtual machine. Of course, we are using Git for storing code. It would only make sense for one repository to be a remote for another one. The case is that, with Git, every repository can be a remote.
+
+As such, I usually create a clone of the laptop repository on the virtual machine. I usually do that with the [SO2][so2] repository when updating lab tasks or assignment solutions and tests. The laptop stores the main repository and the virtual machine uses a clone of that:
+
+    root@spook:~# git clone razvan@einherjar.local:school/current/so2/git-repos/lab lab.git
+    root@spook:~# cd lab.git/
+    root@spook:~/lab.git# git remote show origin
+    * remote origin
+      Fetch URL: razvan@einherjar.local:school/current/so2/git-repos/lab
+      Push  URL: razvan@einherjar.local:school/current/so2/git-repos/lab
+    [...]
+
+In order to work properly on the remote you would need to use a dedicated branch to push information. You'll have problems if you push to the master branch of a repository that is using the master branch itself. I usually dub this 'vm' (for virtual machine):
+
+    root@spook:~/lab.git# git checkout -b vm
+    Switched to a new branch 'vm'
+
+Any further changes are going to be committed in the 'vm' branch. Subsequently you would push these commits to the main repository, on the laptop:
+
+    root@spook:~/lab.git# git push origin vm
+    Total 0 (delta 0), reused 0 (delta 0)
+    To razvan@einherjar.local:school/current/so2/git-repos/lab
+     * [new branch]      vm -> vm
+
+On the main repository, you would just merge or rebase your changes from that branch:
+
+    razvan@einherjar:~/school/current/so2/git-repos/teme$ git rebase vm
+    First, rewinding head to replay your work on top of it...
+    Fast-forwarded master to vm.
+
+At this moment, all changes in the repository clone on the virtual machine are present in the master branch on the repository on the laptop. You need to create a separate branch on the virtual machine clone and then push that branch to the main repository. If you would work on the master branch on the virtual machine clone and push that, it would be problematic to integrate those changes in the master branch on the main repository.
 
 ## Going After Cherries
 
@@ -182,3 +212,4 @@ you change your mind after seeing the trouble.
 [git]: http://git-scm.com/ "Git"
 [saisp]: http://elf.cs.pub.ro/saisp/ "SAISP"
 [cdl-repo]: https://github.com/rosedu/cdl "CDL repository"
+[so2]: http://ocw.cs.pub.ro/courses/so2/ "SO2"
