@@ -177,7 +177,39 @@ This is indeed a good tool to have in Git's toolbox.
 
 ## Stashing the Goodies
 
-TODO RD
+It often happens that you've done some changes that you don't want to commit yet but you need to sync with the remote repository (i.e. do a pull). Or you want to merge a branch without commiting your changes. In this case, the solution is using the stash.
+
+The stash is a special place for Git where you temporarily stash your changes in order to keep your repository clean:
+
+    razvan@einherjar:~/projects/rosedu/site/site.git$ git status
+    # On branch master
+    # Changes not staged for commit:
+    #   (use "git add <file>..." to update what will be committed)
+    #   (use "git checkout -- <file>..." to discard changes in working directory)
+    #
+    #	modified:   irc.markdown
+    #
+    no changes added to commit (use "git add" and/or "git commit -a")
+    razvan@einherjar:~/projects/rosedu/site/site.git$ git stash
+    Saved working directory and index state WIP on master: 7411020 Remove a stupid Maruku error.
+    HEAD is now at 7411020 Remove a stupid Maruku error.
+    razvan@einherjar:~/projects/rosedu/site/site.git$ git status
+    # On branch master
+    nothing to commit (working directory clean)
+    razvan@einherjar:~/projects/rosedu/site/site.git$ git stash pop
+    # On branch master
+    # Changes not staged for commit:
+    #   (use "git add <file>..." to update what will be committed)
+    #   (use "git checkout -- <file>..." to discard changes in working directory)
+    #
+    #	modified:   irc.markdown
+    #
+    no changes added to commit (use "git add" and/or "git commit -a")
+    Dropped refs/stash@{0} (940f594b5f93e616dc16285e0677fbc78aa33620)
+
+The moment you stash changes, they "disappear" from the working directory. You will be able to get them by using `git stash pop`.
+
+When multiple users are working on a given repository it will often happen that you need to pull their updates to see what has been done. Your local copy may have changes you've made yourself, but still far from a commit. In that case you would stash your changes, pull remote updates to sync your repository and then pop the stash to continue your work.
 
 ## A Reference For Everything
 
