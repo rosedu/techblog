@@ -69,6 +69,10 @@ procedure. Otherwise, you can go forward to pushing your changes. As you can
 see, no conflict ever leaves your repository, you are forced to deal with it
 before continuing.
 
+**Note**: Remember to solve all conflicts in the same file before continuing
+the rebase process. Otherwise artifacts will be committed. (this is an edit
+suggested via comments by Stefan Bucur).
+
 ## Tags and Branches For The Win
 
 Tags are the best way to keep references to old commits. They are particularly helpful in school related activities, where you update lectures and lab tasks on an yearly basis.
