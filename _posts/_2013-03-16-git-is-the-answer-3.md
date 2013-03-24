@@ -11,7 +11,71 @@ that many will use only in some very special cases.
 
 ## Handling Multiple Remotes
 
-TODO RD
+There are situations when you decide to use multiple remotes for a repository. For example, I'm using multiple remotes for my snippets repository:
+
+    razvan@einherjar:~/code$ git remote show
+    gh
+    gl
+    glcs
+    origin
+    
+    razvan@einherjar:~/code$ cat .git/config
+    [remote "origin"]
+        fetch = +refs/heads/*:refs/remotes/origin/*
+        url = razvan@swarm.cs.pub.ro:git-repos/code.git
+    [remote "gh"]
+        url = git@github.com:razvand/snippets.git
+        fetch = +refs/heads/*:refs/remotes/gh/*
+    [remote "gl"]
+        url = git@gitlab.com:razvand/mine.git
+        fetch = +refs/heads/*:refs/remotes/gl/*
+    [remote "glcs"]
+        url = git@gitlab.cs.pub.ro:razvan.deaconescu/code.git
+        fetch = +refs/heads/*:refs/remotes/glcs/*
+
+One particular situation when multiple remotes are required is when using a fork of a GitHub repository and doing [pull requests][pr]. This is also mentioned in the ["Syncing a fork" article on GitHub][sync-fork].
+
+After you create a repository fork on GitHub, you clone that fork. For example, I've forked the [ROSEdu site repository][rosedu-site] in [my forked repository][rosedu-site-razvand]. I've cloned [the forked repository][rosedu-site-razvanad], worked on the local clone and then pushed changes. I would then create a pull request with those changes, that that they would be integrated in [the main repository][rosedu-site].
+
+A problem arises when the fork is not synced with the main repository. Ideally, there would be a GitHub option to sync the fork. Since that doesn't exist, the fork needs to be updated manually, though the local copy, as mentioned in the ["Syncing a fork" article on GitHub][sync-fork].
+
+First of all, you need to add the main repository as another remote to the local repository. This is a read-only remote. As suggested by GitHub, I've named this new remote `upstream`:
+
+    razvan@einherjar:~/projects/rosedu/site/site.git$ git remote show
+    origin
+    upstream
+    razvan@einherjar:~/projects/rosedu/site/site.git$ git remote show upstream
+    * remote upstream
+      Fetch URL: git@github.com:rosedu/site.git
+    [...]
+
+In order to sync the local repository with the `upstream` remote ([the main repository][rosedu-site]) just fetch and rebase changes:
+
+    razvan@einherjar:~/projects/rosedu/site/site.git$ git fetch upstream
+    remote: Counting objects: 16, done.
+    remote: Compressing objects: 100% (7/7), done.
+    remote: Total 11 (delta 6), reused 9 (delta 4)
+    Unpacking objects: 100% (11/11), done.
+    From github.com:rosedu/site
+       d21f23f..7411020  master     -> upstream/master
+    razvan@einherjar:~/projects/rosedu/site/site.git$ git rebase upstream/master
+    First, rewinding head to replay your work on top of it...
+    Fast-forwarded master to upstream/master.
+
+This changes are then pushed to the `origin` remote ([the forked repository][rosedu-site-razvand]):
+
+    razvan@einherjar:~/projects/rosedu/site/site.git$ git push origin master
+    Counting objects: 16, done.
+    Delta compression using up to 4 threads.
+    Compressing objects: 100% (11/11), done.
+    Writing objects: 100% (11/11), 1.99 KiB, done.
+    Total 11 (delta 6), reused 0 (delta 0)
+    To git@github.com:razvand/site.git
+       6f3dd4d..7411020  master -> master
+
+New local changes are then going to be pushed to the `origin` remote. These changes are then going to be aggregated into pull requests for the `upstream` remote (the main repository), now in sync with the forked repository.
+
+The above is a specific use case for syncing a fork in GitHub, making use of two remotes: one for the original reposotiry and one for the fork. The [excellent GitHub article][sync-fork] thoroughly describes the steps you need to undertake to sync your fork.
 
 ## Bisecting the History
 
@@ -124,3 +188,7 @@ TODO MM
 TODO MM
 
 [git]: http://git-scm.com/ "Git"
+[pr]: https://help.github.com/articles/using-pull-requests "Using Pull Requests"
+[sync-fork]: https://help.github.com/articles/syncing-a-fork "Syncing a fork"
+[rosedu-site]: https://github.com/rosedu/site
+[rosedu-site-razvand]: https://github.com/razvand/site
