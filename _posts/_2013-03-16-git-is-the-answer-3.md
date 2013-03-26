@@ -241,6 +241,73 @@ remembering what each change was about.
 To recover a commit you just cherry pick it from the reflog using its hash or
 even the `HEAD@{id}` reference.
 
+## Garbage Collecting the Repository
+
+In the end, let's focus on trimming down the disk usage of the repository. We
+want to prune some references. First, we set an expire date:
+
+    $ git reflog expire --expire=1.day refs/head/master
+
+The above marks all references older than 1 day as being obsolete.
+
+The second step is to find all unreachable objects:
+
+    $ git fsck --unreachable
+    Checking object directories: 100% (256/256), done.
+    Checking objects: 100% (80/80), done.
+    unreachable blob 0aa0869906576afbe970251418982a5ae1a21698
+    unreachable blob c1b86d806044ba5e344e037ec0128f7e944d0e0f
+    unreachable blob 1f4998496071654c1b16eb33932d9d8b4fee5971
+    unreachable tree 4b825dc642cb6eb9a060e54bf8d69288fbee4904
+    unreachable blob d9024465bff70288deaa116a646c01f1af7170b6
+    unreachable blob ec1a48a4de254e80e803b4a4daa4a1f87fe4acea
+    unreachable blob f0c2af9359d0c360fae9779f8c8b3143e7002810
+    unreachable blob 17135e0a43db16a2d127a4cb2a692b41257c8c26
+    unreachable tree 39d3a7c06c75d063cc13adde71b745f412a6f84f
+    unreachable tree fad372db5c9c9b842d3786733437c5e32dda426b
+    unreachable blob 07c469400c9ed887416d16a178a28cb911e6634e
+    unreachable tree 8c1deacee70bb3329ae6cd4fa2fbf546395ea712
+    unreachable blob ad85a1ec621c5b58fd6876c4d88982406bd48156
+    unreachable tree c865c8cb1344f77363c5314a91344623fe0dd661
+    unreachable blob cdd55939c346385b7938f392f958812b4fa5ddaf
+    unreachable blob d8255f99d74b09435a70ad3f2b23b0e69babc818
+    unreachable blob f7ddf120540a448c50baba1047230e9ad7d687ac
+    unreachable tree 30ce2c01c2792fdc4dfa6ab5c3e0c1cb876a405a
+    unreachable blob 09cf62d09bb027f7cfabcb0333c1837fda3c9c92
+    unreachable blob 435716d9434a852229aee58d16104c3335684113
+    unreachable blob 974f61a4933ee5608b1810e569593adf2ffedd0b
+    unreachable tree b3df14961958afa1b0434c1a31065751fef3b30d
+
+Finally, we prune everything and then garbage collect the repository.
+
+    $ git prune
+    $ git gc
+    Counting objects: 652, done.
+    Delta compression using up to 4 threads.
+    Compressing objects: 100% (637/637), done.
+    Writing objects: 100% (652/652), done.
+    Total 652 (delta 373), reused 64 (delta 10)
+
+We can check the reduction in size by issuing a `du .` before and after the
+process. For this repository, we've managed to squeeze 3MB of space, not quite
+an impressive feat. However, for rapidly changing projects the gains should be
+higher.
+
+In the end, looking at reflog we see
+
+    $ git reflog --all
+    16a82d6 refs/remotes/gh/master@{0}: update by push
+    d3f979f refs/remotes/gh/master@{1}: update by push
+    454935e refs/remotes/gh/master@{2}: pull --rebase: fast-forward
+    bae10c0 refs/remotes/gh/master@{3}: update by push
+    c0a692b refs/remotes/gh/master@{4}: pull --rebase: fast-forward
+    04c5a1b refs/remotes/gh/master@{5}: pull --rebase: fast-forward
+    745963b refs/remotes/gh/master@{6}: pull --rebase: fast-forward
+    fd23db9
+
+The last line shows the id of one commit but nothing more related to it. You
+can still reset/rebase to there but you cannot point to any reference past it.
+
 ## Conclusions
 
 TODO MM
