@@ -310,7 +310,15 @@ can still reset/rebase to there but you cannot point to any reference past it.
 
 ## Closing Up
 
-TODO MM
+We are at the close of this three part article on advanced git usage. Some of
+the things presented here might make you ask *when I'll be using that?*. Some
+of them will prove useful from time to time while others are a good thing to
+know.
+
+In the end, remember that Git is a swiss army knife among VCSs and there are a
+lot of features which will make us masters of it should we learn and practice
+using them. Like Vim, above a certain threshold Git can only be learnt by
+using it on a day to day basis.
 
 [git]: http://git-scm.com/ "Git"
 [pr]: https://help.github.com/articles/using-pull-requests "Using Pull Requests"
