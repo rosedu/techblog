@@ -213,7 +213,33 @@ When multiple users are working on a given repository it will often happen that 
 
 ## A Reference For Everything
 
-TODO MM
+We are near the end of the series. You have learned several things and you
+might try others as well. Yet, from time to time you may find out that you
+have lost a commit while playing around. Or, you rebased somewhere in the
+past but you need a commit which you had skipped. Or, you used `git reset
+--hard` and threw out a needed commit.
+
+Luckily for you, Git doesn't lose anything. Everything can be recovered by
+using a nice feature called *reflog* (from *reference log*). Let's see it in
+action first.
+
+    $ git reflog
+    096bec6 HEAD@{0}: commit: Add suggestion from Stefan Bucur.
+    8647ca7 HEAD@{1}: rebase finished: returning to refs/heads/master
+    8647ca7 HEAD@{2}: checkout: moving from master to 8647ca7c213ef26fe3426e079356a8b9c0ef1a8f^0
+    f020807 HEAD@{3}: commit: Ready to publish «Git is the answer - part 2» article.
+    274c7bc HEAD@{4}: rebase finished: returning to refs/heads/master
+    274c7bc HEAD@{5}: checkout: moving from master to 274c7bcc89487e3b3e5f935694046caf17bf005f^0
+    97b6f11 HEAD@{6}: commit: Add TODO for conclusions.
+
+The first column lists the commit hash at the point where the reference points
+to. The second is the state of `HEAD` (`HEAD{1}` is where `HEAD` previously
+was and so on). Then, you have a short description of what the reference is
+about (a commit, a checkout, a merge, a reset, etc.). This helps you in
+remembering what each change was about.
+
+To recover a commit you just cherry pick it from the reflog using its hash or
+even the `HEAD@{id}` reference.
 
 ## Conclusions
 
