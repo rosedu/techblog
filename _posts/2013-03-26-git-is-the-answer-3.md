@@ -35,7 +35,7 @@ There are situations when you decide to use multiple remotes for a repository. F
 
 One particular situation when multiple remotes are required is when using a fork of a GitHub repository and doing [pull requests][pr]. This is also mentioned in the ["Syncing a fork" article on GitHub][sync-fork].
 
-After you create a repository fork on GitHub, you clone that fork. For example, I've forked the [ROSEdu site repository][rosedu-site] in [my forked repository][rosedu-site-razvand]. I've cloned [the forked repository][rosedu-site-razvanad], worked on the local clone and then pushed changes. I would then create a pull request with those changes, that that they would be integrated in [the main repository][rosedu-site].
+After you create a repository fork on GitHub, you clone that fork. For example, I've forked the [ROSEdu site repository][rosedu-site] in [my forked repository][rosedu-site-razvand]. I've cloned [the forked repository][rosedu-site-razvand], worked on the local clone and then pushed changes. I would then create a pull request with those changes, that that they would be integrated in [the main repository][rosedu-site].
 
 A problem arises when the fork is not synced with the main repository. Ideally, there would be a GitHub option to sync the fork. Since that doesn't exist, the fork needs to be updated manually, though the local copy, as mentioned in the ["Syncing a fork" article on GitHub][sync-fork].
 
