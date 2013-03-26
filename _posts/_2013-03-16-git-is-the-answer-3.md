@@ -308,7 +308,7 @@ In the end, looking at reflog we see
 The last line shows the id of one commit but nothing more related to it. You
 can still reset/rebase to there but you cannot point to any reference past it.
 
-## Conclusions
+## Closing Up
 
 TODO MM
 
