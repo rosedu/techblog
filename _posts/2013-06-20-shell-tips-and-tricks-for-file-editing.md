@@ -6,7 +6,7 @@ tags: [CLI, bash, shell, files, text, truncate, tee, tail, follow]
 author: Alexandru Juncu
 ---
 
-Here are are some small things you might find useful when you need do
+Here are are some small things you might find useful when you need to
 deal with text files. In the Linux/Unix world, a lot of things are text
 files, so you need to know how to efficiently handle them. If you are a
 sysadmin, you need to look at **log files** for most of your work time
@@ -14,7 +14,7 @@ and the following might come in handy.
 
 ### Following a log file
 
-Have your `$GENERIC_SERVICE` on your server that generates a lot of logs.
+Take your `$GENERIC_SERVICE` on your server that generates a lot of logs.
 You could open a **text editor** like `vi` or `emacs` to view the
 logs or use `tail` to see the latest lines (or a combination of tail
 and `head`). But you sometimes you need to view contents of the log in
@@ -52,7 +52,7 @@ or just
 These will open the file, and redirect nothing into it. Since it is not
 appending anything, the contents will be erased. `:` is the no-op
 command so nothing will actually be done, but the shell with open and
-write (well.. nothing) into the file because of the redirection operator
+write (well ... nothing) into the file because of the redirection operator
 `>`.
 
 ### One input, two outputs
