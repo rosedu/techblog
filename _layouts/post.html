@@ -14,11 +14,24 @@ not the homepage.
 {% assign post = page %}
 {% assign home = false %}
 
-<div class="entry-content">
-  {% include post_title.html %}
-  {% include nav.html %}
-  {{ content }}
-  {% include nav.html %}
+<div class="unit-body">
+    <div class="unit-inner unit-body-inner">
+        <div class="entry-content">
+            <article class="unit-article layout-post">
+                <div class="unit-inner unit-article-inner">
+                    <div class="content">
+                        <div class="bd">
+                            {% include post_title.html %}
+                            {% include nav.html %}
+                            {{ content }}
+                            {% include nav.html %}
+                        </div>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </div>
 </div>
+
 {% include post_comment.html %}
 

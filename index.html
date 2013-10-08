@@ -9,13 +9,23 @@ with certain more or less features.
 
 {% assign home = true %}
 
-{% for post in site.posts limit:5 %}
-<div id="container">
-  <div class="entry-content">
-    {% include post_title.html %}
-    {{ post.content }}
-    {% include post_comment.html %}
-  </div>
+{% for post in site.posts limit: 3 %}
+<div class="unit-body">
+    <div class="unit-inner unit-body-inner">
+        <div class="entry-content">
+            <article class="unit-article layout-post">
+                <div class="unit-inner unit-article-inner">
+                    <div class="content">
+                        <div class="bd">
+                            {% include post_title.html %}
+
+                            {{ post.content }}
+                        </div>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </div>
 </div>
 {% endfor %}
 

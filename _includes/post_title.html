@@ -7,16 +7,21 @@ articles and comment count.
 Post variable here will magically refer to the page currently displayed.
 Home variable is true when we are on the homepage.
 {% endcomment %}
-
-<h2 class="clear">
-  {% if home %}
-  <a class="post_title" href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
-  {% else %}
-  <a class="post_title" href="/" title="Return home">{{ post.title }}</a>
-  {% endif %}
-</h2>
-<span class="date" 
-  title="{{ post.date | date_to_xmlschema }}">
+<header>
+    <div class="unit-head">
+        <div class="unit-inner unit-head-inner">
+            <h1 class="h2 entry-title"> {% if home %}
+                <a class="post_title" href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
+                {% else %}
+                <a class="post_title" href="/" title="Return home">{{ post.title }}</a>
+                {% endif %}</h1>
+        </div>
+        <!-- unit-inner -->
+    </div>
+    <!-- unit-head -->
+</header>
+<span class="date"
+      title="{{ post.date | date_to_xmlschema }}">
   <span class="published">Published on </span>
   <span class="day">{{ post.date | date: '%d' }}</span>
   <span class="month">{{ post.date | date: '%B' }}</span>
@@ -31,9 +36,9 @@ Home variable is true when we are on the homepage.
 Put count of comments near the date.
 {% endcomment %}
 <script>
-  var idcomments_acct = '1fcf96582e25f65364c4ea7fde230e0c';
-  var idcomments_post_id = '{{ site.url }}{{ post.url }}';
-  var idcomments_post_url = '{{ site.url }}{{post.url }}';
+    var idcomments_acct = '1fcf96582e25f65364c4ea7fde230e0c';
+    var idcomments_post_id = '{{ site.url }}{{ post.url }}';
+    var idcomments_post_url = '{{ site.url }}{{post.url }}';
 </script>
 <script type="text/javascript" src="http://www.intensedebate.com/js/genericLinkWrapperV2.js"></script>
 
