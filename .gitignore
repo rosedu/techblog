@@ -2,3 +2,6 @@
 .*.sw*
 *~
 fabfile.pyc
+.idea
+*.iml
+*.iws
