@@ -3,40 +3,33 @@ This implements the meta informations on the blog: feed buttons, twitter,
 Facebook, about, archive, tags, links, etc.
 {% endcomment %}
 
-<div class="rss">
-  <a href="http://feeds.feedburner.com/rosedu/tech">
-    <img src="{{ site.baseurl }}/img/rss.png" alt="Subscribe to RSS Feed"/>
-  </a>
-  <a href="http://www.reddit.com/submit"
-    onclick="window.location='http://www.reddit.com/submit?url='+encodeURIComponent(window.location);
-    return false">
-    <img src="{{ site.baseurl }}/img/reddit.png" alt="Submit to Reddit"/>
-  </a>
-  <a  href="http://twitter.com/share" class="twitter-share-button" data-count="none">
-    <img src='{{ site.baseurl }}/img/twitter.png' alt='Submit to Twitter'/>
-  </a>
-</div>
-<div class="links">
-  <div class="meta-header">Blog Navigation</div>
-  <ul>
-    <li><a href='{{ site.baseurl }}/'>Home</a></li>
-    <li><a href='{{ site.baseurl }}/about.html'>About</a></li>
-    <li><a href='{{ site.baseurl }}/people.html'>People</a></li>
-    <li><a href='{{ site.baseurl }}/archive.html'>Archive</a></li>
-    <li><a href='{{ site.baseurl }}/tags.html'>Tags</a></li>
-    <li><a href='{{ site.baseurl }}/posting.html'>Posting</a></li>
-  </ul>
-  <hr/>
-  <div class="meta-header">Latest Posts</div>
-  <ul>
-	{% for post in site.posts limit:3 %}
-		<li><a href="{{post.url}}">{{ post.title }}</a></li>
-	{% endfor %}
-  </ul>
-  <hr/>
-  <div class="meta-header">Powered by:</div>
-  <ul>
-    <li><a href='http://www.rosedu.org'>ROSEdu</a></li>
-    <li><a href='http://jekyllrb.com/'>Jekyll</a></li>
-  </ul>
-</div>
+<nav class="nav-global">
+    <!--<ul>-->
+
+    <!--</li>-->
+    <!--</ul>-->
+    <!--<h4>open techblog: Success.</h4>-->
+    <!--<h4>-->
+    <!--Blog Navigation-->
+    <!--</h4>-->
+    <ul>
+        <!--<li class="logo"><a href="{{ site.baseurl }}/">-->
+        <!--<img src="{{ site.baseurl }}img/logo.png" alt="Techblog"/></a>-->
+        <li class="logo"><a href='{{ site.baseurl }}/'>ROSEdu Techblog</a></li>
+        <li class="about"><a href='{{ site.baseurl }}/about.html'>About</a></li>
+        <li class="people"><a href='{{ site.baseurl }}/people.html'>People</a></li>
+        <li class="archive"><a href='{{ site.baseurl }}/archive.html'>Archive</a></li>
+        <li class="category"><a href='{{ site.baseurl }}/tags.html'>Tags</a></li>
+        <li class="posting"><a href='{{ site.baseurl }}/posting.html'>Posting</a></li>
+    </ul>
+</nav>
+<hr/>
+<nav class="nav-global">
+
+    <ul>
+        <li class="logo"><a href='{{ site.baseurl }}/archive.html'>Latest Posts</a></li>
+        {% for post in site.posts limit:3 %}
+        <li><a href="{{post.url}}">{{ post.title }}</a></li>
+        {% endfor %}
+    </ul>
+</nav>
