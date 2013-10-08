@@ -2,3 +2,4 @@ permalink: /:title.html
 pygments: yes
 url: http://techblog.rosedu.org
 title: ROSEdu Techblog
+baseurl: /techblog
