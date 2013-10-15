@@ -510,8 +510,8 @@ No styleguide reference.
 */
 @font-face {
   font-family: 'UbuntuMono-B';
-  src: url('/font/UbuntuMono-B-webfont.eot');
-  src: url('/font/UbuntuMono-B-webfont.eot?#iefix') format('embedded-opentype'), url('/font/UbuntuMono-B-webfont.woff') format('woff'), url('/font/UbuntuMono-B-webfont.ttf') format('truetype'), url('/font/UbuntuMono-B-webfont.svg#UbuntuMono-B') format('svg');
+  src: url('font/UbuntuMono-B-webfont.eot');
+  src: url('font/UbuntuMono-B-webfont.eot?#iefix') format('embedded-opentype'), url('font/UbuntuMono-B-webfont.woff') format('woff'), url('font/UbuntuMono-B-webfont.ttf') format('truetype'), url('font/UbuntuMono-B-webfont.svg#UbuntuMono-B') format('svg');
   font-weight: normal !important;
   font-style: normal;
 }
