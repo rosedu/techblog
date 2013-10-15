@@ -5,14 +5,14 @@ Navigation links are configured here.
 <div class="page-nav-top">
   {% if post.previous %}
   <span class="page-nav-item-prev">
-    <a rel="prev" href="{{ post.previous.url }}"
+    <a rel="prev" href="{{ site.baseurl }}{{ post.previous.url }}"
       title="View {{ post.previous.title }}"
       >&larr; View previous article</a>
   </span>
   {% endif %}
   {% if post.next %}
   <span class="page-nav-item-next">
-    <a rel="next" href="{{ post.next.url }}"
+    <a rel="next" href="{{ site.baseurl }}{{ post.next.url }}"
       title="View {{ post.next.title }}"
       style="float:right"
       >View next article &rarr;</a>

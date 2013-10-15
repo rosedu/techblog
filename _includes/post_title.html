@@ -11,9 +11,9 @@ Home variable is true when we are on the homepage.
     <div class="unit-head">
         <div class="unit-inner unit-head-inner">
             <h1 class="h2 entry-title"> {% if home %}
-                <a class="post_title" href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
+                <a class="post_title" href="{{ site.baseurl }}/{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
                 {% else %}
-                <a class="post_title" href="/" title="Return home">{{ post.title }}</a>
+                <a class="post_title" href="{{ site.baseurl }}/" title="Return home">{{ post.title }}</a>
                 {% endif %}</h1>
         </div>
         <!-- unit-inner -->
