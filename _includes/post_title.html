@@ -35,10 +35,16 @@ Home variable is true when we are on the homepage.
 {% comment %}
 Put count of comments near the date.
 {% endcomment %}
-<script>
-    var idcomments_acct = '36b2a9f26b02c0659308245ed762b0ca';
-    var idcomments_post_id = '{{ site.url }}{{ post.url }}';
-    var idcomments_post_url = '{{ site.url }}{{post.url }}';
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'rtechblog'; // required: replace example with your forum shortname
+    var disqus_identifier = '{{ site.url }}{{ post.url }}';
+    var disqus_url = '{{ site.url }}{{ post.url }}';
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
 </script>
-<script type="text/javascript" src="http://www.intensedebate.com/js/genericLinkWrapperV2.js"></script>
-
