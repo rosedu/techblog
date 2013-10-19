@@ -43,4 +43,8 @@ Only 4 hours in the event! We have interviewed some of the participants and they
 
 #### Be green, recycle
 
-You are a human, walking down and you see a big pile of garbage. It's a scenario common here in Romania. But what if you have an app for cleaning it. That's what [sudo_recycle] is trying to do with their Android idea. You see the junk, take a photo, tag it with the GPS location and send it to their servers. Using their backend written in PHP, they will send teams of robots that will clean the area. Because we human beings are really lazy, they plan to use the Facebook API for gamification, so you could level up in cleaning the world.
+You are a human, walking down and you see a big pile of garbage. It's a scenario common here in Romania. But what if you have an app for cleaning it. That's what [sudoRecycle](https://github.com/rosedu/sudoRecycle) is trying to do with their Android idea. You see the junk, take a photo, tag it with the GPS location and send it to their servers. Using their backend written in PHP, they will send teams of robots that will clean the area. Because we human beings are really lazy, they plan to use the Facebook API for gamification, so you could level up in cleaning the world.
+
+<div class="center">
+<img width="450" height="300" src="assets/facebook-hackathon/sudo_recycle.JPG">
+</div>
