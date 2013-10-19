@@ -51,7 +51,7 @@ You are a human, walking down and you see a big pile of garbage. It's a scenario
 
 #### Explore the underground
 
-We've all endured the lack of knowledge of moving around Bucharest, if we haven't lived here. But [dark_side_of_the_moon](https://github.co/rosedu/Dark_side_of_the_moon) is going to remedy this with their offline mobile subway connection app. You want to get from X to Y using the shortest route. It also wants to tell you what ground-level public transportation is there and what you can visit. Furthermore they want it to tell your friends where you've been after you used its functionality to check-in at your destination. Under the hood, it's using Android 4.0+ API and they want to integrate with the Facebook API to see the places your friends have visited. The coolest feature they want to code will tell you when the next tube will arrive.
+We've all endured the lack of knowledge of moving around Bucharest, if we haven't lived here. But [dark_side_of_the_moon](https://github.com/rosedu/Dark_side_of_the_moon) is going to remedy this with their offline mobile subway connection app. You want to get from X to Y using the shortest route. It also wants to tell you what ground-level public transportation is there and what you can visit. Furthermore they want it to tell your friends where you've been after you used its functionality to check-in at your destination. Under the hood, it's using Android 4.0+ API and they want to integrate with the Facebook API to see the places your friends have visited. The coolest feature they want to code will tell you when the next tube will arrive.
 
 <div class="center">
 <img width="600" height="400" src="assets/facebook-hackathon/pink_floyd.jpg">
