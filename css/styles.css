@@ -83,3 +83,12 @@ a:link, a:visited {
 	text-decoration: none;
 }
 
+.center{
+    text-align: center;
+    margin: 10px;
+}
+.right{
+    float: right;
+    margin: 10px;
+    clear: both;
+}
