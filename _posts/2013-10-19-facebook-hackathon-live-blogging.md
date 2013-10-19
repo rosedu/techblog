@@ -33,9 +33,9 @@ A brief pause and all the keyboard presses have stopped. The Facebook representa
 <img width="450" height="300" src="assets/facebook-hackathon/premii_facebook.jpg">
 </div>
 
-#### First team _by Marius @ 7:00PM_
+#### First team _by Marius & Alex @ 7:00PM_
 
-Only 4 hours in the event! We have interviewed some of the participants and they're coding, designing and implementing their application basis! The first team we interviewed is 3_awesome_guys_and_a_llama. These students from the Polytechnic University of Bucharest are writing an Event Planner. From what they told us, it's an application which tries to help people organize events for them and their friends for their night out. It's more focused on location, than being focused on time, so they can make it a planned drink-up or dance-off. They integrate it with the Facebook API and would like to have bars, clubs and restaurants use their app so people can make reservations.
+Only 4 hours in the event! We have interviewed some of the participants and they're coding, designing and implementing their application basis! The first team we interviewed is 3_awesome_guys_and_a_llama. These students from the University "Politehnica" of Bucharest are writing an Event Planner. From what they told us, it's an application which tries to help people organize events for them and their friends for their night out. It's more focused on location, than being focused on time, so they can make it a planned drink-up or dance-off. They integrate it with the Facebook Places API and would like to have bars, clubs and restaurants use their app so people can make reservations. As technology stack, they have Python on top of Google App Engine. One of the devs said that he learned about it on a [Udacity course](https://www.udacity.com/course/cs253) which I recommend it to you. They also plan to use Twitter's Bootstrap library because they do not have
 
 <div class="center">
 <img width="450" height="300" src="assets/facebook-hackathon/two_guys_llama.JPG">
