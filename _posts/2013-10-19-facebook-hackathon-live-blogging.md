@@ -26,3 +26,5 @@ _Marius_ - At 5:30 PM, a brief pause and all the keyboard presses have stopped. 
 <div class="center">
 <img width="450" height="300" src="assets/premii_facebook.jpg">
 </div>
+
+_Marius_ - 19:00, only 4 hours in the event! We have interviewed some of the participants and they're coding, designing and implementing their application basis! The first team we interviewed is 3_awesome_guys_and_a_llama. These students from the Polytechnic University of Bucharest are writing an Event Planner. From what they told us, it's an application which tries to help people organize events for them and their friends for their night out. It's more focused on location, than being focused on time, so they can make it a planned drink-up or dance-off. They integrate it with the Facebook API and would like to have bars, clubs and restaurants use their app so people can make reservations.
