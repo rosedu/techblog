@@ -48,3 +48,7 @@ You are a human, walking down and you see a big pile of garbage. It's a scenario
 <div class="center">
 <img width="450" height="300" src="assets/facebook-hackathon/sudo_recycle.JPG">
 </div>
+
+#### Explore the underground
+
+We've all endured the lack of knowledge of moving around Bucharest, if we haven't lived here. But [dark_side_of_the_moon](https://github.co/rosedu/Dark_side_of_the_moon) is going to remedy this with their offline mobile subway connection app. You want to get from X to Y using the shortest route. It also wants to tell you what ground-level public transportation is there and what you can visit. Furthermore they want it to tell your friends where you've been after you used its functionality to check-in at your destination. Under the hood, it's using Android 4.0+ API and Java technology.
