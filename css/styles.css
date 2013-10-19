@@ -92,3 +92,6 @@ a:link, a:visited {
     margin: 10px;
     clear: both;
 }
+h4 em{
+    font-weight: normal
+}
