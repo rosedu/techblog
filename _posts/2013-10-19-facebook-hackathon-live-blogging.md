@@ -56,3 +56,11 @@ We've all endured the lack of knowledge of moving around Bucharest, if we haven'
 <div class="center">
 <img width="600" height="400" src="assets/facebook-hackathon/pink_floyd.jpg">
 </div>
+
+#### GRails
+
+Did you know that in the year 2013, if you apply to MIT, you must send the papers by fax or postal mail? And after you send them, a person will manually go through them and tell you that the papers have arrived? Or if you get into a university you must write 6 papers with about 60% redundant information? That's what GRails, the only team made entirely of girls, is trying to solve, fighting bureaucracy with Rails 4.
+
+<div class="center">
+<img width="600" height="400" src="assets/facebook-hackathon/grails.jpg">
+</div>
