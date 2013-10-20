@@ -148,4 +148,18 @@ one to move in the new London office. He works on developer tools for the
 engineers and oversees some of the most important components like _Tasks_
 which devs open daily to get their job done. His story is pretty much amazing
 and he is a self-taught hacker.
->>>>>>> jackson
+
+He was really communicative and willing to tell us of his opinions, about the
+event, mentioning that he's amazed about the main focus of students.
+'Transportation', 'Finding things' and 'Group organization'. He said some of his
+coworkers are Romanian and he thinks Romania is a land where lots of engineers
+are being created. Proud to be a full-time hackers around here!
+
+We also asked him about the Bootcamp in London. This bootcamp is about going
+through code and writing PHP. And guess what? Even sales guys go through this
+bootcamp to get into Facebook. The engineering team has lots of fun hacking in
+that period of education. It teaches you the how to love the company, you get to
+learn the ropes while communicating with lots of other people who are just like
+you!
+
+
