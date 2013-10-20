@@ -124,6 +124,7 @@ should be enough to support this paradise for nature's explorers!
 <img width="600" height="400" src="assets/facebook-hackathon/saltaretii.jpg">
 </div>
 
+<<<<<<< HEAD
 #### I want to ride my bicycle, I want to ride my bike
 
 2 wheels, foot power and long distance travelling made easy! These two guys are
@@ -139,3 +140,12 @@ on, people!
 <div class="center">
 <img width="600" height="400" src="assets/facebook-hackathon/flatride.jpg">
 </div>
+=======
+#### Jackson
+
+From an English major in Tennessee, to the 300th Facebook employee, to the 4th
+one to move in the new London office. He works on developer tools for the
+engineers and oversees some of the most important components like _Tasks_
+which devs open daily to get their job done. His story is pretty much amazing
+and he is a self-taught hacker.
+>>>>>>> jackson
