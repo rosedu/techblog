@@ -124,7 +124,6 @@ should be enough to support this paradise for nature's explorers!
 <img width="600" height="400" src="assets/facebook-hackathon/saltaretii.jpg">
 </div>
 
-<<<<<<< HEAD
 #### I want to ride my bicycle, I want to ride my bike
 
 2 wheels, foot power and long distance travelling made easy! These two guys are
@@ -140,26 +139,34 @@ on, people!
 <div class="center">
 <img width="600" height="400" src="assets/facebook-hackathon/flatride.jpg">
 </div>
-=======
-#### Jackson
+
+<div class='right'>
+<img src="assets/facebook-hackathon/jackson.jpg">
+</div>
+
+#### [Jackson Gabbard](https://www.facebook.com/jg)
 
 From an English major in Tennessee, to the 300th Facebook employee, to the 4th
 one to move in the new London office. He works on developer tools for the
 engineers and oversees some of the most important components like _Tasks_
-which devs open daily to get their job done. His story is pretty much amazing
-and he is a self-taught hacker.
+which devs open daily to get their job done. He is a self-taught hacker and he
+had an enlightment moment about the power of programming the first time he used
+the array structure.
 
 He was really communicative and willing to tell us of his opinions, about the
 event, mentioning that he's amazed about the main focus of students.
-'Transportation', 'Finding things' and 'Group organization'. He said some of his
-coworkers are Romanian and he thinks Romania is a land where lots of engineers
-are being created. Proud to be a full-time hackers around here!
+'Transportation', 'Finding things' and 'Group organization' are recurrent themes.
+He said some of his coworkers are Romanian and he thinks Romania is a land where
+lots of engineers are being created. Proud to be a full-time hackers around here!
 
-We also asked him about the Bootcamp in London. This bootcamp is about going
-through code and writing PHP. And guess what? Even sales guys go through this
-bootcamp to get into Facebook. The engineering team has lots of fun hacking in
-that period of education. It teaches you the how to love the company, you get to
-learn the ropes while communicating with lots of other people who are just like
-you!
+We also asked him about the Bootcamp in London, which is about learning to code.
+And guess what? Even executives go through these preparations to get into Facebook.
+The engineering team has lots of fun hacking in that period of education.
+It teaches you  how to love the company, you get to learn the ropes while
+communicating and interact with other mind-like people.
 
+Finally he has participated in lockdowns each year. These are periods of time
+when teams gather in a room and stay there for several days (usually 30) and
+ship a big feature. Pretty hardcore, but that's life at Facebook.
 
+<div style="clear:both;"></div>
