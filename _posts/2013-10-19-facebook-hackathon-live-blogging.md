@@ -110,3 +110,7 @@ paper involved!
 <div class="center">
 <img width="600" height="400" src="assets/facebook-hackathon/grails.jpg">
 </div>
+
+#### Hiking
+
+Everybody knows that Romania has some of the best hiking routes, beautiful views and mysterious mountains. And who doesn't want to know what trips you can make in the wild nature? Well, you can now check out a map and see what is available for adventurers! The map also shows you elevation, so you know if it's a long road and also an abrupt road. A Django platform should be enough to support this paradise for nature's explorers!
