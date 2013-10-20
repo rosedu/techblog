@@ -103,8 +103,9 @@ Did you know that in the year 2013, if you apply to MIT, you must send the paper
 by fax or postal mail? And after you send them, a person will manually go
 through them and tell you that the papers have arrived? Or if you get into a
 university you must write 6 papers with about 60% redundant information? That's
-what GRails, the only team made entirely of girls, is trying to solve, fighting
-bureaucracy with Rails 4. Now with 100% less paper involved!
+what [GRails](https://github.com/rosedu/GRails), the only team made entirely of
+girls, is trying to solve, fighting bureaucracy with Rails 4. Now with 100% less
+paper involved!
 
 <div class="center">
 <img width="600" height="400" src="assets/facebook-hackathon/grails.jpg">
