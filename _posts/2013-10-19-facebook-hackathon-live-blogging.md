@@ -131,4 +131,11 @@ achieving the awesome tool that brings bikers a dream app come true! Using
 complex algorithms, they want to give bikers many possible routes from one place
 to another. You can choose your own type of road, either abrupt and short or
 longer and less steep. The point? You can choose which kind of road you want and
-which is fit for you! Ride on, people!
+which is fit for you! If that is not enough, these 2 guys are doing this
+client side with ClojureScript... yeah, it's the new functional kid in town
+which tries to solve the event driven callback hell. [FlatRide](https://github.com/rosedu/flatride)
+on, people!
+
+<div class="center">
+<img width="600" height="400" src="assets/facebook-hackathon/flatride.jpg">
+</div>
