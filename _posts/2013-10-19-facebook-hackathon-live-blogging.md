@@ -120,11 +120,15 @@ for adventurers! The map also shows you elevation, so you know if it's a long
 road and also an abrupt road. A Django platform by [saltaretii](https://github.com/rosedu/saltaretii)
 should be enough to support this paradise for nature's explorers!
 
-#### I want to ride my bicycle, I want to ride my bike
-
-2 wheels, foot power and long distance travelling made easy! These two guys are achieving the awesome tool that brings bikers a dream app come true! Using complex algorithms and a ClojureScript, they want to give bikers many possible routes from one place to another. You can choose your own type of road, either abrupt and short or longer and less steep. The point? You can choose which kind of road you want and which is fit for you! Ride on, people!
-
-
 <div class="center">
 <img width="600" height="400" src="assets/facebook-hackathon/saltaretii.jpg">
 </div>
+
+#### I want to ride my bicycle, I want to ride my bike
+
+2 wheels, foot power and long distance travelling made easy! These two guys are
+achieving the awesome tool that brings bikers a dream app come true! Using
+complex algorithms, they want to give bikers many possible routes from one place
+to another. You can choose your own type of road, either abrupt and short or
+longer and less steep. The point? You can choose which kind of road you want and
+which is fit for you! Ride on, people!
