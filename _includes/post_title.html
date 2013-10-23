@@ -11,9 +11,9 @@ Home variable is true when we are on the homepage.
     <div class="unit-head">
         <div class="unit-inner unit-head-inner">
             <h1 class="h2 entry-title"> {% if home %}
-                <a class="post_title" href="{{ site.baseurl }}/{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
+                <a class="post_title" href="{{ site.baseurl }}{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
                 {% else %}
-                <a class="post_title" href="{{ site.baseurl }}/" title="Return home">{{ post.title }}</a>
+                <a class="post_title" href="{{ site.baseurl }}" title="Return home">{{ post.title }}</a>
                 {% endif %}</h1>
         </div>
         <!-- unit-inner -->
@@ -37,7 +37,7 @@ Put count of comments near the date.
 {% endcomment %}
 <script type="text/javascript">
     /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-    var disqus_shortname = 'rtechblog'; // required: replace example with your forum shortname
+    var disqus_shortname = 'rosedutechblog'; // required: replace example with your forum shortname
     var disqus_identifier = '{{ site.url }}{{ post.url }}';
     var disqus_url = '{{ site.url }}{{ post.url }}';
     /* * * DON'T EDIT BELOW THIS LINE * * */
