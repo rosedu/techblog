@@ -36,21 +36,19 @@ Let's start with a simple example:
 Having obtained the corresponding object files `helper.o` and `main.o` we link them together
 into an executable named `main`. We will use the [nm][man-nm] tool to check the symbols from
 each object file:
-<pre>
-$ nm helper.o 
-00000000 D sample
-$ nm main.o
-         U sample
-00000000 T main
-</pre>
+
+    $ nm helper.o
+    00000000 D sample
+    $ nm main.o
+             U sample
+    00000000 T main
 
 Notice that the symbol `sample` is only declared in `main.c` but not defined there. In the linking phase, the linker searches throughout all
 linked object files and finds out that the actual storage for `sample` is defined in `helper.c`. As a result our `main` executable will
 print value `42` declared in `helper.c` external file:
-<pre>
-$./main 
-sample = 42
-</pre>
+
+    $./main
+    sample = 42
 
 Now let's see how the compiler behaves if the types for cross-referenced variables do not match:
 
@@ -67,14 +65,12 @@ Now let's see how the compiler behaves if the types for cross-referenced variabl
 		foo();
 		return 0;
 	}
-<pre>
-$ gcc -Wall -c foo.c -o foo.o
-$ gcc -Wall -c main.c -o main.o
-$ gcc -o main main.o foo.o
-$ ./main
-Segmentation fault
+    $ gcc -Wall -c foo.c -o foo.o
+    $ gcc -Wall -c main.c -o main.o
+    $ gcc -o main main.o foo.o
+    $ ./main
+    Segmentation fault
 
-</pre>
 Functions are by default extern, hence the declaration of symbol `foo` in `main.c`
 file allows the compiler to create `main.o` object file without errors or warnings.
 Anyhow, the linker does not check the type of symbol `foo`; thus, running the `main` executable results in a function call into an non-executable memory area.
@@ -109,10 +105,10 @@ alt="C extern simple usage" width="217" height="252"/>
 
 
 By compiling and linking `main.c` and `pointer.c` together we get `main` executable.
-<pre>
-$ ./main
-\�ABC
-</pre>
+
+    $ ./main
+    \�ABC
+
 Notice how the array `str` is mapped to a memory area where an address is stored. The `printf`
 function will display raw data until a `\0` is encountered. Fortunately, because of our
 guarding arrays, printing stops after showing some garbage and string `ABC`.
@@ -139,22 +135,21 @@ alt="C extern simple usage" width="217" height="252"/>
 	}
 
 By compiling and linking together these programs we notice that running the `main` executable results in a crash.
-<pre>
-$ ./main
-Segmentation fault
-</pre>
+
+    $ ./main
+    Segmentation fault
+
 Let's use GDB to see the reason:
 
-<pre>
-$gdb ./main
-(gdb) b main
-Breakpoint 1 at 0x8048385: file main2.c, line 6.
-(gdb) run
-Breakpoint 1, main () at main2.c:6
-6		printf("%s\n", str);
-(gdb) p str
-$1 = 0x34333231 Address 0x34333231 out of bounds
-</pre>
+
+    $gdb ./main
+    (gdb) b main
+    Breakpoint 1 at 0x8048385: file main2.c, line 6.
+    (gdb) run
+    Breakpoint 1, main () at main2.c:6
+    6		printf("%s\n", str);
+    (gdb) p str
+    $1 = 0x34333231 Address 0x34333231 out of bounds
 
 One can notice that the value of the pointer `str` is the content of array `str`. This content is an invalid address dereferenced by the pointer, resulting in the delivery of the dreaded `SIGSEGV` signal.
 
