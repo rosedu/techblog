@@ -9,14 +9,6 @@ Please have a look at the [wiki][wiki] to see future articles. If you have an
 you can even contribute with an article through a pull request, after forking
 techblog. We happily accept any contributions. Thanks!
 
-To build locally you need to have `fabricate` installed. Then you can use `fab
-devel` and preview the site in browser. When all is ready, if you have rights
-you can do a `fab deploy` to update the contents to the serving machine.
-
-To build locally without having `fabricate` you can use `jekyll` and preview
-each HTML page separately or `jekyll --server` to have a dummy server set up
-for serving the entire site (default is localhost, port 4000).
-
 [ROSEdu]: http://rosedu.org/ "ROSEdu"
 [techblog]: http://techblog.rosedu.org/ "Techblog"
 [wiki]: https://github.com/rosedu/techblog/wiki "Techblog's wiki"

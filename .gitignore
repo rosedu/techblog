@@ -1,4 +1,5 @@
 /_site/
 .*.sw*
 *~
-fabfile.pyc
+_cache/
+dist/

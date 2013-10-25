@@ -1,13 +1,10 @@
 ---
 layout: post
-date: 2011-12-3
+date: 2011-12-03
 title: "The challenges of IPv6"
 tags: [IPv6]
 author: Alexandru Juncu
 ---
-
-
-
 
 As we all know, IPv6 is the new protocol of the Internet, that will come to
 replace the current version of IP (Internet Protocol), IPv4. It will come
@@ -83,5 +80,3 @@ better than the other in that situation?
 
 So as we can see, there is not one group affected by the migration to IPv6,
 but rather an entire ecosystem, with several groups affecting each other.
-
-
