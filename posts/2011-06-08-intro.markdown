@@ -14,70 +14,12 @@ presented. Without further ado, this is it.
 
 Excluding this article, the blog will contain technical articles, tips and
 tricks, quick hacks to solve some problems and some articles explaining
-different things related to IT. Here we will present the infrastructure of the
-site.
-
-It is created using [the Jekyll static site generator][jekyll]. When this was
-started there was a little discussion about the back-end and why we should
-choose a static site generator instead of using [Wordpress][] or [Blogspot][]
-or similar frameworks. The problem with the "classic" CMSs was that they have a
-(relatively) high demand of resources and that you'll always have to use the
-latest version of the software to prevent attacks.
-
-Using a static site there's no database layer, no code which may contain
-exploitable bugs. Thus, everything is safe. Also, since only basic HTML pages
-need to be served, there's little memory and CPU usage when serving the
-website.
-
-Since we will be posting code to this blog, a framework allowing a nice and
-pleasant look of it was desired. And [Wordpress][] has several plugins but it
-isn't always fun working with them.
-
-But, the really important aspect, the one which ended the debate, was the fact
-that we are able to separate the content from the actual site, we can keep a
-back-up copy of the content[^note1]. Moreover, we can use a [Git][] repository
-to hold the configuration and the content. We use a [gitolite][] repository for
-the actual content with two branches:
-
-* one for the actual content
-* one for contributors where the actual content gets posted for review
-
-After the review is done, the actual publishing is done by cherry-picking the
-good commits to the first branch. A git hook is responsible for doing the
-actual posting.
-
-The content is written in a simple text file either using the [Markdown][]
-format or the [Textile][] format. [Jekyll][] is responsible for translating it
-into the actual HTML page and some server configuration takes care of actual
-publishing of the pages.
-
-There's one downside to this, though. Comments and other things that need
-dynamic code are hard to set up. Yet, there are solutions there too. For
-example, we use the [Intense Debate][] platform for comments. The alternative,
-[Disqus][] could also be used but we settled on the first.
-
-The actual design of the site was done by learning and experimenting with CSS
-until we were satisfied with the looks. Having a static generator means that we
-had to do the entire design by hand but this can be a good thing since we no
-longer depend on the themes that come with a classic CMS.
+different things related to IT.
 
 Thanks go to: Alex Juncu (setting up the Apache stuff), Răzvan Deaconescu
 (coming up with this idea and setting up the initial repository), Mihai Maruseac
-(configuration, layout and workflow)
+(configuration, layout, workflow both in the Jekyll version and the Haskell
+one and content manager), Matei Oprea, Marius Ungureanu and Alex
+Pălcuie (content managers).
 
 If you wish to contribute, contact us at <techblog@rosedu.org>.
-
-[jekyll]: http://jekyllrb.com/ "Jekyll"
-[wordpress]: http://wordpress.org/ "Wordpress"
-[blogspot]: http://www.blogger.com "Blogspot"
-[git]: http://git-scm.com/ "Git"
-[gitolite]: https://github.com/sitaramc/gitolite/wiki/ "Gitolite"
-[intense debate]: http://intensedebate.com/ "Intense Debate"
-[disqus]: http://disqus.com/ "Disqus"
-[markdown]: http://daringfireball.net/projects/markdown/ "Markdown"
-[textile]: http://textile.thresholdstate.com/ "Textile"
-
-[^note1]: In fact, the configuration is kept in one repository and the content
-in another. Moreover, for back-up purposes (and a little paranoia) both
-repositories are duplicated into another master repository.
-
