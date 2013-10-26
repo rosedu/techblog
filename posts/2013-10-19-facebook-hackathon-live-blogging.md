@@ -7,7 +7,7 @@ author: Alex Palcuie & Marius Ungureanu
 ---
 
 <div class='right'>
-<img width="300" height="300" src="http://distilleryimage10.ak.instagram.com/b88daa3e38a911e3893622000a1fcd0b_7.jpg">
+<img style="float:right" width="300" height="300" src="http://distilleryimage10.ak.instagram.com/b88daa3e38a911e3893622000a1fcd0b_7.jpg">
 </div>
 
 #### 3:30PM
@@ -42,7 +42,7 @@ Congratulations to Andrei Duma! People are now back to coding and making their
 ideas come to life: **done is better than perfect**.
 
 <div class="center">
-<img width="600" height="400" src="assets/facebook-hackathon/premii_facebook.jpg">
+<img width="600" height="400" src="/images/facebook-hackathon/premii_facebook.jpg">
 </div>
 
 #### First team
@@ -62,7 +62,7 @@ which I recommend it to you. They also plan to use Twitter's Bootstrap library
 because they do not have enough frontend experience.
 
 <div class="center">
-<img width="600" height="400" src="assets/facebook-hackathon/two_guys_llama.JPG">
+<img width="600" height="400" src="/images/facebook-hackathon/two_guys_llama.JPG">
 </div>
 
 #### Be green, recycle
@@ -77,7 +77,7 @@ lazy, they plan to use the Facebook API for gamification, so you could level up
 in cleaning the world.
 
 <div class="center">
-<img width="600" height="400" src="assets/facebook-hackathon/sudo_recycle.JPG">
+<img width="600" height="400" src="/images/facebook-hackathon/sudo_recycle.JPG">
 </div>
 
 #### Explore the underground
@@ -94,7 +94,7 @@ places your friends have visited. The coolest feature they want to code will
 tell you when the next tube will arrive.
 
 <div class="center">
-<img width="600" height="400" src="assets/facebook-hackathon/pink_floyd.jpg">
+<img width="600" height="400" src="/images/facebook-hackathon/pink_floyd.jpg">
 </div>
 
 #### GRails
@@ -108,7 +108,7 @@ girls, is trying to solve, fighting bureaucracy with Rails 4. Now with 100% less
 paper involved!
 
 <div class="center">
-<img width="600" height="400" src="assets/facebook-hackathon/grails.jpg">
+<img width="600" height="400" src="/images/facebook-hackathon/grails.jpg">
 </div>
 
 #### Hiking
@@ -121,7 +121,7 @@ road and also an abrupt road. A Django platform by [saltaretii](https://github.c
 should be enough to support this paradise for nature's explorers!
 
 <div class="center">
-<img width="600" height="400" src="assets/facebook-hackathon/saltaretii.jpg">
+<img width="600" height="400" src="/images/facebook-hackathon/saltaretii.jpg">
 </div>
 
 #### I want to ride my bicycle, I want to ride my bike
@@ -137,11 +137,11 @@ which tries to solve the event driven callback hell. [FlatRide](https://github.c
 on, people!
 
 <div class="center">
-<img width="600" height="400" src="assets/facebook-hackathon/flatride.jpg">
+<img width="600" height="400" src="/images/facebook-hackathon/flatride.jpg">
 </div>
 
 <div class='right'>
-<img src="assets/facebook-hackathon/jackson.jpg">
+<img src="/images/facebook-hackathon/jackson.jpg">
 </div>
 
 #### [Jackson Gabbard](https://www.facebook.com/jg)
