@@ -1,5 +1,5 @@
-/_site/
 .*.sw*
 *~
-_cache/
-dist/
+/_cache/
+/dist/
+/_site/
