@@ -45,11 +45,11 @@ Most of these configurations are self explanatory. The part that I find it most 
 
 * `git hist` (from [gitimmersion][2]) is a short version of `git log`
 
-<img style="float:center" src='./img/git-alias-hist.png' alt='git lg' width="620" height="215"/>
+<img style="float:center" src='/images/git-alias-hist.png' alt='git lg' width="620" height="215"/>
 
 * `git lg` (from [Andrei Maxim][3]) is also a short and pretty formatting version of `git log`
 
-<img style="float:center" src='./img/git-alias-lg.png' alt='git lg' width="620" height="215"/>
+<img style="float:center" src='/images/git-alias-lg.png' alt='git lg' width="620" height="215"/>
 
 Use the one you like best, and add speed to your workflow.
 
