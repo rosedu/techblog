@@ -10,7 +10,7 @@ This post will shed some light on the differences between arrays and pointers
 specifically when it comes about referencing string literals. We will base 
 our discussion on the following two programs:
 
-<img style="float:right" src='./img/arrays-vs-pointers.png'
+<img style="float:right" src='/images/arrays-vs-pointers.png'
 alt='Array and pointer representation' width="376" height="192"/>
 **array.c**
 
@@ -52,7 +52,7 @@ Segmentation fault
 While we could modify array **a**, our program was killed attempting to modify string literal pointed by **p**.
 We will now have a look at the generated assembly code and notice the section where string literal  *ROSEdu* is stored.
 
-<img style="float:right" src='./img/arrays-vs-pointers-addr.png'
+<img style="float:right" src='/images/arrays-vs-pointers-addr.png'
 alt='Array and pointer representation' width="298" height="283"/>
 
 <pre>
