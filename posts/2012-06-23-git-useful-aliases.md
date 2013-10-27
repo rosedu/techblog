@@ -47,7 +47,7 @@ We need to change our point of view to see this. Let us view the two
 repositories in a simple diagram showing both branches from the very moment
 when the local repository was cloned:
 
-![initial-repo](./img/gua-1.png)
+![initial-repo](/images/gua-1.png)
 
 The `HEAD` reference for the remote repository was pointing at commit
 `A` and we want to make it to point at commit `B` which is not a
@@ -61,7 +61,7 @@ why `git push` failed.
 The error message suggests to do a `git pull` in order to merge the two
 branches. Let's see what will happen when we do this:
 
-![merge commit](./img/gua-2.png)
+![merge commit](/images/gua-2.png)
 
 A merge commit `C` was created containing changes from both `A`
 and `B`. This is a _new_ commit and it looks like the following one:
@@ -82,7 +82,7 @@ example. In this case, the following thing will happen: a new commit `D` will
 be created containing the set of changes needed to be applied on top of `A` in
 order to reach `B`.
 
-![rebase commit](./img/gua-3.png)
+![rebase commit](/images/gua-3.png)
 
 Now, the `D` commit is already on top of `A` and the push will be a
 fast-forward update. This can be seen from the following screen as well:
@@ -99,7 +99,7 @@ fast-forward update. This can be seen from the following screen as well:
 
 The push will simply update the `HEAD` reference to point to the `D` commit.
 
-![update HEAD after rebase commit](./img/gua-4.png)
+![update HEAD after rebase commit](/images/gua-4.png)
 
 If the rebase cannot be done because of a merge conflict we are announced of
 this and the rebase will stop until we resolve it.
