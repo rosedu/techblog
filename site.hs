@@ -14,6 +14,10 @@ main = do
       route   idRoute
       compile copyFileCompiler
 
+    match "font/**" $ do
+      route   idRoute
+      compile copyFileCompiler
+
     match "css/*" $ do
       route   idRoute
       compile compressCssCompiler
@@ -28,6 +32,7 @@ main = do
       route $ setExtension "html"
       compile $ pandocCompiler
         >>= loadAndApplyTemplate "templates/post.html"    postCtx
+        >>= saveSnapshot "postContent"
         >>= loadAndApplyTemplate "templates/default.html" postCtx
         >>= relativizeUrls
 
@@ -48,10 +53,10 @@ main = do
     match "index.html" $ do
       route idRoute
       compile $ do
-        posts <- recentFirst =<< loadAll "posts/*"
+        -- TODO: limit number of posts and add nav buttons
+        posts <- recentFirst =<< loadAllSnapshots "posts/*" "postContent"
         let indexCtx =
               listField "posts" postCtx (return posts) `mappend`
-              constField "title" "Home"                `mappend`
               defaultContext
 
         getResourceBody
