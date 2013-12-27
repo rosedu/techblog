@@ -12,3 +12,4 @@
 * re-add FB share button
 * fix date field :)
 * make code fields scrollable on overflow
+* change link-color scheme
