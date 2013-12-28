@@ -13,3 +13,4 @@
 * fix date field :)
 * make code fields scrollable on overflow
 * change link-color scheme
+* check {% highlight %} fields and remove them
