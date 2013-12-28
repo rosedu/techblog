@@ -1,6 +1,6 @@
 ---
 layout: post
-date: 2013-6-20
+date: 2013-06-20
 title: "Shell tips and tricks for log files"
 tags: [CLI, bash, shell, files, text, truncate, tee, tail, follow]
 author: Alexandru Juncu

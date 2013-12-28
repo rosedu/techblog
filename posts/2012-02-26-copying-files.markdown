@@ -1,6 +1,6 @@
 ---
 layout: post
-date: 2012-2-26
+date: 2012-02-26
 title: "Copying files"
 tags: [scp, nc, netcat, python]
 author: Alexandru Juncu

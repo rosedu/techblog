@@ -1,6 +1,6 @@
 ---
 layout: post
-date: 2012-4-30
+date: 2012-04-30
 title: "Making your shell life easier"
 tags: [CLI, bash, shell, terminal, tmux, screen, jobs, fg, pushd, popd]
 author: Alexandru Juncu
