@@ -28,7 +28,7 @@ main = do
         >>= loadAndApplyTemplate "templates/default.html" defaultContext
         >>= relativizeUrls
 
-    match "posts/*" $ do
+    match "posts/**" $ do
       route $ setExtension "html"
       compile $ pandocCompiler
         >>= loadAndApplyTemplate "templates/post.html"    postCtx
@@ -39,7 +39,7 @@ main = do
     create ["archive.html"] $ do
       route idRoute
       compile $ do
-        posts <- recentFirst =<< loadAll "posts/*"
+        posts <- recentFirst =<< loadAll "posts/**"
         let archiveCtx =
               listField "posts" postCtx (return posts) `mappend`
               constField "title" "Archives"            `mappend`
@@ -54,7 +54,7 @@ main = do
       route idRoute
       compile $ do
         -- TODO: limit number of posts and add nav buttons
-        posts <- recentFirst =<< loadAllSnapshots "posts/*" "postContent"
+        posts <- recentFirst =<< loadAllSnapshots "posts/**" "postContent"
         let indexCtx =
               listField "posts" postCtx (return posts) `mappend`
               defaultContext
