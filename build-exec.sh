@@ -14,6 +14,9 @@ cabal clean
 cabal configure
 cabal build
 
+# Ensure that previous site is cleaned up
+dist/build/techblog/techblog clean
+
 # This command moves the generated executable to the root of the techblog.
 # With it you can run techblog [options].
 # Without it you have to run dist/build/techblog/techblog [options].
