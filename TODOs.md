@@ -1,9 +1,8 @@
 * add navigation for each post
 * implement recent posts (right now it is frozen in time)
-* reactivate comments
+* trim and show only the top 5 posts / implement infinite scrolling?
 * make deployment single command
 * move to 100% GitHub hosting
-* make final executable to be in root
 * update About
 * update and activate Tags
 * add RSS feed
