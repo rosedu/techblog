@@ -29,7 +29,9 @@ main = do
         >>= relativizeUrls
 
     match "posts/**" $ do
-      route $ setExtension "html"
+      route $ gsubRoute "posts/[0-9]{4}/[0-9]{2}/[0-9]{2}/" (const "")
+        `composeRoutes`
+        setExtension "html"
       compile $ pandocCompiler
         >>= loadAndApplyTemplate "templates/post.html"    postCtx
         >>= saveSnapshot "postContent"
