@@ -3,7 +3,7 @@
 * reactivate comments
 * make deployment single command
 * move to 100% GitHub hosting
-* make final executable be in root
+* make final executable to be in root
 * update About
 * make People, Posting work
 * update and activate Tags
