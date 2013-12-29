@@ -35,6 +35,7 @@ main = do
       compile $ pandocCompiler
         >>= loadAndApplyTemplate "templates/post.html"    postCtx
         >>= saveSnapshot "postContent"
+        >>= loadAndApplyTemplate "templates/disqus.html" postCtx
         >>= loadAndApplyTemplate "templates/default.html" postCtx
         >>= relativizeUrls
 
