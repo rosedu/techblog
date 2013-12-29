@@ -5,7 +5,6 @@
 * move to 100% GitHub hosting
 * make final executable to be in root
 * update About
-* make People, Posting work
 * update and activate Tags
 * add RSS feed
 * re-add FB share button
