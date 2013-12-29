@@ -2,6 +2,8 @@
 title: People
 ---
 
+People who contributed to this blog:
+
 * [Mihai Maruseac](http://pgraycode.wordpress.com/)
 * [Dan Filimon](http://danf.wordpress.com/)
 * [Răzvan Deaconescu](http://swarm.cs.pub.ro/~razvan/blog/)
