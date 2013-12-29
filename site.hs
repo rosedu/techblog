@@ -1,11 +1,26 @@
+{-# LANGUAGE DeriveDataTypeable #-}
 {-# LANGUAGE OverloadedStrings #-}
-import           Data.Monoid (mappend)
-import GHC.IO.Encoding (setLocaleEncoding, setForeignEncoding)
-import GHC.IO.Encoding (utf8, setFileSystemEncoding)
-import           Hakyll
+
+import Data.Char (toLower)
+import Data.Monoid (mappend)
+import GHC.IO.Encoding (setLocaleEncoding, setForeignEncoding, utf8,
+  setFileSystemEncoding)
+import Hakyll
+import System.Console.CmdArgs (cmdArgs, cmdArgsMode, help, program, ignore,
+  (&=), helpArg, modes, auto, Data, Typeable, versionArg)
+import System.Environment (withArgs)
+
+import qualified System.Console.CmdArgs.Explicit as CA
 
 main :: IO ()
 main = do
+  args' <- cmdArgs techblogArgs
+  case args' of
+    Help -> showHelp
+    x -> withArgs [map toLower $ show x] buildTechblog
+
+buildTechblog :: IO ()
+buildTechblog = do
   setLocaleEncoding utf8
   setFileSystemEncoding utf8
   setForeignEncoding utf8
@@ -73,3 +88,27 @@ postCtx :: Context String
 postCtx =
   dateField "date" "%B %e, %Y" `mappend`
   defaultContext
+
+data TechblogArgs
+  = Clean
+  | Deploy
+  | Help
+  | Validate
+  | Watch
+  deriving (Data, Typeable, Show)
+
+techblogArgs :: TechblogArgs
+techblogArgs = modes
+  [ Clean &= help "Cleanup and remove caches. Needed after compiling."
+  , Deploy &= help "Deploy the site."
+  , Help &= help "Show this message"
+  , Validate &= help "Check for broken links, validate site."
+  , Watch &= help "Build the site and open a preview server." &= auto
+  ]
+  &= help "Hakyll powered Techblog site compiler"
+  &= program "techblog"
+  &= versionArg [ignore]
+  &= helpArg [ignore]
+
+showHelp :: IO ()
+showHelp = print $ CA.helpText [] CA.HelpFormatOne $ cmdArgsMode techblogArgs
