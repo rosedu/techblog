@@ -7,7 +7,6 @@
 * update About
 * make People, Posting work
 * update and activate Tags
-* make Latest Posts point to Archive and work
 * add RSS feed
 * re-add FB share button
 * make code fields scrollable on overflow
