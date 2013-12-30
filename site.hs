@@ -1,11 +1,12 @@
 {-# LANGUAGE DeriveDataTypeable #-}
 {-# LANGUAGE OverloadedStrings #-}
 
+import Hakyll
+
 import Data.Char (toLower)
 import Data.Monoid (mappend)
 import GHC.IO.Encoding (setLocaleEncoding, setForeignEncoding, utf8,
   setFileSystemEncoding)
-import Hakyll
 import System.Console.CmdArgs (cmdArgs, cmdArgsMode, help, program, ignore,
   (&=), helpArg, modes, auto, Data, Typeable, versionArg)
 import System.Environment (withArgs)
@@ -24,7 +25,7 @@ buildTechblog = do
   setLocaleEncoding utf8
   setFileSystemEncoding utf8
   setForeignEncoding utf8
-  hakyll $ do
+  hakyllWith techblogConfiguration $ do
     match "images/**" $ do
       route   idRoute
       compile copyFileCompiler
@@ -49,7 +50,9 @@ buildTechblog = do
         setExtension "html"
       compile $ pandocCompiler
         >>= loadAndApplyTemplate "templates/post.html"    postCtx
+        -- >>= (externalizeUrls $ feedRoot feedConfiguration)
         >>= saveSnapshot "postContent"
+        -- >>= (unExternalizeUrls $ feedRoot feedConfiguration)
         >>= loadAndApplyTemplate "templates/disqus.html" postCtx
         >>= loadAndApplyTemplate "templates/default.html" postCtx
         >>= relativizeUrls
@@ -88,6 +91,11 @@ postCtx :: Context String
 postCtx =
   dateField "date" "%B %e, %Y" `mappend`
   defaultContext
+
+techblogConfiguration :: Configuration
+techblogConfiguration = defaultConfiguration { deployCommand = commStr }
+  where
+    commStr = "rsync -rtv _site/ techblog@rosedu.org:techblog/content/_site"
 
 data TechblogArgs
   = Clean
