@@ -1,9 +1,8 @@
 ---
-layout: post
 date: 2011-12-03
 title: The challenges of IPv6
-tags: [IPv6]
 author: Alexandru Juncu
+tags: IPv6
 ---
 
 As we all know, IPv6 is the new protocol of the Internet, that will come to

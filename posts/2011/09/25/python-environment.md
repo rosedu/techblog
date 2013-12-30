@@ -1,9 +1,8 @@
 ---
-layout: post
 date: 2011-09-25
 title: Python environment
-tags: [python, virtualenv, pip]
 author: Alex
+tags: python, virtualenv, pip
 ---
 
 This article is a quick guide to setting up a Python work environment.

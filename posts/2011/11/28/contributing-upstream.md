@@ -1,9 +1,8 @@
 ---
-layout: post
 date: 2011-11-28
 title: Contributing Upstream
-tags: [git, patch]
 author: Mihai
+tags: git, patch
 ---
 
 Suppose your favorite application or a library you are using has a bug. You

@@ -1,9 +1,8 @@
 ---
-layout: post
 date: 2011-08-27
 title: char[] versus char*
-tags: [arrays, pointers, strings, .rodata]
 author: Daniel
+tags: arrays, pointers, strings, .rodata
 ---
 
 This post will shed some light on the differences between arrays and pointers

@@ -1,9 +1,8 @@
 ---
-layout: post
 date: 2011-09-12
 title: Git Tips and Good Practices
-tags: [SCM, Git, tip, good practice]
 author: Răzvan
+tags: SCM, Git, tip, good practice
 ---
 
 [Git][git] is an excellent SCM (source code management system). I use it

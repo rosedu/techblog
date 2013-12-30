@@ -1,9 +1,8 @@
 ---
-layout: post
 date: 2011-12-18
 title: Stack Allocation
-tags: [stack, sp, esp, C, assembly, cache, memory]
 author: Alexandru Juncu
+tags: stack, sp, esp, C, assembly, cache, memory
 ---
 
 **Stack space** is the part of each process' virtual memory where function

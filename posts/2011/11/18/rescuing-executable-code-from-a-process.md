@@ -1,9 +1,8 @@
 ---
-layout: post
 date: 2011-11-18
 title: Rescuing executable code from a process
-tags: [process, procfs, /proc, file descriptor]
 author: Alexandru Juncu
+tags: process, procfs, /proc, file descriptor
 ---
 
 A **process** is an instance of a binary executable file. This means that when you ‘run’ a  binary, the code from the storage media is copied into the system’s memory, more precisely, into the process’ **virtual memory space**. From a single binary, several processes can be spawned.

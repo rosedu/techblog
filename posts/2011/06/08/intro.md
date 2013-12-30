@@ -1,9 +1,8 @@
 ---
-layout: post
 date: 2011-06-08
 title: Open Techblog: Success
-tags: [Jekyll, ROSEdu, git]
 author: Mihai
+tags: Jekyll, ROSEdu, git
 ---
 
 This blog started as an idea of Răzvan Deaconescu based on the fact that

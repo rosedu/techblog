@@ -1,9 +1,8 @@
 ---
-layout: post
 date: 2011-10-03
 title: Linking, Loading and Library Management under Linux
-tags: [library, dynamic linker/loader, ldconfig]
 author: Razvan
+tags: library, dynamic linker/loader, ldconfig
 ---
 
 This article aims to shed some light on the topic of library management

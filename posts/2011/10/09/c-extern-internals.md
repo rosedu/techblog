@@ -1,9 +1,8 @@
 ---
-layout: post
 date: 2011-10-09
 title: C's extern internals
-tags: [arrays, pointers, extern, c]
 author: Daniel
+tags: arrays, pointers, extern, c
 ---
 
 The idea for this post came from [Virgil's][v-comment] comment on
