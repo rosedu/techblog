@@ -5,6 +5,7 @@ title: People
 People who contributed to this blog:
 
 * [Mihai Maruseac](http://pgraycode.wordpress.com/)
+* [Matei Oprea](http://opreamatei.ro/blog/)
 * [Dan Filimon](http://danf.wordpress.com/)
 * [Răzvan Deaconescu](http://swarm.cs.pub.ro/~razvan/blog/)
 * [Alexandru Juncu](http://alexandru.juncu.ro/)
