@@ -1,9 +1,8 @@
 ---
-layout: post
 date: 2012-02-28
 title: Tips on coding style
-tags: [C, coding style, Linux, checkpatch.pl]
 author: Alexandru Juncu
+tags: C, coding style, Linux, checkpatch.pl
 ---
 
 Good programmers know that writing code is more than just... writing code.

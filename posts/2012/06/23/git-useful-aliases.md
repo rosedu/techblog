@@ -1,9 +1,8 @@
 ---
-layout: post
 date: 2012-06-23
 title: Git - Useful Aliases
-tags: [SCM, Git, tip, good practice, alias]
 author: Mihai Maruseac
+tags: SCM, Git, tip, good practice, alias
 ---
 
 This is the third article about [git][git] on this blog. It is highly recommended

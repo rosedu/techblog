@@ -1,9 +1,8 @@
 ---
-layout: post
 date: 2012-10-05
 title: The fast-track, hands-on, no-nonsense introduction to SQL
-tags: [SQL, RDBMS]
 author: Dan Șerban
+tags: SQL, RDBMS
 ---
 
 Rather than relying on dry explanations of mathematical set theory, this tutorial is organized as a survey of SQL statements and techniques. It is designed to let you infer from examples what SQL is all about as well as the kinds of problems it can help you solve.

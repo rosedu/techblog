@@ -1,9 +1,8 @@
 ---
-layout: post
 date: 2012-09-18
 title: From 0 to cryptography
-tags: [cryptography, encryption, security, rsa, gpg]
 author: Tiberiu Barbu
+tags: cryptography, encryption, security, rsa, gpg
 ---
 
 This guide is designed to explain why you need to hide information and how can

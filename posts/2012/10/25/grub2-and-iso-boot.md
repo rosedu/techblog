@@ -1,9 +1,8 @@
 ---
-layout: post
 date: 2012-10-25
 title: Grub2 and ISO boot
-tags: [grub2, bootloader, linux, kernel, iso, image]
 author: Alexandru Juncu
+tags: grub2, bootloader, linux, kernel, iso, image
 ---
 
 Note: This article focuses on Debian based Linux distributions.

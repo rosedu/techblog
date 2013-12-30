@@ -1,9 +1,8 @@
 ---
-layout: post
 date: 2013-03-22
 title: Git Is The Answer 2/3
-tags: [git]
 author: Răzvan Deaconescu and Mihai Maruseac
+tags: git
 ---
 
 The second article on advanced [git][git] topics is focused on cases where

@@ -1,9 +1,8 @@
 ---
-layout: post
 date: 2013-03-18
 title: Git Is The Answer 1/3
-tags: [git]
 author: Răzvan Deaconescu and Mihai Maruseac
+tags: git
 ---
 
 We focus again on [git][git]. This time, we will present some real-world

@@ -1,9 +1,8 @@
 ---
-layout: post
 date: 2012-04-21
 title: Git: speeding workflow
-tags: [git, .gitconfig, alias, speed, log, config]
 author: Andrei
+tags: git, .gitconfig, alias, speed, log, config
 ---
 
 If you didn't read the [techblog Git Tips and Good Practices][1] article yet, you should, as it offers tips every git user should know, together with some very useful references.

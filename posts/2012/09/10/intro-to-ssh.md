@@ -1,9 +1,8 @@
 ---
-layout: post
 date: 2012-09-10
 title: Introduction to SSH
-tags: [SSH, security, remote access]
 author: Silviu-Mihai Popescu
+tags: SSH, security, remote access
 ---
 
 This is an article aiming to familiarize the reader with the features and benefits of using [Secure Shell (SSH)][ssh], particularly with the [OpenSSH][openssh] implementation. SSH is an application level protocol used for secure data communication, whether that means remote shell access, command execution, file transfer and some other aspects described in this article. It was meant to be a replacement for existing insecure remote shell protocols such as `telnet`, `rsh` and `rexec` which send information in plaintext, including usernames and passwords.

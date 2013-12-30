@@ -1,9 +1,8 @@
 ---
-layout: post
 date: 2012-07-29
 title: A Weird Behaviour Of C
-tags: [C, undefined behaviour, sequence points]
 author: Mihai Maruseac
+tags: C, undefined behaviour, sequence points
 ---
 
 Let us start from a common mistake made by programmers learning simple data

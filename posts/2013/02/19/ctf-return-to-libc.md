@@ -1,9 +1,8 @@
 ---
-layout: post
 date: 2013-02-19
 title: GiTS 2013 CTF -- return-to-libc -- pwnable 250
-tags: [exploit, ctf, return-to-libc, strace, debug, gdb, write-up]
 author: Lucian Cojocar
+tags: exploit, ctf, return-to-libc, strace, debug, gdb, write-up
 ---
 
 # Introduction
