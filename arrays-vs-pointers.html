@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--[if lt IE 7]>
+<html class="no-js lt-ie9 lt-ie8 lt-ie7 ie" lang="en"> <![endif]-->
+<!--[if IE 7]>
+<html class="no-js lt-ie9 lt-ie8 ie" lang="en"> <![endif]-->
+<!--[if IE 8]>
+<html class="no-js lt-ie9 ie" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" class="no-js"><!--<![endif]-->
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>ROSEdu Techblog - char[] versus char*</title>
+    <link rel="stylesheet" href="./css/style.css" type="text/css">
+    <link rel="stylesheet" href="./css/rosedu_links.css" type="text/css">
+    <link rel="stylesheet" href="./css/syntax.css" type="text/css">
+    <!--<link rel="stylesheet" type="text/css" href="/css/default.css"/>-->
+
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-7579199-6']);
+      _gaq.push(['_trackPageview']);
+
+      (function () {
+        var ga = document.createElement('script');
+        ga.type = 'text/javascript';
+        ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  </head>
+
+  <body>
+    <div id="page" class="hentry">
+      <header class="the-header">
+        <div class="unit-head">
+          <div class="unit-inner unit-head-inner">
+            <nav class="nav-global">
+              <ul>
+                <li class="logo"><a href="./" title="Home">ROSEdu Techblog</a></li>
+                <li class="about"><a href="./about.html">About</a></li>
+                <li class="people"><a href="./people.html">People</a></li>
+                <li class="archive"><a href="./archive.html">Archive</a></li>
+                <li class="category"><a href="./tags.html">Tags</a></li>
+              </ul>
+            </nav>
+
+            <hr />
+
+            <nav class="nav-global">
+              <ul>
+                <li class="logo"><a href="./archive.html" title="Archive">Latest Posts</a></li>
+                <!--TODO-->
+                <li><a href="./shell-tips-and-tricks-for-file-editing.html">Shell tips and tricks for log files</a></li>
+                <li><a href="./git-is-the-answer-3.html">Git Is The Answer 3/3</a></li>
+                <li><a href="./git-is-the-answer-2.html">Git Is The Answer 2/3</a></li>
+              </ul>
+            </nav>
+          </div><!-- unit-inner -->
+        </div><!-- unit-head -->
+      </header>
+
+      <div class="body" role="main">
+        <div class="unit-body">
+          <div class="unit-inner unit-body-inner">
+  <div class="entry-content">
+    <article class="unit-article layout-post">
+      <div class="unit-inner unit-article-inner">
+        <div class="content">
+          <div class="bd">
+            <header>
+              <div class="unit-head">
+                <div class="unit-inner unit-head-inner">
+                  <h1 class="h2 entry-title">
+                    <a class="post_title" href="./arrays-vs-pointers.html" title="char[] versus char*">char[] versus char*</a>
+                  </h1>
+                </div><!-- unit-inner -->
+              </div><!-- unit-head -->
+            </header>
+
+            <span class="date">
+            <span class="published">Published on August 27, 2011</span>
+            by
+            <span class="author">Daniel</span>
+            </span>
+
+            <p>This post will shed some light on the differences between arrays and pointers specifically when it comes about referencing string literals. We will base our discussion on the following two programs:</p>
+<p><img style="float:right" src="./images/arrays-vs-pointers.png" alt="Array and pointer representation" width="376" height="192" /> <strong>array.c</strong></p>
+<pre><code>char a[] = &quot;ROSEdu&quot;;
+int main(void)
+{
+	a[0] = 'r';
+	printf(&quot;%s\n&quot;, a);
+	return 0;
+}</code></pre>
+<p><strong>pointer.c</strong></p>
+<pre><code>char *p = &quot;ROSEdu&quot;;
+int main(void)
+{
+	*p = 'r';
+	printf(&quot;%s\n&quot;, p);
+	return 0;
+}</code></pre>
+<p>Program <em>array.c</em> defines an array of char whose elements are initialized with character string literals, while <em>pointer.c</em> defines a pointer to char and initializes it with the address of a memory area holding a string literal. Notice array <strong>a</strong> and pointer <strong>p</strong> allocations in the image above. Can you make a guess about size of <strong>a</strong> and size of <strong>p</strong>? Next, both programs modify the first character of the string literal <em>ROSEdu</em>. Are these two programs equivalent? At the first glance the answer seems to be positive, but let’s have a minute and actually run the code.</p>
+<pre>
+$ ./array
+rOSEdu
+
+$ ./pointer
+Segmentation fault
+
+</pre>
+<p>While we could modify array <strong>a</strong>, our program was killed attempting to modify string literal pointed by <strong>p</strong>. We will now have a look at the generated assembly code and notice the section where string literal <em>ROSEdu</em> is stored.</p>
+<p><img style="float:right" src="./images/arrays-vs-pointers-addr.png" alt="Array and pointer representation" width="298" height="283" /></p>
+<pre>
+$ gcc -S array.c -o array.s
+$ cat array.s
+.globl a
+        .data
+        .type  a, @object
+        .size  a, 7
+a:
+       .string &quot;ROSEdu&quot;
+</pre>
+
+<pre>
+$ gcc -S pointer.c -o pointer.s
+$ cat pointer.s
+globl p
+       .section        .rodata
+.LC0:
+       .string &quot;ROSEdu&quot;
+       .data
+       .type  p, @object
+       .size  p, 4
+p:
+       .long  .LC0
+       .text
+</pre>
+
+<p>We can see that array <em>a</em> is stored in <em>data</em> section, which is writable and there is no problem when it is modified. On the other hand, we can notice that <em>p</em> is a pointer stored in <em>data</em> section but it points to a <em>read only</em> memory location, thus accessing it results in ‘Segmentation Fault’.</p>
+<p><a href="http://c0x.coding-guidelines.com/">C99 standards</a> (<a href="http://c0x.coding-guidelines.com/6.7.8.html">Section 6.7.8</a>) states that:</p>
+<ul>
+<li>contents of the array <em>a</em> is modifiable.</li>
+<li>if an attempt is made to use pointer <em>p</em> to modify the contents of the array, the behaviour is undefined.</li>
+</ul>
+<p>So now we see why <strong>pointer.c</strong> program crashed. gcc decided to store string literal pointed by <strong>p</strong> into read only data section. One must remark that this is not mandatory, and its implementation dependant.</p>
+<p>We invite you to answer following questions:</p>
+<ul>
+<li>What is the sizeof(p) and sizeof(a) in our previous examples?</li>
+<li>What happens if variables <strong>a</strong> and <strong>p</strong> are declared on the stack?</li>
+<li>Is it possible for the following expression <code>(const char []){&quot;ROSEdu&quot;} == &quot;ROSEdu&quot;</code> to yield true?</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+    </article>
+  </div>
+</div>
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+  /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+  var disqus_shortname = 'rosedutechblog';
+  var disqus_url = window.location.href.split('/').splice(0,3).join("/")+'/arrays-vs-pointers.html';
+  var title = 'char[] versus char*';
+  /* * * DON'T EDIT BELOW THIS LINE * * */
+  (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+        </div>
+      </div>
+
+      <footer class="the-footer">
+        <div class="unit-foot">
+          <div class="unit-inner unit-foot-inner">
+            <div class="misc vcard">
+              <h4>Social</h4>
+              <div class="rss">
+                <a href="http://feeds.feedburner.com/rosedu/tech" target="_blank">
+                  <img src="./images/rss.png" alt="Subscribe to RSS Feed" />
+                </a>
+                <a href="http://www.reddit.com/submit?url='+encodeURIComponent(window.location)" target="_blank" onclick="window.location='http://www.reddit.com/submit?url='+encodeURIComponent(window.location); return false">
+                  <img src="./images/reddit.png" alt="Submit to Reddit" />
+                </a>
+                <a href="http://twitter.com/share" class="twitter-share-button" data-count="none" target="_blank">
+                  <img src="./images/twitter.png" alt="Submit to Twitter" />
+                </a>
+              </div>
+
+              <h4>Powered by</h4>
+              <ul>
+                <li class="contact">
+                  <address>
+                    <a class="author fn n" href="http://www.rosedu.org">ROSEdu</a>
+                  </address>
+                </li>
+                <li class="contact">
+                  <address>
+                    <a class="author fn n" href="http://jaspervdj.be/hakyll">Hakyll</a>
+                  </address>
+                </li>
+              </ul>
+
+              <h4>License</h4>
+              <div class="bucket">
+                <span>
+                  <a rel="license" href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons Attribution 3.0 License">
+                    <img src="//i.creativecommons.org/l/by/3.0/88x31.png" alt="License">
+                  </a>
+                </span>
+                <span>
+                  This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/3.0/" class="subfoot">Creative Commons Attribution 3.0 License</a>.
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>

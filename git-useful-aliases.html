@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--[if lt IE 7]>
+<html class="no-js lt-ie9 lt-ie8 lt-ie7 ie" lang="en"> <![endif]-->
+<!--[if IE 7]>
+<html class="no-js lt-ie9 lt-ie8 ie" lang="en"> <![endif]-->
+<!--[if IE 8]>
+<html class="no-js lt-ie9 ie" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" class="no-js"><!--<![endif]-->
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>ROSEdu Techblog - Git - Useful Aliases</title>
+    <link rel="stylesheet" href="./css/style.css" type="text/css">
+    <link rel="stylesheet" href="./css/rosedu_links.css" type="text/css">
+    <link rel="stylesheet" href="./css/syntax.css" type="text/css">
+    <!--<link rel="stylesheet" type="text/css" href="/css/default.css"/>-->
+
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-7579199-6']);
+      _gaq.push(['_trackPageview']);
+
+      (function () {
+        var ga = document.createElement('script');
+        ga.type = 'text/javascript';
+        ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  </head>
+
+  <body>
+    <div id="page" class="hentry">
+      <header class="the-header">
+        <div class="unit-head">
+          <div class="unit-inner unit-head-inner">
+            <nav class="nav-global">
+              <ul>
+                <li class="logo"><a href="./" title="Home">ROSEdu Techblog</a></li>
+                <li class="about"><a href="./about.html">About</a></li>
+                <li class="people"><a href="./people.html">People</a></li>
+                <li class="archive"><a href="./archive.html">Archive</a></li>
+                <li class="category"><a href="./tags.html">Tags</a></li>
+              </ul>
+            </nav>
+
+            <hr />
+
+            <nav class="nav-global">
+              <ul>
+                <li class="logo"><a href="./archive.html" title="Archive">Latest Posts</a></li>
+                <!--TODO-->
+                <li><a href="./shell-tips-and-tricks-for-file-editing.html">Shell tips and tricks for log files</a></li>
+                <li><a href="./git-is-the-answer-3.html">Git Is The Answer 3/3</a></li>
+                <li><a href="./git-is-the-answer-2.html">Git Is The Answer 2/3</a></li>
+              </ul>
+            </nav>
+          </div><!-- unit-inner -->
+        </div><!-- unit-head -->
+      </header>
+
+      <div class="body" role="main">
+        <div class="unit-body">
+          <div class="unit-inner unit-body-inner">
+  <div class="entry-content">
+    <article class="unit-article layout-post">
+      <div class="unit-inner unit-article-inner">
+        <div class="content">
+          <div class="bd">
+            <header>
+              <div class="unit-head">
+                <div class="unit-inner unit-head-inner">
+                  <h1 class="h2 entry-title">
+                    <a class="post_title" href="./git-useful-aliases.html" title="Git - Useful Aliases">Git - Useful Aliases</a>
+                  </h1>
+                </div><!-- unit-inner -->
+              </div><!-- unit-head -->
+            </header>
+
+            <span class="date">
+            <span class="published">Published on June 23, 2012</span>
+            by
+            <span class="author">Mihai Maruseac</span>
+            </span>
+
+            <p>This is the third article about <a href="http://git-scm.com/" title="Git">git</a> on this blog. It is highly recommended to read the other two as well: there is <a href="http://techblog.rosedu.org/git-good-practices.html" title="Git good practices">one</a> about some good practices in using <a href="http://git-scm.com/" title="Git">git</a> and <a href="http://techblog.rosedu.org/git-speeding-workflow.html" title="Git speeding workflow">another one</a> about some aliases which will speed up your interaction with the commit history.</p>
+<p>The series of articles about <a href="http://git-scm.com/" title="Git">git</a> continues with a short presentation about two other aliases and the reason why they should be used in order to create better commits.</p>
+<h3 id="rebase-instead-of-merge">Rebase instead of merge</h3>
+<p>From time to time we rush to push our changes to the remote repository without thinking of the possibility that another developer had made some commits in the meantime. Luckily, we are announced when this happens:</p>
+<pre><code>mihai@keldon:/data/ROSEdu/techblog$ git push
+To gitolite@git.rosedu.org:techblog.git
+ ! [rejected]        contrib -&gt; contrib (non-fast-forward)
+error: failed to push some refs to 'gitolite@git.rosedu.org:techblog.git'
+hint: Updates were rejected because the tip of your current branch is behind
+hint: its remote counterpart. Merge the remote changes (e.g. 'git pull')
+hint: before pushing again.
+hint: See the 'Note about fast-forwards' in 'git push --help' for details.</code></pre>
+<p>What is a fast-forward update? What we tried to do in the above command was just to update one reference in the upstream repository: we wanted to change the <code>HEAD</code> reference which pointed to a commit – let’s call it <code>A</code> – to another commit, the latest one in our repository – let’s call it <code>B</code>.</p>
+<p>If and only if <code>B</code> is a descendant of <code>A</code> we have a fast-forward update. Otherwise, the update is non-fast-forward. These definitions generalize to local branches or any other kind of reference updates.</p>
+<p>What is the purpose of this distinction? Any fast-forward updated guarantees that the history of <em>both</em> branches is not lost. In contrast, a non-fast-forward update will certainly lose a part of the history.</p>
+<p>We need to change our point of view to see this. Let us view the two repositories in a simple diagram showing both branches from the very moment when the local repository was cloned:</p>
+<div class="figure">
+<img src="./images/gua-1.png" alt="initial-repo" /><p class="caption">initial-repo</p>
+</div>
+<p>The <code>HEAD</code> reference for the remote repository was pointing at commit <code>A</code> and we want to make it to point at commit <code>B</code> which is not a direct descendent of <code>A</code>, thus the update is non-fast-forward.</p>
+<p>If <code>git push</code> was allowed to finish successfully in any of the two cases then the history from <code>O</code> up to <code>A</code> would be lost: developers would only see the history from <code>O</code> to <code>B</code> and would work only on top of the <code>B</code> commit. This is why <code>git push</code> failed.</p>
+<p>The error message suggests to do a <code>git pull</code> in order to merge the two branches. Let’s see what will happen when we do this:</p>
+<div class="figure">
+<img src="./images/gua-2.png" alt="merge commit" /><p class="caption">merge commit</p>
+</div>
+<p>A merge commit <code>C</code> was created containing changes from both <code>A</code> and <code>B</code>. This is a <em>new</em> commit and it looks like the following one:</p>
+<pre><code>mihai@keldon:$ git show 2603167
+commit 2603167229a11b8dad6715246041ad29f792308c
+Merge: ad4d7a1 6091ae3
+Author: Alex Juncu &lt;ajuncu@ixiacom.com&gt;
+Date:   Wed Nov 30 15:32:05 2011 +0200
+
+    Merge branch 'contrib' of git.rosedu.org:techblog into contrib</code></pre>
+<p>There are cases where this merge commit is needed. However, not all instances of the above diagram need a merge commit.</p>
+<p>The other alternative is to do a rebase first using <code>git pull --rebase</code> for example. In this case, the following thing will happen: a new commit <code>D</code> will be created containing the set of changes needed to be applied on top of <code>A</code> in order to reach <code>B</code>.</p>
+<div class="figure">
+<img src="./images/gua-3.png" alt="rebase commit" /><p class="caption">rebase commit</p>
+</div>
+<p>Now, the <code>D</code> commit is already on top of <code>A</code> and the push will be a fast-forward update. This can be seen from the following screen as well:</p>
+<pre><code>mihai@keldon:$ git pull --rebase
+remote: Counting objects: 5, done.
+remote: Compressing objects: 100% (3/3), done.
+remote: Total 3 (delta 2), reused 0 (delta 0)
+Unpacking objects: 100% (3/3), done.
+From git.rosedu.org:techblog
+   b557977..38da5d0  contrib    -&gt; origin/contrib
+First, rewinding head to replay your work on top of it...
+Applying: Add author for first article.</code></pre>
+<p>The push will simply update the <code>HEAD</code> reference to point to the <code>D</code> commit.</p>
+<div class="figure">
+<img src="./images/gua-4.png" alt="update HEAD after rebase commit" /><p class="caption">update HEAD after rebase commit</p>
+</div>
+<p>If the rebase cannot be done because of a merge conflict we are announced of this and the rebase will stop until we resolve it.</p>
+<p>There are several ways to make <a href="http://git-scm.com/" title="Git">git</a> try to always use <code>--rebase</code> when pulling. What I recommend is to create an alias. I have this in <code>~/.gitconfig</code>:</p>
+<pre><code>[alias]
+        gpr = pull --rebase</code></pre>
+<p>This has two benefits: I always try to do a rebase first and I type less. In fact, using TAB completion I have to press only 5 keys for this.</p>
+<h3 id="interactive-addition-of-changes">Interactive addition of changes</h3>
+<p>One rule for better <a href="http://git-scm.com/" title="Git">git</a> commits is to have short and meaningful commits with relevant commit messages. However, it is possible that we have done several unrelated changes to a single file (for example we have updated a comment and added some new code). Issuing a simple <code>git add file</code> will break the above rule.</p>
+<p>One solution for this is to use <code>git add --interactive</code>. It is better to use <code>git add --patch</code> though.</p>
+<p>Our change will be split in several hunks and each of them will be offered to us with a simple question at the end:</p>
+<pre><code>@@ -76,6 +78,10 @@ TODO
+     Did you mean this?
+             gpr
+
++TODO: git gdc
++
++TODO: final thoughts
++
+ [git]: http://git-scm.com/ &quot;Git&quot;
+ [ggp]: http://techblog.rosedu.org/git-good-practices.html &quot;Git good practices&quot;
+ [gsw]: http://techblog.rosedu.org/git-speeding-workflow.html &quot;Git speeding workflow&quot;
+Stage this hunk [y,n,q,a,d,/,K,g,e,?]? y</code></pre>
+<p>We can decide to accept or reject the hunk for this commit or we can split it in several other hunks. We can even edit the hunk if we need this.</p>
+<p>In order to speed up typing I have an alias for this as well:</p>
+<pre><code>gap = add --patch</code></pre>
+<p>I have imprinted in my muscle memory to never type <code>git add</code> but <code>git gap</code>.</p>
+<h3 id="conclusions">Conclusions</h3>
+<p>The two aliases presented above help us be a little more proficient with <a href="http://git-scm.com/" title="Git">git</a> usage. I am using them for several months now and the results are good.</p>
+
+          </div>
+        </div>
+      </div>
+    </article>
+  </div>
+</div>
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+  /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+  var disqus_shortname = 'rosedutechblog';
+  var disqus_url = window.location.href.split('/').splice(0,3).join("/")+'/git-useful-aliases.html';
+  var title = 'Git - Useful Aliases';
+  /* * * DON'T EDIT BELOW THIS LINE * * */
+  (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+        </div>
+      </div>
+
+      <footer class="the-footer">
+        <div class="unit-foot">
+          <div class="unit-inner unit-foot-inner">
+            <div class="misc vcard">
+              <h4>Social</h4>
+              <div class="rss">
+                <a href="http://feeds.feedburner.com/rosedu/tech" target="_blank">
+                  <img src="./images/rss.png" alt="Subscribe to RSS Feed" />
+                </a>
+                <a href="http://www.reddit.com/submit?url='+encodeURIComponent(window.location)" target="_blank" onclick="window.location='http://www.reddit.com/submit?url='+encodeURIComponent(window.location); return false">
+                  <img src="./images/reddit.png" alt="Submit to Reddit" />
+                </a>
+                <a href="http://twitter.com/share" class="twitter-share-button" data-count="none" target="_blank">
+                  <img src="./images/twitter.png" alt="Submit to Twitter" />
+                </a>
+              </div>
+
+              <h4>Powered by</h4>
+              <ul>
+                <li class="contact">
+                  <address>
+                    <a class="author fn n" href="http://www.rosedu.org">ROSEdu</a>
+                  </address>
+                </li>
+                <li class="contact">
+                  <address>
+                    <a class="author fn n" href="http://jaspervdj.be/hakyll">Hakyll</a>
+                  </address>
+                </li>
+              </ul>
+
+              <h4>License</h4>
+              <div class="bucket">
+                <span>
+                  <a rel="license" href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons Attribution 3.0 License">
+                    <img src="//i.creativecommons.org/l/by/3.0/88x31.png" alt="License">
+                  </a>
+                </span>
+                <span>
+                  This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/3.0/" class="subfoot">Creative Commons Attribution 3.0 License</a>.
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--[if lt IE 7]>
+<html class="no-js lt-ie9 lt-ie8 lt-ie7 ie" lang="en"> <![endif]-->
+<!--[if IE 7]>
+<html class="no-js lt-ie9 lt-ie8 ie" lang="en"> <![endif]-->
+<!--[if IE 8]>
+<html class="no-js lt-ie9 ie" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" class="no-js"><!--<![endif]-->
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>ROSEdu Techblog - GNU Make</title>
+    <link rel="stylesheet" href="./css/style.css" type="text/css">
+    <link rel="stylesheet" href="./css/rosedu_links.css" type="text/css">
+    <link rel="stylesheet" href="./css/syntax.css" type="text/css">
+    <!--<link rel="stylesheet" type="text/css" href="/css/default.css"/>-->
+
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-7579199-6']);
+      _gaq.push(['_trackPageview']);
+
+      (function () {
+        var ga = document.createElement('script');
+        ga.type = 'text/javascript';
+        ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  </head>
+
+  <body>
+    <div id="page" class="hentry">
+      <header class="the-header">
+        <div class="unit-head">
+          <div class="unit-inner unit-head-inner">
+            <nav class="nav-global">
+              <ul>
+                <li class="logo"><a href="./" title="Home">ROSEdu Techblog</a></li>
+                <li class="about"><a href="./about.html">About</a></li>
+                <li class="people"><a href="./people.html">People</a></li>
+                <li class="archive"><a href="./archive.html">Archive</a></li>
+                <li class="category"><a href="./tags.html">Tags</a></li>
+              </ul>
+            </nav>
+
+            <hr />
+
+            <nav class="nav-global">
+              <ul>
+                <li class="logo"><a href="./archive.html" title="Archive">Latest Posts</a></li>
+                <!--TODO-->
+                <li><a href="./shell-tips-and-tricks-for-file-editing.html">Shell tips and tricks for log files</a></li>
+                <li><a href="./git-is-the-answer-3.html">Git Is The Answer 3/3</a></li>
+                <li><a href="./git-is-the-answer-2.html">Git Is The Answer 2/3</a></li>
+              </ul>
+            </nav>
+          </div><!-- unit-inner -->
+        </div><!-- unit-head -->
+      </header>
+
+      <div class="body" role="main">
+        <div class="unit-body">
+          <div class="unit-inner unit-body-inner">
+  <div class="entry-content">
+    <article class="unit-article layout-post">
+      <div class="unit-inner unit-article-inner">
+        <div class="content">
+          <div class="bd">
+            <header>
+              <div class="unit-head">
+                <div class="unit-inner unit-head-inner">
+                  <h1 class="h2 entry-title">
+                    <a class="post_title" href="./gnu-make.html" title="GNU Make">GNU Make</a>
+                  </h1>
+                </div><!-- unit-inner -->
+              </div><!-- unit-head -->
+            </header>
+
+            <span class="date">
+            <span class="published">Published on May  8, 2012</span>
+            by
+            <span class="author">Mihai Tiriplica</span>
+            </span>
+
+            <p>In working with large projects it is necessary to compile from multiple sources. Since this is quite difficult, different tools have been developed to make this task easier. One such tool is GNU Make and the associated executable is <code>make</code>. Make solves compilation from multiple sources problem using the dependency relationships between them, described in a special file usually called <code>Makefile</code>.</p>
+<h3 id="syntax">Syntax</h3>
+<p>The file which describes the dependency relationships between project’s sources. It should be named <code>Makefile</code> or <code>makefile</code> and has the following syntax:</p>
+<pre><code>target: dependency_list
+&lt;tab&gt;command</code></pre>
+<p>Usually, the target’s name matches the name of the resulted file, except only those which are <code>.PHONY</code> targets, called virtual targets (they do not generate a specific file). List dependencies include dependencies that are required for target execution. Usually, there are files from which the target will be built. A common mistake is that spaces are used instead of <code>TAB</code>. This will result in an error message when running make. An example Makefile is:</p>
+<pre><code>exec:
+	gcc foo.c bar.c main.c -o exec</code></pre>
+<p>This is not the best way we can use make because it doesn’t describe any dependencies, so every time we run make it will run <code>gcc foo.c bar.c main.c -o exec</code>, even if there are no modified sources. Better use is the following example:</p>
+<pre><code>exec: foo.c bar.c main.c
+	gcc foo.c bar.c main.c -o exec</code></pre>
+<p>In this case the target <code>exec</code> will run only if a source has changed. Neither this case takes full advantage of the facilities make offers, because modifying a single source leads to compiling all the existing sources. An ideal Makefile describes the lowest level possible dependencies. In our case it is the object file:</p>
+<pre><code>exec: foo.o bar.o main.o
+	gcc foo.o bar.o main.o -o exec
+foo.o: foo.c
+	gcc -c foo.c -o foo.o
+bar.o: bar.c
+	gcc -c bar.c -o bar.o
+main.o: main.c
+	gcc -c main.c -o main.o</code></pre>
+<h3 id="how-it-works">How it works</h3>
+<p>A particular target is executed by running <code>make target</code>. If there is no argument, it will execute the first target described. To execute a target all of his dependencies must be satisfied. For our example, <code>exec</code> target is executed only after <code>foo.o</code>, <code>bar.o</code>, <code>main.o</code>, which are conditioned by <code>foo.c</code>, <code>bar.c</code>, <code>main.c</code>, are obtained.</p>
+<h3 id="variables">Variables</h3>
+<p>In Makefile files we can declare variables to replace commonly used sequences or which are changed frequently. The variables’ values are obtained using the character <code>$</code>: <code>$(variable_name)</code>. For the example above, let’s suppose that one of the source files uses functions from <code>math.h</code>. We will declare a variable that is meant to specify that for linking:</p>
+<pre><code>LDFLAGS=-lm
+exec: foo.o bar.o main.o
+	gcc $(LDFLAGS) foo.o bar.o main.o -o exec
+foo.o: foo.c
+	gcc -c foo.c -o foo.o
+bar.o: bar.c
+	gcc -c bar.c -o bar.o
+main.o: main.c
+	gcc -c main.c -o main.o</code></pre>
+<p>Make offers several predefined variables, of which the most important are: * <code>$@</code> - target’s name * <code>$^</code> - dependecies list * <code>$&lt;</code> - the first dependencie</p>
+<p>The Makefile above can be written in a more simple way:</p>
+<pre><code>CC=gcc
+LDFLAGS=-lm
+exec: ana.o are.o mere.o
+	$(CC) $(LDFLAGS) $^ -o $@
+%.o: %.c
+	$(CC) -c $&lt; -o $@</code></pre>
+<p>Variables in a Makefile can also come from the environment where <code>make</code> is running. While running, make sees each environment variable as a local variable with the same name and the same value. Thus, assigning a value for <code>LDFLAGS</code> variable in the example above can cause changes to any compile command. To convert a local variable in an environment variable in order to use it in other Makefile files we use the <code>export</code> directive:</p>
+<pre><code>export variable</code></pre>
+<p>Inverse transformation is done using <code>unexport</code>:</p>
+<pre><code>unexport variable</code></pre>
+<h3 id="phony-target">.PHONY target</h3>
+<p>If we want a target to be marked permanently as out of date we will use the <code>.PHONY</code> target. Let’s consider that there is a pack target that creates an archive which contains the project’s sources. If there is one source named <code>pack</code> and it does not change, the command associated with this target will not be executed. For this we use <code>.PHONY</code>. Also, by convention all Makefile files contain a <code>.PHONY</code> target called <code>clean</code> used to delete the files obtained from compiling or running the program.</p>
+<pre><code>.PHONY: pack
+pack:
+	zip -r project.zip *
+clean:
+	rm *.o *.zip exec</code></pre>
+<h3 id="implicit-rules">Implicit Rules</h3>
+<p>Make allows us to use a simplified syntax. For example we don’t always have to write a command for some targets. This is called an implicit rule:</p>
+<pre><code>ana.o: ana.c</code></pre>
+<p>Another implicit rule is that when running the command <code>make source.c</code>, the file source.c will be compiled even if there is no Makefile. Implicit rules use the environment variables. Thus, the example considered by us is equivalent to:</p>
+<pre><code>ana.o: ana.c
+	$(CC) -c $(LDFLAGS) ana.c -o ana.o</code></pre>
+<p>Because implicit rules use environment variables, it is easy to modify their behavior by a simple change of the variables’ values.</p>
+<h3 id="final-touches">Final touches</h3>
+<p>In many cases, the first target in a Makefile is a target that compiles all of the sources. It is very useful because we don’t have to specify a target every time we are running make.</p>
+<p>Adding these changes to our example we get a complete Makefile:</p>
+<pre><code>CC=gcc
+LDFLAGS=-lm
+
+all: exec
+
+exec: ana.o are.o mere.o
+	$(CC) $(LDFLAGS) $^ -o $@
+
+foo.o: foo.c
+	gcc -c foo.c -o foo.o
+bar.o: bar.c
+	gcc -c bar.c -o bar.o
+main.o: main.c
+	gcc -c main.c -o main.o
+
+.PHONY: clean
+	rm -rf *.o exec</code></pre>
+
+          </div>
+        </div>
+      </div>
+    </article>
+  </div>
+</div>
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+  /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+  var disqus_shortname = 'rosedutechblog';
+  var disqus_url = window.location.href.split('/').splice(0,3).join("/")+'/gnu-make.html';
+  var title = 'GNU Make';
+  /* * * DON'T EDIT BELOW THIS LINE * * */
+  (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+        </div>
+      </div>
+
+      <footer class="the-footer">
+        <div class="unit-foot">
+          <div class="unit-inner unit-foot-inner">
+            <div class="misc vcard">
+              <h4>Social</h4>
+              <div class="rss">
+                <a href="http://feeds.feedburner.com/rosedu/tech" target="_blank">
+                  <img src="./images/rss.png" alt="Subscribe to RSS Feed" />
+                </a>
+                <a href="http://www.reddit.com/submit?url='+encodeURIComponent(window.location)" target="_blank" onclick="window.location='http://www.reddit.com/submit?url='+encodeURIComponent(window.location); return false">
+                  <img src="./images/reddit.png" alt="Submit to Reddit" />
+                </a>
+                <a href="http://twitter.com/share" class="twitter-share-button" data-count="none" target="_blank">
+                  <img src="./images/twitter.png" alt="Submit to Twitter" />
+                </a>
+              </div>
+
+              <h4>Powered by</h4>
+              <ul>
+                <li class="contact">
+                  <address>
+                    <a class="author fn n" href="http://www.rosedu.org">ROSEdu</a>
+                  </address>
+                </li>
+                <li class="contact">
+                  <address>
+                    <a class="author fn n" href="http://jaspervdj.be/hakyll">Hakyll</a>
+                  </address>
+                </li>
+              </ul>
+
+              <h4>License</h4>
+              <div class="bucket">
+                <span>
+                  <a rel="license" href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons Attribution 3.0 License">
+                    <img src="//i.creativecommons.org/l/by/3.0/88x31.png" alt="License">
+                  </a>
+                </span>
+                <span>
+                  This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/3.0/" class="subfoot">Creative Commons Attribution 3.0 License</a>.
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>

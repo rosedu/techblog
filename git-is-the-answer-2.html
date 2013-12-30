@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--[if lt IE 7]>
+<html class="no-js lt-ie9 lt-ie8 lt-ie7 ie" lang="en"> <![endif]-->
+<!--[if IE 7]>
+<html class="no-js lt-ie9 lt-ie8 ie" lang="en"> <![endif]-->
+<!--[if IE 8]>
+<html class="no-js lt-ie9 ie" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" class="no-js"><!--<![endif]-->
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>ROSEdu Techblog - Git Is The Answer 2/3</title>
+    <link rel="stylesheet" href="./css/style.css" type="text/css">
+    <link rel="stylesheet" href="./css/rosedu_links.css" type="text/css">
+    <link rel="stylesheet" href="./css/syntax.css" type="text/css">
+    <!--<link rel="stylesheet" type="text/css" href="/css/default.css"/>-->
+
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-7579199-6']);
+      _gaq.push(['_trackPageview']);
+
+      (function () {
+        var ga = document.createElement('script');
+        ga.type = 'text/javascript';
+        ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  </head>
+
+  <body>
+    <div id="page" class="hentry">
+      <header class="the-header">
+        <div class="unit-head">
+          <div class="unit-inner unit-head-inner">
+            <nav class="nav-global">
+              <ul>
+                <li class="logo"><a href="./" title="Home">ROSEdu Techblog</a></li>
+                <li class="about"><a href="./about.html">About</a></li>
+                <li class="people"><a href="./people.html">People</a></li>
+                <li class="archive"><a href="./archive.html">Archive</a></li>
+                <li class="category"><a href="./tags.html">Tags</a></li>
+              </ul>
+            </nav>
+
+            <hr />
+
+            <nav class="nav-global">
+              <ul>
+                <li class="logo"><a href="./archive.html" title="Archive">Latest Posts</a></li>
+                <!--TODO-->
+                <li><a href="./shell-tips-and-tricks-for-file-editing.html">Shell tips and tricks for log files</a></li>
+                <li><a href="./git-is-the-answer-3.html">Git Is The Answer 3/3</a></li>
+                <li><a href="./git-is-the-answer-2.html">Git Is The Answer 2/3</a></li>
+              </ul>
+            </nav>
+          </div><!-- unit-inner -->
+        </div><!-- unit-head -->
+      </header>
+
+      <div class="body" role="main">
+        <div class="unit-body">
+          <div class="unit-inner unit-body-inner">
+  <div class="entry-content">
+    <article class="unit-article layout-post">
+      <div class="unit-inner unit-article-inner">
+        <div class="content">
+          <div class="bd">
+            <header>
+              <div class="unit-head">
+                <div class="unit-inner unit-head-inner">
+                  <h1 class="h2 entry-title">
+                    <a class="post_title" href="./git-is-the-answer-2.html" title="Git Is The Answer 2/3">Git Is The Answer 2/3</a>
+                  </h1>
+                </div><!-- unit-inner -->
+              </div><!-- unit-head -->
+            </header>
+
+            <span class="date">
+            <span class="published">Published on March 22, 2013</span>
+            by
+            <span class="author">Răzvan Deaconescu and Mihai Maruseac</span>
+            </span>
+
+            <p>The second article on advanced <a href="http://git-scm.com/" title="Git">git</a> topics is focused on cases where multiple branches are involved.</p>
+<h2 id="my-changes-conflict-with-yours">My Changes Conflict With Yours</h2>
+<p>Usually, it happens that two developers are working on the same file. Git tries its best to merge changesets from both developers without complaining. However, Git is not a human being so it cannot know what change is the good ones when two changes happen two close to one another in the file.</p>
+<p>As opposed to SVN, in Git, it is the responsibility of the one who pulls to solve conflicts. Thus, you are forced to solve conflicts before being able to push your changes upstream. But how does it work?</p>
+<p>When you try to pull a file which contains conflicting changes, git will stop with a strange message. We will use the <code>git pull --rebase</code> command instead of the <code>git pull</code>.</p>
+<pre><code>Using index info to reconstruct a base tree...
+M   numbers
+Falling back to patching base and 3-way merge...
+Auto-merging numbers
+CONFLICT (content): Merge conflict in numbers
+Failed to merge in the changes.
+Patch failed at 0001 Add a don't like line.
+The copy of the patch that failed is found in:
+   /tmp/repos/repo3/.git/rebase-apply/patch
+
+When you have resolved this problem, run &quot;git rebase --continue&quot;.
+If you prefer to skip this patch, run &quot;git rebase --skip&quot; instead.
+To check out the original branch and stop rebasing, run &quot;git rebase --abort&quot;.</code></pre>
+<p>Even the file you changed looks awkward:</p>
+<pre><code>4
+&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+insert here 5
+=======
+I don't like this line 5
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; Add a don't like line.
+6</code></pre>
+<p>As you can see, there are 3 more lines inserted. The ones starting with <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code> and <code>&gt;&gt;&gt;&gt;&gt;&gt;&gt;</code> mark the boundary of the conflicting area as well as the origin of the two conflicting changes (in our case <code>HEAD</code> is our repository’s latest commit while <code>Add a don't like line.</code> is the commit message of the last commit on the remote).</p>
+<p>Between the two marks, you have the two changes, separated by <code>=======</code>. You, as a developer, have to choose what makes sense: either keep only one of the changes, merge them together or even write something totally new.</p>
+<p>You edit the file with the desired change and add it back for staging. After this you simply continue the rebase process.</p>
+<pre><code>git add numbers
+git rebase --continue</code></pre>
+<p>If there are more conflicting changes you will have to reapply the same procedure. Otherwise, you can go forward to pushing your changes. As you can see, no conflict ever leaves your repository, you are forced to deal with it before continuing.</p>
+<p><strong>Note</strong>: Remember to solve all conflicts in the same file before continuing the rebase process. Otherwise artifacts will be committed. (this is an edit suggested via comments by Stefan Bucur).</p>
+<h2 id="tags-and-branches-for-the-win">Tags and Branches For The Win</h2>
+<p>Tags are the best way to keep references to old commits. They are particularly helpful in school related activities, where you update lectures and lab tasks on an yearly basis.</p>
+<p>The right way to handle this is to create a tag at the end of each year and update labs and tasks. If at any time you want to check out the old curriculum you can get back to that tag.</p>
+<p>For example, for the <a href="http://elf.cs.pub.ro/saisp/" title="SAISP">SAISP</a> repository, we’ve created tag a tag at the end of each year of study:</p>
+<pre><code>razvan@einherjar:~/school/current/saisp/repo$ git tag
+2009-2010
+2010-2011
+2011-2012</code></pre>
+<p>If we would like to go to an old version we would simply create a branch starting from that tag:</p>
+<pre><code>razvan@einherjar:~/school/current/saisp/repo$ git checkout -b br-2010-2011 2010-2011
+Switched to a new branch 'br-2010-2011'
+razvan@einherjar:~/school/current/saisp/repo$ git status
+# On branch br-2010-2011
+nothing to commit (working directory clean)</code></pre>
+<p>This allows easy organization of your tree, with no need to create other folders (one for each year). If you want to access information for a given year, you would just create a new branch.</p>
+<p>This isn’t the case for the current <a href="https://github.com/rosedu/cdl" title="CDL repository">CDL repository</a>. I’m not particularly happy with it and will probably update it soon. As we weren’t very Git aware at the time we’ve created the repository, we started using a folder for each year:</p>
+<pre><code>razvan@einherjar:~/projects/rosedu/cdl/repo.git$ ls
+2009  2010  2011  2012  2013  Makefile  curs1  git_tutorial  template  util</code></pre>
+<p>This is unnecessary and results in duplicate information, copied from one year to the other.</p>
+<p>The solution is pretty simple: identify the last commit for each CDL session/year, tag it and then, if required create branches out of it.</p>
+<p>Identifying the last commit for each CDL session is easily done through <code>gitk</code>. Browse the commits, look at the dates, identify the last commit and create a tag:</p>
+<pre><code>razvan@einherjar:~/projects/rosedu/cdl/repo.git$ git tag 2009 e9858a9e74
+razvan@einherjar:~/projects/rosedu/cdl/repo.git$ git tag 2010 26cd285f47
+razvan@einherjar:~/projects/rosedu/cdl/repo.git$ git tag 2011-spring eaa2d7e9a8
+razvan@einherjar:~/projects/rosedu/cdl/repo.git$ git tag 2011-fall f69e679ebd
+razvan@einherjar:~/projects/rosedu/cdl/repo.git$ git tag 2012 fd23db9181</code></pre>
+<p>Afterwards, we can create branches for each of them to easily go to that point:</p>
+<pre><code>razvan@einherjar:~/projects/rosedu/cdl/repo.git$ git branch br-2012 2012
+razvan@einherjar:~/projects/rosedu/cdl/repo.git$ git branch br-2011-fall 2011-fall
+razvan@einherjar:~/projects/rosedu/cdl/repo.git$ git branch br-2011-spring 2011-spring
+razvan@einherjar:~/projects/rosedu/cdl/repo.git$ git branch br-2010 2010
+razvan@einherjar:~/projects/rosedu/cdl/repo.git$ git branch br-2009 2009
+razvan@einherjar:~/projects/rosedu/cdl/repo.git$ git branch
+  br-2009
+  br-2010
+  br-2011-fall
+  br-2011-spring
+  br-2012
+* master
+  old-master
+  razvan</code></pre>
+<p>Of course, it would only makes sense to really clear the repository and turn it into a “normal” one that only stores current information. Remove old year data and show only current one:</p>
+<pre><code>razvan@einherjar:~/projects/rosedu/cdl/repo.git$ ls
+2009  2010  2011  2012  2013  Makefile  curs1  git_tutorial  template  util
+razvan@einherjar:~/projects/rosedu/cdl/repo.git$ git rm -r 2009
+razvan@einherjar:~/projects/rosedu/cdl/repo.git$ git rm -r 2010
+razvan@einherjar:~/projects/rosedu/cdl/repo.git$ git rm -r 2011
+razvan@einherjar:~/projects/rosedu/cdl/repo.git$ git rm -r 2012
+razvan@einherjar:~/projects/rosedu/cdl/repo.git$ git mv 2013/* .
+razvan@einherjar:~/projects/rosedu/cdl/repo.git$ rmdir 2013
+razvan@einherjar:~/projects/rosedu/cdl/repo.git$ ls
+Makefile  curs1  curs3  git.mm  git_tutorial  schelet_inscriere  template  util
+razvan@einherjar:~/projects/rosedu/cdl/repo.git$ git commit -m 'Clear folder structure. Leave only current items'</code></pre>
+<p>All is now nice and clear. Any updates are going to be done on the current folder structure; any request to see old data can be handled by checking out one of the branches.</p>
+<h2 id="branches-on-a-virtual-machine">Branches on a Virtual Machine</h2>
+<p>In our experience we come to situations when required to work on the desktop/laptop and on a virtual machine. Of course, we are using Git for storing code. It would only make sense for one repository to be a remote for another one. The case is that, with Git, every repository can be a remote.</p>
+<p>As such, I usually create a clone of the laptop repository on the virtual machine. I usually do that with the <a href="http://ocw.cs.pub.ro/courses/so2/" title="SO2">SO2</a> repository when updating lab tasks or assignment solutions and tests. The laptop stores the main repository and the virtual machine uses a clone of that:</p>
+<pre><code>root@spook:~# git clone razvan@einherjar.local:school/current/so2/git-repos/lab lab.git
+root@spook:~# cd lab.git/
+root@spook:~/lab.git# git remote show origin
+* remote origin
+  Fetch URL: razvan@einherjar.local:school/current/so2/git-repos/lab
+  Push  URL: razvan@einherjar.local:school/current/so2/git-repos/lab
+[...]</code></pre>
+<p>In order to work properly on the remote you would need to use a dedicated branch to push information. You’ll have problems if you push to the master branch of a repository that is using the master branch itself. I usually dub this ‘vm’ (for virtual machine):</p>
+<pre><code>root@spook:~/lab.git# git checkout -b vm
+Switched to a new branch 'vm'</code></pre>
+<p>Any further changes are going to be committed in the ‘vm’ branch. Subsequently you would push these commits to the main repository, on the laptop:</p>
+<pre><code>root@spook:~/lab.git# git push origin vm
+Total 0 (delta 0), reused 0 (delta 0)
+To razvan@einherjar.local:school/current/so2/git-repos/lab
+ * [new branch]      vm -&gt; vm</code></pre>
+<p>On the main repository, you would just merge or rebase your changes from that branch:</p>
+<pre><code>razvan@einherjar:~/school/current/so2/git-repos/teme$ git rebase vm
+First, rewinding head to replay your work on top of it...
+Fast-forwarded master to vm.</code></pre>
+<p>At this moment, all changes in the repository clone on the virtual machine are present in the master branch on the repository on the laptop. You need to create a separate branch on the virtual machine clone and then push that branch to the main repository. If you would work on the master branch on the virtual machine clone and push that, it would be problematic to integrate those changes in the master branch on the main repository.</p>
+<h2 id="going-after-cherries">Going After Cherries</h2>
+<p>In some cases, when working with multiple branches, it might happen that you need a specific commit from one branch but you don’t want to merge that branch into your current one.</p>
+<p>Fortunately, Git allows you to pick a single commit as easy as picking cherries from a cherry-tree. In fact, the command is <code>git cherry-pick</code>.</p>
+<pre><code>$ git cherry-pick 1904c3d4c9720
+[master 3a30153] File to be cherry-picked in master.
+ Author: Andrei Petre &lt;p31andrei@gmail.com&gt;
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+ create mode 100644 file_to_get_in_master</code></pre>
+<p>Now, you have a <strong>new</strong> commit with the same change as the picked-up commit but on your branch</p>
+<pre><code>$ git log
+commit 3a3015378c3c1b43c4895a00829034d53fb9a5b5
+Author: Andrei Petre &lt;p31andrei@gmail.com&gt;
+Date:   Fri Mar 8 23:59:07 2013 +0200
+
+    File to be cherry-picked in master.</code></pre>
+<p>As you can see, the commit hash is different meaning that there is a new commit, not the old one.</p>
+<p>Should a commit not apply cleanly, Git stops the cherry-picking process and asks for human intervention. After the problems are resolved, you can continue it with <code>git cherry-pick --continue</code>. Or, you can abort it via <code>--abort</code> if you change your mind after seeing the trouble.</p>
+
+          </div>
+        </div>
+      </div>
+    </article>
+  </div>
+</div>
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+  /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+  var disqus_shortname = 'rosedutechblog';
+  var disqus_url = window.location.href.split('/').splice(0,3).join("/")+'/git-is-the-answer-2.html';
+  var title = 'Git Is The Answer 2/3';
+  /* * * DON'T EDIT BELOW THIS LINE * * */
+  (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+        </div>
+      </div>
+
+      <footer class="the-footer">
+        <div class="unit-foot">
+          <div class="unit-inner unit-foot-inner">
+            <div class="misc vcard">
+              <h4>Social</h4>
+              <div class="rss">
+                <a href="http://feeds.feedburner.com/rosedu/tech" target="_blank">
+                  <img src="./images/rss.png" alt="Subscribe to RSS Feed" />
+                </a>
+                <a href="http://www.reddit.com/submit?url='+encodeURIComponent(window.location)" target="_blank" onclick="window.location='http://www.reddit.com/submit?url='+encodeURIComponent(window.location); return false">
+                  <img src="./images/reddit.png" alt="Submit to Reddit" />
+                </a>
+                <a href="http://twitter.com/share" class="twitter-share-button" data-count="none" target="_blank">
+                  <img src="./images/twitter.png" alt="Submit to Twitter" />
+                </a>
+              </div>
+
+              <h4>Powered by</h4>
+              <ul>
+                <li class="contact">
+                  <address>
+                    <a class="author fn n" href="http://www.rosedu.org">ROSEdu</a>
+                  </address>
+                </li>
+                <li class="contact">
+                  <address>
+                    <a class="author fn n" href="http://jaspervdj.be/hakyll">Hakyll</a>
+                  </address>
+                </li>
+              </ul>
+
+              <h4>License</h4>
+              <div class="bucket">
+                <span>
+                  <a rel="license" href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons Attribution 3.0 License">
+                    <img src="//i.creativecommons.org/l/by/3.0/88x31.png" alt="License">
+                  </a>
+                </span>
+                <span>
+                  This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/3.0/" class="subfoot">Creative Commons Attribution 3.0 License</a>.
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>

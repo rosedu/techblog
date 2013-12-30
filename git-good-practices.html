@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--[if lt IE 7]>
+<html class="no-js lt-ie9 lt-ie8 lt-ie7 ie" lang="en"> <![endif]-->
+<!--[if IE 7]>
+<html class="no-js lt-ie9 lt-ie8 ie" lang="en"> <![endif]-->
+<!--[if IE 8]>
+<html class="no-js lt-ie9 ie" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" class="no-js"><!--<![endif]-->
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>ROSEdu Techblog - Git Tips and Good Practices</title>
+    <link rel="stylesheet" href="./css/style.css" type="text/css">
+    <link rel="stylesheet" href="./css/rosedu_links.css" type="text/css">
+    <link rel="stylesheet" href="./css/syntax.css" type="text/css">
+    <!--<link rel="stylesheet" type="text/css" href="/css/default.css"/>-->
+
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-7579199-6']);
+      _gaq.push(['_trackPageview']);
+
+      (function () {
+        var ga = document.createElement('script');
+        ga.type = 'text/javascript';
+        ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  </head>
+
+  <body>
+    <div id="page" class="hentry">
+      <header class="the-header">
+        <div class="unit-head">
+          <div class="unit-inner unit-head-inner">
+            <nav class="nav-global">
+              <ul>
+                <li class="logo"><a href="./" title="Home">ROSEdu Techblog</a></li>
+                <li class="about"><a href="./about.html">About</a></li>
+                <li class="people"><a href="./people.html">People</a></li>
+                <li class="archive"><a href="./archive.html">Archive</a></li>
+                <li class="category"><a href="./tags.html">Tags</a></li>
+              </ul>
+            </nav>
+
+            <hr />
+
+            <nav class="nav-global">
+              <ul>
+                <li class="logo"><a href="./archive.html" title="Archive">Latest Posts</a></li>
+                <!--TODO-->
+                <li><a href="./shell-tips-and-tricks-for-file-editing.html">Shell tips and tricks for log files</a></li>
+                <li><a href="./git-is-the-answer-3.html">Git Is The Answer 3/3</a></li>
+                <li><a href="./git-is-the-answer-2.html">Git Is The Answer 2/3</a></li>
+              </ul>
+            </nav>
+          </div><!-- unit-inner -->
+        </div><!-- unit-head -->
+      </header>
+
+      <div class="body" role="main">
+        <div class="unit-body">
+          <div class="unit-inner unit-body-inner">
+  <div class="entry-content">
+    <article class="unit-article layout-post">
+      <div class="unit-inner unit-article-inner">
+        <div class="content">
+          <div class="bd">
+            <header>
+              <div class="unit-head">
+                <div class="unit-inner unit-head-inner">
+                  <h1 class="h2 entry-title">
+                    <a class="post_title" href="./git-good-practices.html" title="Git Tips and Good Practices">Git Tips and Good Practices</a>
+                  </h1>
+                </div><!-- unit-inner -->
+              </div><!-- unit-head -->
+            </header>
+
+            <span class="date">
+            <span class="published">Published on September 12, 2011</span>
+            by
+            <span class="author">Răzvan</span>
+            </span>
+
+            <p><a href="http://git-scm.com/" title="Git">Git</a> is an excellent SCM (source code management system). I use it for a plethora of tasks such as managing code, scripts, LaTeX files, config files, <a href="http://orgmode.org/" title="Org-Mode">Org-Mode</a> files. I try to base all my actions on text files such that it could be managed through Git.</p>
+<p>In this post I wish to share some of the knowledge and skills I’ve gathered throughout the time of using Git. I am novice myself in many aspects of using Git, but I feel confident of my basic usage skill and good practices.</p>
+<p>My aim is to present tips and good practices that allow using Git at its value and conforming to recommendations. This is not a tutorial or a comprehensive view of Git. In case you are looking for that I recommend the excellent <a href="http://gitimmersion.com/" title="Git Immersion">Gitimmersion tutorial</a> and the <a href="http://progit.org/" title="Pro Git Book">Pro Git Book</a>.</p>
+<p>An important aspect to have in mind is the data model that Git uses. While most SCMs use changesets to manage commits, Git uses snapshots. Each commit is a snapshot of the entire project; it is not a set of file patches. Bear this in mind when using Git commands and playing around with commits. You may also check <a href="http://learn.github.com/p/intro.html#snapshots_not_changesets" title="GitHub - Introduction to Git">this tutorial</a> for a more thorough presentation.</p>
+<h3 id="configuring-git">Configuring Git</h3>
+<p>The first step of using Git is configuring your identity and preferences, as highlighted by most tutorials. The recommended practice is to configure Git at system level (using the <code>--global</code> option):</p>
+<pre><code>git config --global user.name &quot;Razvan Deaconescu&quot;
+git config --global user.email &quot;razvan.deaconescu@cs.pub.ro&quot;
+git config --global color.ui auto</code></pre>
+<p>I recommend issuing the above commands each time you are using an account that will make use of Git commands.</p>
+<p>In case you want a different configuration (another email address, for example) for a given repository, just issue the above commands (sans the <code>--global</code> option) while in that repository.</p>
+<p>A situation may arise when you want to create a commit (or a series of commits) that use different user information. This may happen when you and a friend have access to a common account, and you want to separate your commits form hers/his (although run from the same account). There are two situations and approaches to this:</p>
+<ol style="list-style-type: decimal">
+<li><p>Situation: You want to use a different identity for all (or most) commits in a shell session (such as an SSH login session). Solution: Define the <code>GIT_AUTHOR_NAME</code> and <code>GIT_AUTHOR_EMAIL</code> environment variables:</p>
+<p><code>export GIT_AUTHOR_NAME=&quot;Mighty McWolf&quot;</code></p>
+<p><code>export GIT_AUTHOR_EMAIL=&quot;mighty@mcwolf.org&quot;</code></p></li>
+<li><p>Situation: You want to use a different identity for a single commit. Solution: Use the <code>--author</code> option when committing:</p>
+<p><code>git commit --author &quot;Mighty McWolf &lt;mighty@mcwolf.org&gt;&quot;</code></p></li>
+</ol>
+<h3 id="commits">Commits</h3>
+<p>Everything in Git revolves around commits. A commit is a basic unit of information that you submit to Git for handling. Git stores each commit and links it to other commits such that you see a commit history, get back to a previous state, create a branch, watch the commit tree, update certain commits, create tags and many others. As mentioned above, a commit represents a snapshot of the entire project.</p>
+<p>A basic rule, that applies to all other SCMs, is that each commit must keep the repository in a compilable state. That is, if one would checkout to a random place in the commit history, he/she would still be able to compile the source code. Make sure the project is in a compilable state when issuing your commit.</p>
+<p>While the repository needs to be in a compilable state, it need not run perfectly. In fact it may end up in “Segmentation fault” or other critical errors. That’s no problem; it’s not achievable (not possible actually) to have a clean repository where each commit would break nothing. Do not be afraid to break the application when issuing a commit as long as its in a compilable state. If the application breaks, another commit will fix it; an impatient contributor could very well revert to a previous commit and create a branch from there. Moreover, trying to keep the application running, may force you to disobey the next recommendation.</p>
+<p>Another important recommendation, heavily stressed in Git but probably insisted on in other SCMs, is creating small, atomic commits. Each commit should do one thing and do it well. A commit should not use a message such as “Update everything.” or “Fix plenty of errors.” Rather, each fix should go into a separate commit. This would make it very easy for a reviewer to analyze and diff your commit and, possibly, isolate a bug that you may have introduced. If your commit ranges a whole bunch of features that introduce multiple bugs, isolating those bugs and fixing them is a pain.</p>
+<p>So, remember: <strong>Create small atomic commits that keep the repository in a compilable state</strong>.</p>
+<h3 id="commit-messages">Commit Messages</h3>
+<p>When your commit is ready, you’ll issue the <code>git commit</code> command and either use the configured editor or the <code>-m</code> option to write the commit message. Either way there’s a basic set of recommendations you should follow when writing a commit message.</p>
+<ol style="list-style-type: decimal">
+<li><p>Keep it short. Ideally, your commit message should consist of at most 50 characters. In case your message is longer, break it into sentences, and leave a blank line between the 50 characters message and the rest. The rationale, as mentioned in the <a href="http://www.kernel.org/pub/software/scm/git/docs/git-commit.html" title="git commit manual page">git commit manpage</a>, is that the first line is used as an email subject line by various tools.</p></li>
+<li><p>Use present tense when issuing a commit. This ensures “compatibility” with messages used by tools such as <code>git merge</code>.</p></li>
+<li><p>Write sentences not descriptions, similar to good code comments. Use capital letter, use verbs and end with dot.</p></li>
+</ol>
+<p>Tim Pope <a href="http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html" title="A Note About Git Commit Messages">writes</a> about what makes a model Git commit message.</p>
+<h3 id="creating-and-updating-commits">Creating and Updating Commits</h3>
+<p>Remember that your commits should be small: do one thing, do one thing well.</p>
+<p>What happens when you’ve made a lot of changes and you want to create a commit? You need to “split” your changes in multiple commits. For that you use <code>git add -i</code> (<code>-i</code> for interactive). When using <code>-i</code> Git inquires you about the commit. Most likely you would: 1. choose the <code>patch</code> option (press <code>p</code> or <code>5</code>) 2. choose the file you want to “split” 3. press <code>Enter</code> 4. answer <code>y</code> or <code>n</code> to include/exclude certain chunks 5. press <code>q</code> to quit</p>
+<p>At this point, the modified file would be found both in the staging area and in the “changes” area. The staging area would solely consist of the chunks you selected previously.</p>
+<p>What if you’ve just created a commit and realized that the commit message may be wrong or that there should have been another hunk or file committed? In this case you would use <code>git commit --amend</code>. As the options says, this gives you the possibility of amending the commit, be it to update the commit message or to add certain files: just issue <code>git add</code> (or <code>git add -i</code>) and then invoke <code>git commit --amend</code>. By adding <code>--author</code>, the <code>--amend</code> option allows you to even update the author identity.</p>
+<p>What if you want to update a commit that is not the latest? If the commit has been pushed in the remote repository, then it’s quite complicated and not recommended. However, if the commit is local and hasn’t been pushed, you may used <code>git rebase -i</code>. You have to specify the commit id where rebasing will take place. Afterwards you will be prompted with an editor screen where you can select which of the commits that have been created. Usually you would replace the <code>pick</code> string with <code>edit</code> and Git will pass you through all commits.</p>
+<p>For each commit you will most likely issue some <code>git add</code> commands, then <code>git commit --amend</code> and, finally, <code>git rebase --continue</code>.</p>
+<p>As long as the commits are local (not pushed to the remote repository), all is fine.</p>
+<h3 id="stashing">Stashing</h3>
+<p>On certain occasions, you may need to run some commit update commands (such as <code>git rebase</code>, <code>git pull</code>) but retain some “dirty data” in the repository. As Git disallows the existence of non-committed data in such occasions, the solution is stashing.</p>
+<p>Stashing means you temporarily store your data in a specialized zone such that it would not get in the way of the above commands. In order to stash local changes, you would simply issue the <code>git stash</code> command. After updates have occurred, use <code>git stash pop</code> to bring back changes and revert to the original “dirty state”.</p>
+<h3 id="ignoring-data">Ignoring Data</h3>
+<p>Some files or data have to be ignored from being commit, while others need to be ignored because of process specifics or use preference.</p>
+<p>As a rule of thumb, a repository should only manage text files; no binary files such as image files, compressed files, object files, executable files. If you are a web developer or someone who has to work extensively with image files, the above rule wouldn’t apply 100%. You should however, only commit source code files and files that cannot be compiled or linked from other files.</p>
+<p>Such that a good practice is to create a top-level <code>.gitignore</code> file in your repository and define files to be ignored. A basic <code>.gitignore</code> file is shown below:</p>
+<p><strong>sample .gitignore</strong></p>
+<pre><code>*~
+*.swp
+*.swo
+*.o
+*.obj
+*.a
+*.so
+*.dll
+*.lib
+*.gz
+*.bz2
+*.zip</code></pre>
+<p>Optional <code>.gitignore</code> files may be created in subfolders of the repository according to need.</p>
+<p><code>.gitignore</code> files are committed in the repository and their exclusion rules are applied to all contributors. A situation may arise when you create a folder that you want to reside in your repository clone but never get committed. For example a <code>lib</code> folder consisting of libraries you are linking against for testing purposes. As it is binary data it shouldn’t be committed, and, as you are the only one using it, it should be ignored. You could add it to the <code>.gitignore</code> file but that would complicate it. The best solution is to edit the <code>.git/info/exclude</code> file. It follows the same syntax as <code>.gitignore</code> files but is local to your clone.</p>
+<p>The above solutions are not useful in a specific situation: you want to ignore changes you make to a file that is being tracked. <code>.gitignore</code> and <code>.git/info/exclude</code> only ignore non-tracked files; they can’t be used on files that are being tracked. Your solution lies in running the command <code>git update-index --assume-unchanged abc.txt</code>. Issuing this command ensures that any local updates to the <code>abc.txt</code> file are not going to be taken into account when creating subsequent commits.</p>
+<h3 id="viewing-git-information">Viewing Git Information</h3>
+<p>A large part of your interaction with Git is analyzing commits, diffing, checking commit history etc. Visual tools are very important and provide you an intuitive view of the repository commits. Such tools are <a href="http://kernel.org/pub/software/scm/git/docs/git-gui.html" title="git-gui">Git GUI</a>, <a href="http://www.kernel.org/pub/software/scm/git/docs/gitk.html" title="Gitk">gitk</a> and <a href="http://live.gnome.org/giggle" title="Giggle">giggle</a>. A nice tool, running on an ncurses-based interface is <a href="http://jonas.nitro.dk/tig/" title="tig">tig</a>.</p>
+<p>Apart from that, several commands are heavily used throughout your work in Git, from a “view point of view” so to say:</p>
+<ul>
+<li><p><code>git status</code> provides you with information regarding the current branch, information in staging area, “dirty” information etc.;</p></li>
+<li><p><code>git log</code> provides you with a CLI view of the commit history; an useful option is <code>--oneline</code> providing you with a <code>one commit on one line</code> view;</p></li>
+<li><p><code>git diff</code> presents a diff between various states of the repository;</p></li>
+<li><p>without any option, <code>git diff</code> it shows changes in the working directory (versus <code>HEAD</code>);</p></li>
+<li><p>a single option to <code>git diff</code> is a commit ID or tag that is diffed against <code>HEAD</code>;</p></li>
+<li><p>two options tor <code>git diff</code> are two commit IDs or tags to be diffed.</p></li>
+</ul>
+<p>An useful option to <code>git diff</code> is <code>--cached</code>. This option presents a diff between <code>HEAD</code> and data in staging area. It’s useful to check everything is in order before creating a commit.</p>
+<h3 id="cleaning-up">Cleaning Up</h3>
+<p>An important activity is cleaning up files in different states (staging, modified, non-tracked).</p>
+<p>The list below highlights various user requirements and solutions to those predicaments:</p>
+<ul>
+<li><p>You want to clear any updates you’ve done to a file that’s being tracked:</p>
+<p><code>git checkout file.name</code></p></li>
+<li><p>You want to remove a file from the staging area and place it in the modified state; you want to build your commit in a different manner:</p>
+<p><code>git reset HEAD file.name</code></p></li>
+<li><p>You want to clear non-tracked files from the working clone:</p>
+<p><code>git clean file.name</code></p></li>
+<li><p>You want to clear all non-tracked files from the working clone:</p>
+<p><code>git clean -f</code></p></li>
+<li><p>You want to clear all changes and revert to the initial state of <code>HEAD</code> (by changes I’m referring to tracked files changes; this doesn’t affect non-tracked files):</p>
+<p><code>git reset --hard</code></p></li>
+</ul>
+<h3 id="other-resources">Other Resources</h3>
+<p>The Internet is filled with tutorials and tips regarding the use of Git. <a href="http://www.google.com/" title="Google">Google</a> is one of your best friends to provide you a rapid solution to a problem. Through Google, I’ve found a lot of answers on <a href="http://stackoverflow.com/" title="Stack Overflow">Stack Overflow</a>.</p>
+<p>As mentioned above, I find the <a href="http://gitimmersion.com/" title="Git Immersion">Git Immersion tutorial</a> to be very well presented and easy to follow and the <a href="http://progit.org/" title="Pro Git Book">Pro Git Book</a> as a good technical presentation of Git and its features. An excellent site, consisting of a plethora of very nicely presented tips is <a href="http://gitready.com/" title="git ready &gt;&gt; learn git one commit at a time">git ready</a>.</p>
+<p>As a funny link, I recommend you access <a href="http://whatthecommit.com/" title="Commit Message Generator">Commit Message Generator</a>.</p>
+
+          </div>
+        </div>
+      </div>
+    </article>
+  </div>
+</div>
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+  /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+  var disqus_shortname = 'rosedutechblog';
+  var disqus_url = window.location.href.split('/').splice(0,3).join("/")+'/git-good-practices.html';
+  var title = 'Git Tips and Good Practices';
+  /* * * DON'T EDIT BELOW THIS LINE * * */
+  (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+        </div>
+      </div>
+
+      <footer class="the-footer">
+        <div class="unit-foot">
+          <div class="unit-inner unit-foot-inner">
+            <div class="misc vcard">
+              <h4>Social</h4>
+              <div class="rss">
+                <a href="http://feeds.feedburner.com/rosedu/tech" target="_blank">
+                  <img src="./images/rss.png" alt="Subscribe to RSS Feed" />
+                </a>
+                <a href="http://www.reddit.com/submit?url='+encodeURIComponent(window.location)" target="_blank" onclick="window.location='http://www.reddit.com/submit?url='+encodeURIComponent(window.location); return false">
+                  <img src="./images/reddit.png" alt="Submit to Reddit" />
+                </a>
+                <a href="http://twitter.com/share" class="twitter-share-button" data-count="none" target="_blank">
+                  <img src="./images/twitter.png" alt="Submit to Twitter" />
+                </a>
+              </div>
+
+              <h4>Powered by</h4>
+              <ul>
+                <li class="contact">
+                  <address>
+                    <a class="author fn n" href="http://www.rosedu.org">ROSEdu</a>
+                  </address>
+                </li>
+                <li class="contact">
+                  <address>
+                    <a class="author fn n" href="http://jaspervdj.be/hakyll">Hakyll</a>
+                  </address>
+                </li>
+              </ul>
+
+              <h4>License</h4>
+              <div class="bucket">
+                <span>
+                  <a rel="license" href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons Attribution 3.0 License">
+                    <img src="//i.creativecommons.org/l/by/3.0/88x31.png" alt="License">
+                  </a>
+                </span>
+                <span>
+                  This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/3.0/" class="subfoot">Creative Commons Attribution 3.0 License</a>.
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>

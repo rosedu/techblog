@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--[if lt IE 7]>
+<html class="no-js lt-ie9 lt-ie8 lt-ie7 ie" lang="en"> <![endif]-->
+<!--[if IE 7]>
+<html class="no-js lt-ie9 lt-ie8 ie" lang="en"> <![endif]-->
+<!--[if IE 8]>
+<html class="no-js lt-ie9 ie" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" class="no-js"><!--<![endif]-->
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>ROSEdu Techblog - Introduction to SSH</title>
+    <link rel="stylesheet" href="./css/style.css" type="text/css">
+    <link rel="stylesheet" href="./css/rosedu_links.css" type="text/css">
+    <link rel="stylesheet" href="./css/syntax.css" type="text/css">
+    <!--<link rel="stylesheet" type="text/css" href="/css/default.css"/>-->
+
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-7579199-6']);
+      _gaq.push(['_trackPageview']);
+
+      (function () {
+        var ga = document.createElement('script');
+        ga.type = 'text/javascript';
+        ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  </head>
+
+  <body>
+    <div id="page" class="hentry">
+      <header class="the-header">
+        <div class="unit-head">
+          <div class="unit-inner unit-head-inner">
+            <nav class="nav-global">
+              <ul>
+                <li class="logo"><a href="./" title="Home">ROSEdu Techblog</a></li>
+                <li class="about"><a href="./about.html">About</a></li>
+                <li class="people"><a href="./people.html">People</a></li>
+                <li class="archive"><a href="./archive.html">Archive</a></li>
+                <li class="category"><a href="./tags.html">Tags</a></li>
+              </ul>
+            </nav>
+
+            <hr />
+
+            <nav class="nav-global">
+              <ul>
+                <li class="logo"><a href="./archive.html" title="Archive">Latest Posts</a></li>
+                <!--TODO-->
+                <li><a href="./shell-tips-and-tricks-for-file-editing.html">Shell tips and tricks for log files</a></li>
+                <li><a href="./git-is-the-answer-3.html">Git Is The Answer 3/3</a></li>
+                <li><a href="./git-is-the-answer-2.html">Git Is The Answer 2/3</a></li>
+              </ul>
+            </nav>
+          </div><!-- unit-inner -->
+        </div><!-- unit-head -->
+      </header>
+
+      <div class="body" role="main">
+        <div class="unit-body">
+          <div class="unit-inner unit-body-inner">
+  <div class="entry-content">
+    <article class="unit-article layout-post">
+      <div class="unit-inner unit-article-inner">
+        <div class="content">
+          <div class="bd">
+            <header>
+              <div class="unit-head">
+                <div class="unit-inner unit-head-inner">
+                  <h1 class="h2 entry-title">
+                    <a class="post_title" href="./intro-to-ssh.html" title="Introduction to SSH">Introduction to SSH</a>
+                  </h1>
+                </div><!-- unit-inner -->
+              </div><!-- unit-head -->
+            </header>
+
+            <span class="date">
+            <span class="published">Published on September 10, 2012</span>
+            by
+            <span class="author">Silviu-Mihai Popescu</span>
+            </span>
+
+            <p>This is an article aiming to familiarize the reader with the features and benefits of using <a href="https://en.wikipedia.org/wiki/Secure_Shell" title="SSH">Secure Shell (SSH)</a>, particularly with the <a href="http://www.openssh.org/" title="OpenSSH">OpenSSH</a> implementation. SSH is an application level protocol used for secure data communication, whether that means remote shell access, command execution, file transfer and some other aspects described in this article. It was meant to be a replacement for existing insecure remote shell protocols such as <code>telnet</code>, <code>rsh</code> and <code>rexec</code> which send information in plaintext, including usernames and passwords.</p>
+<p>SSH uses <a href="https://en.wikipedia.org/wiki/Public-key_cryptography" title="public-key cryptography">public-key cryptography</a> for authentication purposes. In short, this works like this: each user has a pair of keys, one public and one private. They are mathematically related, but it is computationally infeasible to derive one from the other. The public key is … well, public! Anyone can get that, and they would use it to encrypt messages. The private key, however, is (or should be) accessible only by the user, and used to decrypt incoming messages.</p>
+<p>The two parties of a SSH communication are the server and the client. The server usually runs on port 22, but that is not a requirement, and the client will use a random available port on the client machine.</p>
+<h3 id="setting-up-ssh">Setting up SSH</h3>
+<p>The simplest way to install a SSH client is with your package manager. On Debian-based distros, it would be something like:</p>
+<pre><code>$ sudo apt-get install openssh-client</code></pre>
+<p>After that finishes, you can generate a pair of cryptographic keys using the command <code>ssh-keygen</code>:</p>
+<pre><code>$ ssh-keygen 
+Generating public/private rsa key pair.
+Enter file in which to save the key (/home/silviu/.ssh/id_rsa): test
+Enter passphrase (empty for no passphrase): 
+Enter same passphrase again: 
+Your identification has been saved in test.
+Your public key has been saved in test.pub.
+The key fingerprint is:
+eb:8b:a9:c5:22:46:c8:36:d9:c1:40:67:e1:b3:ec:66 silviu@keter
+The key's randomart image is:
++--[ RSA 2048]----+
+|.o +.            |
+|  *              |
+|   =             |
+|..+ +            |
+|.=.+    S        |
+|..o  .   .       |
+|  oE. o .        |
+| .o. o +         |
+|    ..o o.       |
++-----------------+</code></pre>
+<p>The lines ending in colon represent where you have to provide input. You may have noticed the word <code>passphrase</code>. This is used to lock the private key with a string that you choose. In order to use that key pair, the passphrase is provided and checked locally, not transmitted over the network. Please do not mistake this for the remote password.</p>
+<p>The default size for the RSA key is 2048 bits. You can change this and other aspects by checking the manual page for <code>ssh-keygen</code>,</p>
+<p>On the server you would install the <code>openssh-server</code> package:</p>
+<pre><code>$ sudo apt-get install openssh-server</code></pre>
+<p>Among other things, this should put a script in <code>/etc/init.d/ssh</code> and start the server. Depending on whether you distro uses <code>inittab</code> or <code>upstart</code>, you can check if the server is running with the following commands:</p>
+<pre><code>$ /etc/init.d/ssh status
+$ service ssh status</code></pre>
+<p>You can start the server by passing <code>start</code> as the last argument in those commands, but you’d also need root access to do that.</p>
+<p>And now you can test the installation from the client like this:</p>
+<pre><code>$ ssh my_user@my.server.com</code></pre>
+<p>By default, this will try to connect to the specified server on port 22, using the default key at <code>~/.ssh/id_rsa</code>. You can change this behaviour by a quick glance at the manual page. Also, if you specified a passphrase during the generation of the key, you will have to provide that and the remote password for the user you are trying to log on as. You can specify the IP instead of the DNS name for the server.</p>
+<p>You can also run just one line of commands, such as:</p>
+<pre><code>$ ssh my_user@my.server.com 'ls -la; apt-get moo'</code></pre>
+<p>So this would be the basic usage of SSH. You can do a lot just with what is written up to this point, and you might be tempted to close the article and just get back to what you wanted to do in the first place. But seriously, you would be missing a lot of the cool stuff SSH can do. Just <a href="https://xkcd.com/365/" title="XKCD">bear with me for a moment</a> and you will end up being more productive with SSH.</p>
+<h3 id="copying-files-remotely">Copying files remotely</h3>
+<p>You can use <code>cat</code> and pipes to copy a file remotely:</p>
+<pre><code>$ cat test.txt | ssh -e none user@host 'cat &gt; remote_test.txt'</code></pre>
+<p>The <code>-e</code> option disables escape characters so that you can send any bytes that your file may contain. The rest is a trick: the output of the remote <code>cat</code> is redirected to a file, but the input comes from the output of the first half of the pipe, which is the contents of the file you want to transfer. Neat, right?</p>
+<p>However, that solution is kind of tedious. Instead you would better use <code>scp</code>, which comes with the package:</p>
+<pre><code>$ scp test.txt user@host:remote_test.txt</code></pre>
+<p>Notice that colon after host because it is critical. If you did not want to rename the file you would have just used <code>user@host:</code>. The colon tells scp the destination is a remote location. Otherwise, you would just copy <code>test.txt</code> to a file named <code>user@host</code>.</p>
+<p>Also, the path after the colon is relative to the home directory of the remote user.</p>
+<p>There is also the <code>sftp</code> utility which provides a FTP-like interface.</p>
+<h3 id="passwordless-authentication">Passwordless authentication</h3>
+<p>So, up until now you have connected via SSH by providing your password, maybe even a passphrase. You can probably see by now that this is troublesome and can be a major drawback if you would like to make a script using SSH. How about we ditch that remote password?</p>
+<p>To do this, you would basically need to append the contents of your public key to a file located at <code>~/.ssh/authorized_keys</code> on the server.</p>
+<p>Luckily for you, most SSH packages provide an utility called <code>ssh-copy-id</code> that does just that. So you would just run:</p>
+<pre><code>$ ssh-copy-id user@host</code></pre>
+<p>Next time you will try to log on to that account, you will not be prompted for your password.</p>
+<p>As an exercise, knowing what you have read thus far, figure out two more ways of achieving the same result, just in case you do not have <code>ssh-copy-id</code>.</p>
+<h3 id="config-file">Config file</h3>
+<p>If you are going to use SSH with several servers, with various settings and different key pairs you will soon have to enter something like this:</p>
+<pre><code>$ ssh -i ~/.ssh/private_key_file10 -l user -p 2222 -o &quot;ForwardX11 yes&quot; the.mother.of.all.servers.com</code></pre>
+<p>Now that is an extremely long and ugly line with no particular purpose but to illustrate the complexity of ssh commands. Some who have read the manual page know that X forwading can be achieved by passing <code>-X</code>.</p>
+<p>Anyway, an initial approach to bypassing this issue is by using aliases of bash functions. But those are limited in functionality and basically you are just placing that ugly command somewhere else. Not cool, not cool.</p>
+<p>You can put settings on your local computer in <code>~/.ssh/config</code>. The full list of options, and their possible values, is available via <code>man ssh_config</code>.</p>
+<p>Here is a modified version of my config file, for security reasons:</p>
+<pre><code>Host compilers
+	User ubuntu
+	Hostname ec2-50-17-91-154.compute-1.amazonaws.com
+	IdentityFile /home/silviu/.ssh/amazon
+Host *.cs.pub.ro
+	User you_d_like_to_know
+	IdentityFile /home/silviu/.ssh/cs
+Host so2-lin
+	User root
+	Hostname 192.168.56.101
+	PubkeyAuthentication no
+Host so-lin
+	User student
+	Hostname 10,0.2,15
+	PubkeyAuthentication no
+Host ubuntu-dev
+	User silviu
+	Hostname 172.16.48.129
+	PubkeyAuthentication no
+Host github
+	User git
+	Hostname github.com
+	PreferredAuthentications publickey
+	IdentityFile ~/.ssh/github</code></pre>
+<p>Now you could put all those options for that long command above in a organized manner, and it will work with all SSH-related utilities, even <code>scp</code>, with the options you specified:</p>
+<pre><code>$ scp something mother:</code></pre>
+<h3 id="local-port-forwarding">Local port forwarding</h3>
+<p>Let’s assume that your employer has banned Facebook, so that people might actually do something useful.</p>
+<p>Let’s also assume that you have a SSH server that you can reach and has no filtering for Facebook.</p>
+<p>You could do something like this</p>
+<pre><code>$ ssh your.server.com -L 80:facebook.com:80</code></pre>
+<p>This achieves the following effect: any connection to port 80 on your machine is passed, via your remote machine, to port 80 on facebook.com, which is the standard port for HTTP. After that, set an entry matching facebook.com to 127.0.0.1 in <code>/etc/hosts</code> and procrastinate.</p>
+<p>But first, take a moment to come up with a section in your config file that does this forwarding. (Hint: <code>LocalForward</code>)</p>
+<h3 id="conclusions">Conclusions</h3>
+<p>So now you have a set of things you could do with SSH that can make you be more productive (or not if you just read the last part). I hope you found the article useful.</p>
+<p>If you want to know about more things you could do with SSH here is a list of terms you might want to search the web for: * SSH tunnels * SSH remote port forwarding * Set up a SOCKS proxy for Firefox with SSH * sshfs * SSH master sessions * ssh-agent and ssh-reagent</p>
+
+          </div>
+        </div>
+      </div>
+    </article>
+  </div>
+</div>
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+  /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+  var disqus_shortname = 'rosedutechblog';
+  var disqus_url = window.location.href.split('/').splice(0,3).join("/")+'/intro-to-ssh.html';
+  var title = 'Introduction to SSH';
+  /* * * DON'T EDIT BELOW THIS LINE * * */
+  (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+        </div>
+      </div>
+
+      <footer class="the-footer">
+        <div class="unit-foot">
+          <div class="unit-inner unit-foot-inner">
+            <div class="misc vcard">
+              <h4>Social</h4>
+              <div class="rss">
+                <a href="http://feeds.feedburner.com/rosedu/tech" target="_blank">
+                  <img src="./images/rss.png" alt="Subscribe to RSS Feed" />
+                </a>
+                <a href="http://www.reddit.com/submit?url='+encodeURIComponent(window.location)" target="_blank" onclick="window.location='http://www.reddit.com/submit?url='+encodeURIComponent(window.location); return false">
+                  <img src="./images/reddit.png" alt="Submit to Reddit" />
+                </a>
+                <a href="http://twitter.com/share" class="twitter-share-button" data-count="none" target="_blank">
+                  <img src="./images/twitter.png" alt="Submit to Twitter" />
+                </a>
+              </div>
+
+              <h4>Powered by</h4>
+              <ul>
+                <li class="contact">
+                  <address>
+                    <a class="author fn n" href="http://www.rosedu.org">ROSEdu</a>
+                  </address>
+                </li>
+                <li class="contact">
+                  <address>
+                    <a class="author fn n" href="http://jaspervdj.be/hakyll">Hakyll</a>
+                  </address>
+                </li>
+              </ul>
+
+              <h4>License</h4>
+              <div class="bucket">
+                <span>
+                  <a rel="license" href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons Attribution 3.0 License">
+                    <img src="//i.creativecommons.org/l/by/3.0/88x31.png" alt="License">
+                  </a>
+                </span>
+                <span>
+                  This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/3.0/" class="subfoot">Creative Commons Attribution 3.0 License</a>.
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>

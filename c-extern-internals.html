@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--[if lt IE 7]>
+<html class="no-js lt-ie9 lt-ie8 lt-ie7 ie" lang="en"> <![endif]-->
+<!--[if IE 7]>
+<html class="no-js lt-ie9 lt-ie8 ie" lang="en"> <![endif]-->
+<!--[if IE 8]>
+<html class="no-js lt-ie9 ie" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" class="no-js"><!--<![endif]-->
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>ROSEdu Techblog - C's extern internals</title>
+    <link rel="stylesheet" href="./css/style.css" type="text/css">
+    <link rel="stylesheet" href="./css/rosedu_links.css" type="text/css">
+    <link rel="stylesheet" href="./css/syntax.css" type="text/css">
+    <!--<link rel="stylesheet" type="text/css" href="/css/default.css"/>-->
+
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-7579199-6']);
+      _gaq.push(['_trackPageview']);
+
+      (function () {
+        var ga = document.createElement('script');
+        ga.type = 'text/javascript';
+        ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  </head>
+
+  <body>
+    <div id="page" class="hentry">
+      <header class="the-header">
+        <div class="unit-head">
+          <div class="unit-inner unit-head-inner">
+            <nav class="nav-global">
+              <ul>
+                <li class="logo"><a href="./" title="Home">ROSEdu Techblog</a></li>
+                <li class="about"><a href="./about.html">About</a></li>
+                <li class="people"><a href="./people.html">People</a></li>
+                <li class="archive"><a href="./archive.html">Archive</a></li>
+                <li class="category"><a href="./tags.html">Tags</a></li>
+              </ul>
+            </nav>
+
+            <hr />
+
+            <nav class="nav-global">
+              <ul>
+                <li class="logo"><a href="./archive.html" title="Archive">Latest Posts</a></li>
+                <!--TODO-->
+                <li><a href="./shell-tips-and-tricks-for-file-editing.html">Shell tips and tricks for log files</a></li>
+                <li><a href="./git-is-the-answer-3.html">Git Is The Answer 3/3</a></li>
+                <li><a href="./git-is-the-answer-2.html">Git Is The Answer 2/3</a></li>
+              </ul>
+            </nav>
+          </div><!-- unit-inner -->
+        </div><!-- unit-head -->
+      </header>
+
+      <div class="body" role="main">
+        <div class="unit-body">
+          <div class="unit-inner unit-body-inner">
+  <div class="entry-content">
+    <article class="unit-article layout-post">
+      <div class="unit-inner unit-article-inner">
+        <div class="content">
+          <div class="bd">
+            <header>
+              <div class="unit-head">
+                <div class="unit-inner unit-head-inner">
+                  <h1 class="h2 entry-title">
+                    <a class="post_title" href="./c-extern-internals.html" title="C's extern internals">C's extern internals</a>
+                  </h1>
+                </div><!-- unit-inner -->
+              </div><!-- unit-head -->
+            </header>
+
+            <span class="date">
+            <span class="published">Published on October  9, 2011</span>
+            by
+            <span class="author">Daniel</span>
+            </span>
+
+            <p>The idea for this post came from <a href="http://techblog.rosedu.org/arrays-vs-pointers.html#IDComment189927033">Virgil’s</a> comment on [char[] versus char*][old-art] entry. We will dig into some of C’s extern keyword internals by means of examples and then analyze the differences between <code>extern char</code>* and <code>extern char</code>[].</p>
+<p><code>extern</code> is a storage class specifier, indicating that the actual storage of a variable or the definition of a function is located elsewhere, typically in another source file.</p>
+<p><img style="float:right" src="./images/c-extern-simple-usage.png" alt="C extern simple usage" width="227" height="263" /></p>
+<p>Let’s start with a simple example:</p>
+<p><strong>helper.c</strong></p>
+<pre><code>int sample = 42; /* definition */</code></pre>
+<p><strong>main.c</strong></p>
+<pre><code>extern int sample; /* declaration */
+int main(void)
+{
+	printf(&quot;sample = %d\n&quot;, sample);
+}</code></pre>
+<p>Having obtained the corresponding object files <code>helper.o</code> and <code>main.o</code> we link them together into an executable named <code>main</code>. We will use the <a href="http://linux.die.net/man/1/nm">nm</a> tool to check the symbols from each object file:</p>
+<pre><code>$ nm helper.o
+00000000 D sample
+$ nm main.o
+         U sample
+00000000 T main</code></pre>
+<p>Notice that the symbol <code>sample</code> is only declared in <code>main.c</code> but not defined there. In the linking phase, the linker searches throughout all linked object files and finds out that the actual storage for <code>sample</code> is defined in <code>helper.c</code>. As a result our <code>main</code> executable will print value <code>42</code> declared in <code>helper.c</code> external file:</p>
+<pre><code>$./main
+sample = 42</code></pre>
+<p>Now let’s see how the compiler behaves if the types for cross-referenced variables do not match:</p>
+<p><strong>foo.c</strong></p>
+<pre><code>char *foo = &quot;Hello&quot;;</code></pre>
+<p><strong>main.c</strong></p>
+<pre><code>void foo(void);
+
+int main(void)
+{
+	foo();
+	return 0;
+}
+$ gcc -Wall -c foo.c -o foo.o
+$ gcc -Wall -c main.c -o main.o
+$ gcc -o main main.o foo.o
+$ ./main
+Segmentation fault</code></pre>
+<p>Functions are by default extern, hence the declaration of symbol <code>foo</code> in <code>main.c</code> file allows the compiler to create <code>main.o</code> object file without errors or warnings. Anyhow, the linker does not check the type of symbol <code>foo</code>; thus, running the <code>main</code> executable results in a function call into an non-executable memory area.</p>
+<p>Finally, let’s analyze if we can use a pointer and an array interchangeably between 2 source files.</p>
+<p>First try. The file <code>main.c</code> declares an extern array of chars, leaving it to the linker to find the actual storage area defined for it. File <code>pointer.c</code> defines a pointer to a memory area holding a string literal. At link time, the symbol <code>str</code> from <code>main.c</code> is bound to a memory area representing the address of a string.</p>
+<p><img style="float:right" src="./images/c-extern-char.png" alt="C extern simple usage" width="217" height="252" /></p>
+<p><strong>pointer.c</strong></p>
+<pre><code>char *str = &quot;1234&quot;;
+char a = 'A'; /* memory guards */
+char b = 'B';
+char c = 'C';</code></pre>
+<p><strong>main.c</strong></p>
+<pre><code>extern char str[];
+
+int main(void)
+{
+	printf(&quot;%s\n&quot;, str);
+	return 0;
+}</code></pre>
+<p>By compiling and linking <code>main.c</code> and <code>pointer.c</code> together we get <code>main</code> executable.</p>
+<pre><code>$ ./main
+\�ABC</code></pre>
+<p>Notice how the array <code>str</code> is mapped to a memory area where an address is stored. The <code>printf</code> function will display raw data until a <code>\0</code> is encountered. Fortunately, because of our guarding arrays, printing stops after showing some garbage and string <code>ABC</code>.</p>
+<p>Second try. The file <code>main.c</code> declares a pointer to a memory area holding one or more characters. The linker will associate <code>str</code> from <code>main.o</code> with the storage defined by <code>str</code> array from <code>array.o</code>.</p>
+<p><img style="float:right" src="./images/c-extern-pointer.png" alt="C extern simple usage" width="217" height="252" /></p>
+<p><strong>array.c</strong></p>
+<pre><code>char str[] = &quot;1234&quot;;</code></pre>
+<p><strong>main.c</strong></p>
+<pre><code>extern char *str;
+
+int main(void)
+{
+	printf(&quot;%s\n&quot;, str);
+
+	return 0;
+}</code></pre>
+<p>By compiling and linking together these programs we notice that running the <code>main</code> executable results in a crash.</p>
+<pre><code>$ ./main
+Segmentation fault</code></pre>
+<p>Let’s use GDB to see the reason:</p>
+<pre><code>$gdb ./main
+(gdb) b main
+Breakpoint 1 at 0x8048385: file main2.c, line 6.
+(gdb) run
+Breakpoint 1, main () at main2.c:6
+6		printf(&quot;%s\n&quot;, str);
+(gdb) p str
+$1 = 0x34333231 Address 0x34333231 out of bounds</code></pre>
+<p>One can notice that the value of the pointer <code>str</code> is the content of array <code>str</code>. This content is an invalid address dereferenced by the pointer, resulting in the delivery of the dreaded <code>SIGSEGV</code> signal.</p>
+
+          </div>
+        </div>
+      </div>
+    </article>
+  </div>
+</div>
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+  /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+  var disqus_shortname = 'rosedutechblog';
+  var disqus_url = window.location.href.split('/').splice(0,3).join("/")+'/c-extern-internals.html';
+  var title = 'C's extern internals';
+  /* * * DON'T EDIT BELOW THIS LINE * * */
+  (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+        </div>
+      </div>
+
+      <footer class="the-footer">
+        <div class="unit-foot">
+          <div class="unit-inner unit-foot-inner">
+            <div class="misc vcard">
+              <h4>Social</h4>
+              <div class="rss">
+                <a href="http://feeds.feedburner.com/rosedu/tech" target="_blank">
+                  <img src="./images/rss.png" alt="Subscribe to RSS Feed" />
+                </a>
+                <a href="http://www.reddit.com/submit?url='+encodeURIComponent(window.location)" target="_blank" onclick="window.location='http://www.reddit.com/submit?url='+encodeURIComponent(window.location); return false">
+                  <img src="./images/reddit.png" alt="Submit to Reddit" />
+                </a>
+                <a href="http://twitter.com/share" class="twitter-share-button" data-count="none" target="_blank">
+                  <img src="./images/twitter.png" alt="Submit to Twitter" />
+                </a>
+              </div>
+
+              <h4>Powered by</h4>
+              <ul>
+                <li class="contact">
+                  <address>
+                    <a class="author fn n" href="http://www.rosedu.org">ROSEdu</a>
+                  </address>
+                </li>
+                <li class="contact">
+                  <address>
+                    <a class="author fn n" href="http://jaspervdj.be/hakyll">Hakyll</a>
+                  </address>
+                </li>
+              </ul>
+
+              <h4>License</h4>
+              <div class="bucket">
+                <span>
+                  <a rel="license" href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons Attribution 3.0 License">
+                    <img src="//i.creativecommons.org/l/by/3.0/88x31.png" alt="License">
+                  </a>
+                </span>
+                <span>
+                  This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/3.0/" class="subfoot">Creative Commons Attribution 3.0 License</a>.
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--[if lt IE 7]>
+<html class="no-js lt-ie9 lt-ie8 lt-ie7 ie" lang="en"> <![endif]-->
+<!--[if IE 7]>
+<html class="no-js lt-ie9 lt-ie8 ie" lang="en"> <![endif]-->
+<!--[if IE 8]>
+<html class="no-js lt-ie9 ie" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" class="no-js"><!--<![endif]-->
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>ROSEdu Techblog - A Weird Behaviour Of C</title>
+    <link rel="stylesheet" href="./css/style.css" type="text/css">
+    <link rel="stylesheet" href="./css/rosedu_links.css" type="text/css">
+    <link rel="stylesheet" href="./css/syntax.css" type="text/css">
+    <!--<link rel="stylesheet" type="text/css" href="/css/default.css"/>-->
+
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-7579199-6']);
+      _gaq.push(['_trackPageview']);
+
+      (function () {
+        var ga = document.createElement('script');
+        ga.type = 'text/javascript';
+        ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  </head>
+
+  <body>
+    <div id="page" class="hentry">
+      <header class="the-header">
+        <div class="unit-head">
+          <div class="unit-inner unit-head-inner">
+            <nav class="nav-global">
+              <ul>
+                <li class="logo"><a href="./" title="Home">ROSEdu Techblog</a></li>
+                <li class="about"><a href="./about.html">About</a></li>
+                <li class="people"><a href="./people.html">People</a></li>
+                <li class="archive"><a href="./archive.html">Archive</a></li>
+                <li class="category"><a href="./tags.html">Tags</a></li>
+              </ul>
+            </nav>
+
+            <hr />
+
+            <nav class="nav-global">
+              <ul>
+                <li class="logo"><a href="./archive.html" title="Archive">Latest Posts</a></li>
+                <!--TODO-->
+                <li><a href="./shell-tips-and-tricks-for-file-editing.html">Shell tips and tricks for log files</a></li>
+                <li><a href="./git-is-the-answer-3.html">Git Is The Answer 3/3</a></li>
+                <li><a href="./git-is-the-answer-2.html">Git Is The Answer 2/3</a></li>
+              </ul>
+            </nav>
+          </div><!-- unit-inner -->
+        </div><!-- unit-head -->
+      </header>
+
+      <div class="body" role="main">
+        <div class="unit-body">
+          <div class="unit-inner unit-body-inner">
+  <div class="entry-content">
+    <article class="unit-article layout-post">
+      <div class="unit-inner unit-article-inner">
+        <div class="content">
+          <div class="bd">
+            <header>
+              <div class="unit-head">
+                <div class="unit-inner unit-head-inner">
+                  <h1 class="h2 entry-title">
+                    <a class="post_title" href="./a-weird-behaviour-in-c.html" title="A Weird Behaviour Of C">A Weird Behaviour Of C</a>
+                  </h1>
+                </div><!-- unit-inner -->
+              </div><!-- unit-head -->
+            </header>
+
+            <span class="date">
+            <span class="published">Published on July 29, 2012</span>
+            by
+            <span class="author">Mihai Maruseac</span>
+            </span>
+
+            <p>Let us start from a common mistake made by programmers learning simple data structures in C. The following code is an implementation for simple linked lists of integers in C.</p>
+<p>{% highlight cpp %} #include <stdio.h> #include <stdlib.h></p>
+<p>struct queue { int elm; struct queue* next; };</p>
+<p>struct queue* init() { struct queue <em>q = calloc(1, sizeof(</em>q)); q-&gt;next = q; return q; }</p>
+<p>void add(struct queue <em>q, int x) { struct queue </em>n = calloc(1, sizeof(<em>n)); struct queue </em>head = q;</p>
+<pre><code>n-&gt;elm = x;
+n-&gt;next = head;
+while (q-&gt;next != head)
+	q = q-&gt;next;
+q-&gt;next = n;</code></pre>
+<p>}</p>
+<p>int pop(struct queue <em>q) { int x = q-&gt;next-&gt;elm; struct queue </em>tmp = q-&gt;next; q-&gt;next = tmp-&gt;next; free(tmp); return x; }</p>
+<p>void free_q(struct queue <em>q) { struct queue </em>tmp; while (q-&gt;next != q) { tmp = q-&gt;next; free(q); q = tmp; } free(q); }</p>
+<p>int main() { struct queue *q = init(); add(q, 4); add(q, 2); printf(“%d%d”, pop(q), pop(q)); free_q(q); return 0; } {% endhighlight %}</p>
+<p>The idea is simple: we insert <code>4</code> and <code>2</code> into the queue and expect the output to be <code>42</code>, the digits being output in the order of their insertion into the queue.</p>
+<p>However, running the program, we have a big surprise:</p>
+<pre><code>$ gcc -Wall -Wextra 1.c -g -o 1-gcc
+$ clang -Wall -Wextra 1.c -g -o 1-clang
+$ ./1-gcc 
+24
+$ ./1-clang 
+42</code></pre>
+<p>Let’s ignore for now the fact that <a href="http://clang.llvm.org/" title="clang">clang</a> gives the correct response and let’s answer this question: What went wrong? The queue implementation seems correct but let’s replace it by a dummy implementation:</p>
+<p>{% highlight cpp %} #include <stdio.h> #include <stdlib.h></p>
+<p>int x;</p>
+<p>int inc() { x++; return x; }</p>
+<p>int dec() { x–; return x; }</p>
+<p>int main() { inc(); inc(); printf(“%d%d”, dec(), dec()); return 0; } {% endhighlight %}</p>
+<p>Basically, we have removed the queue and replaced it by it’s length, stored in the global <code>x</code> variable. The expected output is <code>10</code>.</p>
+<pre><code>$ clang -Wall -Wextra 2.c -g -o 2-clang
+$ gcc -Wall -Wextra 2.c -g -o 2-gcc
+$ ./2-gcc 
+01
+$ ./2-clang 
+10</code></pre>
+<p>The output is consistent with the above example. Thus, the problem is not in our queue implementation. It must be somewhere else.</p>
+<p>Before starting to shout that <code>printf</code> or <code>gcc</code> or <code>clang</code> is buggy, let us read <a href="http://www.open-std.org/jtc1/sc22/wg14/www/standards" title="C standards">the C standard</a>:</p>
+<blockquote>
+<p><strong>unspecified behavior</strong>: use of an unspecified value, or other behavior where this International Standard provides two or more possibilities and imposes no further requirements on which is chosen in any instance</p>
+<p><strong>EXAMPLE</strong> An example of unspecified behavior is the order in which the arguments to a function are evaluated.</p>
+</blockquote>
+<p>This explains why the two compilers were allowed to give different results, while being both correct.</p>
+<p>If we want more informations, we can compare the generated assembly code of the two compilers. The <code>gcc</code> version is below (only the relevant snippet):</p>
+<pre><code>call    inc
+movl    $0, %eax
+call    inc
+movl    $0, %eax
+call    dec
+movl    %eax, %ebx
+movl    $0, %eax
+call    dec
+movl    %eax, %ecx
+movl    $.LC0, %eax
+movl    %ebx, %edx
+movl    %ecx, %esi
+movq    %rax, %rdi
+movl    $0, %eax
+call    printf</code></pre>
+<p>For comparation, the <code>clang</code> version is:</p>
+<pre><code>callq   inc
+movl    %eax, -8(%rbp)          # 4-byte Spill
+callq   inc
+movl    %eax, -12(%rbp)         # 4-byte Spill
+callq   dec
+movl    %eax, -16(%rbp)         # 4-byte Spill
+callq   dec
+leaq    .L.str, %rdi
+movl    -16(%rbp), %esi         # 4-byte Reload
+movl    %eax, %edx
+movb    $0, %al
+callq   printf</code></pre>
+<p>The understanding of the assembly code is left as an exercise to the reader. It is easy to see that <code>clang</code> uses the stack to store the results.</p>
+<p>Both snippets were obtained using no optimization. As an exercise, try to observe the effect of each optimization level on the generated code and explain it.</p>
+<p>Let’s go on. In the above snippet we have used functions to increment and decrement the global value. Let us rewrite that code:</p>
+<p>{% highlight cpp %} #include <stdio.h> #include <stdlib.h></p>
+<p>int main() { int x = 0; x++; x++; printf(“%d%d”, –x, –x); return 0; } {% endhighlight %}</p>
+<p>Here, we have another suprise:</p>
+<pre><code>$ ./3-gcc 
+00
+$ ./3-clang 
+10</code></pre>
+<p>The <code>gcc</code> version printed only the final value of <code>x</code>, twice. Clearly, there is something happening here. Let’s look closer.</p>
+<p>Looking at the generated assembly, we see that <code>gcc</code> generated this code:</p>
+<pre><code>movl    $0, -4(%rbp)
+addl    $1, -4(%rbp)
+addl    $1, -4(%rbp)
+subl    $1, -4(%rbp)
+subl    $1, -4(%rbp)
+movl    $.LC0, %eax
+movl    -4(%rbp), %edx
+movl    -4(%rbp), %ecx
+movl    %ecx, %esi
+movq    %rax, %rdi
+movl    $0, %eax
+call    printf</code></pre>
+<p>On the other hand, <code>clang</code> generated:</p>
+<pre><code>movl    -8(%rbp), %eax
+addl    $1, %eax
+movl    %eax, -8(%rbp)
+movl    -8(%rbp), %eax
+addl    $1, %eax
+movl    %eax, -8(%rbp)
+movl    -8(%rbp), %eax
+addl    $4294967295, %eax       # imm = 0xFFFFFFFF
+movl    %eax, -8(%rbp)
+movl    -8(%rbp), %ecx
+addl    $4294967295, %ecx       # imm = 0xFFFFFFFF
+movl    %ecx, -8(%rbp)
+movl    %eax, %esi
+movl    %ecx, %edx
+movb    $0, %al
+callq   printf</code></pre>
+<p>One can easily see that <code>gcc</code> did the operations on <code>x</code> before starting the function call sequence while <code>clang</code> interleaved stack operations with operations on <code>x</code> such that the output is the one we would expect. Not to mention the fact that substraction was replaced by addition.</p>
+<p>However, what allows the compilers to do this? Luckily, we have compiled with warnings on:</p>
+<pre><code>$ clang -Wall -Wextra 3.c -g -o 3-clang
+$ gcc -Wall -Wextra 3.c -g -o 3-gcc
+3.c: In function ‘main’:
+3.c:9:24: warning: operation on ‘x’ may be undefined [-Wsequence-point]</code></pre>
+<p>Reading the standard for sequence points we get:</p>
+<blockquote>
+<p>Evaluation of an expression may produce side effects. At certain specified points in the execution sequence called sequence points, all side effects of previous evaluations shall be complete and no side effects of subsequent evaluations shall have taken place.</p>
+</blockquote>
+<p>Reading further, we see that it is an <strong>undefined behaviour</strong> if:</p>
+<blockquote>
+<p>Between two sequence points, an object is modified more than once, or is modified and the prior value is read other than to determine the value to be stored.</p>
+</blockquote>
+<p>Lastly, the standard defines a sequence point to be (among other more complex constructs):</p>
+<ul>
+<li>a call of a function</li>
+<li>end of the first operand or <code>&amp;&amp;</code>, <code>||</code>, <code>?</code> and <code>,</code></li>
+</ul>
+<p>Thus, our side effects in the <code>printf</code> function cause undefined behaviour and unspecified behaviour. Depending on the compiler, the results can be very different. This harms portability and should be avoided.</p>
+<p>Before finishing the article, let’s see another example, using different constructs:</p>
+<p>{% highlight cpp %} #include <stdio.h> #include <stdlib.h> #include <limits.h></p>
+<p>int main() { int x = INT_MAX; void *p = &amp;x;</p>
+<pre><code>printf(&quot;%d %d\n&quot;, x, x + 1);
+printf(&quot;%p %p\n&quot;, p, p + 1);
+
+return 0;</code></pre>
+<p>} {% endhighlight %}</p>
+<p>The possible outputs of this code and the reasoning behind are left as an exercise. Use the comments area to provide solutions for all exercises left in this article.</p>
+<p>As a rule of thumb, try to limit the use of side effects inside a function call. You don’t know when you’ll fall into this trap again.</p>
+
+          </div>
+        </div>
+      </div>
+    </article>
+  </div>
+</div>
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+  /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+  var disqus_shortname = 'rosedutechblog';
+  var disqus_url = window.location.href.split('/').splice(0,3).join("/")+'/a-weird-behaviour-in-c.html';
+  var title = 'A Weird Behaviour Of C';
+  /* * * DON'T EDIT BELOW THIS LINE * * */
+  (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+        </div>
+      </div>
+
+      <footer class="the-footer">
+        <div class="unit-foot">
+          <div class="unit-inner unit-foot-inner">
+            <div class="misc vcard">
+              <h4>Social</h4>
+              <div class="rss">
+                <a href="http://feeds.feedburner.com/rosedu/tech" target="_blank">
+                  <img src="./images/rss.png" alt="Subscribe to RSS Feed" />
+                </a>
+                <a href="http://www.reddit.com/submit?url='+encodeURIComponent(window.location)" target="_blank" onclick="window.location='http://www.reddit.com/submit?url='+encodeURIComponent(window.location); return false">
+                  <img src="./images/reddit.png" alt="Submit to Reddit" />
+                </a>
+                <a href="http://twitter.com/share" class="twitter-share-button" data-count="none" target="_blank">
+                  <img src="./images/twitter.png" alt="Submit to Twitter" />
+                </a>
+              </div>
+
+              <h4>Powered by</h4>
+              <ul>
+                <li class="contact">
+                  <address>
+                    <a class="author fn n" href="http://www.rosedu.org">ROSEdu</a>
+                  </address>
+                </li>
+                <li class="contact">
+                  <address>
+                    <a class="author fn n" href="http://jaspervdj.be/hakyll">Hakyll</a>
+                  </address>
+                </li>
+              </ul>
+
+              <h4>License</h4>
+              <div class="bucket">
+                <span>
+                  <a rel="license" href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons Attribution 3.0 License">
+                    <img src="//i.creativecommons.org/l/by/3.0/88x31.png" alt="License">
+                  </a>
+                </span>
+                <span>
+                  This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/3.0/" class="subfoot">Creative Commons Attribution 3.0 License</a>.
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>

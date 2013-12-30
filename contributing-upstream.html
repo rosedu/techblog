@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--[if lt IE 7]>
+<html class="no-js lt-ie9 lt-ie8 lt-ie7 ie" lang="en"> <![endif]-->
+<!--[if IE 7]>
+<html class="no-js lt-ie9 lt-ie8 ie" lang="en"> <![endif]-->
+<!--[if IE 8]>
+<html class="no-js lt-ie9 ie" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" class="no-js"><!--<![endif]-->
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>ROSEdu Techblog - Contributing Upstream</title>
+    <link rel="stylesheet" href="./css/style.css" type="text/css">
+    <link rel="stylesheet" href="./css/rosedu_links.css" type="text/css">
+    <link rel="stylesheet" href="./css/syntax.css" type="text/css">
+    <!--<link rel="stylesheet" type="text/css" href="/css/default.css"/>-->
+
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-7579199-6']);
+      _gaq.push(['_trackPageview']);
+
+      (function () {
+        var ga = document.createElement('script');
+        ga.type = 'text/javascript';
+        ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  </head>
+
+  <body>
+    <div id="page" class="hentry">
+      <header class="the-header">
+        <div class="unit-head">
+          <div class="unit-inner unit-head-inner">
+            <nav class="nav-global">
+              <ul>
+                <li class="logo"><a href="./" title="Home">ROSEdu Techblog</a></li>
+                <li class="about"><a href="./about.html">About</a></li>
+                <li class="people"><a href="./people.html">People</a></li>
+                <li class="archive"><a href="./archive.html">Archive</a></li>
+                <li class="category"><a href="./tags.html">Tags</a></li>
+              </ul>
+            </nav>
+
+            <hr />
+
+            <nav class="nav-global">
+              <ul>
+                <li class="logo"><a href="./archive.html" title="Archive">Latest Posts</a></li>
+                <!--TODO-->
+                <li><a href="./shell-tips-and-tricks-for-file-editing.html">Shell tips and tricks for log files</a></li>
+                <li><a href="./git-is-the-answer-3.html">Git Is The Answer 3/3</a></li>
+                <li><a href="./git-is-the-answer-2.html">Git Is The Answer 2/3</a></li>
+              </ul>
+            </nav>
+          </div><!-- unit-inner -->
+        </div><!-- unit-head -->
+      </header>
+
+      <div class="body" role="main">
+        <div class="unit-body">
+          <div class="unit-inner unit-body-inner">
+  <div class="entry-content">
+    <article class="unit-article layout-post">
+      <div class="unit-inner unit-article-inner">
+        <div class="content">
+          <div class="bd">
+            <header>
+              <div class="unit-head">
+                <div class="unit-inner unit-head-inner">
+                  <h1 class="h2 entry-title">
+                    <a class="post_title" href="./contributing-upstream.html" title="Contributing Upstream">Contributing Upstream</a>
+                  </h1>
+                </div><!-- unit-inner -->
+              </div><!-- unit-head -->
+            </header>
+
+            <span class="date">
+            <span class="published">Published on November 28, 2011</span>
+            by
+            <span class="author">Mihai</span>
+            </span>
+
+            <p>Suppose your favorite application or a library you are using has a bug. You find that the code is open source and are happy because of this. Being a programmer yourself, you know that you can fix the bug and send a patch with the fix to the maintainers. But how do you do this? This article will provide a short walkthrough for this task using as an example the Linux kernel. Different projects use different source version control systems. Because this article works on the kernel tree, I am going to use git as an example.</p>
+<p>So, the first thing to do is to clone the project’s repository. This is to ensure that you are working on the latest source – maybe the bug was fixed before and your operating system’s package manager is behind on updates. For our kernel example, we will be cloning the <code>net-next</code> tree since this is where our final patch will land – from there it would be applied to the Linux kernel itself but this process is not the subject of this article.</p>
+<pre><code>$ git clone
+git://git.kernel.org/pub/scm/linux/kernel/git/davem/net-next.git
+Cloning into 'net-next'...
+remote: Counting objects: 2241130, done.
+remote: Compressing objects: 100% (350702/350702), done.
+remote: Total 2241130 (delta 1873243), reused 2236736 (delta 1869251)
+Receiving objects: 100% (2241130/2241130), 442.07 MiB | 947 KiB/s,
+done.
+Resolving deltas: 100% (1873243/1873243), done.</code></pre>
+<p>Next, create a new branch on which to work and checkout it. All our work will be done there and we will use this branch later when constructing the patch to be sent upstream.</p>
+<pre><code>$ cd net-next/
+$ git branch speedup_proc_net_dev
+$ git checkout speedup_proc_net_dev
+Switched to branch 'speedup_proc_net_dev'</code></pre>
+<p>Now, do your work, change the source, fix the bug or develop the improvement. Be sure to follow the coding standards of the project you are contributing to. Commit often as told in the <a href="http://techblog.rosedu.org/git-good-practices.html">git</a> article. At the end of the task, when everything is solved and you are ready to submit the patch, you can rebase the commits into a single one or a set of commits depending on their content – it is better to have a single logical change per commit, also your patch will have an increased chance of being accepted if each commit is small. When rebasing your commits be sure to have a relevant commit message (as per <a href="http://techblog.rosedu.org/git-good-practices.html">git</a> article for example). For the Linux kernel there is a standard even in the commit message. Start with a single line detailing the component you’re patching and a short description of the commit then – after an empty line – write a longer message detailing what you have done. Add relevant information about the problem that you solved, and – if possible – tests made when developing your solution. Also add a <code>Signed-off-by</code> line. For example, the following is an example of a good commit message.</p>
+<pre><code>    dev: use name hash for dev_seq_ops
+
+    Instead of using the dev-&gt;next chain and trying to resync at each call to
+    dev_seq_start, use the name hash, keeping the bucket and the offset in
+    seq-&gt;private field.
+
+    Tests revealed the following results for ifconfig &gt; /dev/null
+	* 1000 interfaces:
+		* 0.114s without patch
+		* 0.089s with patch
+	* 3000 interfaces:
+		* 0.489s without patch
+		* 0.110s with patch
+	* 5000 interfaces:
+		* 1.363s without patch
+		* 0.250s with patch
+	* 128000 interfaces (other setup):
+		* ~100s without patch
+		* ~30s with patch
+
+    Signed-off-by: Mihai Maruseac &lt;mmaruseac@ixiacom.com&gt;</code></pre>
+<p>Next step is to create the patch files. We do this by switching to the <code>master</code> branch and doing a <code>git format-patch</code> operation.</p>
+<pre><code>$ git checkout master 
+Switched to branch 'master'
+$ git format-patch master..speedup_proc_net_dev 
+0001-Speedup-proc-net-dev-filling.patch</code></pre>
+<p>As you see, in our case a single file was created since our <code>speedup_proc_net_dev</code> branch was only a commit ahead of the <code>master</code> branch (we previously rebased everything into a single commit). This will be the file containing our patch, the file we will send upstream. But, before going there we still have a lot of things to do.</p>
+<p>First of all, we will need to check our patch for coding style mistakes. In the case of the Linux kernel there is a script doing that and we will use it. For other projects, we may need to do this step manually.</p>
+<pre><code>$ ./scripts/checkpatch.pl 0001-Speedup-proc-net-dev-filling.patch 
+total: 0 errors, 0 warnings, 122 lines checked
+
+0001-Speedup-proc-net-dev-filling.patch has no obvious style problems and is ready for submission.</code></pre>
+<p>If there are problems we will have to go back to our branch, fix them, rebase all commits and recreate the patches with <code>git format-patch</code>. When everything is ready to be submitted we can send the patch to the developers via an email. In most projects you will simply create a bug report and attach the fix there and you are done. But since the Linux kernel is more complex we will have to use the email path presented in the following paragraphs.</p>
+<p>First of all, we have to find where to send the patch. We have another script which can be used.</p>
+<pre><code>$ ./scripts/get_maintainer.pl 0001-Speedup-proc-net-dev-filling.patch
+&quot;David S. Miller&quot; &lt;davem@davemloft.net&gt; (maintainer:NETWORKING [GENERAL],commit_signer:118/147=80%)
+Eric Dumazet &lt;eric.dumazet@gmail.com&gt; (commit_signer:32/147=22%)
+&quot;Michał Mirosław&quot; &lt;mirq-linux@rere.qmqm.pl&gt; (commit_signer:21/147=14%)
+Jiri Pirko &lt;jpirko@redhat.com&gt; (commit_signer:15/147=10%)
+Ben Hutchings &lt;bhutchings@solarflare.com&gt; (commit_signer:9/147=6%)
+netdev@vger.kernel.org (open list:NETWORKING [GENERAL])
+linux-kernel@vger.kernel.org (open list)</code></pre>
+<p>The addresses given as output are those where we will send our email. But, before sending the first email, we will have to configure <code>git send-email</code>. For example, adding the following lines to <code>~/.gitconfig</code> will ensure that you can use Gmail as a SMTP server for sending the patch email.</p>
+<pre><code>[sendemail]
+	smtpencryption = tls
+	smtpserver = smtp.gmail.com
+	smtpuser = yourname@gmail.com
+	smtpserverport = 587</code></pre>
+<p>Now, we can send the email. We will have to manually fill in the <code>--to</code> and <code>--cc</code> options or we can use a list of <code>sed</code> commands as suggested by the <a href="http://dev.chromium.org/chromium-os/how-tos-and-troubleshooting/kernel-faq#TOC-How-do-I-send-a-patch-upstream-">Chromium</a> wiki. In our case we will do it manually just to exemplify all steps, in real life it will be better to use scripts whenever it is possible.</p>
+<pre><code>git send-email --to=netdev@vger.kernel.org \
+&gt; --cc=linux-kernel@vger.kernel.org \
+&gt; --cc=... 0001-Speedup-proc-net-dev-filling.patch
+0001-Speedup-proc-net-dev-filling.patch
+Who should the emails appear to be from? [Mihai Maruseac &lt;mihai.maruseac@rosedu.org&gt;] 
+Emails will be sent from: Mihai Maruseac &lt;mihai.maruseac@rosedu.org&gt;
+Message-ID to be used as In-Reply-To for the first email?
+....</code></pre>
+<p>After several more lines of output your mail will be sent. I have responded with the default entries to the above questions but the last one is very relevant, as we will see next.</p>
+<p>After the mail is sent, it will appear on <a href="http://patchwork.ozlabs.org/project/netdev/list/">patchwork</a> and on the mailing lists. You will wait until someone looks through your mail and analyzes your patch. Then, the patch can be applied or someone can report some problems to you. If there are some problems, you will go back and solve them and will resend the patch using the above methodology. This time, you will answer the Message-ID question with the ID taken from the first email. In our case, the <a href="http://patchwork.ozlabs.org/patch/119174/">patch</a> was not accepted from the start and we had to reiterate. Thus, we answered that question with the ID taken from the <a href="http://patchwork.ozlabs.org/patch/119174/">initial patch</a>: <code>&lt;1318412950-22014-1-git-send-email-mmaruseac@ixiacom.com&gt;</code>. Until the <a href="http://patchwork.ozlabs.org/patch/120948/">final patch</a> was accepted I needed to send several versions.</p>
+<p>Even though this lasted a whole week, the feeling I got when it was finally accepted was awesome. You will feel it too after sending the first few patches.</p>
+<p>As a recommended link before the end of the article, make sure you listen the <a href="http://www.youtube.com/watch?v=LLBrBBImJt4">YouTube</a> video of Greg KH about contributing upstream.</p>
+
+          </div>
+        </div>
+      </div>
+    </article>
+  </div>
+</div>
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+  /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+  var disqus_shortname = 'rosedutechblog';
+  var disqus_url = window.location.href.split('/').splice(0,3).join("/")+'/contributing-upstream.html';
+  var title = 'Contributing Upstream';
+  /* * * DON'T EDIT BELOW THIS LINE * * */
+  (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+        </div>
+      </div>
+
+      <footer class="the-footer">
+        <div class="unit-foot">
+          <div class="unit-inner unit-foot-inner">
+            <div class="misc vcard">
+              <h4>Social</h4>
+              <div class="rss">
+                <a href="http://feeds.feedburner.com/rosedu/tech" target="_blank">
+                  <img src="./images/rss.png" alt="Subscribe to RSS Feed" />
+                </a>
+                <a href="http://www.reddit.com/submit?url='+encodeURIComponent(window.location)" target="_blank" onclick="window.location='http://www.reddit.com/submit?url='+encodeURIComponent(window.location); return false">
+                  <img src="./images/reddit.png" alt="Submit to Reddit" />
+                </a>
+                <a href="http://twitter.com/share" class="twitter-share-button" data-count="none" target="_blank">
+                  <img src="./images/twitter.png" alt="Submit to Twitter" />
+                </a>
+              </div>
+
+              <h4>Powered by</h4>
+              <ul>
+                <li class="contact">
+                  <address>
+                    <a class="author fn n" href="http://www.rosedu.org">ROSEdu</a>
+                  </address>
+                </li>
+                <li class="contact">
+                  <address>
+                    <a class="author fn n" href="http://jaspervdj.be/hakyll">Hakyll</a>
+                  </address>
+                </li>
+              </ul>
+
+              <h4>License</h4>
+              <div class="bucket">
+                <span>
+                  <a rel="license" href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons Attribution 3.0 License">
+                    <img src="//i.creativecommons.org/l/by/3.0/88x31.png" alt="License">
+                  </a>
+                </span>
+                <span>
+                  This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/3.0/" class="subfoot">Creative Commons Attribution 3.0 License</a>.
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>

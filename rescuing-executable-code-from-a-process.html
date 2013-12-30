@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--[if lt IE 7]>
+<html class="no-js lt-ie9 lt-ie8 lt-ie7 ie" lang="en"> <![endif]-->
+<!--[if IE 7]>
+<html class="no-js lt-ie9 lt-ie8 ie" lang="en"> <![endif]-->
+<!--[if IE 8]>
+<html class="no-js lt-ie9 ie" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" class="no-js"><!--<![endif]-->
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>ROSEdu Techblog - Rescuing executable code from a process</title>
+    <link rel="stylesheet" href="./css/style.css" type="text/css">
+    <link rel="stylesheet" href="./css/rosedu_links.css" type="text/css">
+    <link rel="stylesheet" href="./css/syntax.css" type="text/css">
+    <!--<link rel="stylesheet" type="text/css" href="/css/default.css"/>-->
+
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-7579199-6']);
+      _gaq.push(['_trackPageview']);
+
+      (function () {
+        var ga = document.createElement('script');
+        ga.type = 'text/javascript';
+        ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  </head>
+
+  <body>
+    <div id="page" class="hentry">
+      <header class="the-header">
+        <div class="unit-head">
+          <div class="unit-inner unit-head-inner">
+            <nav class="nav-global">
+              <ul>
+                <li class="logo"><a href="./" title="Home">ROSEdu Techblog</a></li>
+                <li class="about"><a href="./about.html">About</a></li>
+                <li class="people"><a href="./people.html">People</a></li>
+                <li class="archive"><a href="./archive.html">Archive</a></li>
+                <li class="category"><a href="./tags.html">Tags</a></li>
+              </ul>
+            </nav>
+
+            <hr />
+
+            <nav class="nav-global">
+              <ul>
+                <li class="logo"><a href="./archive.html" title="Archive">Latest Posts</a></li>
+                <!--TODO-->
+                <li><a href="./shell-tips-and-tricks-for-file-editing.html">Shell tips and tricks for log files</a></li>
+                <li><a href="./git-is-the-answer-3.html">Git Is The Answer 3/3</a></li>
+                <li><a href="./git-is-the-answer-2.html">Git Is The Answer 2/3</a></li>
+              </ul>
+            </nav>
+          </div><!-- unit-inner -->
+        </div><!-- unit-head -->
+      </header>
+
+      <div class="body" role="main">
+        <div class="unit-body">
+          <div class="unit-inner unit-body-inner">
+  <div class="entry-content">
+    <article class="unit-article layout-post">
+      <div class="unit-inner unit-article-inner">
+        <div class="content">
+          <div class="bd">
+            <header>
+              <div class="unit-head">
+                <div class="unit-inner unit-head-inner">
+                  <h1 class="h2 entry-title">
+                    <a class="post_title" href="./rescuing-executable-code-from-a-process.html" title="Rescuing executable code from a process">Rescuing executable code from a process</a>
+                  </h1>
+                </div><!-- unit-inner -->
+              </div><!-- unit-head -->
+            </header>
+
+            <span class="date">
+            <span class="published">Published on November 18, 2011</span>
+            by
+            <span class="author">Alexandru Juncu</span>
+            </span>
+
+            <p>A <strong>process</strong> is an instance of a binary executable file. This means that when you ‘run’ a binary, the code from the storage media is copied into the system’s memory, more precisely, into the process’ <strong>virtual memory space</strong>. From a single binary, several processes can be spawned.</p>
+<p>The virtual memory of a process, made up of pages, is mapped to several things, like shared objects(libraries), shared memory, stack and heap space, read-only space and executable space. A good way to view what is mapped to what is with the <strong>pmap</strong> utility, or by just looking in the <em>/proc</em> directory hierarchy. The <em>/proc/<span class="math"><em>P</em><em>I</em><em>D</em> / <em>m</em><em>a</em><em>p</em><em>s</em><sub><em>f</em></sub><em>i</em><em>l</em><em>e</em>(<em>w</em><em>h</em><em>e</em><em>r</em><em>e</em></span>PID is the process ID of the targeted process) has the page mappings. Also in </em>/proc/$PID_, you can find other useful files, like the <em>exe</em> file that contains a symlink to the executable or the <em>fd</em> directory that contains symlinks to all the files opened as <strong>file descriptors</strong> in a process.</p>
+<p>Except useful information, what can we get out of the procfs? Here is a situation that has been known to happen. You are in a console, with your bash shell, and you manage to delete some important files, like /bin/bash. Without that executable, you cannot run new shells and on a restart, your system will be inaccessible. What can you do?</p>
+<p>The code of your bash is no longer on the hard drive, but it is in the virtual memory of the process you are currently running. You can find out what’s the PID of the current shell instance using *<br /><span class="math"> * <em>e</em><em>n</em><em>v</em><em>i</em><em>r</em><em>o</em><em>m</em><em>e</em><em>n</em><em>t</em><em>v</em><em>a</em><em>r</em><em>i</em><em>a</em><em>b</em><em>l</em><em>e</em>. <em>K</em><em>n</em><em>o</em><em>w</em><em>i</em><em>n</em><em>g</em><em>t</em><em>h</em><em>a</em><em>t</em>, <em>y</em><em>o</em><em>u</em><em>c</em><em>a</em><em>n</em><em>c</em><em>d</em><em>t</em><em>o</em><em>t</em><em>h</em><em>e</em><sub> / </sub><em>p</em><em>r</em><em>o</em><em>c</em> / </span><br />_ and access the content of the <em>exe</em> file there.</p>
+<p>Although the exe <em>file</em> is shown as a link to the original file that is now deleted (thus the link should be broken), if you <strong>cat</strong> it, you will get its binary content. In fact, all the original binary file. Here is the step by step process:</p>
+<pre><code>/bin # md5sum bash
+e116963c760727bf9067e1cb96bbf7d3  bash
+/bin # rm bash
+/bin # echo $$
+5051
+/bin # cd /proc/$$
+/proc/5051 # ls -la exe
+lrwxrwxrwx 1 root root 0 2011-11-15 23:47 exe -&gt; /bin/bash (deleted)
+/proc/5051 # cat maps
+[snip]
+00f9e000-00f9f000 rw-p 0001c000 08:01 263123     /lib/i386-linux-gnu/ld-2.13.so
+08048000-0810c000 r-xp 00000000 08:01 284760     /bin/bash (deleted)
+0810c000-0810d000 r--p 000c3000 08:01 284760     /bin/bash (deleted)
+0810d000-08112000 rw-p 000c4000 08:01 284760     /bin/bash (deleted)
+[snip]
+
+/proc/5051 # cat exe&gt;/bin/bash_rescued
+/proc/5051 # cd -
+/bin # md5sum bash_rescued
+e116963c760727bf9067e1cb96bbf7d3  bash_rescued
+/bin # chmod +x bash_rescured
+/bin # mv bash_rescured bash</code></pre>
+<p>What other things can we rescue? How about a file that was opened by a process? For example, a video file, opened by a player:</p>
+<pre><code>alexj@hathor ~ $ md5sum movie.ogv
+9f701e645fd55e1ae8d35b7671002881  movie.ogv
+alexj@hathor ~ $ vlc movie.ogv &amp;
+[1] 6487
+alexj@hathor ~ $ cd /proc/6487/fd
+alexj@hathor /proc/6487/fd $ ls -la |grep movie
+lr-x------ 1 alexj alexj 64 2011-11-16 00:11 23 -&gt; /home/alexj/movie.ogv
+alexj@hathor /proc/6487/fd $ rm /home/alexj/movie.ogv
+alexj@hathor /proc/6487/fd $ ls -la |grep movie
+lr-x------ 1 alexj alexj 64 2011-11-16 00:11 23 -&gt; /home/alexj/movie.ogv (deleted)
+alexj@hathor /proc/6487/fd $ cp 23 /home/alexj/movie_rescued.ogv
+alexj@hathor /proc/6487/fd $ md5sum /home/alexj/movie_rescued.ogv
+9f701e645fd55e1ae8d35b7671002881  /home/alexj/movie_rescued.ogv</code></pre>
+<p>These things are possible because the instances of the files are still kept and used by the kernel. The <strong>VFS</strong> (the Virtual File System) still has references to the inodes of the files. They won’t be released until the processes will be finished.</p>
+<p>Thanks to razvand and ddvlad for the idea of this article.</p>
+
+          </div>
+        </div>
+      </div>
+    </article>
+  </div>
+</div>
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+  /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+  var disqus_shortname = 'rosedutechblog';
+  var disqus_url = window.location.href.split('/').splice(0,3).join("/")+'/rescuing-executable-code-from-a-process.html';
+  var title = 'Rescuing executable code from a process';
+  /* * * DON'T EDIT BELOW THIS LINE * * */
+  (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+        </div>
+      </div>
+
+      <footer class="the-footer">
+        <div class="unit-foot">
+          <div class="unit-inner unit-foot-inner">
+            <div class="misc vcard">
+              <h4>Social</h4>
+              <div class="rss">
+                <a href="http://feeds.feedburner.com/rosedu/tech" target="_blank">
+                  <img src="./images/rss.png" alt="Subscribe to RSS Feed" />
+                </a>
+                <a href="http://www.reddit.com/submit?url='+encodeURIComponent(window.location)" target="_blank" onclick="window.location='http://www.reddit.com/submit?url='+encodeURIComponent(window.location); return false">
+                  <img src="./images/reddit.png" alt="Submit to Reddit" />
+                </a>
+                <a href="http://twitter.com/share" class="twitter-share-button" data-count="none" target="_blank">
+                  <img src="./images/twitter.png" alt="Submit to Twitter" />
+                </a>
+              </div>
+
+              <h4>Powered by</h4>
+              <ul>
+                <li class="contact">
+                  <address>
+                    <a class="author fn n" href="http://www.rosedu.org">ROSEdu</a>
+                  </address>
+                </li>
+                <li class="contact">
+                  <address>
+                    <a class="author fn n" href="http://jaspervdj.be/hakyll">Hakyll</a>
+                  </address>
+                </li>
+              </ul>
+
+              <h4>License</h4>
+              <div class="bucket">
+                <span>
+                  <a rel="license" href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons Attribution 3.0 License">
+                    <img src="//i.creativecommons.org/l/by/3.0/88x31.png" alt="License">
+                  </a>
+                </span>
+                <span>
+                  This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/3.0/" class="subfoot">Creative Commons Attribution 3.0 License</a>.
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>

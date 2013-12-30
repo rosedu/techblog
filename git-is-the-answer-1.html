@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--[if lt IE 7]>
+<html class="no-js lt-ie9 lt-ie8 lt-ie7 ie" lang="en"> <![endif]-->
+<!--[if IE 7]>
+<html class="no-js lt-ie9 lt-ie8 ie" lang="en"> <![endif]-->
+<!--[if IE 8]>
+<html class="no-js lt-ie9 ie" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" class="no-js"><!--<![endif]-->
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>ROSEdu Techblog - Git Is The Answer 1/3</title>
+    <link rel="stylesheet" href="./css/style.css" type="text/css">
+    <link rel="stylesheet" href="./css/rosedu_links.css" type="text/css">
+    <link rel="stylesheet" href="./css/syntax.css" type="text/css">
+    <!--<link rel="stylesheet" type="text/css" href="/css/default.css"/>-->
+
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-7579199-6']);
+      _gaq.push(['_trackPageview']);
+
+      (function () {
+        var ga = document.createElement('script');
+        ga.type = 'text/javascript';
+        ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  </head>
+
+  <body>
+    <div id="page" class="hentry">
+      <header class="the-header">
+        <div class="unit-head">
+          <div class="unit-inner unit-head-inner">
+            <nav class="nav-global">
+              <ul>
+                <li class="logo"><a href="./" title="Home">ROSEdu Techblog</a></li>
+                <li class="about"><a href="./about.html">About</a></li>
+                <li class="people"><a href="./people.html">People</a></li>
+                <li class="archive"><a href="./archive.html">Archive</a></li>
+                <li class="category"><a href="./tags.html">Tags</a></li>
+              </ul>
+            </nav>
+
+            <hr />
+
+            <nav class="nav-global">
+              <ul>
+                <li class="logo"><a href="./archive.html" title="Archive">Latest Posts</a></li>
+                <!--TODO-->
+                <li><a href="./shell-tips-and-tricks-for-file-editing.html">Shell tips and tricks for log files</a></li>
+                <li><a href="./git-is-the-answer-3.html">Git Is The Answer 3/3</a></li>
+                <li><a href="./git-is-the-answer-2.html">Git Is The Answer 2/3</a></li>
+              </ul>
+            </nav>
+          </div><!-- unit-inner -->
+        </div><!-- unit-head -->
+      </header>
+
+      <div class="body" role="main">
+        <div class="unit-body">
+          <div class="unit-inner unit-body-inner">
+  <div class="entry-content">
+    <article class="unit-article layout-post">
+      <div class="unit-inner unit-article-inner">
+        <div class="content">
+          <div class="bd">
+            <header>
+              <div class="unit-head">
+                <div class="unit-inner unit-head-inner">
+                  <h1 class="h2 entry-title">
+                    <a class="post_title" href="./git-is-the-answer-1.html" title="Git Is The Answer 1/3">Git Is The Answer 1/3</a>
+                  </h1>
+                </div><!-- unit-inner -->
+              </div><!-- unit-head -->
+            </header>
+
+            <span class="date">
+            <span class="published">Published on March 18, 2013</span>
+            by
+            <span class="author">Răzvan Deaconescu and Mihai Maruseac</span>
+            </span>
+
+            <p>We focus again on <a href="http://git-scm.com/" title="Git">git</a>. This time, we will present some real-world scenarios where knoweldge of advance git topics helps. In order to keep down the length of the article, our presentation is divided in 3 parts, this being the first one of these.</p>
+<h2 id="user-setup">User Setup</h2>
+<p>After installing Git and before doing any commits into a repository, you must setup your user information and preferences. It is common to make a global configuration, using <code>git config</code>:</p>
+<pre><code>git config --global user.name &quot;Razvan Deaconescu&quot;
+git config --global user.email &quot;razvan.deaconescu@cs.pub.ro&quot;
+git config --global color.ui auto</code></pre>
+<p>You should make this setup for each account you are using. At the minimum, you are going to use it at least for your laptop or workstation.</p>
+<p>Global configuration is stored in <code>~/.gitconfig</code>.</p>
+<p>In case you want to use another username within a repository, use the <code>git config</code> command in that repository, but without the <code>--global</code> option:</p>
+<pre><code>cd /path/to/repository.git
+git config user.email &quot;razvan@rosedu.org&quot;</code></pre>
+<p>In the above setup, I have only updated the email address for the repository. The other options used are picked from the global configuration.</p>
+<p>Per repository configuration is stored in <code>/path/to/repository.git/.config</code>.</p>
+<h2 id="handling-line-endings-like-a-pro">Handling Line Endings Like a Pro</h2>
+<p>From time to time it is possible that you will have to work with people working on a different operating system. It is no problem if both of you are using systems with similar line-endings (<code>CRLF</code> for Windows, <code>LF</code> for Linux/OSX). In all other cases, it might be that the default Git options used for this don’t work for you.</p>
+<p>You can configure Git globally to handle line-endings if you set the <code>core.autocrlf</code> option in your <code>~/.gitconfig</code>. However, the best settings are different on different platforms.</p>
+<p>For Windows you would use</p>
+<pre><code>git config --global core.autocrlf true</code></pre>
+<p>While for Linux/OSX you would use</p>
+<pre><code>git config --global core.autocrlf input</code></pre>
+<p>You must remember that these changes are valid only for you, and for the operating systems which have these settings configured. To have the settings travel with the repository you have to go a different path: you have to create a <code>.gitattributes</code> file with a content similar to</p>
+<pre><code>* text=auto
+*.c text
+*.h text
+*.sln text eol=crlf
+*.png binary
+*.jpg binary</code></pre>
+<p>The first line tells git to handle the line endings of all <strong>text</strong> files automatically. The second two lines declare that <code>.c</code> and <code>.h</code> files are to be treated as text (thus their line endings are to be converted to the proper format). The <code>.sln</code> line uses a new parameter (<code>eol=crlf</code>) which tells Git to normalize files on commit but to always checkout them with <code>CRLF</code> endings. Use this for files which need to have <code>CRLF</code> endings, even on Linux. A similar settings exists for <code>LF</code> endings.</p>
+<p>Finally, there are cases when you need to commit binary files into the repository. In this cases, changing <code>LF</code> characters to <code>CRLF</code> or the reverse will break the binary. You have to tell Git not to handle them, thus you’ll specify <code>binary</code> in <code>.gitattributes</code> file.</p>
+<p>If the repository already contained some files commited, after creating the <code>.gitattributes</code> file each of you will have files show up as modified, even if they haven’t changed. This is because of the line endings changes which was not followed by repository renormalization. To solve this, you have to do the following steps (on a <strong>clean</strong> repository, otherwise changes will be lost).</p>
+<p>First, remove everything from the index and reset both the index and the working directory (the risky part):</p>
+<pre><code>git rm --cached -r .
+git reset --hard</code></pre>
+<p>Finally, stage all files which were normalized and create a normalizing commit</p>
+<pre><code>git add .
+git commit -m &quot;Normalized line endings&quot;</code></pre>
+<p>From now on, Git will properly do the job of handling line endings for you.</p>
+<h2 id="how-to-create-and-setup-a-local-repo">How to Create and Setup a Local Repo</h2>
+<p>One of the best features of Git is the ability to rapidly create and use local repositories. You don’t have to create a repository and then clone it locally as you do in Subversion. You just create or access a directory and then initialize it as a Git repository. Changes to files in the directory will be able to be handled as commits.</p>
+<p>Assuming I am working on a personal project, the first thing I would do is create a directory and initialize it as a Git repository. I recommend you append the <code>.git</code> extension:</p>
+<pre><code>mkdir ~/projects/troscot.git
+git init ~/projects/troscot.git</code></pre>
+<p>The first thing you add in a repository is a <code>.gitignore</code> file stating the files you wish to ignore. Such a sample file is <a href="https://github.com/razvand/snippets/blob/master/config/gitignore" title="gitignore file">here</a>.</p>
+<p>You just create the <code>.gitignore</code> file in the repository root and then add it to the repository:</p>
+<pre><code>vi .gitignore
+git add .gitignore
+git commit -m 'Initial commit. Add global .gitignore file'</code></pre>
+<p>After this, one would create, add and commit any files required.</p>
+<p>Another use case is adding repository support for existing directories. This may happen when there is some pieces of code you already have in place and want to place in a repository or, my personal use case, adding repository support to configuration directories. For example, if one would want to use versioning for Apache2 configuration files, one would issue (as <code>root</code>):</p>
+<pre><code>cd /etc/apache2/
+git init .
+vi .gitignore
+git add .gitignore
+git commit -m 'Initial commit. Add global .gitignore file'
+git add .
+git status
+git commit -m 'Initial commit. Add all config files to repository'</code></pre>
+<p>The above commands add a <code>.gitignore</code> file in the repository and then add all Apache2 configuration files. The <code>git status</code> command is always necessary after a <code>git add</code> command to make sure you are committing the right stuff; you may need to update your <code>.gitignore</code> file in case you’ve missed ignoring certain types of files.</p>
+<h2 id="i-want-to-tweak-a-commit">I Want To Tweak A Commit</h2>
+<p>From time to time you realize that you have made something wrong with a commit. Either you forgot to add a good, descriptive <a href="http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html" title="A Note About Git Commit Messages">message</a> or you have really screwed up some parts of the committed code. Maybe you have some compile errors to fix or your commit does too many things at once.</p>
+<p>Anyway, for all of these cases, Git allows you to rewrite the commit at will. You can add changes of tweak metadata (author name, commit message, etc.) just by issuing the needed commands and ending with</p>
+<pre><code>git commit --amend</code></pre>
+<p>However, this works only for the tip of the current branch. If you want to change a commit which is not HEAD, you’ll need to do a rebase process. This will temporarily move HEAD to the commit you want to change, allowing you to use the above procedure. It is best to start the rebase interactively, so that you can have great control over what it does:</p>
+<pre><code>git rebase -i cf80a4ad6d64bff2</code></pre>
+<p>The above will open your editor (configurable via <code>git config</code>) with a content similar to the following one (you can see it on the disk if you really want to, it is in the repository, in <code>.git/rebase/git-rebase-todo</code>)</p>
+<pre><code>pick 899e7e6 Add Silviu's contributions.
+pick 02f1ef9 Add contribs to Cristian Mocanu.
+pick 98194cd Add contributions of Andru Gheorghiu.
+pick 2931f1d Add 2 contributions of spopescu.
+
+# Rebase cf80a4a..2931f1d onto cf80a4a
+#
+# Commands:
+#  p, pick = use commit
+#  r, reword = use commit, but edit the commit message
+#  e, edit = use commit, but stop for amending
+#  s, squash = use commit, but meld into previous commit
+#  f, fixup = like &quot;squash&quot;, but discard this commit's log message
+#  x, exec = run command (the rest of the line) using shell
+#
+# These lines can be re-ordered; they are executed from top to bottom.
+#
+# If you remove a line here THAT COMMIT WILL BE LOST.
+#
+# However, if you remove everything, the rebase will be aborted.
+#
+# Note that empty commits are commented out</code></pre>
+<p>As you can see, you can select an action to be applied for each one of the commits. If you only want to edit the commit message, you will change <code>pick</code> with <code>reword</code> (or <code>r</code>). If you want to edit the content of the commit you will select <code>edit</code>. You can even reorder commits, squash them one a bigger one, etc.</p>
+<p>For now, we will focus on editing the contents of one commit. We will change last line in <code>edit</code>.</p>
+<pre><code>e 2931f1d Add 2 contributions of spopescu.</code></pre>
+<p>The rebase process continues and tries to do what we’ve said it to do. In our case, it will stop at commit <code>2931f1d</code> to allow editing it:</p>
+<pre><code>Stopped at 2931f1d... Add 2 contributions of spopescu.
+You can amend the commit now, with
+
+    git commit --amend
+
+Once you are satisfied with your changes, run
+
+    git rebase --continue</code></pre>
+<p>Now, you can add or remove content, change the commit as you want, etc. Then, you continue the rebase process by running <code>git commit --amend</code> followed by <code>git rebase --continue</code>. Both of them are needed.</p>
+<p>If you decide that the commit is ok and that the rebase was not neeeded, you can always abort it with <code>git rebase --abort</code>.</p>
+<p>Finally, keep in mind that <strong>it is not recommended to change commits once they have been pushed to another repository.</strong></p>
+<h2 id="but-my-commit-is-too-big">But My Commit Is Too Big</h2>
+<p>From time to time, you will have some big changes to commit. However, the case when all of them are atomic and cannot be split into several shorter components is very rare. Let’s take for our example a LaTeX Beamer file. You can commit each section separately or even each slide, as you see fit. But how can you split the commit?</p>
+<p>Actually, you can use two commands for this. One is <code>git add -i</code> to allow interactive adding of parts of commits. The second one is to use <code>git add -p</code> which is more simpler.</p>
+<p>Running <code>git add -p</code> will present you with the first chunk of changes to be committed. It might be the case that this is chunk is atomic or not. Git offers this question after presenting the hunk:</p>
+<pre><code>Stage this hunk [y,n,q,a,d,/,e,?]?</code></pre>
+<p>Selecting <code>?</code> will print the help text and the chunk afterwards. The help text is</p>
+<pre><code>y - stage this hunk
+n - do not stage this hunk
+q - quit; do not stage this hunk nor any of the remaining ones
+a - stage this hunk and all later hunks in the file
+d - do not stage this hunk nor any of the later hunks in the file
+g - select a hunk to go to
+/ - search for a hunk matching the given regex
+j - leave this hunk undecided, see next undecided hunk
+J - leave this hunk undecided, see next hunk
+k - leave this hunk undecided, see previous undecided hunk
+K - leave this hunk undecided, see previous hunk
+s - split the current hunk into smaller hunks
+e - manually edit the current hunk
+? - print help</code></pre>
+<p>Now, you can use these options to split your commit or edit it. Editing is the most advanced feature of <code>git add -p</code>, the only one who needs more explaining. So let’s choose this.</p>
+<pre><code>Stage this hunk [y,n,q,a,d,/,e,?]? e</code></pre>
+<p>Again, we will be presented with an editor to edit the contents of <code>.git/addp-hunk-edit.diff</code>. The comment at the end of the file is self-explanatory:</p>
+<pre><code># To remove '-' lines, make them ' ' lines (context).
+# To remove '+' lines, delete them.
+# Lines starting with # will be removed.
+#
+# If the patch applies cleanly, the edited hunk will immediately be
+# marked for staging. If it does not apply cleanly, you will be given
+# an opportunity to edit again. If all lines of the hunk are removed,
+# then the edit is aborted and the hunk is left unchanged.</code></pre>
+<p>The <code>-</code> lines are lines which will be removed by the commit and the <code>+</code> ones will be added. Thus, if you remove a <code>+</code> line, the commit will not contain the addition and if you mark one <code>-</code> line as context it won’t be removed by the commit.</p>
+<p>Since <code>git add -p</code> is a powerful feature, it is advisable to have it added as an alias, via <code>git config</code>. For example, I have <code>git gap</code> do the same thing as <code>git alias -p</code>. Then, it is in my muscles’ memory to type <code>git gap</code> when adding changes for a new commit.</p>
+<h2 id="i-dont-want-this-commit-anymore">I Don’t Want This Commit Anymore</h2>
+<p>There is often the case that you want to rollback a change you’ve done. As long as everything is happening locally (i.e. you haven’t pushed to a remote repository), Git offers the proper tools to handle this.</p>
+<p>Assume you’ve updated a file but you want to discard those changes. You’ve just done some tests and feel those are not required and want to get back to the initial version. Then you would issue</p>
+<pre><code>git checkout file-name</code></pre>
+<p>This above command restores the file to the repository version. It’s very useful in case you make a mess in a local file.</p>
+<p>A quite often situation is preparing to make a commit. When you do that you use one or more <code>git add</code> commands to prepare the commit; sometimes you use a <code>git add .</code> command that gives you little control on what to add to the staging area. You find out that you’ve added too much content to the staging area. In order to remove that extra content from the staging area (and leave it in the working directory), one issues:</p>
+<pre><code>git reset HEAD file-name</code></pre>
+<p>If you want to start building your commit from the beginning and discard all information in the staging area, you would use:</p>
+<pre><code>git reset HEAD</code></pre>
+<p>When leaving out the file name, all content from the staging area is discarded.</p>
+<p>Consider that you’ve done some bad commits and you’ve just found out. The last two commits are really bad and need to be dropped. As long as you haven’t pushed anything, you can rework those commits: you can reset the repository HEAD and leave the commit changes in the working directory. If we want to redo the last two commits we would just issue:</p>
+<pre><code>git reset HEAD^^</code></pre>
+<p>Remember, this doesn’t remove the commit changes. The repository HEAD is simply moved back and the commit changes are left in the working directory; you will then use them to create proper new commits.</p>
+<h2 id="i-want-to-change-this-file-silently">I Want To Change This File Silently</h2>
+<p>GitHub has an excellent article on <a href="https://help.github.com/articles/ignoring-files" title="GitHub: Ignoring files">ignoring files</a>. A particular situation is ignoring updates to files that are already in the repository (i.e. they’ve been previously commited and can’t be ignored using .gitignore).</p>
+<p>This kind of situation is part of my repository with letters of recommendation. I’m using a Makefile for compiling out a letter and have isolated in it some variables:</p>
+<pre><code>$ cat Makefile
+PERSON = Alexandru_Juncu
+FOLDER = alexandru-juncu
+
+include base.mk</code></pre>
+<p>When I would create a new recommendation I update the <code>Makefile</code> to compile it. However this change needn’t make it to the repository. If I would do that then each time I’m only compiling out an old letter of recommendation I would change the Makefile file and push the new changes; or, if I don’t want to push those changes, I would need to use <code>git checkout</code>.</p>
+<p>The best solution would be for any updates to the Makefile to not be considered. The initial Makefile file would be stored in the repository (as a model) but subsequent changes should not be visible. This can be done by using:</p>
+<pre><code>git update-index --assume-unchanged Makefile</code></pre>
+<p>No changes on the <code>Makefile</code> file are going to be considered in the working directory.</p>
+<p>If you want to revert this option, use:</p>
+<pre><code>git update-index --no-assume-unchanged Makefile</code></pre>
+
+          </div>
+        </div>
+      </div>
+    </article>
+  </div>
+</div>
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+  /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+  var disqus_shortname = 'rosedutechblog';
+  var disqus_url = window.location.href.split('/').splice(0,3).join("/")+'/git-is-the-answer-1.html';
+  var title = 'Git Is The Answer 1/3';
+  /* * * DON'T EDIT BELOW THIS LINE * * */
+  (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+        </div>
+      </div>
+
+      <footer class="the-footer">
+        <div class="unit-foot">
+          <div class="unit-inner unit-foot-inner">
+            <div class="misc vcard">
+              <h4>Social</h4>
+              <div class="rss">
+                <a href="http://feeds.feedburner.com/rosedu/tech" target="_blank">
+                  <img src="./images/rss.png" alt="Subscribe to RSS Feed" />
+                </a>
+                <a href="http://www.reddit.com/submit?url='+encodeURIComponent(window.location)" target="_blank" onclick="window.location='http://www.reddit.com/submit?url='+encodeURIComponent(window.location); return false">
+                  <img src="./images/reddit.png" alt="Submit to Reddit" />
+                </a>
+                <a href="http://twitter.com/share" class="twitter-share-button" data-count="none" target="_blank">
+                  <img src="./images/twitter.png" alt="Submit to Twitter" />
+                </a>
+              </div>
+
+              <h4>Powered by</h4>
+              <ul>
+                <li class="contact">
+                  <address>
+                    <a class="author fn n" href="http://www.rosedu.org">ROSEdu</a>
+                  </address>
+                </li>
+                <li class="contact">
+                  <address>
+                    <a class="author fn n" href="http://jaspervdj.be/hakyll">Hakyll</a>
+                  </address>
+                </li>
+              </ul>
+
+              <h4>License</h4>
+              <div class="bucket">
+                <span>
+                  <a rel="license" href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons Attribution 3.0 License">
+                    <img src="//i.creativecommons.org/l/by/3.0/88x31.png" alt="License">
+                  </a>
+                </span>
+                <span>
+                  This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/3.0/" class="subfoot">Creative Commons Attribution 3.0 License</a>.
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--[if lt IE 7]>
+<html class="no-js lt-ie9 lt-ie8 lt-ie7 ie" lang="en"> <![endif]-->
+<!--[if IE 7]>
+<html class="no-js lt-ie9 lt-ie8 ie" lang="en"> <![endif]-->
+<!--[if IE 8]>
+<html class="no-js lt-ie9 ie" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" class="no-js"><!--<![endif]-->
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>ROSEdu Techblog - Shell tips and tricks for log files</title>
+    <link rel="stylesheet" href="./css/style.css" type="text/css">
+    <link rel="stylesheet" href="./css/rosedu_links.css" type="text/css">
+    <link rel="stylesheet" href="./css/syntax.css" type="text/css">
+    <!--<link rel="stylesheet" type="text/css" href="/css/default.css"/>-->
+
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-7579199-6']);
+      _gaq.push(['_trackPageview']);
+
+      (function () {
+        var ga = document.createElement('script');
+        ga.type = 'text/javascript';
+        ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  </head>
+
+  <body>
+    <div id="page" class="hentry">
+      <header class="the-header">
+        <div class="unit-head">
+          <div class="unit-inner unit-head-inner">
+            <nav class="nav-global">
+              <ul>
+                <li class="logo"><a href="./" title="Home">ROSEdu Techblog</a></li>
+                <li class="about"><a href="./about.html">About</a></li>
+                <li class="people"><a href="./people.html">People</a></li>
+                <li class="archive"><a href="./archive.html">Archive</a></li>
+                <li class="category"><a href="./tags.html">Tags</a></li>
+              </ul>
+            </nav>
+
+            <hr />
+
+            <nav class="nav-global">
+              <ul>
+                <li class="logo"><a href="./archive.html" title="Archive">Latest Posts</a></li>
+                <!--TODO-->
+                <li><a href="./shell-tips-and-tricks-for-file-editing.html">Shell tips and tricks for log files</a></li>
+                <li><a href="./git-is-the-answer-3.html">Git Is The Answer 3/3</a></li>
+                <li><a href="./git-is-the-answer-2.html">Git Is The Answer 2/3</a></li>
+              </ul>
+            </nav>
+          </div><!-- unit-inner -->
+        </div><!-- unit-head -->
+      </header>
+
+      <div class="body" role="main">
+        <div class="unit-body">
+          <div class="unit-inner unit-body-inner">
+  <div class="entry-content">
+    <article class="unit-article layout-post">
+      <div class="unit-inner unit-article-inner">
+        <div class="content">
+          <div class="bd">
+            <header>
+              <div class="unit-head">
+                <div class="unit-inner unit-head-inner">
+                  <h1 class="h2 entry-title">
+                    <a class="post_title" href="./shell-tips-and-tricks-for-file-editing.html" title="Shell tips and tricks for log files">Shell tips and tricks for log files</a>
+                  </h1>
+                </div><!-- unit-inner -->
+              </div><!-- unit-head -->
+            </header>
+
+            <span class="date">
+            <span class="published">Published on June 20, 2013</span>
+            by
+            <span class="author">Alexandru Juncu</span>
+            </span>
+
+            <p>Here are are some small things you might find useful when you need to deal with text files. In the Linux/Unix world, a lot of things are text files, so you need to know how to efficiently handle them. If you are a sysadmin, you need to look at <strong>log files</strong> for most of your work time and the following might come in handy.</p>
+<h3 id="following-a-log-file">Following a log file</h3>
+<p>Take your <code>$GENERIC_SERVICE</code> on your server that generates a lot of logs. You could open a <strong>text editor</strong> like <code>vi</code> or <code>emacs</code> to view the logs or use <code>tail</code> to see the latest lines (or a combination of tail and <code>head</code>). But you sometimes you need to view contents of the log in real time (while the service writes the lines, you read them). This is where the best use for the tail command comes in: the <code>--follow</code> flag.</p>
+<pre><code>tail -f /var/log/mylog</code></pre>
+<p>Tail usually creates a process that prints a few lines (the lines that exist when you run it), but with the <code>-f</code> flag, the tail process keeps running and prints new lines as the file is being appended. The process will close when the uses issues the <code>Cltr-D</code> (end of file) command.</p>
+<h3 id="truncating-a-file">Truncating a file</h3>
+<p>Maybe you need to clear the contents of a log file that has gotten too big. You could do a <code>rm</code> on the file and let the service write the new logs in a new file. Some services are picky and need the file to already exist, so you could use the <code>touch</code> command (that “updates” an existing file) which has the interesting side effect when applied on a non existing file: to create an empty file (a new inode with no data blocks).</p>
+<p>But you just want to empty a file (same inode, just the contents cleared). You could use the <code>truncate</code> command with the size flag of 0 bytes (<code>-s 0</code>). Or make use of the redirect operator <code>&gt;</code>.</p>
+<pre><code>:&gt;file</code></pre>
+<p>or just</p>
+<pre><code>&gt;file</code></pre>
+<p>These will open the file, and redirect nothing into it. Since it is not appending anything, the contents will be erased. <code>:</code> is the no-op command so nothing will actually be done, but the shell with open and write (well … nothing) into the file because of the redirection operator <code>&gt;</code>.</p>
+<h3 id="one-input-two-outputs">One input, two outputs</h3>
+<p>Some programs do not have a logging system programmed into them and just print messages to standard output. Maybe you want to save that output into a file for future use. This is simple to do with a file redirection:</p>
+<pre><code>./myprogram &gt; my_log_file</code></pre>
+<p>But if you do this, you will lose the output to the (virtual) terminal. A very interesting command is <code>tee</code>, that takes an input and writes to standard output, but also writes into a specified file. You need to pipe the output of a process into tee like this:</p>
+<pre><code>./myprogram | tee my_log_file</code></pre>
+<p>Now you have both real time printing of the messages and you have them saved for future use.</p>
+<p>Hope this helps!</p>
+
+          </div>
+        </div>
+      </div>
+    </article>
+  </div>
+</div>
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+  /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+  var disqus_shortname = 'rosedutechblog';
+  var disqus_url = window.location.href.split('/').splice(0,3).join("/")+'/shell-tips-and-tricks-for-file-editing.html';
+  var title = 'Shell tips and tricks for log files';
+  /* * * DON'T EDIT BELOW THIS LINE * * */
+  (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+        </div>
+      </div>
+
+      <footer class="the-footer">
+        <div class="unit-foot">
+          <div class="unit-inner unit-foot-inner">
+            <div class="misc vcard">
+              <h4>Social</h4>
+              <div class="rss">
+                <a href="http://feeds.feedburner.com/rosedu/tech" target="_blank">
+                  <img src="./images/rss.png" alt="Subscribe to RSS Feed" />
+                </a>
+                <a href="http://www.reddit.com/submit?url='+encodeURIComponent(window.location)" target="_blank" onclick="window.location='http://www.reddit.com/submit?url='+encodeURIComponent(window.location); return false">
+                  <img src="./images/reddit.png" alt="Submit to Reddit" />
+                </a>
+                <a href="http://twitter.com/share" class="twitter-share-button" data-count="none" target="_blank">
+                  <img src="./images/twitter.png" alt="Submit to Twitter" />
+                </a>
+              </div>
+
+              <h4>Powered by</h4>
+              <ul>
+                <li class="contact">
+                  <address>
+                    <a class="author fn n" href="http://www.rosedu.org">ROSEdu</a>
+                  </address>
+                </li>
+                <li class="contact">
+                  <address>
+                    <a class="author fn n" href="http://jaspervdj.be/hakyll">Hakyll</a>
+                  </address>
+                </li>
+              </ul>
+
+              <h4>License</h4>
+              <div class="bucket">
+                <span>
+                  <a rel="license" href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons Attribution 3.0 License">
+                    <img src="//i.creativecommons.org/l/by/3.0/88x31.png" alt="License">
+                  </a>
+                </span>
+                <span>
+                  This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/3.0/" class="subfoot">Creative Commons Attribution 3.0 License</a>.
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>

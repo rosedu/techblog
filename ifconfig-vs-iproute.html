@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--[if lt IE 7]>
+<html class="no-js lt-ie9 lt-ie8 lt-ie7 ie" lang="en"> <![endif]-->
+<!--[if IE 7]>
+<html class="no-js lt-ie9 lt-ie8 ie" lang="en"> <![endif]-->
+<!--[if IE 8]>
+<html class="no-js lt-ie9 ie" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" class="no-js"><!--<![endif]-->
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>ROSEdu Techblog - ifconfig vs iproute2</title>
+    <link rel="stylesheet" href="./css/style.css" type="text/css">
+    <link rel="stylesheet" href="./css/rosedu_links.css" type="text/css">
+    <link rel="stylesheet" href="./css/syntax.css" type="text/css">
+    <!--<link rel="stylesheet" type="text/css" href="/css/default.css"/>-->
+
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-7579199-6']);
+      _gaq.push(['_trackPageview']);
+
+      (function () {
+        var ga = document.createElement('script');
+        ga.type = 'text/javascript';
+        ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  </head>
+
+  <body>
+    <div id="page" class="hentry">
+      <header class="the-header">
+        <div class="unit-head">
+          <div class="unit-inner unit-head-inner">
+            <nav class="nav-global">
+              <ul>
+                <li class="logo"><a href="./" title="Home">ROSEdu Techblog</a></li>
+                <li class="about"><a href="./about.html">About</a></li>
+                <li class="people"><a href="./people.html">People</a></li>
+                <li class="archive"><a href="./archive.html">Archive</a></li>
+                <li class="category"><a href="./tags.html">Tags</a></li>
+              </ul>
+            </nav>
+
+            <hr />
+
+            <nav class="nav-global">
+              <ul>
+                <li class="logo"><a href="./archive.html" title="Archive">Latest Posts</a></li>
+                <!--TODO-->
+                <li><a href="./shell-tips-and-tricks-for-file-editing.html">Shell tips and tricks for log files</a></li>
+                <li><a href="./git-is-the-answer-3.html">Git Is The Answer 3/3</a></li>
+                <li><a href="./git-is-the-answer-2.html">Git Is The Answer 2/3</a></li>
+              </ul>
+            </nav>
+          </div><!-- unit-inner -->
+        </div><!-- unit-head -->
+      </header>
+
+      <div class="body" role="main">
+        <div class="unit-body">
+          <div class="unit-inner unit-body-inner">
+  <div class="entry-content">
+    <article class="unit-article layout-post">
+      <div class="unit-inner unit-article-inner">
+        <div class="content">
+          <div class="bd">
+            <header>
+              <div class="unit-head">
+                <div class="unit-inner unit-head-inner">
+                  <h1 class="h2 entry-title">
+                    <a class="post_title" href="./ifconfig-vs-iproute.html" title="ifconfig vs iproute2">ifconfig vs iproute2</a>
+                  </h1>
+                </div><!-- unit-inner -->
+              </div><!-- unit-head -->
+            </header>
+
+            <span class="date">
+            <span class="published">Published on January 17, 2012</span>
+            by
+            <span class="author">Alexandru Juncu</span>
+            </span>
+
+            <p>On modern Linux distributions, the users have two main possibilities of configuring the network: ifconfig and ip.</p>
+<p>The ifconfig tool is part of the <strong>net-tools</strong> package along side other tools like route, arp and netstat. These are the traditional userspace tools for network configuration, made for older Linux kernels.</p>
+<p>The <strong>iproute2</strong> is the new package that comes with the ip tool as replacement for the ifconfig, route and arp commands, ss as the new netstat and tc as a new command.</p>
+<p>There are pros and cons for each of them and there are users (and fans) of each. Let’s see the differences…</p>
+<p>First of all, why was the iproute introduced? There had to have been a need for it… The reason was the introduction of the <strong><a href="http://www.faqs.org/rfcs/rfc3549.html" title="Netlink">Netlink</a></strong> API, which is a socket like interface for accessing kernel information about interfaces, address assignments and routes. The tools like ifconfig used the /proc file hierarchy (procfs) for collecting information. The output was reformatted data from different network related files in /proc.</p>
+<pre><code>alexj@hathor ~/techblog $ strace -e open ifconfig eth0 2&gt;&amp;1|grep /proc
+open(&quot;/proc/net/dev&quot;, O_RDONLY)         = 6
+open(&quot;/proc/net/if_inet6&quot;, O_RDONLY)    = 6</code></pre>
+<p>The costs for the operations like open and read from these files were rather big compared for the netlink interface. For comparison, let’s assume that we have a large number of interfaces (128) with IPv4 and IPv6 addresses and their associated connected routes.</p>
+<pre><code>alexj@hathor ~/if $ time ifconfig -a &gt;/dev/null 
+
+real	0m1.528s
+user	0m0.080s
+sys	0m1.420s
+
+alexj@hathor ~/if $ time ip addr show &gt;/dev/null
+
+real	0m0.016s
+user	0m0.000s
+sys	0m0.012s</code></pre>
+<p>But most of normal users are not that geeky to care about millisecond speedup. They do, however, care about usability. And iproute2 does seem to have a better user interface. The ip command is better organized, in what they called objects. Links, addresses, routes, routing rules, tunnels are all objects, that can be added, deleted or listed. If a user learns how to add an address, by intuition, he can easily guess how to add a route, for example, because the syntax in similar.</p>
+<p>Keyword shortening and auto completion makes the ip command more efficient by removing redundant characters. The following commands are identical as effect:</p>
+<pre><code>ip address show
+ip address
+ip addr show
+ip a s
+ip a</code></pre>
+<p>Some network engineers will like iproute2 because it’s similar to Cisco’s IOS: “ip route show” in Linux vs “show ip route” in IOS. Another usability feature is that you have the format for subnet masks instead of the quadded-decimal format, the first one being shorter to write and more up to date with the concept of VLSM.</p>
+<p>So what does ifconfig still have to keep it around? Its biggest weakness is its biggest strength: its age. ifconfig has been out and used for so long that it’s very hard to put it away. Still many scripts in the heart of Linux distributions rely on ifconfig to work and most system administrators are used to the ifconfig command and it’s hard to move them to something new and unfamiliar. A lot of tutorials on the Internet about network configuration teach ifconfig and not iproute2 to beginners. For example, LPIC-1, one of the biggest Linux Certification out there, still requires ifconfig skills for passing the exam and barely mentiones iproute2.</p>
+<p>When released, iproute2 had at least one advantage over ifconfig, and that was the feature of interacting with the IPv6 stack while ifconfig was only for IPv4. But since then, fans of ifconfig patched it so it could also be IPv6 ready.</p>
+<p>But other features were not replicated. In old Linux Kernels, an interfaces could have only one IP address, so in ifconfig you could configure only one IP address on an interfaces. In newer kernels, each interface has a list of addresses and iproute2 via the NetLink interface could manage them. Latest ifconfig versions still rely on the idea of subinterfaces to provide more than one address on an interfaces.</p>
+<p>So, given all these arguments, iproute2 should be declared the winner. But it’s not that easy. Just like in the case of IPv4 vs IPv6, where the latter one is the obvious choice, iproute2 will eventually replace ifconfig. Only it’s going to take a long time for that to happen, so net-tools will still be around for some time, but they will be eventually phased out.</p>
+
+          </div>
+        </div>
+      </div>
+    </article>
+  </div>
+</div>
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+  /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+  var disqus_shortname = 'rosedutechblog';
+  var disqus_url = window.location.href.split('/').splice(0,3).join("/")+'/ifconfig-vs-iproute.html';
+  var title = 'ifconfig vs iproute2';
+  /* * * DON'T EDIT BELOW THIS LINE * * */
+  (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+        </div>
+      </div>
+
+      <footer class="the-footer">
+        <div class="unit-foot">
+          <div class="unit-inner unit-foot-inner">
+            <div class="misc vcard">
+              <h4>Social</h4>
+              <div class="rss">
+                <a href="http://feeds.feedburner.com/rosedu/tech" target="_blank">
+                  <img src="./images/rss.png" alt="Subscribe to RSS Feed" />
+                </a>
+                <a href="http://www.reddit.com/submit?url='+encodeURIComponent(window.location)" target="_blank" onclick="window.location='http://www.reddit.com/submit?url='+encodeURIComponent(window.location); return false">
+                  <img src="./images/reddit.png" alt="Submit to Reddit" />
+                </a>
+                <a href="http://twitter.com/share" class="twitter-share-button" data-count="none" target="_blank">
+                  <img src="./images/twitter.png" alt="Submit to Twitter" />
+                </a>
+              </div>
+
+              <h4>Powered by</h4>
+              <ul>
+                <li class="contact">
+                  <address>
+                    <a class="author fn n" href="http://www.rosedu.org">ROSEdu</a>
+                  </address>
+                </li>
+                <li class="contact">
+                  <address>
+                    <a class="author fn n" href="http://jaspervdj.be/hakyll">Hakyll</a>
+                  </address>
+                </li>
+              </ul>
+
+              <h4>License</h4>
+              <div class="bucket">
+                <span>
+                  <a rel="license" href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons Attribution 3.0 License">
+                    <img src="//i.creativecommons.org/l/by/3.0/88x31.png" alt="License">
+                  </a>
+                </span>
+                <span>
+                  This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/3.0/" class="subfoot">Creative Commons Attribution 3.0 License</a>.
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>

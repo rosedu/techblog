@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--[if lt IE 7]>
+<html class="no-js lt-ie9 lt-ie8 lt-ie7 ie" lang="en"> <![endif]-->
+<!--[if IE 7]>
+<html class="no-js lt-ie9 lt-ie8 ie" lang="en"> <![endif]-->
+<!--[if IE 8]>
+<html class="no-js lt-ie9 ie" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" class="no-js"><!--<![endif]-->
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>ROSEdu Techblog - Linking, Loading and Library Management under Linux</title>
+    <link rel="stylesheet" href="./css/style.css" type="text/css">
+    <link rel="stylesheet" href="./css/rosedu_links.css" type="text/css">
+    <link rel="stylesheet" href="./css/syntax.css" type="text/css">
+    <!--<link rel="stylesheet" type="text/css" href="/css/default.css"/>-->
+
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-7579199-6']);
+      _gaq.push(['_trackPageview']);
+
+      (function () {
+        var ga = document.createElement('script');
+        ga.type = 'text/javascript';
+        ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  </head>
+
+  <body>
+    <div id="page" class="hentry">
+      <header class="the-header">
+        <div class="unit-head">
+          <div class="unit-inner unit-head-inner">
+            <nav class="nav-global">
+              <ul>
+                <li class="logo"><a href="./" title="Home">ROSEdu Techblog</a></li>
+                <li class="about"><a href="./about.html">About</a></li>
+                <li class="people"><a href="./people.html">People</a></li>
+                <li class="archive"><a href="./archive.html">Archive</a></li>
+                <li class="category"><a href="./tags.html">Tags</a></li>
+              </ul>
+            </nav>
+
+            <hr />
+
+            <nav class="nav-global">
+              <ul>
+                <li class="logo"><a href="./archive.html" title="Archive">Latest Posts</a></li>
+                <!--TODO-->
+                <li><a href="./shell-tips-and-tricks-for-file-editing.html">Shell tips and tricks for log files</a></li>
+                <li><a href="./git-is-the-answer-3.html">Git Is The Answer 3/3</a></li>
+                <li><a href="./git-is-the-answer-2.html">Git Is The Answer 2/3</a></li>
+              </ul>
+            </nav>
+          </div><!-- unit-inner -->
+        </div><!-- unit-head -->
+      </header>
+
+      <div class="body" role="main">
+        <div class="unit-body">
+          <div class="unit-inner unit-body-inner">
+  <div class="entry-content">
+    <article class="unit-article layout-post">
+      <div class="unit-inner unit-article-inner">
+        <div class="content">
+          <div class="bd">
+            <header>
+              <div class="unit-head">
+                <div class="unit-inner unit-head-inner">
+                  <h1 class="h2 entry-title">
+                    <a class="post_title" href="./library-management.html" title="Linking, Loading and Library Management under Linux">Linking, Loading and Library Management under Linux</a>
+                  </h1>
+                </div><!-- unit-inner -->
+              </div><!-- unit-head -->
+            </header>
+
+            <span class="date">
+            <span class="published">Published on October  3, 2011</span>
+            by
+            <span class="author">Razvan</span>
+            </span>
+
+            <p>This article aims to shed some light on the topic of library management with insight on the linker and loader. The <code>ldconfig</code> command, for example, is heavily used in Linux, though unknown to some of users.</p>
+<p>A library is a collection of object files “meshed” together in another file. Its benefit is avoiding “reimplementing the wheel”. Once one has implemented a given set of functionalities, he/she may store those in a library file; this file is distributed to others and used in various software projects. Libraries are heavily used in all modern operating systems; the greater part of packages in Linux distributions are library packages. One can barely imagine being able to do any kind of development without the presence of the C Standard Library on the local system.</p>
+<h1 id="linking-and-loading">Linking and Loading</h1>
+<p>A library is said to be “linked” together with other library files or object files into an executable. The executable integrates all required components from library files, avoiding the need of implementing these components from scratch.</p>
+<p>Linking is thus the process where external references in each module (object file) are resolved; that is, undefined functions are now looked in other linked modules or library files and their code is used in the executable. The linker is the application responsible for resolving and integrating functions in the end executable file.</p>
+<p>With respect to the phase when linking occurs, we differentiate between three types of linking: 1. static linking 2. load-time dynamic linking 3. run-time dynamic linking</p>
+<p>The above nomenclature is specific to MSDN (<a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ms684184(v=vs.85).aspx" title="Load-Time Dyamic Linking">load-time dynamic linking</a> and <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ms685090(v=vs.85).aspx" title="Run-Time Dynamic Linking">run-time dynamic linking</a>) but it’s a good depiction of any system using dynamic linking.</p>
+<p>When using static linking, required library function code is inserted into the executable at link-time. Link-time refers to the moment when the linker process (<code>ld</code>) is invoked (typically wrapped by the <code>gcc</code> command). The result is an executable that comprises all required code to create a process.</p>
+<p>When using dynamic linking, the linker process does not integrate code from the library. It simply creates stubs in the executable code stating what library file should be looked for that function. The actual “linking”, that is the “integration” of code in the executable, is done later.</p>
+<p>Depending on the “later” part of dynamic linking, we differentiate between two types of linking. Load-time is when a process is created from an executable; the loader is responsible for “transforming” an executable into a process (actually, it’s not a transformation, but an instantiation). Run-time is the time while the process is running (using memory space, running code on the CPU etc.).</p>
+<p>For load-time dynamic linking, the linking is done at load-time. That is, when running the executable (<code>./myexec</code>) and when the process is created, code from the library is mapped into memory and then referred to by the newly created process. For run-time dynamic linking, a specialized API allows the developer to load the library code into memory and, on demand, use specific functions.</p>
+<h1 id="library-types">Library types</h1>
+<p>Modern OSes such as Windows, Linux, Mac OS X and other Unices use two types of libraries, strongly related to the types of linking shown above: <em>static libraries</em> and <em>dynamic libraries</em>. Static libraries are used in conjunction with static linking, while dynamic libraries with load-time/run-time dynamic linking.</p>
+<p>Static libraries use the <code>.a</code> extension on Unix and <code>.lib</code> on Windows. Each time some modules are linked against a library file, static linking is enabled and code for functions used is copied into the executable file.</p>
+<pre>
+    ar rc libtest.a module1.o module2.o
+    gcc -o myexec exec.o -L. -l test
+</pre>
+
+<p>Dynamic libraries are called shared-object library on Unix and use the <code>.so</code> extension on Unix. On Windows, they are called dynamic-link libraries and use the <code>.dll</code> extensions. If a shared-object library is linked against a module, only references to the library are filled, no actual code is copied; that step is done later on (either at load-time or run-time).</p>
+<p>In order to use a shared-object library for load-time linking, one would simply pass it as an argument to the linker:</p>
+<pre>
+    gcc -share -fPIC -o libtest.so module1.o module2.o
+    gcc -o myexec exec.o -L. -l test
+    LD_LIBRARY_PATH=. ./myexec
+</pre>
+
+<p>When the loader creates a new process (<code>LD_LIBRARY_PATH=. ./myexec</code>), the library (<code>libtest.so</code>) is mapped into memory and necessary function code is accessed.</p>
+<p>The use of run-time linking requires a specialized API for loading needed function code while the process is running: <a href="http://linux.die.net/man/3/dlopen" title="dlopen(3) - Linux man page">dlopen &amp; friends</a>. A sample is shown below:</p>
+<pre>
+    double (*cosine)(double);
+
+    handle = dlopen (&quot;libm.so&quot;, RTLD_LAZY);
+    cosine = dlsym(handle, &quot;cos&quot;);
+    printf (&quot;%f\n&quot;, (*cosine)(2.0));
+</pre>
+
+<p>Unlike static and load-time dynamic linking, run-time dynamic linking doesn’t require the presence of a library argument to the link command (that is <code>-L. -ltest</code>).</p>
+<p>Advantages of a certain type of library (static or dynamic) are disadvantages for the other one and vice versa.</p>
+<p>Static library-generated executables have increased portability. All code is inserted into the executable such that, moving it on a different platform doesn’t require the presence of that library. These executables tend to be faster as no additional overhead is implied during load-time or run-time.</p>
+<p>Dynamic library-generated executables have two main advantages: they are smaller in size and library files have a smaller memory footprint. The first advantage is due to not copying function code at link time: only references are added to the executable without additional code. The second advantage is stated in the Unix name for dynamic libraries: shared-object libraries. A library may be mapped in memory and all processes that use the library would use the same code. Thus, 50 processes that use the C standard library would require a single instance of the library to be mapped in memory.</p>
+<h1 id="library-management">Library Management</h1>
+<p>When discussing about library management, we are talking about dynamic libraries. This is due to the fact that, when using the library code (either at load-time or run-time), the loader needs to know where to find the requested libraries.</p>
+<p>The Linux loader is called <code>ld-linux.so</code>. As stated in the <a href="http://linux.die.net/man/8/ld-linux" title="ld-linux(8): dynamic linker/loader - Linux man page">man page</a>: “The programs ld.so and ld-linux.so find and load the shared libraries needed by a program, prepare the program to run, and then run it.” The loader needs to lookup shared libraries in order to run the program and instantiate a process.</p>
+<p>Bear in mind that the <code>-L.</code> option passed to GCC when doing linking is only used at link-time. It’s used to locate the library at link-time, not at load-time or run-time.</p>
+<p>In order to configure the loader to lookup libraries for dynamic linking in a given folder (for example, the current folder – <code>.</code>), there are two main options: using the <code>LD_LIBRARY_PATH</code> environment variable or the <code>ldconfig</code> command.</p>
+<p>The <code>LD_LIBRARY_PATH</code> variable is a list of colon delimited folders where libraries are searched. It must be set when the loader is invoked – that is, when running the executable:</p>
+<pre>
+    export LD_LIBRARY_PATH=.
+    ./myexec
+</pre>
+
+<p>Using the <code>LD_LIBRARY_PATH</code> variable is excellent for testing. It does however pose two disadvantages: it does not allow persistent configuration and it may suffer from <a href="http://www.unix.com/unix-dummies-questions-answers/22806-why-bad-idea-insert-dot-path.html" title="Why is is a Bad Idea to Insert . (Dot) to PATH?">security vulnerabilities similar to the PATH environment variable</a>.</p>
+<p>The configuration approach is the use of the <code>ldconfig</code> command. <code>ldconfig</code> is used to populate the library list cache file <code>/etc/ld.so.cache</code>. The cache file is read by the loader to search for libraries. On Debian-based systems, every time you install a library, <code>ldconfig</code> is run to populate the cache file.</p>
+<p>In order to incorporate a new folder in the library search path, one may resort to a persistent configuration or a temporary one. For a temporary run, simply pass the new folder to <code>ldconfig</code>:</p>
+<pre>
+    razvan@einherjar:~/code$ /sbin/ldconfig -p | grep libtest
+    razvan@einherjar:~/code$ sudo /sbin/ldconfig /home/razvan/code/
+    razvan@einherjar:~/code$ /sbin/ldconfig -p | grep libtest
+    	libtest.so (libc6,x86-64) =&gt; /home/razvan/code/libtest.so
+</pre>
+
+<p>For a persistent, configuration, one would need to edit the configuration file and/or folder for <code>ldconfig</code>, namely <code>/etc/ld.so.conf</code> and <code>/etc/ld.so.conf.d/</code>. Simply add a new folder in the configuration file and run <code>ldconfig</code>.</p>
+<p>When using <a href="http://linux.die.net/man/3/dlopen" title="dlopen(3) - Linux man page">dlopen &amp; friends</a>, the same kind of configurations may be used: <code>LD_LIBRARY_PATH</code>, temporary use of <code>ldconfig</code> and persistent use of <code>/etc/ld.so.conf</code>.</p>
+<h1 id="conclusion-and-further-info">Conclusion and Further Info</h1>
+<p>Extensive information about the actions used by the loader to use dynamic libraries are found in man pages: <a href="http://linux.die.net/man/8/ld-linux" title="ld-linux(8): dynamic linker/loader - Linux man page">ld-linux.so</a>, <a href="http://linux.die.net/man/8/ldconfig" title="ldconfig(8) - Linux man page">ldconfig</a> and <a href="http://linux.die.net/man/3/dlopen" title="dlopen(3) - Linux man page">dlopen &amp; friends</a>.</p>
+<p><a href="http://books.google.com/books?id=Id9cYsIdjIwC" title="John R. Levine – Linkers &amp; Loaders">John R. Levine’s “Linkers &amp; Loaders”</a> is an extensive depiction of linkers, loaders, libraries and the load process.</p>
+<p>Proper knowledge of library management on a Linux based system relies on good understanding of the linking and loading processes and library types. Make sure you understand the advantages and disadvantages of each approach and choose the one most suitable to your specific needs.</p>
+
+          </div>
+        </div>
+      </div>
+    </article>
+  </div>
+</div>
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+  /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+  var disqus_shortname = 'rosedutechblog';
+  var disqus_url = window.location.href.split('/').splice(0,3).join("/")+'/library-management.html';
+  var title = 'Linking, Loading and Library Management under Linux';
+  /* * * DON'T EDIT BELOW THIS LINE * * */
+  (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+        </div>
+      </div>
+
+      <footer class="the-footer">
+        <div class="unit-foot">
+          <div class="unit-inner unit-foot-inner">
+            <div class="misc vcard">
+              <h4>Social</h4>
+              <div class="rss">
+                <a href="http://feeds.feedburner.com/rosedu/tech" target="_blank">
+                  <img src="./images/rss.png" alt="Subscribe to RSS Feed" />
+                </a>
+                <a href="http://www.reddit.com/submit?url='+encodeURIComponent(window.location)" target="_blank" onclick="window.location='http://www.reddit.com/submit?url='+encodeURIComponent(window.location); return false">
+                  <img src="./images/reddit.png" alt="Submit to Reddit" />
+                </a>
+                <a href="http://twitter.com/share" class="twitter-share-button" data-count="none" target="_blank">
+                  <img src="./images/twitter.png" alt="Submit to Twitter" />
+                </a>
+              </div>
+
+              <h4>Powered by</h4>
+              <ul>
+                <li class="contact">
+                  <address>
+                    <a class="author fn n" href="http://www.rosedu.org">ROSEdu</a>
+                  </address>
+                </li>
+                <li class="contact">
+                  <address>
+                    <a class="author fn n" href="http://jaspervdj.be/hakyll">Hakyll</a>
+                  </address>
+                </li>
+              </ul>
+
+              <h4>License</h4>
+              <div class="bucket">
+                <span>
+                  <a rel="license" href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons Attribution 3.0 License">
+                    <img src="//i.creativecommons.org/l/by/3.0/88x31.png" alt="License">
+                  </a>
+                </span>
+                <span>
+                  This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/3.0/" class="subfoot">Creative Commons Attribution 3.0 License</a>.
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>

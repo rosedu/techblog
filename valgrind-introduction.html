@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--[if lt IE 7]>
+<html class="no-js lt-ie9 lt-ie8 lt-ie7 ie" lang="en"> <![endif]-->
+<!--[if IE 7]>
+<html class="no-js lt-ie9 lt-ie8 ie" lang="en"> <![endif]-->
+<!--[if IE 8]>
+<html class="no-js lt-ie9 ie" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" class="no-js"><!--<![endif]-->
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>ROSEdu Techblog - Valgrind introduction</title>
+    <link rel="stylesheet" href="./css/style.css" type="text/css">
+    <link rel="stylesheet" href="./css/rosedu_links.css" type="text/css">
+    <link rel="stylesheet" href="./css/syntax.css" type="text/css">
+    <!--<link rel="stylesheet" type="text/css" href="/css/default.css"/>-->
+
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-7579199-6']);
+      _gaq.push(['_trackPageview']);
+
+      (function () {
+        var ga = document.createElement('script');
+        ga.type = 'text/javascript';
+        ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  </head>
+
+  <body>
+    <div id="page" class="hentry">
+      <header class="the-header">
+        <div class="unit-head">
+          <div class="unit-inner unit-head-inner">
+            <nav class="nav-global">
+              <ul>
+                <li class="logo"><a href="./" title="Home">ROSEdu Techblog</a></li>
+                <li class="about"><a href="./about.html">About</a></li>
+                <li class="people"><a href="./people.html">People</a></li>
+                <li class="archive"><a href="./archive.html">Archive</a></li>
+                <li class="category"><a href="./tags.html">Tags</a></li>
+              </ul>
+            </nav>
+
+            <hr />
+
+            <nav class="nav-global">
+              <ul>
+                <li class="logo"><a href="./archive.html" title="Archive">Latest Posts</a></li>
+                <!--TODO-->
+                <li><a href="./shell-tips-and-tricks-for-file-editing.html">Shell tips and tricks for log files</a></li>
+                <li><a href="./git-is-the-answer-3.html">Git Is The Answer 3/3</a></li>
+                <li><a href="./git-is-the-answer-2.html">Git Is The Answer 2/3</a></li>
+              </ul>
+            </nav>
+          </div><!-- unit-inner -->
+        </div><!-- unit-head -->
+      </header>
+
+      <div class="body" role="main">
+        <div class="unit-body">
+          <div class="unit-inner unit-body-inner">
+  <div class="entry-content">
+    <article class="unit-article layout-post">
+      <div class="unit-inner unit-article-inner">
+        <div class="content">
+          <div class="bd">
+            <header>
+              <div class="unit-head">
+                <div class="unit-inner unit-head-inner">
+                  <h1 class="h2 entry-title">
+                    <a class="post_title" href="./valgrind-introduction.html" title="Valgrind introduction">Valgrind introduction</a>
+                  </h1>
+                </div><!-- unit-inner -->
+              </div><!-- unit-head -->
+            </header>
+
+            <span class="date">
+            <span class="published">Published on April 29, 2012</span>
+            by
+            <span class="author">Mihai</span>
+            </span>
+
+            <p>A good programmer has a variety of tools to help him in developing good applications. We talked about <a href="http://sources.redhat.com/gdb/">gdb</a> in an <a href="http://techblog.rosedu.org/gdb-a-basic-workflow.html">article</a> at the beginning of April. Now, it is time for a crash introduction to <a href="http://valgrind.org/">Valgrind</a>.</p>
+<p>This program is a collection of different tools. For example, it offers a <a href="http://valgrind.org/docs/manual/ms-manual.html">heap profiler</a>, a <a href="http://valgrind.org/docs/manual/hg-manual.html">thread error detector</a> or a <a href="http://valgrind.org/docs/manual/cg-manual.html">cache profiler</a>. However, the tool which gave <a href="http://valgrind.org/">Valgrind</a>’s fame is <a href="http://valgrind.org/docs/manual/mc-manual.html">Memcheck</a>, a memory error detector. Because of its popularity, this tool is the default one (to use other <a href="http://valgrind.org/">Valgrind</a> tools you have to use the <code>--tool=option</code> command line argument). In this article, we will concentrate on <a href="http://valgrind.org/docs/manual/mc-manual.html">Memcheck</a> only.</p>
+<h3 id="detecting-memory-leaks">Detecting memory leaks</h3>
+<p>Mainly, one would use <a href="http://valgrind.org/">Valgrind</a> to detect memory leaks in his application. By this, we mean memory which was allocated but wasn’t released back. For example, take this program:</p>
+<p>{% highlight cpp %} void f() { int *a = calloc(1024, sizeof(a[0])); }</p>
+<p>int main() { int i;</p>
+<pre><code>for (i = 0; i &lt; 1024; i++)
+    f();
+
+return 0;</code></pre>
+<p>} {% endhighlight %}</p>
+<p>This program allocates <code>sizeof(int)</code> MB of memory and doesn’t free them. Of course, at the end of the execution, the operating systems takes care of releasing this memory. However, suppose that the <code>f</code> function was instead called from a server executable which shouldn’t be stopped. In this case, each invocation of <code>f</code> will eat away <code>sizeof(int)</code> KB memory (depending on architecture, 4KB or 8KB).</p>
+<p>The example is simple, the problem could be observed with naked eyes. However, let’s see what <a href="http://valgrind.org/">Valgrind</a> tells us:</p>
+<pre><code>==11418== Memcheck, a memory error detector
+==11418== Copyright (C) 2002-2011, and GNU GPL'd, by Julian Seward et al.
+==11418== Using Valgrind-3.7.0 and LibVEX; rerun with -h for copyright info
+==11418== Command: ./a.out
+==11418==
+==11418==
+==11418== HEAP SUMMARY:
+==11418==     in use at exit: 4,194,304 bytes in 1,024 blocks
+==11418==   total heap usage: 1,024 allocs, 0 frees, 4,194,304 bytes allocated
+==11418==
+==11418== LEAK SUMMARY:
+==11418==    definitely lost: 4,194,304 bytes in 1,024 blocks
+==11418==    indirectly lost: 0 bytes in 0 blocks
+==11418==      possibly lost: 0 bytes in 0 blocks
+==11418==    still reachable: 0 bytes in 0 blocks
+==11418==         suppressed: 0 bytes in 0 blocks
+==11418== Rerun with --leak-check=full to see details of leaked memory
+==11418==
+==11418== For counts of detected and suppressed errors, rerun with: -v
+==11418== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 3 from 3)</code></pre>
+<p>The number that gets repeated on each line of the output is the PID of our executable. At the end of the run, we are offered a heap summary (from where we can see that our program allocated 4MB of memory) and a leak summary.</p>
+<p>Let’s see what happens after we take into account the suggestion to run with <code>--leak-check=full</code>. First, we compile the program adding debugging information, using the <code>-g</code> <a href="http://gcc.gnu.org/">GCC</a> flag. And, then, we run the executable under <a href="http://valgrind.org/">Valgrind</a>:</p>
+<pre><code>mihai@keldon:/tmp/mm/valgrind$ valgrind --leak-check=full ./a.out
+==11527== Memcheck, a memory error detector
+==11527== Copyright (C) 2002-2011, and GNU GPL'd, by Julian Seward et al.
+==11527== Using Valgrind-3.7.0 and LibVEX; rerun with -h for copyright info
+==11527== Command: ./a.out
+==11527==
+==11527==
+==11527== HEAP SUMMARY:
+==11527==     in use at exit: 4,194,304 bytes in 1,024 blocks
+==11527==   total heap usage: 1,024 allocs, 0 frees, 4,194,304 bytes allocated
+==11527==
+==11527== 4,194,304 bytes in 1,024 blocks are definitely lost in loss record 1 of 1
+==11527==    at 0x4C29024: calloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==11527==    by 0x4004F2: f (1.c:6)
+==11527==    by 0x400513: main (1.c:14)
+==11527==
+==11527== LEAK SUMMARY:
+==11527==    definitely lost: 4,194,304 bytes in 1,024 blocks
+==11527==    indirectly lost: 0 bytes in 0 blocks
+==11527==      possibly lost: 0 bytes in 0 blocks
+==11527==    still reachable: 0 bytes in 0 blocks
+==11527==         suppressed: 0 bytes in 0 blocks
+==11527==
+==11527== For counts of detected and suppressed errors, rerun with: -v
+==11527== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 3 from 3)</code></pre>
+<p>This time, we see that the memory was allocated in line 6 in function <code>f</code>. This allows us to insert the needed <code>free</code> at the correct spot.</p>
+<p><strong>Quick question</strong>: what would have happened if our program was compiled with optimizations on (try <code>-O3</code> for example)?</p>
+<h3 id="wrong-cases-of-memory-release">Wrong cases of memory release</h3>
+<p>What happens when we free the same memory address twice? Let’s use this program:</p>
+<p>{% highlight cpp %} void <em>f() { int </em>a = calloc(16, sizeof(a[0])); free(a); return a; }</p>
+<p>int main() { int *a = f(); free(a); return 0; } {% endhighlight %}</p>
+<p>Running it with <a href="http://valgrind.org/">Valgrind</a> yields:</p>
+<pre><code>mihai@keldon:/tmp/mm/valgrind$ valgrind ./a.out
+==11734== Memcheck, a memory error detector
+==11734== Copyright (C) 2002-2011, and GNU GPL'd, by Julian Seward et al.
+==11734== Using Valgrind-3.7.0 and LibVEX; rerun with -h for copyright info
+==11734== Command: ./a.out
+==11734==
+==11734== Invalid free() / delete / delete[] / realloc()
+==11734==    at 0x4C29A9E: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==11734==    by 0x40057A: main (1.c:14)
+==11734==  Address 0x51d2040 is 0 bytes inside a block of size 64 free'd
+==11734==    at 0x4C29A9E: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==11734==    by 0x400552: f (1.c:7)
+==11734==    by 0x40056A: main (1.c:13)
+==11734==
+==11734==
+==11734== HEAP SUMMARY:
+==11734==     in use at exit: 0 bytes in 0 blocks
+==11734==   total heap usage: 1 allocs, 2 frees, 64 bytes allocated
+==11734==
+==11734== All heap blocks were freed -- no leaks are possible
+==11734==
+==11734== For counts of detected and suppressed errors, rerun with: -v
+==11734== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 3 from 3)</code></pre>
+<p>We can see both locations where the memory was released.</p>
+<p>Now, consider this C++ code, a tweaked version of the above:</p>
+<p>{% highlight cpp %} int <em>f() { int </em>a = (int *)calloc(16, sizeof(a[0])); return a; }</p>
+<p>int main() { int *a = f(); delete a; return 0; } {% endhighlight %}</p>
+<p>Running under <a href="http://valgrind.org/">Valgrind</a>, we receive the following output (we will use <code>-q</code> to show only the errors reported by Valgrind – no header and no statistics at the end):</p>
+<pre><code>mihai@keldon:/tmp/mm/valgrind$ valgrind -q ./a.out
+==11757== Mismatched free() / delete / delete []
+==11757==    at 0x4C2972C: operator delete(void*) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==11757==    by 0x400659: main (1.c:13)
+==11757==  Address 0x59e0040 is 0 bytes inside a block of size 64 alloc'd
+==11757==    at 0x4C29024: calloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==11757==    by 0x400632: f() (1.c:6)
+==11757==    by 0x400649: main (1.c:12)</code></pre>
+<p>Before finishing this section, let’s consider the case of freeing from inside an allocated block. See this code:</p>
+<p>{% highlight cpp %} void <em>f() { int </em>a = calloc(16, sizeof(a[0])); return a + 4; }</p>
+<p>int main() { int *a = f(); free(a); return 0; } {% endhighlight %}</p>
+<p><a href="http://valgrind.org/">Valgrind</a> gives the following output:</p>
+<pre><code>mihai@keldon:/tmp/mm/valgrind$ valgrind -q ./a.out
+==11765== Invalid free() / delete / delete[] / realloc()
+==11765==    at 0x4C29A9E: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==11765==    by 0x400572: main (1.c:13)
+==11765==  Address 0x51d2050 is 16 bytes inside a block of size 64 alloc'd
+==11765==    at 0x4C29024: calloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==11765==    by 0x400542: f (1.c:6)
+==11765==    by 0x400562: main (1.c:12)</code></pre>
+<p>From this we can easily see that we tried to free from inside an allocated block instead of using the block’s address. Moreover, we find where the block was allocated and we can fix our program now.</p>
+<h3 id="incorrect-usage-of-memory">Incorrect usage of memory</h3>
+<p>Let’s see this simple code:</p>
+<p>{% highlight cpp %} struct s { int a, b; };</p>
+<p>int main() { struct s s; s.a = 42; if (s.b) printf(“s.b”); return 0; } {% endhighlight %}</p>
+<p>We didn’t initialize <code>s.b</code>. <a href="http://valgrind.org/">Valgrind</a> reports this:</p>
+<pre><code>mihai@keldon:/tmp/mm/valgrind$ valgrind -q ./a.out
+==11868== Conditional jump or move depends on uninitialised value(s)
+==11868==    at 0x4004F0: main (1.c:12)
+==11868==</code></pre>
+<p>This was simple. Now, consider this common case:</p>
+<p>{% highlight cpp %} int main() { char <em>s = strdup(“Valgrind rocks”); char </em>q = malloc(strlen(s)); strcpy(q, s); return 0; } {% endhighlight %}</p>
+<p>This code looks perfectly valid. Does it? <a href="http://valgrind.org/">Valgrind</a> says otherwise:</p>
+<pre><code>mihai@keldon:/tmp/mm/valgrind$ valgrind -q ./a.out
+==12038== Invalid write of size 1
+==12038==    at 0x4C2B27F: strcpy (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==12038==    by 0x4005FC: main (1.c:9)
+==12038==  Address 0x51d209e is 0 bytes after a block of size 14 alloc'd
+==12038==    at 0x4C2A93D: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==12038==    by 0x4005E5: main (1.c:8)</code></pre>
+<p>Indeed, we missed space for the <code>\0</code> terminating character. Suppose we do this fix: we change <code>strcpy(q, s)</code> with <code>strcpy(q, s + 1)</code>. This works.</p>
+<p>Now, let us assume that – by mistake – we also change <code>q</code>:</p>
+<p>{% highlight cpp %} int main() { char *s = strdup(“Valgrind rocks”); strcpy(s, s + 1); return 0; } {% endhighlight %}</p>
+<p><a href="http://valgrind.org/">Valgrind</a> is prompt to show us that we use <code>strcpy</code> in a wrong way, possibly destroying content:</p>
+<pre><code>mihai@keldon:/tmp/mm/valgrind$ valgrind -q ./a.out
+==12058== Source and destination overlap in strcpy(0x51d2040, 0x51d2041)
+==12058==    at 0x4C2B2F5: strcpy (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==12058==    by 0x400600: main (1.c:9)</code></pre>
+<p>But what if that was the indented behaviour? What if we really needed to remove the first letter of <code>s</code>?</p>
+<p>We can generate a suppression and use it in other calls of <a href="http://valgrind.org/">Valgrind</a> to ignore this error. To generate it, we use another flag:</p>
+<pre><code>mihai@keldon:/tmp/mm/valgrind$ valgrind --gen-suppressions=yes -q ./a.out
+==12079== Source and destination overlap in strcpy(0x51d2040, 0x51d2041)
+==12079==    at 0x4C2B2F5: strcpy (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==12079==    by 0x400600: main (1.c:9)
+==12079==
+==12079==
+==12079== ---- Print suppression ? --- [Return/N/n/Y/y/C/c] ---- y
+{
+   &lt;insert_a_suppression_name_here&gt;
+   Memcheck:Overlap
+   fun:strcpy
+   fun:main
+}</code></pre>
+<p>We copy the printed lines into a file, <code>strcpy_main.supp</code>:</p>
+<pre><code>{
+   strcpy_main
+   Memcheck:Overlap
+   fun:strcpy
+   fun:main
+}</code></pre>
+<p>When we run <a href="http://valgrind.org/">Valgrind</a> again, we will use this file to ignore that error.</p>
+<pre><code>mihai@keldon:/tmp/mm/valgrind$ valgrind --suppressions=strcpy_main.supp -q ./a.out
+mihai@keldon:/tmp/mm/valgrind$</code></pre>
+<p>Even though this works, we should not use <code>strcpy</code> with overlapping arguments. The manual page for <code>strcpy</code> tells:</p>
+<pre><code>The  strcpy()  function  copies  the  string pointed to by src, including
+the terminating null byte ('\0'), to the buffer pointed to by dest. The
+strings may not overlap, and the destination string dest must be large
+enough to receive the copy.</code></pre>
+<p>One last word before finishing this article. If your program has too many errors, <a href="http://valgrind.org/">Valgrind</a> tries to be funny and gives the following message:</p>
+<pre><code>==21573== More than 10000000 total errors detected.  I'm not reporting any more.
+==21573== Final error counts will be inaccurate.  Go fix your program!</code></pre>
+<p>You should do this, of course.</p>
+<p>In a later article we will show how can you combine <a href="http://valgrind.org/">Valgrind</a> and <a href="http://sources.redhat.com/gdb/">GDB</a> to fix some nasty bugs. But until then, remember how to use <a href="http://valgrind.org/docs/manual/mc-manual.html">Memcheck</a> and keep in mind that <a href="http://valgrind.org/">Valgrind</a> has many useful tools and a programmer can create others if he needs them.</p>
+
+          </div>
+        </div>
+      </div>
+    </article>
+  </div>
+</div>
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+  /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+  var disqus_shortname = 'rosedutechblog';
+  var disqus_url = window.location.href.split('/').splice(0,3).join("/")+'/valgrind-introduction.html';
+  var title = 'Valgrind introduction';
+  /* * * DON'T EDIT BELOW THIS LINE * * */
+  (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+        </div>
+      </div>
+
+      <footer class="the-footer">
+        <div class="unit-foot">
+          <div class="unit-inner unit-foot-inner">
+            <div class="misc vcard">
+              <h4>Social</h4>
+              <div class="rss">
+                <a href="http://feeds.feedburner.com/rosedu/tech" target="_blank">
+                  <img src="./images/rss.png" alt="Subscribe to RSS Feed" />
+                </a>
+                <a href="http://www.reddit.com/submit?url='+encodeURIComponent(window.location)" target="_blank" onclick="window.location='http://www.reddit.com/submit?url='+encodeURIComponent(window.location); return false">
+                  <img src="./images/reddit.png" alt="Submit to Reddit" />
+                </a>
+                <a href="http://twitter.com/share" class="twitter-share-button" data-count="none" target="_blank">
+                  <img src="./images/twitter.png" alt="Submit to Twitter" />
+                </a>
+              </div>
+
+              <h4>Powered by</h4>
+              <ul>
+                <li class="contact">
+                  <address>
+                    <a class="author fn n" href="http://www.rosedu.org">ROSEdu</a>
+                  </address>
+                </li>
+                <li class="contact">
+                  <address>
+                    <a class="author fn n" href="http://jaspervdj.be/hakyll">Hakyll</a>
+                  </address>
+                </li>
+              </ul>
+
+              <h4>License</h4>
+              <div class="bucket">
+                <span>
+                  <a rel="license" href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons Attribution 3.0 License">
+                    <img src="//i.creativecommons.org/l/by/3.0/88x31.png" alt="License">
+                  </a>
+                </span>
+                <span>
+                  This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/3.0/" class="subfoot">Creative Commons Attribution 3.0 License</a>.
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>

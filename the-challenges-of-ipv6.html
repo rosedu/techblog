@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--[if lt IE 7]>
+<html class="no-js lt-ie9 lt-ie8 lt-ie7 ie" lang="en"> <![endif]-->
+<!--[if IE 7]>
+<html class="no-js lt-ie9 lt-ie8 ie" lang="en"> <![endif]-->
+<!--[if IE 8]>
+<html class="no-js lt-ie9 ie" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" class="no-js"><!--<![endif]-->
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>ROSEdu Techblog - The challenges of IPv6</title>
+    <link rel="stylesheet" href="./css/style.css" type="text/css">
+    <link rel="stylesheet" href="./css/rosedu_links.css" type="text/css">
+    <link rel="stylesheet" href="./css/syntax.css" type="text/css">
+    <!--<link rel="stylesheet" type="text/css" href="/css/default.css"/>-->
+
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-7579199-6']);
+      _gaq.push(['_trackPageview']);
+
+      (function () {
+        var ga = document.createElement('script');
+        ga.type = 'text/javascript';
+        ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  </head>
+
+  <body>
+    <div id="page" class="hentry">
+      <header class="the-header">
+        <div class="unit-head">
+          <div class="unit-inner unit-head-inner">
+            <nav class="nav-global">
+              <ul>
+                <li class="logo"><a href="./" title="Home">ROSEdu Techblog</a></li>
+                <li class="about"><a href="./about.html">About</a></li>
+                <li class="people"><a href="./people.html">People</a></li>
+                <li class="archive"><a href="./archive.html">Archive</a></li>
+                <li class="category"><a href="./tags.html">Tags</a></li>
+              </ul>
+            </nav>
+
+            <hr />
+
+            <nav class="nav-global">
+              <ul>
+                <li class="logo"><a href="./archive.html" title="Archive">Latest Posts</a></li>
+                <!--TODO-->
+                <li><a href="./shell-tips-and-tricks-for-file-editing.html">Shell tips and tricks for log files</a></li>
+                <li><a href="./git-is-the-answer-3.html">Git Is The Answer 3/3</a></li>
+                <li><a href="./git-is-the-answer-2.html">Git Is The Answer 2/3</a></li>
+              </ul>
+            </nav>
+          </div><!-- unit-inner -->
+        </div><!-- unit-head -->
+      </header>
+
+      <div class="body" role="main">
+        <div class="unit-body">
+          <div class="unit-inner unit-body-inner">
+  <div class="entry-content">
+    <article class="unit-article layout-post">
+      <div class="unit-inner unit-article-inner">
+        <div class="content">
+          <div class="bd">
+            <header>
+              <div class="unit-head">
+                <div class="unit-inner unit-head-inner">
+                  <h1 class="h2 entry-title">
+                    <a class="post_title" href="./the-challenges-of-ipv6.html" title="The challenges of IPv6">The challenges of IPv6</a>
+                  </h1>
+                </div><!-- unit-inner -->
+              </div><!-- unit-head -->
+            </header>
+
+            <span class="date">
+            <span class="published">Published on December  3, 2011</span>
+            by
+            <span class="author">Alexandru Juncu</span>
+            </span>
+
+            <p>As we all know, IPv6 is the new protocol of the Internet, that will come to replace the current version of IP (Internet Protocol), IPv4. It will come to fix the flaw of the 32 bit addressing in IPv4, flaw that led to the current shortage of usable address in the Internet.</p>
+<p>The addressing issue is not something new. The IETF started looking into a replacement for IPv4 since 1992-1993, when they started the IPng (IP next generation) discussion group and by 1996, they had the specifications for IPv6.</p>
+<p>So considering that the Internet is about 40 years old and the IPv4 addressing problem is been known for about half that time, why is it that after 15 years since having the solution in the form of IPv6, why is it still not predominately used?</p>
+<p>Probably the easiest way to have build the IPng is with a backwards compatibility (for example, using a variable length address, like OSI’s CLNP, where all the IPv4’s address space is just a part of the IPv6 space, using 32 bits). But since they wanted to start from scratch an rewrite everything in order to fix other problems in IPv4 (like the now almost useless header checksum) and to add new features (like the header extensions that allows protocols like IPSec to be built inside IPv6). But the “rewrite everything” approach meant that almost all of the components of the network layers had to be rewritten and this resulted in a large groups of people being affected by the change.</p>
+<p>First were the network administrators, the ones that had to ensure that their routers, multilayer switches, firewall and wireless controllers were ready to be migrated. Most of the old equipment had to be replaced with new ones, or at least have their software updated. Current equipment do most of their packet processing in hardware to get better performance, but this is valid only for IPv4 packets. Hardware processing for IPv6 packets is something that only very new models of routers and switches do, and companies don’t really want to buy new equipment since the costs are rather big. <strong>Routing protocols</strong> had to be rewritten or modified or written from zero. OSPFv3, the link state protocol and the simple and lightweight distance vector, RIPng, had to be implemented from scratch. More modular, IP independent protocols like EIGRP and Intergrated IS-IS needed new modules for the new protocol.</p>
+<p>System administrators had the same concern, getting their services IPv6 ready. From setting up their web services to listen on both protocols to the more difficult service, <strong>DNS</strong>. If DNS in IPv4 was a good thing to have, in IPv6, DNS is critical (nobody wants to remember a 32 hexadecimal digit number). The DNS protocol needed to add a new record, the AAAA record, and needed to implement a new reverse DNS zone, the ip6.arpa. zone.</p>
+<p>But some of the frustrations of the administrators and the users are caused by bugs or even lack of implementation in software. Since every hardware needs a software, IPv6 first of all needs support in the software written. Kernel, system and application programmers needed starting building in support for IPv6. For example, people started patching <strong>Linux</strong> 2.1 back in 1996, but real stable, built-in support for IPv6 only came out in 2.6. Support in kernel still didn’t mean that people could use it because it lacked the userspace tools. The wide used ifconfig wasn’t build for v6, and only with the development of <strong>iproute2</strong>, Linux users could configure IPv6 on their boxes. Although considered deprecated, newer versions of ifconfig do support IPv6 address assignments. In the Windows world, things are worse, since only Windows 7 really has full support (kernel and user space tools) for IPv6.</p>
+<p>Only after the IPv6 stack is built inside the kernel (the network stack being one of the hardest part of the kernel to program), the system programmers could start porting their programs to be IPv6 ready. IPv4 and IPv6 sockets are not compatible, because the second one needs to implement the address family AF_INET6. An IPv6 ready application also needs to be IPv4 working, so it needs to be smart and know when to create a v4 connection or a v6 connection. Because if only sometimes a v6 infrastructure is available, a v4 infrastructure is almost sure there. But if both are available, which one do you chose, because maybe one works better than the other in that situation?</p>
+<p>So as we can see, there is not one group affected by the migration to IPv6, but rather an entire ecosystem, with several groups affecting each other.</p>
+
+          </div>
+        </div>
+      </div>
+    </article>
+  </div>
+</div>
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+  /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+  var disqus_shortname = 'rosedutechblog';
+  var disqus_url = window.location.href.split('/').splice(0,3).join("/")+'/the-challenges-of-ipv6.html';
+  var title = 'The challenges of IPv6';
+  /* * * DON'T EDIT BELOW THIS LINE * * */
+  (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+        </div>
+      </div>
+
+      <footer class="the-footer">
+        <div class="unit-foot">
+          <div class="unit-inner unit-foot-inner">
+            <div class="misc vcard">
+              <h4>Social</h4>
+              <div class="rss">
+                <a href="http://feeds.feedburner.com/rosedu/tech" target="_blank">
+                  <img src="./images/rss.png" alt="Subscribe to RSS Feed" />
+                </a>
+                <a href="http://www.reddit.com/submit?url='+encodeURIComponent(window.location)" target="_blank" onclick="window.location='http://www.reddit.com/submit?url='+encodeURIComponent(window.location); return false">
+                  <img src="./images/reddit.png" alt="Submit to Reddit" />
+                </a>
+                <a href="http://twitter.com/share" class="twitter-share-button" data-count="none" target="_blank">
+                  <img src="./images/twitter.png" alt="Submit to Twitter" />
+                </a>
+              </div>
+
+              <h4>Powered by</h4>
+              <ul>
+                <li class="contact">
+                  <address>
+                    <a class="author fn n" href="http://www.rosedu.org">ROSEdu</a>
+                  </address>
+                </li>
+                <li class="contact">
+                  <address>
+                    <a class="author fn n" href="http://jaspervdj.be/hakyll">Hakyll</a>
+                  </address>
+                </li>
+              </ul>
+
+              <h4>License</h4>
+              <div class="bucket">
+                <span>
+                  <a rel="license" href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons Attribution 3.0 License">
+                    <img src="//i.creativecommons.org/l/by/3.0/88x31.png" alt="License">
+                  </a>
+                </span>
+                <span>
+                  This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/3.0/" class="subfoot">Creative Commons Attribution 3.0 License</a>.
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>

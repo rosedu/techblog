@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--[if lt IE 7]>
+<html class="no-js lt-ie9 lt-ie8 lt-ie7 ie" lang="en"> <![endif]-->
+<!--[if IE 7]>
+<html class="no-js lt-ie9 lt-ie8 ie" lang="en"> <![endif]-->
+<!--[if IE 8]>
+<html class="no-js lt-ie9 ie" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" class="no-js"><!--<![endif]-->
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>ROSEdu Techblog - Tips on coding style</title>
+    <link rel="stylesheet" href="./css/style.css" type="text/css">
+    <link rel="stylesheet" href="./css/rosedu_links.css" type="text/css">
+    <link rel="stylesheet" href="./css/syntax.css" type="text/css">
+    <!--<link rel="stylesheet" type="text/css" href="/css/default.css"/>-->
+
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-7579199-6']);
+      _gaq.push(['_trackPageview']);
+
+      (function () {
+        var ga = document.createElement('script');
+        ga.type = 'text/javascript';
+        ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  </head>
+
+  <body>
+    <div id="page" class="hentry">
+      <header class="the-header">
+        <div class="unit-head">
+          <div class="unit-inner unit-head-inner">
+            <nav class="nav-global">
+              <ul>
+                <li class="logo"><a href="./" title="Home">ROSEdu Techblog</a></li>
+                <li class="about"><a href="./about.html">About</a></li>
+                <li class="people"><a href="./people.html">People</a></li>
+                <li class="archive"><a href="./archive.html">Archive</a></li>
+                <li class="category"><a href="./tags.html">Tags</a></li>
+              </ul>
+            </nav>
+
+            <hr />
+
+            <nav class="nav-global">
+              <ul>
+                <li class="logo"><a href="./archive.html" title="Archive">Latest Posts</a></li>
+                <!--TODO-->
+                <li><a href="./shell-tips-and-tricks-for-file-editing.html">Shell tips and tricks for log files</a></li>
+                <li><a href="./git-is-the-answer-3.html">Git Is The Answer 3/3</a></li>
+                <li><a href="./git-is-the-answer-2.html">Git Is The Answer 2/3</a></li>
+              </ul>
+            </nav>
+          </div><!-- unit-inner -->
+        </div><!-- unit-head -->
+      </header>
+
+      <div class="body" role="main">
+        <div class="unit-body">
+          <div class="unit-inner unit-body-inner">
+  <div class="entry-content">
+    <article class="unit-article layout-post">
+      <div class="unit-inner unit-article-inner">
+        <div class="content">
+          <div class="bd">
+            <header>
+              <div class="unit-head">
+                <div class="unit-inner unit-head-inner">
+                  <h1 class="h2 entry-title">
+                    <a class="post_title" href="./tips-on-coding-style.html" title="Tips on coding style">Tips on coding style</a>
+                  </h1>
+                </div><!-- unit-inner -->
+              </div><!-- unit-head -->
+            </header>
+
+            <span class="date">
+            <span class="published">Published on February 28, 2012</span>
+            by
+            <span class="author">Alexandru Juncu</span>
+            </span>
+
+            <p>Good programmers know that writing code is more than just… writing code. It’s more than writing efficient code… It’s also about writing good code with respect to the ones that are going to read and/or use that code. This is specially true in open source communities where potentially hundreds of people could be looking at your code. You have to write code that can be easily read and used by others. And to do that, you need some some sort of standards of code writing. This is where the idea of <strong>coding styles</strong> comes in.</p>
+<p>Every software project has its (hopefully properly defined) coding style. It can depend a lot on the programming language that the project uses. The style can specify the indentation, the variable naming, the use of spaces or the use of curly braces.</p>
+<p>For example, the Linux Kernel has its coding style well defined in the <a href="http://www.kernel.org/doc/Documentation/CodingStyle">Documentation pages</a>. It is based on the Kernighan &amp; Ritchie (K&amp;R) style, the Linux Kernel being written in C. This is a very popular coding style with several projects using it, sometimes considered the de facto coding style for C.</p>
+<p>If you want to check if your code follows the coding style of Linux, you can use <strong>checkpatch.pl</strong>. This script can be found in the source code of the Linux Kernel in the scripts directory. It is mainly used for checking patches submitted for Linux, but it can be used on normal C source fies using the <strong>-f</strong> parameter. You need to clone the Linux tree to get the script, and you need to run it from the root of the tree.</p>
+<p>Here is an example of badly written code:</p>
+<pre><code>  1 
+  2 int main(void)···
+  3 {
+  4    int i,a;···
+  5 »       »       
+  6    for(i=0;i&lt;10;i++)
+  7       a=i;
+  8    //this code is useless
+  9    if(a==i){
+ 10    return 0;
+ 11    }
+ 12 
+ 13    return 0;
+ 14 }·····</code></pre>
+<p>Note that the · character would represent a space and » would represent a tab. Spaces would represent… spaces.</p>
+<p>And this is what checkpatch would report:</p>
+<pre><code>alexj@ixmint ~/linux $ scripts/checkpatch.pl -f bad.c
+ERROR: trailing whitespace
+#2: FILE: bad.c:2:
++int main(void)   $
+
+ERROR: trailing whitespace
+#4: FILE: bad.c:4:
++   int i,a;   $
+
+WARNING: please, no spaces at the start of a line
+#4: FILE: bad.c:4:
++   int i,a;   $
+
+ERROR: space required after that ',' (ctx:VxV)
+#4: FILE: bad.c:4:
++   int i,a;   
+	 ^
+
+ERROR: trailing whitespace
+#5: FILE: bad.c:5:
++^I^I$
+
+WARNING: please, no spaces at the start of a line
+#6: FILE: bad.c:6:
++   for(i=0;i&lt;10;i++)$
+
+WARNING: suspect code indent for conditional statements (3, 6)
+#6: FILE: bad.c:6:
++   for(i=0;i&lt;10;i++)
++      a=i;
+
+ERROR: spaces required around that '=' (ctx:VxV)
+#6: FILE: bad.c:6:
++   for(i=0;i&lt;10;i++)
+	 ^
+
+ERROR: space required after that ';' (ctx:VxV)
+#6: FILE: bad.c:6:
++   for(i=0;i&lt;10;i++)
+	   ^
+
+ERROR: spaces required around that '&lt;' (ctx:VxV)
+#6: FILE: bad.c:6:
++   for(i=0;i&lt;10;i++)
+	     ^
+
+ERROR: space required after that ';' (ctx:VxV)
+#6: FILE: bad.c:6:
++   for(i=0;i&lt;10;i++)
+		^
+
+ERROR: space required before the open parenthesis '('
+#6: FILE: bad.c:6:
++   for(i=0;i&lt;10;i++)
+
+WARNING: please, no spaces at the start of a line
+#7: FILE: bad.c:7:
++      a=i;$
+
+ERROR: spaces required around that '=' (ctx:VxV)
+#7: FILE: bad.c:7:
++      a=i;
+	^
+
+WARNING: please, no spaces at the start of a line
+#8: FILE: bad.c:8:
++   //this code is useless$
+
+ERROR: do not use C99 // comments
+#8: FILE: bad.c:8:
++   //this code is useless
+
+WARNING: please, no spaces at the start of a line
+#9: FILE: bad.c:9:
++   if(a=i){$
+
+WARNING: suspect code indent for conditional statements (3, 3)
+#9: FILE: bad.c:9:
++   if(a=i){
++   return 1;
+
+ERROR: spaces required around that '=' (ctx:VxV)
+#9: FILE: bad.c:9:
++   if(a=i){
+	^
+
+ERROR: space required before the open brace '{'
+#9: FILE: bad.c:9:
++   if(a=i){
+
+ERROR: space required before the open parenthesis '('
+#9: FILE: bad.c:9:
++   if(a=i){
+
+ERROR: do not use assignment in if condition
+#9: FILE: bad.c:9:
++   if(a=i){
+
+WARNING: braces {} are not necessary for single statement blocks
+#9: FILE: bad.c:9:
++   if(a=i){
++   return 1;
++   }
+
+WARNING: please, no spaces at the start of a line
+#10: FILE: bad.c:10:
++   return 1;$
+
+WARNING: please, no spaces at the start of a line
+#11: FILE: bad.c:11:
++   }$
+
+WARNING: please, no spaces at the start of a line
+#13: FILE: bad.c:13:
++   return 0$
+
+ERROR: trailing whitespace
+#14: FILE: bad.c:14:
++}     $
+
+total: 16 errors, 11 warnings, 14 lines checked
+
+NOTE: whitespace errors detected, you may wish to use scripts/cleanpatch or
+      scripts/cleanfile
+
+bad.c has style problems, please review.</code></pre>
+<p>Most of the errors are regarding whitespaces, space or tab characters that shouldn’t be there. It’s hard to spot spaces or tabs because they are invisible. But a good tip is to make them visible in your editor. Visually replacing characters will not modify the source (spaces will still be spaces) but they will pop up in your editor so you know to delete them. For example, in vi you can use this (credits to ddvlad for it):</p>
+<pre><code>set list listchars=tab:»\ ,trail:·,extends:»,precedes:«</code></pre>
+<p>Other warnings come from the fact that indentation was made with 3 spaces and not 8. Tabs and spaces should be used consistently. For example, you can set in vi the ‘width’ of a tab with:</p>
+<pre><code>:set tabstop=8</code></pre>
+<p>There are places where you don’t want spaces, but there are situations where you do want them. You should leave a space after keywords like <strong>if</strong> or <strong>for</strong> and around operators like <strong>=</strong>. Doing this makes the code a lot more readable.</p>
+<p>Curly braces should be used, but only when needed. If an <strong>if</strong> has only one instruction to be executed on the branch, it is pointless to have braces enclosing it. Indentation is enough to mark the instruction.</p>
+<p>Comment types are a delicate subject. The classic C specification only allows /* */ block comments. C99 allows // as one line comments. Some coding styles (like the Linux coding style) don’t allow C99 comments.</p>
+<p>This is the way the code <strong>should</strong> look like with proper coding style:</p>
+<pre><code>  1 int main(void)
+  2 {
+  3 »       int i, a;
+  4 
+  5 »       for (i = 0; i &lt; 10; i++)
+  6 »       »       a = i;
+  7 »       /* This code is useless */
+  8 »       if (a == i)
+  9 »       »       return 1;
+ 10 
+ 11 »       return 0;
+ 12 }</code></pre>
+<p>Other programing languages can have similar coding guidelines. For Python, there is <a href="http://www.python.org/dev/peps/pep-0008/">PEP</a>, as dictated by the creator of Python himself.</p>
+<p>But we should always keep in mind that there is no One True Coding Style. Like all great debates, everybody could argue that one is better than another. What is important and everybody (mostly) agrees is to have consistency within a project in regards to the code the community writes.</p>
+
+          </div>
+        </div>
+      </div>
+    </article>
+  </div>
+</div>
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+  /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+  var disqus_shortname = 'rosedutechblog';
+  var disqus_url = window.location.href.split('/').splice(0,3).join("/")+'/tips-on-coding-style.html';
+  var title = 'Tips on coding style';
+  /* * * DON'T EDIT BELOW THIS LINE * * */
+  (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+        </div>
+      </div>
+
+      <footer class="the-footer">
+        <div class="unit-foot">
+          <div class="unit-inner unit-foot-inner">
+            <div class="misc vcard">
+              <h4>Social</h4>
+              <div class="rss">
+                <a href="http://feeds.feedburner.com/rosedu/tech" target="_blank">
+                  <img src="./images/rss.png" alt="Subscribe to RSS Feed" />
+                </a>
+                <a href="http://www.reddit.com/submit?url='+encodeURIComponent(window.location)" target="_blank" onclick="window.location='http://www.reddit.com/submit?url='+encodeURIComponent(window.location); return false">
+                  <img src="./images/reddit.png" alt="Submit to Reddit" />
+                </a>
+                <a href="http://twitter.com/share" class="twitter-share-button" data-count="none" target="_blank">
+                  <img src="./images/twitter.png" alt="Submit to Twitter" />
+                </a>
+              </div>
+
+              <h4>Powered by</h4>
+              <ul>
+                <li class="contact">
+                  <address>
+                    <a class="author fn n" href="http://www.rosedu.org">ROSEdu</a>
+                  </address>
+                </li>
+                <li class="contact">
+                  <address>
+                    <a class="author fn n" href="http://jaspervdj.be/hakyll">Hakyll</a>
+                  </address>
+                </li>
+              </ul>
+
+              <h4>License</h4>
+              <div class="bucket">
+                <span>
+                  <a rel="license" href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons Attribution 3.0 License">
+                    <img src="//i.creativecommons.org/l/by/3.0/88x31.png" alt="License">
+                  </a>
+                </span>
+                <span>
+                  This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/3.0/" class="subfoot">Creative Commons Attribution 3.0 License</a>.
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>
