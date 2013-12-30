@@ -1,7 +1,7 @@
 ---
 layout: post
 date: 2012-04-03
-title: "GDB: A basic workflow"
+title: GDB: A basic workflow
 tags: [gdb, debugging, cli, .gdbinit, backtrace, breakpoint]
 author: Andrei
 ---

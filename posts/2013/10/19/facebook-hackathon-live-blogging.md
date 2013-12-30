@@ -1,7 +1,7 @@
 ---
 layout: post
 date: 2013-10-19
-title: "Facebook Hackathon Live Blogging"
+title: Facebook Hackathon Live Blogging
 tags: [facebook, hackathon, live, blogging, coders]
 author: Alex Palcuie & Marius Ungureanu
 ---

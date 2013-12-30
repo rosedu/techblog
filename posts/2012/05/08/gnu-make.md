@@ -1,7 +1,7 @@
 ---
 layout: post
 date: 2012-05-08
-title: "GNU Make"
+title: GNU Make
 tags: [make, Makefile, makefile]
 author: Mihai Tiriplica
 ---

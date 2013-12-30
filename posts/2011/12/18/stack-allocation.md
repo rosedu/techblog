@@ -1,7 +1,7 @@
 ---
 layout: post
 date: 2011-12-18
-title: "Stack Allocation"
+title: Stack Allocation
 tags: [stack, sp, esp, C, assembly, cache, memory]
 author: Alexandru Juncu
 ---

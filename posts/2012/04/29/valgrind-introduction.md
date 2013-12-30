@@ -1,7 +1,7 @@
 ---
 layout: post
 date: 2012-04-29
-title: "Valgrind introduction"
+title: Valgrind introduction
 tags: [valgrind]
 author: Mihai
 ---

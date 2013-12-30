@@ -1,7 +1,7 @@
 ---
 layout: post
 date: 2011-11-28
-title: "Contributing Upstream"
+title: Contributing Upstream
 tags: [git, patch]
 author: Mihai
 ---

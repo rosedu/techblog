@@ -1,7 +1,7 @@
 ---
 layout: post
 date: 2012-02-28
-title: "Tips on coding style"
+title: Tips on coding style
 tags: [C, coding style, Linux, checkpatch.pl]
 author: Alexandru Juncu
 ---

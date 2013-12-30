@@ -1,7 +1,7 @@
 ---
 layout: post
 date: 2011-08-27
-title: "char[] versus char*"
+title: char[] versus char*
 tags: [arrays, pointers, strings, .rodata]
 author: Daniel
 ---

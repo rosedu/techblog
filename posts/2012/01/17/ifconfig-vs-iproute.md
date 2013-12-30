@@ -1,7 +1,7 @@
 ---
 layout: post
 date: 2012-01-17
-title: "ifconfig vs iproute2"
+title: ifconfig vs iproute2
 tags: [iproute2, net-tools, ifconfig, ip, route, arp, netlink, IPv4, IPv6]
 author: Alexandru Juncu
 ---

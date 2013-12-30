@@ -1,7 +1,7 @@
 ---
 layout: post
 date: 2012-04-21
-title: "Git: speeding workflow"
+title: Git: speeding workflow
 tags: [git, .gitconfig, alias, speed, log, config]
 author: Andrei
 ---

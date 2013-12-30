@@ -1,7 +1,7 @@
 ---
 layout: post
 date: 2011-11-18
-title: "Rescuing executable code from a process"
+title: Rescuing executable code from a process
 tags: [process, procfs, /proc, file descriptor]
 author: Alexandru Juncu
 ---
