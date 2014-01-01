@@ -2,7 +2,7 @@
 date: 2011-10-09
 title: C's extern internals
 author: Daniel
-tags: arrays, pointers, extern, c
+tags: arrays, pointers, extern, C
 ---
 
 The idea for this post came from [Virgil's][v-comment] comment on

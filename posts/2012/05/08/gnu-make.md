@@ -2,7 +2,7 @@
 date: 2012-05-08
 title: GNU Make
 author: Mihai Tiriplica
-tags: make, Makefile, makefile
+tags: make, makefile
 ---
 
 In working with large projects it is necessary to compile from multiple
