@@ -11,6 +11,9 @@ import System.Console.CmdArgs (cmdArgs, cmdArgsMode, help, program, ignore,
   (&=), helpArg, modes, auto, Data, Typeable, versionArg)
 import System.Environment (withArgs)
 
+import System.Exit
+import System.Process
+
 import qualified System.Console.CmdArgs.Explicit as CA
 
 main :: IO ()
@@ -128,9 +131,21 @@ postCtx =
   defaultContext
 
 techblogConfiguration :: Configuration
-techblogConfiguration = defaultConfiguration { deployCommand = commStr }
-  where
-    commStr = "rsync -rtv _site/ techblog@rosedu.org:techblog/content/_site"
+techblogConfiguration = defaultConfiguration { deploySite = doDeploy }
+
+doDeploy :: Configuration -> IO ExitCode
+doDeploy _ = do
+  -- return a nasty user error/pattern match failure if any command fails
+  -- TODO: find a better way to do this
+  ExitSuccess <- system "git stash"
+  ExitSuccess <- system "git checkout gh-pages"
+  ExitSuccess <- system "cp -r _site/* ."
+  ExitSuccess <- system "git add ."
+  ExitSuccess <- system "git commit -m \"`git log master --pretty=oneline -n1`\""
+  ExitSuccess <- system "git push origin gh-pages"
+  ExitSuccess <- system "git checkout master"
+  ExitSuccess <- system "git stash apply"
+  return ExitSuccess
 
 data TechblogArgs
   = Clean
