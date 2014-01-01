@@ -26,6 +26,22 @@ buildTechblog = do
   setFileSystemEncoding utf8
   setForeignEncoding utf8
   hakyllWith techblogConfiguration $ do
+    tags <- buildTags "posts/**" $ fromCapture "tags/*.html"
+    tagsRules tags $ \tag pattern -> do
+      let title = "Posts tagged '" ++ tag ++ "'"
+      route idRoute
+      compile $ do
+        posts <- loadAll pattern >>= recentFirst
+        let tagCtx =
+              constField "title" title                 `mappend`
+              listField "posts" postCtx (return posts) `mappend`
+              tagsCtx tags
+
+        makeItem ""
+          >>= loadAndApplyTemplate "templates/post-list.html" tagCtx
+          >>= loadAndApplyTemplate "templates/default.html" tagCtx
+          >>= relativizeUrls
+
     match "images/**" $ do
       route   idRoute
       compile copyFileCompiler
@@ -48,13 +64,14 @@ buildTechblog = do
       route $ gsubRoute "posts/[0-9]{4}/[0-9]{2}/[0-9]{2}/" (const "")
         `composeRoutes`
         setExtension "html"
+      let ctx = tagsCtx tags
       compile $ pandocCompiler
-        >>= loadAndApplyTemplate "templates/post.html"    postCtx
+        >>= loadAndApplyTemplate "templates/post.html" ctx
         -- >>= (externalizeUrls $ feedRoot feedConfiguration)
         >>= saveSnapshot "postContent"
         -- >>= (unExternalizeUrls $ feedRoot feedConfiguration)
-        >>= loadAndApplyTemplate "templates/disqus.html" postCtx
-        >>= loadAndApplyTemplate "templates/default.html" postCtx
+        >>= loadAndApplyTemplate "templates/disqus.html" ctx
+        >>= loadAndApplyTemplate "templates/default.html" ctx
         >>= relativizeUrls
 
     create ["archive.html"] $ do
@@ -69,6 +86,21 @@ buildTechblog = do
         makeItem ""
           >>= loadAndApplyTemplate "templates/archive.html" archiveCtx
           >>= loadAndApplyTemplate "templates/default.html" archiveCtx
+          >>= relativizeUrls
+
+    create ["tags.html"] $ do
+      route idRoute
+      compile $ do
+        renderedTags <- renderTagList $ sortTagsBy caseInsensitiveTags tags
+        let nicerTags = replaceAll ", " (const "</li><li>") renderedTags
+        let ctx =
+              constField "alltags" nicerTags     `mappend`
+              constField "title" "Techblog tags" `mappend`
+              defaultContext
+
+        makeItem ""
+          >>= loadAndApplyTemplate "templates/tags.html" ctx
+          >>= loadAndApplyTemplate "templates/default.html" ctx
           >>= relativizeUrls
 
     match "index.html" $ do
@@ -86,6 +118,9 @@ buildTechblog = do
           >>= relativizeUrls
 
     match "templates/*" $ compile templateCompiler
+
+tagsCtx :: Tags -> Context String
+tagsCtx tags = tagsField "tags" tags `mappend` postCtx
 
 postCtx :: Context String
 postCtx =
