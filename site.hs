@@ -109,7 +109,6 @@ buildTechblog = do
     match "index.html" $ do
       route idRoute
       compile $ do
-        -- TODO: limit number of posts and add nav buttons
         posts <- recentFirst =<< loadAllSnapshots "posts/**" "postContent"
         let indexCtx =
               listField "posts" postCtx (return posts) `mappend`
