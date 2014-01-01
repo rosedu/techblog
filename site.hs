@@ -143,8 +143,7 @@ doDeploy _ = do
   ExitSuccess <- system "git commit -m \"`git log master --pretty=oneline -n1`\""
   ExitSuccess <- system "git push origin gh-pages"
   ExitSuccess <- system "git checkout master"
-  ExitSuccess <- system "git stash apply"
-  return ExitSuccess
+  system "git stash apply"
 
 data TechblogArgs
   = Clean
