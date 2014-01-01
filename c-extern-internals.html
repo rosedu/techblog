@@ -181,6 +181,24 @@ $1 = 0x34333231 Address 0x34333231 out of bounds</code></pre>
           </div>
         </div>
       </div>
+<!-- Social Buttons here -->
+	<div id="sociallinks">
+  	<a href="https://twitter.com/home?status=/c-extern-internals.html" target="_blank">Tweet this</a> -
+  	<a href="http://www.facebook.com/sharer/sharer.php?u=/c-extern-internals.html" target="_blank">Like this</a> -
+  	<a href="https://plus.google.com/share?url=/c-extern-internals.html" target="_blank">Share on G+</a>
+	</div>
+	<script>
+		(function(){window.addEventListener("DOMContentLoaded",function(){
+		//get URL 
+    		var url=document.location;
+    		var links=document.getElementById("sociallinks")
+                      .getElementsByTagName('a');
+    		for (var i=0;i!=links.length;i++){
+			// Replacing /c-extern-internals.html with current URL
+        		links[i].setAttribute("href",
+            		links[i].href.replace('/c-extern-internals.html',url));}})})();
+	</script>
+	</br>
     </article>
   </div>
 </div>

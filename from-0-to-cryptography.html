@@ -500,6 +500,24 @@ gpg: Good signature from &quot;Tiberiu (This is my GPG key) &lt;email@home.com&g
           </div>
         </div>
       </div>
+<!-- Social Buttons here -->
+	<div id="sociallinks">
+  	<a href="https://twitter.com/home?status=/from-0-to-cryptography.html" target="_blank">Tweet this</a> -
+  	<a href="http://www.facebook.com/sharer/sharer.php?u=/from-0-to-cryptography.html" target="_blank">Like this</a> -
+  	<a href="https://plus.google.com/share?url=/from-0-to-cryptography.html" target="_blank">Share on G+</a>
+	</div>
+	<script>
+		(function(){window.addEventListener("DOMContentLoaded",function(){
+		//get URL 
+    		var url=document.location;
+    		var links=document.getElementById("sociallinks")
+                      .getElementsByTagName('a');
+    		for (var i=0;i!=links.length;i++){
+			// Replacing /from-0-to-cryptography.html with current URL
+        		links[i].setAttribute("href",
+            		links[i].href.replace('/from-0-to-cryptography.html',url));}})})();
+	</script>
+	</br>
     </article>
   </div>
 </div>
