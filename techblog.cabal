@@ -17,7 +17,6 @@ description:         Techblog is a ROSEdu (http://www.rosedu.org) technical
                      Compilers, contests and hackathons. Everything is Open
                      Source.
 homepage:            http://techblog.rosedu.org
---TODO
 license:             PublicDomain
 license-file:        LICENSE
 author:              ROSEdu members

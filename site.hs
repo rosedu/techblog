@@ -29,13 +29,15 @@ buildTechblog = do
   setFileSystemEncoding utf8
   setForeignEncoding utf8
   hakyllWith techblogConfiguration $ do
-    tags <- buildTags "posts/**" $ fromCapture "tags/*.html"
+    tags <- buildTags ("posts/**" .&&. hasNoVersion) $ fromCapture "tags/*.html"
     tagsRules tags $ \tag pattern -> do
       let title = "Posts tagged '" ++ tag ++ "'"
       route idRoute
       compile $ do
         posts <- loadAll pattern >>= recentFirst
+        recent <- (fmap (take 3) . recentFirst) =<< loadAll ("posts/**" .&&. hasVersion "raw")
         let tagCtx =
+              listField "recent" postCtx (return recent) `mappend`
               constField "title" title                 `mappend`
               listField "posts" postCtx (return posts) `mappend`
               tagsCtx tags
@@ -59,29 +61,45 @@ buildTechblog = do
 
     match (fromList ["about.md", "people.md", "404.md"]) $ do
       route   $ setExtension "html"
-      compile $ pandocCompiler
-        >>= loadAndApplyTemplate "templates/default.html" defaultContext
-        >>= relativizeUrls
+      compile $ do
+        recent <- (fmap (take 3) . recentFirst) =<< loadAll ("posts/**" .&&. hasVersion "raw")
+        let ctx =
+              listField "recent" postCtx (return recent) `mappend`
+              defaultContext
+
+        pandocCompiler
+          >>= loadAndApplyTemplate "templates/default.html" ctx
+          >>= relativizeUrls
 
     match "posts/**" $ do
       route $ gsubRoute "posts/[0-9]{4}/[0-9]{2}/[0-9]{2}/" (const "")
         `composeRoutes`
         setExtension "html"
-      let ctx = tagsCtx tags
-      compile $ pandocCompiler
-        >>= loadAndApplyTemplate "templates/post.html" ctx
-        -- >>= (externalizeUrls $ feedRoot feedConfiguration)
-        >>= saveSnapshot "postContent"
-        -- >>= (unExternalizeUrls $ feedRoot feedConfiguration)
-        >>= loadAndApplyTemplate "templates/disqus.html" ctx
-        >>= loadAndApplyTemplate "templates/default.html" ctx
-        >>= relativizeUrls
+      compile $ do
+        recent <- (fmap (take 3) . recentFirst) =<< loadAll ("posts/**" .&&. hasVersion "raw")
+        let ctx =
+              listField "recent" postCtx (return recent) `mappend`
+              tagsCtx tags
+
+        pandocCompiler
+          >>= loadAndApplyTemplate "templates/post.html" ctx
+          -- >>= (externalizeUrls $ feedRoot feedConfiguration)
+          >>= saveSnapshot "postContent"
+          -- >>= (unExternalizeUrls $ feedRoot feedConfiguration)
+          >>= loadAndApplyTemplate "templates/disqus.html" ctx
+          >>= loadAndApplyTemplate "templates/default.html" ctx
+          >>= relativizeUrls
+
+    -- attempt at providing recent posts
+    match "posts/**" $ version "raw" $ compile getResourceBody
 
     create ["archive.html"] $ do
       route idRoute
       compile $ do
-        posts <- recentFirst =<< loadAll "posts/**"
+        posts <- recentFirst =<< loadAll ("posts/**" .&&. hasNoVersion)
+        recent <- (fmap (take 3) . recentFirst) =<< loadAll ("posts/**" .&&. hasVersion "raw")
         let archiveCtx =
+              listField "recent" postCtx (return recent) `mappend`
               listField "posts" postCtx (return posts) `mappend`
               constField "title" "Archives"            `mappend`
               defaultContext
@@ -96,7 +114,9 @@ buildTechblog = do
       compile $ do
         renderedTags <- renderTagList $ sortTagsBy caseInsensitiveTags tags
         let nicerTags = replaceAll ", " (const "</li><li>") renderedTags
+        recent <- (fmap (take 3) . recentFirst) =<< loadAll ("posts/**" .&&. hasVersion "raw")
         let ctx =
+              listField "recent" postCtx (return recent) `mappend`
               constField "alltags" nicerTags     `mappend`
               constField "title" "Techblog tags" `mappend`
               defaultContext
@@ -109,8 +129,10 @@ buildTechblog = do
     match "index.html" $ do
       route idRoute
       compile $ do
-        posts <- recentFirst =<< loadAllSnapshots "posts/**" "postContent"
+        posts <- recentFirst =<< loadAllSnapshots ("posts/**" .&&. hasNoVersion) "postContent"
+        recent <- (fmap (take 3) . recentFirst) =<< loadAll ("posts/**" .&&. hasVersion "raw")
         let indexCtx =
+              listField "recent" postCtx (return recent) `mappend`
               listField "posts" postCtx (return posts) `mappend`
               defaultContext
 
