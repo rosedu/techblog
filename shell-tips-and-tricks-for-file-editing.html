@@ -87,6 +87,12 @@
             <span class="author">Alexandru Juncu</span>
             </span>
 
+            <br />
+            <span class="meta">
+              Tagged:
+              <span class="tags"><a href="./tags/CLI.html">CLI</a>, <a href="./tags/bash.html">bash</a>, <a href="./tags/shell.html">shell</a>, <a href="./tags/files.html">files</a>, <a href="./tags/text.html">text</a>, <a href="./tags/truncate.html">truncate</a>, <a href="./tags/tee.html">tee</a>, <a href="./tags/tail.html">tail</a>, <a href="./tags/follow.html">follow</a></span>
+            </span>
+
             <p>Here are are some small things you might find useful when you need to deal with text files. In the Linux/Unix world, a lot of things are text files, so you need to know how to efficiently handle them. If you are a sysadmin, you need to look at <strong>log files</strong> for most of your work time and the following might come in handy.</p>
 <h3 id="following-a-log-file">Following a log file</h3>
 <p>Take your <code>$GENERIC_SERVICE</code> on your server that generates a lot of logs. You could open a <strong>text editor</strong> like <code>vi</code> or <code>emacs</code> to view the logs or use <code>tail</code> to see the latest lines (or a combination of tail and <code>head</code>). But you sometimes you need to view contents of the log in real time (while the service writes the lines, you read them). This is where the best use for the tail command comes in: the <code>--follow</code> flag.</p>

@@ -87,6 +87,12 @@
             <span class="author">Alexandru Juncu</span>
             </span>
 
+            <br />
+            <span class="meta">
+              Tagged:
+              <span class="tags"><a href="./tags/stack.html">stack</a>, <a href="./tags/sp.html">sp</a>, <a href="./tags/esp.html">esp</a>, <a href="./tags/C.html">C</a>, <a href="./tags/assembly.html">assembly</a>, <a href="./tags/cache.html">cache</a>, <a href="./tags/memory.html">memory</a></span>
+            </span>
+
             <p><strong>Stack space</strong> is the part of each process’ virtual memory where function arguments and return addresses are stored, along with local variables declared within a function. Usually, the stack begins at the high address space of the virtual memory and grows down.</p>
 <p>At every function call, a new <strong>stack frame</strong> is created on the stack. It contains the parameters sent to the function, the return address (the address of a code in the caller function) and the locally declared variables.</p>
 <p>For each function call, the <strong>SP/ESP</strong> (Stack Pointer/Extended Stack Pointer) is set so the stack has a big enough size to accommodate local variables. For example, in theory, if you have a local char variable and an int variable, the SP should be set (moved) to 5 bytes.</p>

@@ -87,6 +87,12 @@
             <span class="author">Alexandru Juncu</span>
             </span>
 
+            <br />
+            <span class="meta">
+              Tagged:
+              <span class="tags"><a href="./tags/process.html">process</a>, <a href="./tags/procfs.html">procfs</a>, <a href="./tags/proc.html">/proc</a>, <a href="./tags/file%20descriptor.html">file descriptor</a></span>
+            </span>
+
             <p>A <strong>process</strong> is an instance of a binary executable file. This means that when you ‘run’ a binary, the code from the storage media is copied into the system’s memory, more precisely, into the process’ <strong>virtual memory space</strong>. From a single binary, several processes can be spawned.</p>
 <p>The virtual memory of a process, made up of pages, is mapped to several things, like shared objects(libraries), shared memory, stack and heap space, read-only space and executable space. A good way to view what is mapped to what is with the <strong>pmap</strong> utility, or by just looking in the <em>/proc</em> directory hierarchy. The <em>/proc/<span class="math"><em>P</em><em>I</em><em>D</em> / <em>m</em><em>a</em><em>p</em><em>s</em><sub><em>f</em></sub><em>i</em><em>l</em><em>e</em>(<em>w</em><em>h</em><em>e</em><em>r</em><em>e</em></span>PID is the process ID of the targeted process) has the page mappings. Also in </em>/proc/$PID_, you can find other useful files, like the <em>exe</em> file that contains a symlink to the executable or the <em>fd</em> directory that contains symlinks to all the files opened as <strong>file descriptors</strong> in a process.</p>
 <p>Except useful information, what can we get out of the procfs? Here is a situation that has been known to happen. You are in a console, with your bash shell, and you manage to delete some important files, like /bin/bash. Without that executable, you cannot run new shells and on a restart, your system will be inaccessible. What can you do?</p>
