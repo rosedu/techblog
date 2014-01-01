@@ -143,24 +143,26 @@ alexj@hathor /proc/6487/fd $ md5sum /home/alexj/movie_rescued.ogv
           </div>
         </div>
       </div>
-<!-- Social Buttons here -->
-	<div id="sociallinks">
-  	<a href="https://twitter.com/home?status=/rescuing-executable-code-from-a-process.html" target="_blank">Tweet this</a> -
-  	<a href="http://www.facebook.com/sharer/sharer.php?u=/rescuing-executable-code-from-a-process.html" target="_blank">Like this</a> -
-  	<a href="https://plus.google.com/share?url=/rescuing-executable-code-from-a-process.html" target="_blank">Share on G+</a>
-	</div>
-	<script>
-		(function(){window.addEventListener("DOMContentLoaded",function(){
-		//get URL 
-    		var url=document.location;
-    		var links=document.getElementById("sociallinks")
-                      .getElementsByTagName('a');
-    		for (var i=0;i!=links.length;i++){
-			// Replacing /rescuing-executable-code-from-a-process.html with current URL
-        		links[i].setAttribute("href",
-            		links[i].href.replace('/rescuing-executable-code-from-a-process.html',url));}})})();
-	</script>
-	</br>
+
+      <!-- Social Buttons here -->
+      <div id="sociallinks">
+        <a href="https://twitter.com/home?status=/rescuing-executable-code-from-a-process.html" target="_blank">Tweet this</a> -
+        <a href="http://www.facebook.com/sharer/sharer.php?u=/rescuing-executable-code-from-a-process.html" target="_blank">Like this</a> -
+        <a href="https://plus.google.com/share?url=/rescuing-executable-code-from-a-process.html" target="_blank">Share on G+</a>
+      </div>
+
+      <script>
+        (function(){window.addEventListener("DOMContentLoaded",function(){
+          //get URL
+          var url=document.location;
+          var links=document.getElementById("sociallinks")
+                            .getElementsByTagName('a');
+          for (var i=0;i!=links.length;i++){
+            // Replacing /rescuing-executable-code-from-a-process.html with current URL
+            links[i].setAttribute("href",links[i].href.replace('/rescuing-executable-code-from-a-process.html',url));
+          }})})();
+      </script>
+      </br>
     </article>
   </div>
 </div>
