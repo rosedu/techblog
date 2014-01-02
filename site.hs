@@ -160,7 +160,7 @@ rssFeed = do
   compile $ do
     let feedCtx = postCtx `mappend` bodyField "description"
     posts <- fmap (take 10) . recentFirst
-      =<< (loadAllSnapshots "posts/*" .&&. hasNoVersion) "postContent"
+      =<< loadAllSnapshots ("posts/*" .&&. hasNoVersion) "postContent"
     renderRss techblogFeed feedCtx posts
 
 tagsCtx :: Tags -> Context String
