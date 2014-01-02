@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
-        <title>Rosedu TechBlog</title>
+        <title>ROSEdu Techblog</title>
         <link>http://techblog.rosedu.org</link>
-        <description><![CDATA[rosedu techblog]]></description>
+        <description><![CDATA[ROSEdu Techblog]]></description>
         <atom:link href="http://techblog.rosedu.org/rss.xml" rel="self"
                    type="application/rss+xml" />
         <lastBuildDate>Unknown</lastBuildDate>
