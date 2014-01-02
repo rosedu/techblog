@@ -2,6 +2,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 import Hakyll
+
 import Data.Char (toLower)
 import Data.Monoid (mappend)
 import GHC.IO.Encoding (setLocaleEncoding, setForeignEncoding, utf8,
@@ -91,7 +92,12 @@ buildTechblog = do
           >>= relativizeUrls
 
     -- attempt at providing recent posts
-    match "posts/**" $ version "raw" $ compile getResourceBody
+    match "posts/**" $ version "raw" $ do
+      route $ gsubRoute "posts/[0-9]{4}/[0-9]{2}/[0-9]{2}/" (const "")
+        `composeRoutes`
+        setExtension "html"
+
+      compile getResourceBody
 
     create ["archive.html"] $ do
       route idRoute
