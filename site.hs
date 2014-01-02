@@ -181,6 +181,7 @@ doDeploy _ = do
   -- TODO: find a better way to do this
   ExitSuccess <- system "git stash"
   ExitSuccess <- system "git checkout gh-pages"
+  ExitSuccess <- system "git pull --rebase"
   ExitSuccess <- system "cp -r _site/* ."
   ExitSuccess <- system "git add ."
   ExitSuccess <- system "git commit -m \"`git log master --pretty=oneline -n1`\""
