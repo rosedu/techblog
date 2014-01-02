@@ -145,9 +145,9 @@ buildTechblog = do
     create ["rss.xml"] rssFeed
 techblogFeed :: FeedConfiguration
 techblogFeed = FeedConfiguration
-  { feedTitle       ="Rosedu TechBlog"
-  , feedAuthorName  ="Rosedu"
-  , feedDescription ="rosedu techblog"
+  { feedTitle       ="ROSEdu Techblog"
+  , feedAuthorName  ="ROSEdu"
+  , feedDescription ="ROSEdu Techblog"
   , feedAuthorEmail = "techblog@rosedu.org"
   , feedRoot        ="http://techblog.rosedu.org"
   }
@@ -159,7 +159,7 @@ rssFeed = do
     compile $ do
         let feedCtx = postCtx `mappend` bodyField "description"
         posts <- fmap (take 10) . recentFirst =<<
-            loadAllSnapshots "posts/*" "postContent"
+            loadAllSnapshots ("posts/**" .&&. hasNoVersion) "postContent"
         renderRss techblogFeed feedCtx posts
 tagsCtx :: Tags -> Context String
 tagsCtx tags = tagsField "tags" tags `mappend` postCtx
