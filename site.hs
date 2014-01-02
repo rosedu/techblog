@@ -148,6 +148,7 @@ tagsCtx tags = tagsField "tags" tags `mappend` postCtx
 
 postCtx :: Context String
 postCtx =
+  urlField "shareUrl" `mappend`
   dateField "date" "%B %e, %Y" `mappend`
   defaultContext
 
