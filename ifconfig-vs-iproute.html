@@ -69,34 +69,34 @@
       <div class="body" role="main">
         <div class="unit-body">
           <div class="unit-inner unit-body-inner">
-  <div class="entry-content">
-    <article class="unit-article layout-post">
-      <div class="unit-inner unit-article-inner">
-        <div class="content">
-          <div class="bd">
-            <header>
-              <div class="unit-head">
-                <div class="unit-inner unit-head-inner">
-                  <h1 class="h2 entry-title">
-                    <a class="post_title" href="./ifconfig-vs-iproute.html" title="ifconfig vs iproute2">ifconfig vs iproute2</a>
-                  </h1>
-                </div><!-- unit-inner -->
-              </div><!-- unit-head -->
-            </header>
+            <div class="entry-content">
+              <article class="unit-article layout-post">
+                <div class="unit-inner unit-article-inner">
+  <div class="content">
+    <div class="bd">
+      <header>
+        <div class="unit-head">
+          <div class="unit-inner unit-head-inner">
+            <h1 class="h2 entry-title">
+              <a class="post_title" href="./ifconfig-vs-iproute.html" title="ifconfig vs iproute2">ifconfig vs iproute2</a>
+            </h1>
+          </div><!-- unit-inner -->
+        </div><!-- unit-head -->
+      </header>
 
-            <span class="date">
-            <span class="published">Published on January 17, 2012</span>
-            by
-            <span class="author">Alexandru Juncu</span>
-            </span>
+      <span class="date">
+      <span class="published">Published on January 17, 2012</span>
+      by
+      <span class="author">Alexandru Juncu</span>
+      </span>
 
-            <br />
-            <span class="meta">
-              Tagged:
-              <span class="tags"><a href="./tags/iproute2.html">iproute2</a>, <a href="./tags/net-tools.html">net-tools</a>, <a href="./tags/ifconfig.html">ifconfig</a>, <a href="./tags/ip.html">ip</a>, <a href="./tags/route.html">route</a>, <a href="./tags/arp.html">arp</a>, <a href="./tags/netlink.html">netlink</a>, <a href="./tags/IPv4.html">IPv4</a>, <a href="./tags/IPv6.html">IPv6</a></span>
-            </span>
+      <br />
+      <span class="meta">
+        Tagged:
+        <span class="tags"><a href="./tags/iproute2.html">iproute2</a>, <a href="./tags/net-tools.html">net-tools</a>, <a href="./tags/ifconfig.html">ifconfig</a>, <a href="./tags/ip.html">ip</a>, <a href="./tags/route.html">route</a>, <a href="./tags/arp.html">arp</a>, <a href="./tags/netlink.html">netlink</a>, <a href="./tags/IPv4.html">IPv4</a>, <a href="./tags/IPv6.html">IPv6</a></span>
+      </span>
 
-            <p>On modern Linux distributions, the users have two main possibilities of configuring the network: ifconfig and ip.</p>
+      <p>On modern Linux distributions, the users have two main possibilities of configuring the network: ifconfig and ip.</p>
 <p>The ifconfig tool is part of the <strong>net-tools</strong> package along side other tools like route, arp and netstat. These are the traditional userspace tools for network configuration, made for older Linux kernels.</p>
 <p>The <strong>iproute2</strong> is the new package that comes with the ip tool as replacement for the ifconfig, route and arp commands, ss as the new netstat and tc as a new command.</p>
 <p>There are pros and cons for each of them and there are users (and fans) of each. Let’s see the differences…</p>
@@ -129,32 +129,29 @@ ip a</code></pre>
 <p>But other features were not replicated. In old Linux Kernels, an interfaces could have only one IP address, so in ifconfig you could configure only one IP address on an interfaces. In newer kernels, each interface has a list of addresses and iproute2 via the NetLink interface could manage them. Latest ifconfig versions still rely on the idea of subinterfaces to provide more than one address on an interfaces.</p>
 <p>So, given all these arguments, iproute2 should be declared the winner. But it’s not that easy. Just like in the case of IPv4 vs IPv6, where the latter one is the obvious choice, iproute2 will eventually replace ifconfig. Only it’s going to take a long time for that to happen, so net-tools will still be around for some time, but they will be eventually phased out.</p>
 
-          </div>
-        </div>
-      </div>
-
-      <!-- Social Buttons here -->
-      <div id="sociallinks">
-        <a href="https://twitter.com/home?status=/ifconfig-vs-iproute.html" target="_blank">Tweet this</a> -
-        <a href="http://www.facebook.com/sharer/sharer.php?u=/ifconfig-vs-iproute.html" target="_blank">Like this</a> -
-        <a href="https://plus.google.com/share?url=/ifconfig-vs-iproute.html" target="_blank">Share on G+</a>
-      </div>
-
-      <script>
-        (function(){window.addEventListener("DOMContentLoaded",function(){
-          //get URL
-          var url=document.location;
-          var links=document.getElementById("sociallinks")
-                            .getElementsByTagName('a');
-          for (var i=0;i!=links.length;i++){
-            // Replacing /ifconfig-vs-iproute.html with current URL
-            links[i].setAttribute("href",links[i].href.replace('/ifconfig-vs-iproute.html',url));
-          }})})();
-      </script>
-      </br>
-    </article>
+    </div>
   </div>
 </div>
+
+<!-- Social Buttons here -->
+<div id="sociallinks">
+  <a href="https://twitter.com/home?status=/ifconfig-vs-iproute.html" target="_blank">Tweet this</a> -
+  <a href="http://www.facebook.com/sharer/sharer.php?u=/ifconfig-vs-iproute.html" target="_blank">Like this</a> -
+  <a href="https://plus.google.com/share?url=/ifconfig-vs-iproute.html" target="_blank">Share on G+</a>
+</div>
+
+<script>
+  (function(){window.addEventListener("DOMContentLoaded",function(){
+    //get URL
+    var url=document.location;
+    var links=document.getElementById("sociallinks")
+                      .getElementsByTagName('a');
+    for (var i=0;i!=links.length;i++){
+      // Replacing /ifconfig-vs-iproute.html with current URL
+      links[i].setAttribute("href",links[i].href.replace('/ifconfig-vs-iproute.html',url));
+    }})})();
+</script>
+</br>
 
 <div id="disqus_thread"></div>
 <script type="text/javascript">
@@ -172,6 +169,9 @@ ip a</code></pre>
 <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 
+              </article>
+            </div>
+          </div>
         </div>
       </div>
 

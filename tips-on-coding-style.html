@@ -69,34 +69,34 @@
       <div class="body" role="main">
         <div class="unit-body">
           <div class="unit-inner unit-body-inner">
-  <div class="entry-content">
-    <article class="unit-article layout-post">
-      <div class="unit-inner unit-article-inner">
-        <div class="content">
-          <div class="bd">
-            <header>
-              <div class="unit-head">
-                <div class="unit-inner unit-head-inner">
-                  <h1 class="h2 entry-title">
-                    <a class="post_title" href="./tips-on-coding-style.html" title="Tips on coding style">Tips on coding style</a>
-                  </h1>
-                </div><!-- unit-inner -->
-              </div><!-- unit-head -->
-            </header>
+            <div class="entry-content">
+              <article class="unit-article layout-post">
+                <div class="unit-inner unit-article-inner">
+  <div class="content">
+    <div class="bd">
+      <header>
+        <div class="unit-head">
+          <div class="unit-inner unit-head-inner">
+            <h1 class="h2 entry-title">
+              <a class="post_title" href="./tips-on-coding-style.html" title="Tips on coding style">Tips on coding style</a>
+            </h1>
+          </div><!-- unit-inner -->
+        </div><!-- unit-head -->
+      </header>
 
-            <span class="date">
-            <span class="published">Published on February 28, 2012</span>
-            by
-            <span class="author">Alexandru Juncu</span>
-            </span>
+      <span class="date">
+      <span class="published">Published on February 28, 2012</span>
+      by
+      <span class="author">Alexandru Juncu</span>
+      </span>
 
-            <br />
-            <span class="meta">
-              Tagged:
-              <span class="tags"><a href="./tags/C.html">C</a>, <a href="./tags/coding%20style.html">coding style</a>, <a href="./tags/linux.html">linux</a>, <a href="./tags/checkpatch.pl.html">checkpatch.pl</a></span>
-            </span>
+      <br />
+      <span class="meta">
+        Tagged:
+        <span class="tags"><a href="./tags/C.html">C</a>, <a href="./tags/coding%20style.html">coding style</a>, <a href="./tags/linux.html">linux</a>, <a href="./tags/checkpatch.pl.html">checkpatch.pl</a></span>
+      </span>
 
-            <p>Good programmers know that writing code is more than just… writing code. It’s more than writing efficient code… It’s also about writing good code with respect to the ones that are going to read and/or use that code. This is specially true in open source communities where potentially hundreds of people could be looking at your code. You have to write code that can be easily read and used by others. And to do that, you need some some sort of standards of code writing. This is where the idea of <strong>coding styles</strong> comes in.</p>
+      <p>Good programmers know that writing code is more than just… writing code. It’s more than writing efficient code… It’s also about writing good code with respect to the ones that are going to read and/or use that code. This is specially true in open source communities where potentially hundreds of people could be looking at your code. You have to write code that can be easily read and used by others. And to do that, you need some some sort of standards of code writing. This is where the idea of <strong>coding styles</strong> comes in.</p>
 <p>Every software project has its (hopefully properly defined) coding style. It can depend a lot on the programming language that the project uses. The style can specify the indentation, the variable naming, the use of spaces or the use of curly braces.</p>
 <p>For example, the Linux Kernel has its coding style well defined in the <a href="http://www.kernel.org/doc/Documentation/CodingStyle">Documentation pages</a>. It is based on the Kernighan &amp; Ritchie (K&amp;R) style, the Linux Kernel being written in C. This is a very popular coding style with several projects using it, sometimes considered the de facto coding style for C.</p>
 <p>If you want to check if your code follows the coding style of Linux, you can use <strong>checkpatch.pl</strong>. This script can be found in the source code of the Linux Kernel in the scripts directory. It is mainly used for checking patches submitted for Linux, but it can be used on normal C source fies using the <strong>-f</strong> parameter. You need to clone the Linux tree to get the script, and you need to run it from the root of the tree.</p>
@@ -266,32 +266,29 @@ bad.c has style problems, please review.</code></pre>
 <p>Other programing languages can have similar coding guidelines. For Python, there is <a href="http://www.python.org/dev/peps/pep-0008/">PEP</a>, as dictated by the creator of Python himself.</p>
 <p>But we should always keep in mind that there is no One True Coding Style. Like all great debates, everybody could argue that one is better than another. What is important and everybody (mostly) agrees is to have consistency within a project in regards to the code the community writes.</p>
 
-          </div>
-        </div>
-      </div>
-
-      <!-- Social Buttons here -->
-      <div id="sociallinks">
-        <a href="https://twitter.com/home?status=/tips-on-coding-style.html" target="_blank">Tweet this</a> -
-        <a href="http://www.facebook.com/sharer/sharer.php?u=/tips-on-coding-style.html" target="_blank">Like this</a> -
-        <a href="https://plus.google.com/share?url=/tips-on-coding-style.html" target="_blank">Share on G+</a>
-      </div>
-
-      <script>
-        (function(){window.addEventListener("DOMContentLoaded",function(){
-          //get URL
-          var url=document.location;
-          var links=document.getElementById("sociallinks")
-                            .getElementsByTagName('a');
-          for (var i=0;i!=links.length;i++){
-            // Replacing /tips-on-coding-style.html with current URL
-            links[i].setAttribute("href",links[i].href.replace('/tips-on-coding-style.html',url));
-          }})})();
-      </script>
-      </br>
-    </article>
+    </div>
   </div>
 </div>
+
+<!-- Social Buttons here -->
+<div id="sociallinks">
+  <a href="https://twitter.com/home?status=/tips-on-coding-style.html" target="_blank">Tweet this</a> -
+  <a href="http://www.facebook.com/sharer/sharer.php?u=/tips-on-coding-style.html" target="_blank">Like this</a> -
+  <a href="https://plus.google.com/share?url=/tips-on-coding-style.html" target="_blank">Share on G+</a>
+</div>
+
+<script>
+  (function(){window.addEventListener("DOMContentLoaded",function(){
+    //get URL
+    var url=document.location;
+    var links=document.getElementById("sociallinks")
+                      .getElementsByTagName('a');
+    for (var i=0;i!=links.length;i++){
+      // Replacing /tips-on-coding-style.html with current URL
+      links[i].setAttribute("href",links[i].href.replace('/tips-on-coding-style.html',url));
+    }})})();
+</script>
+</br>
 
 <div id="disqus_thread"></div>
 <script type="text/javascript">
@@ -309,6 +306,9 @@ bad.c has style problems, please review.</code></pre>
 <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 
+              </article>
+            </div>
+          </div>
         </div>
       </div>
 

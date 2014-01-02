@@ -69,34 +69,34 @@
       <div class="body" role="main">
         <div class="unit-body">
           <div class="unit-inner unit-body-inner">
-  <div class="entry-content">
-    <article class="unit-article layout-post">
-      <div class="unit-inner unit-article-inner">
-        <div class="content">
-          <div class="bd">
-            <header>
-              <div class="unit-head">
-                <div class="unit-inner unit-head-inner">
-                  <h1 class="h2 entry-title">
-                    <a class="post_title" href="./library-management.html" title="Linking, Loading and Library Management under Linux">Linking, Loading and Library Management under Linux</a>
-                  </h1>
-                </div><!-- unit-inner -->
-              </div><!-- unit-head -->
-            </header>
+            <div class="entry-content">
+              <article class="unit-article layout-post">
+                <div class="unit-inner unit-article-inner">
+  <div class="content">
+    <div class="bd">
+      <header>
+        <div class="unit-head">
+          <div class="unit-inner unit-head-inner">
+            <h1 class="h2 entry-title">
+              <a class="post_title" href="./library-management.html" title="Linking, Loading and Library Management under Linux">Linking, Loading and Library Management under Linux</a>
+            </h1>
+          </div><!-- unit-inner -->
+        </div><!-- unit-head -->
+      </header>
 
-            <span class="date">
-            <span class="published">Published on October  3, 2011</span>
-            by
-            <span class="author">Razvan</span>
-            </span>
+      <span class="date">
+      <span class="published">Published on October  3, 2011</span>
+      by
+      <span class="author">Razvan</span>
+      </span>
 
-            <br />
-            <span class="meta">
-              Tagged:
-              <span class="tags"><a href="./tags/library.html">library</a>, <a href="./tags/dynamic%20linker.html">dynamic linker</a>, <a href="./tags/dynamic%20loader.html">dynamic loader</a>, <a href="./tags/ldconfig.html">ldconfig</a></span>
-            </span>
+      <br />
+      <span class="meta">
+        Tagged:
+        <span class="tags"><a href="./tags/library.html">library</a>, <a href="./tags/dynamic%20linker.html">dynamic linker</a>, <a href="./tags/dynamic%20loader.html">dynamic loader</a>, <a href="./tags/ldconfig.html">ldconfig</a></span>
+      </span>
 
-            <p>This article aims to shed some light on the topic of library management with insight on the linker and loader. The <code>ldconfig</code> command, for example, is heavily used in Linux, though unknown to some of users.</p>
+      <p>This article aims to shed some light on the topic of library management with insight on the linker and loader. The <code>ldconfig</code> command, for example, is heavily used in Linux, though unknown to some of users.</p>
 <p>A library is a collection of object files “meshed” together in another file. Its benefit is avoiding “reimplementing the wheel”. Once one has implemented a given set of functionalities, he/she may store those in a library file; this file is distributed to others and used in various software projects. Libraries are heavily used in all modern operating systems; the greater part of packages in Linux distributions are library packages. One can barely imagine being able to do any kind of development without the presence of the C Standard Library on the local system.</p>
 <h1 id="linking-and-loading">Linking and Loading</h1>
 <p>A library is said to be “linked” together with other library files or object files into an executable. The executable integrates all required components from library files, avoiding the need of implementing these components from scratch.</p>
@@ -165,32 +165,29 @@
 <p><a href="http://books.google.com/books?id=Id9cYsIdjIwC" title="John R. Levine – Linkers &amp; Loaders">John R. Levine’s “Linkers &amp; Loaders”</a> is an extensive depiction of linkers, loaders, libraries and the load process.</p>
 <p>Proper knowledge of library management on a Linux based system relies on good understanding of the linking and loading processes and library types. Make sure you understand the advantages and disadvantages of each approach and choose the one most suitable to your specific needs.</p>
 
-          </div>
-        </div>
-      </div>
-
-      <!-- Social Buttons here -->
-      <div id="sociallinks">
-        <a href="https://twitter.com/home?status=/library-management.html" target="_blank">Tweet this</a> -
-        <a href="http://www.facebook.com/sharer/sharer.php?u=/library-management.html" target="_blank">Like this</a> -
-        <a href="https://plus.google.com/share?url=/library-management.html" target="_blank">Share on G+</a>
-      </div>
-
-      <script>
-        (function(){window.addEventListener("DOMContentLoaded",function(){
-          //get URL
-          var url=document.location;
-          var links=document.getElementById("sociallinks")
-                            .getElementsByTagName('a');
-          for (var i=0;i!=links.length;i++){
-            // Replacing /library-management.html with current URL
-            links[i].setAttribute("href",links[i].href.replace('/library-management.html',url));
-          }})})();
-      </script>
-      </br>
-    </article>
+    </div>
   </div>
 </div>
+
+<!-- Social Buttons here -->
+<div id="sociallinks">
+  <a href="https://twitter.com/home?status=/library-management.html" target="_blank">Tweet this</a> -
+  <a href="http://www.facebook.com/sharer/sharer.php?u=/library-management.html" target="_blank">Like this</a> -
+  <a href="https://plus.google.com/share?url=/library-management.html" target="_blank">Share on G+</a>
+</div>
+
+<script>
+  (function(){window.addEventListener("DOMContentLoaded",function(){
+    //get URL
+    var url=document.location;
+    var links=document.getElementById("sociallinks")
+                      .getElementsByTagName('a');
+    for (var i=0;i!=links.length;i++){
+      // Replacing /library-management.html with current URL
+      links[i].setAttribute("href",links[i].href.replace('/library-management.html',url));
+    }})})();
+</script>
+</br>
 
 <div id="disqus_thread"></div>
 <script type="text/javascript">
@@ -208,6 +205,9 @@
 <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 
+              </article>
+            </div>
+          </div>
         </div>
       </div>
 

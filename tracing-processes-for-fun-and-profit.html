@@ -69,34 +69,34 @@
       <div class="body" role="main">
         <div class="unit-body">
           <div class="unit-inner unit-body-inner">
-  <div class="entry-content">
-    <article class="unit-article layout-post">
-      <div class="unit-inner unit-article-inner">
-        <div class="content">
-          <div class="bd">
-            <header>
-              <div class="unit-head">
-                <div class="unit-inner unit-head-inner">
-                  <h1 class="h2 entry-title">
-                    <a class="post_title" href="./tracing-processes-for-fun-and-profit.html" title="Tracing processes for fun and profit">Tracing processes for fun and profit</a>
-                  </h1>
-                </div><!-- unit-inner -->
-              </div><!-- unit-head -->
-            </header>
+            <div class="entry-content">
+              <article class="unit-article layout-post">
+                <div class="unit-inner unit-article-inner">
+  <div class="content">
+    <div class="bd">
+      <header>
+        <div class="unit-head">
+          <div class="unit-inner unit-head-inner">
+            <h1 class="h2 entry-title">
+              <a class="post_title" href="./tracing-processes-for-fun-and-profit.html" title="Tracing processes for fun and profit">Tracing processes for fun and profit</a>
+            </h1>
+          </div><!-- unit-inner -->
+        </div><!-- unit-head -->
+      </header>
 
-            <span class="date">
-            <span class="published">Published on August 18, 2012</span>
-            by
-            <span class="author">Mihai Maruseac</span>
-            </span>
+      <span class="date">
+      <span class="published">Published on August 18, 2012</span>
+      by
+      <span class="author">Mihai Maruseac</span>
+      </span>
 
-            <br />
-            <span class="meta">
-              Tagged:
-              <span class="tags"><a href="./tags/trace.html">trace</a>, <a href="./tags/strace.html">strace</a>, <a href="./tags/ptrace.html">ptrace</a></span>
-            </span>
+      <br />
+      <span class="meta">
+        Tagged:
+        <span class="tags"><a href="./tags/trace.html">trace</a>, <a href="./tags/strace.html">strace</a>, <a href="./tags/ptrace.html">ptrace</a></span>
+      </span>
 
-            <p>After talking about <a href="http://techblog.rosedu.org/valgrind-introduction.html" title="Valgrind introduction">Valgrind</a> and <a href="http://techblog.rosedu.org/gdb-a-basic-workflow.html" title="GDB - basic workflow">GDB</a>, it is time to present another useful program for developers and system administrators.</p>
+      <p>After talking about <a href="http://techblog.rosedu.org/valgrind-introduction.html" title="Valgrind introduction">Valgrind</a> and <a href="http://techblog.rosedu.org/gdb-a-basic-workflow.html" title="GDB - basic workflow">GDB</a>, it is time to present another useful program for developers and system administrators.</p>
 <p>Often-overlooked, though common on most of the GNU/Linux systems, <code>strace</code> is a tool which traces system calls done by a process during its execution. However, this is only a simplistic point of view: using <code>strace</code>, you can filter by a group of system calls, you can profile your application from the syscalls point of view and you can trace signals sent to a process.</p>
 <h3 id="simple-example">Simple Example</h3>
 <p>The simplest possible use is of the form <code>strace command</code>. For example:</p>
@@ -239,32 +239,29 @@ exit_group(0)                           = ?</code></pre>
 <p>However, using <code>strace</code> has some disadvantages as well. The traced process runs slower and each system call is done at least twice. You can also get a different behaviour while running a process under <code>strace</code>: either because some timing bugs will manifest, because some timeouts are reached or because someone has taken measures that the process cannot be properly traced.</p>
 <p>In the end, remember that debugging doesn’t stop at <a href="http://techblog.rosedu.org/gdb-a-basic-workflow.html" title="GDB - basic workflow">GDB</a> and/or <a href="http://techblog.rosedu.org/valgrind-introduction.html" title="Valgrind introduction">Valgrind</a>. Beside <code>strace</code>, there is also <code>ltrace</code> for library calls and <code>perf</code> for profiling. These two tools will be presented in further articles.</p>
 
-          </div>
-        </div>
-      </div>
-
-      <!-- Social Buttons here -->
-      <div id="sociallinks">
-        <a href="https://twitter.com/home?status=/tracing-processes-for-fun-and-profit.html" target="_blank">Tweet this</a> -
-        <a href="http://www.facebook.com/sharer/sharer.php?u=/tracing-processes-for-fun-and-profit.html" target="_blank">Like this</a> -
-        <a href="https://plus.google.com/share?url=/tracing-processes-for-fun-and-profit.html" target="_blank">Share on G+</a>
-      </div>
-
-      <script>
-        (function(){window.addEventListener("DOMContentLoaded",function(){
-          //get URL
-          var url=document.location;
-          var links=document.getElementById("sociallinks")
-                            .getElementsByTagName('a');
-          for (var i=0;i!=links.length;i++){
-            // Replacing /tracing-processes-for-fun-and-profit.html with current URL
-            links[i].setAttribute("href",links[i].href.replace('/tracing-processes-for-fun-and-profit.html',url));
-          }})})();
-      </script>
-      </br>
-    </article>
+    </div>
   </div>
 </div>
+
+<!-- Social Buttons here -->
+<div id="sociallinks">
+  <a href="https://twitter.com/home?status=/tracing-processes-for-fun-and-profit.html" target="_blank">Tweet this</a> -
+  <a href="http://www.facebook.com/sharer/sharer.php?u=/tracing-processes-for-fun-and-profit.html" target="_blank">Like this</a> -
+  <a href="https://plus.google.com/share?url=/tracing-processes-for-fun-and-profit.html" target="_blank">Share on G+</a>
+</div>
+
+<script>
+  (function(){window.addEventListener("DOMContentLoaded",function(){
+    //get URL
+    var url=document.location;
+    var links=document.getElementById("sociallinks")
+                      .getElementsByTagName('a');
+    for (var i=0;i!=links.length;i++){
+      // Replacing /tracing-processes-for-fun-and-profit.html with current URL
+      links[i].setAttribute("href",links[i].href.replace('/tracing-processes-for-fun-and-profit.html',url));
+    }})})();
+</script>
+</br>
 
 <div id="disqus_thread"></div>
 <script type="text/javascript">
@@ -282,6 +279,9 @@ exit_group(0)                           = ?</code></pre>
 <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 
+              </article>
+            </div>
+          </div>
         </div>
       </div>
 

@@ -69,34 +69,34 @@
       <div class="body" role="main">
         <div class="unit-body">
           <div class="unit-inner unit-body-inner">
-  <div class="entry-content">
-    <article class="unit-article layout-post">
-      <div class="unit-inner unit-article-inner">
-        <div class="content">
-          <div class="bd">
-            <header>
-              <div class="unit-head">
-                <div class="unit-inner unit-head-inner">
-                  <h1 class="h2 entry-title">
-                    <a class="post_title" href="./contributing-upstream.html" title="Contributing Upstream">Contributing Upstream</a>
-                  </h1>
-                </div><!-- unit-inner -->
-              </div><!-- unit-head -->
-            </header>
+            <div class="entry-content">
+              <article class="unit-article layout-post">
+                <div class="unit-inner unit-article-inner">
+  <div class="content">
+    <div class="bd">
+      <header>
+        <div class="unit-head">
+          <div class="unit-inner unit-head-inner">
+            <h1 class="h2 entry-title">
+              <a class="post_title" href="./contributing-upstream.html" title="Contributing Upstream">Contributing Upstream</a>
+            </h1>
+          </div><!-- unit-inner -->
+        </div><!-- unit-head -->
+      </header>
 
-            <span class="date">
-            <span class="published">Published on November 28, 2011</span>
-            by
-            <span class="author">Mihai</span>
-            </span>
+      <span class="date">
+      <span class="published">Published on November 28, 2011</span>
+      by
+      <span class="author">Mihai</span>
+      </span>
 
-            <br />
-            <span class="meta">
-              Tagged:
-              <span class="tags"><a href="./tags/git.html">git</a>, <a href="./tags/patch.html">patch</a></span>
-            </span>
+      <br />
+      <span class="meta">
+        Tagged:
+        <span class="tags"><a href="./tags/git.html">git</a>, <a href="./tags/patch.html">patch</a></span>
+      </span>
 
-            <p>Suppose your favorite application or a library you are using has a bug. You find that the code is open source and are happy because of this. Being a programmer yourself, you know that you can fix the bug and send a patch with the fix to the maintainers. But how do you do this? This article will provide a short walkthrough for this task using as an example the Linux kernel. Different projects use different source version control systems. Because this article works on the kernel tree, I am going to use git as an example.</p>
+      <p>Suppose your favorite application or a library you are using has a bug. You find that the code is open source and are happy because of this. Being a programmer yourself, you know that you can fix the bug and send a patch with the fix to the maintainers. But how do you do this? This article will provide a short walkthrough for this task using as an example the Linux kernel. Different projects use different source version control systems. Because this article works on the kernel tree, I am going to use git as an example.</p>
 <p>So, the first thing to do is to clone the project’s repository. This is to ensure that you are working on the latest source – maybe the bug was fixed before and your operating system’s package manager is behind on updates. For our kernel example, we will be cloning the <code>net-next</code> tree since this is where our final patch will land – from there it would be applied to the Linux kernel itself but this process is not the subject of this article.</p>
 <pre><code>$ git clone
 git://git.kernel.org/pub/scm/linux/kernel/git/davem/net-next.git
@@ -175,32 +175,29 @@ Message-ID to be used as In-Reply-To for the first email?
 <p>Even though this lasted a whole week, the feeling I got when it was finally accepted was awesome. You will feel it too after sending the first few patches.</p>
 <p>As a recommended link before the end of the article, make sure you listen the <a href="http://www.youtube.com/watch?v=LLBrBBImJt4">YouTube</a> video of Greg KH about contributing upstream.</p>
 
-          </div>
-        </div>
-      </div>
-
-      <!-- Social Buttons here -->
-      <div id="sociallinks">
-        <a href="https://twitter.com/home?status=/contributing-upstream.html" target="_blank">Tweet this</a> -
-        <a href="http://www.facebook.com/sharer/sharer.php?u=/contributing-upstream.html" target="_blank">Like this</a> -
-        <a href="https://plus.google.com/share?url=/contributing-upstream.html" target="_blank">Share on G+</a>
-      </div>
-
-      <script>
-        (function(){window.addEventListener("DOMContentLoaded",function(){
-          //get URL
-          var url=document.location;
-          var links=document.getElementById("sociallinks")
-                            .getElementsByTagName('a');
-          for (var i=0;i!=links.length;i++){
-            // Replacing /contributing-upstream.html with current URL
-            links[i].setAttribute("href",links[i].href.replace('/contributing-upstream.html',url));
-          }})})();
-      </script>
-      </br>
-    </article>
+    </div>
   </div>
 </div>
+
+<!-- Social Buttons here -->
+<div id="sociallinks">
+  <a href="https://twitter.com/home?status=/contributing-upstream.html" target="_blank">Tweet this</a> -
+  <a href="http://www.facebook.com/sharer/sharer.php?u=/contributing-upstream.html" target="_blank">Like this</a> -
+  <a href="https://plus.google.com/share?url=/contributing-upstream.html" target="_blank">Share on G+</a>
+</div>
+
+<script>
+  (function(){window.addEventListener("DOMContentLoaded",function(){
+    //get URL
+    var url=document.location;
+    var links=document.getElementById("sociallinks")
+                      .getElementsByTagName('a');
+    for (var i=0;i!=links.length;i++){
+      // Replacing /contributing-upstream.html with current URL
+      links[i].setAttribute("href",links[i].href.replace('/contributing-upstream.html',url));
+    }})})();
+</script>
+</br>
 
 <div id="disqus_thread"></div>
 <script type="text/javascript">
@@ -218,6 +215,9 @@ Message-ID to be used as In-Reply-To for the first email?
 <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 
+              </article>
+            </div>
+          </div>
         </div>
       </div>
 

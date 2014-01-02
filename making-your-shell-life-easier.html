@@ -69,34 +69,34 @@
       <div class="body" role="main">
         <div class="unit-body">
           <div class="unit-inner unit-body-inner">
-  <div class="entry-content">
-    <article class="unit-article layout-post">
-      <div class="unit-inner unit-article-inner">
-        <div class="content">
-          <div class="bd">
-            <header>
-              <div class="unit-head">
-                <div class="unit-inner unit-head-inner">
-                  <h1 class="h2 entry-title">
-                    <a class="post_title" href="./making-your-shell-life-easier.html" title="Making your shell life easier">Making your shell life easier</a>
-                  </h1>
-                </div><!-- unit-inner -->
-              </div><!-- unit-head -->
-            </header>
+            <div class="entry-content">
+              <article class="unit-article layout-post">
+                <div class="unit-inner unit-article-inner">
+  <div class="content">
+    <div class="bd">
+      <header>
+        <div class="unit-head">
+          <div class="unit-inner unit-head-inner">
+            <h1 class="h2 entry-title">
+              <a class="post_title" href="./making-your-shell-life-easier.html" title="Making your shell life easier">Making your shell life easier</a>
+            </h1>
+          </div><!-- unit-inner -->
+        </div><!-- unit-head -->
+      </header>
 
-            <span class="date">
-            <span class="published">Published on April 30, 2012</span>
-            by
-            <span class="author">Alexandru Juncu</span>
-            </span>
+      <span class="date">
+      <span class="published">Published on April 30, 2012</span>
+      by
+      <span class="author">Alexandru Juncu</span>
+      </span>
 
-            <br />
-            <span class="meta">
-              Tagged:
-              <span class="tags"><a href="./tags/CLI.html">CLI</a>, <a href="./tags/bash.html">bash</a>, <a href="./tags/shell.html">shell</a>, <a href="./tags/terminal.html">terminal</a>, <a href="./tags/tmux.html">tmux</a>, <a href="./tags/screen.html">screen</a>, <a href="./tags/jobs.html">jobs</a>, <a href="./tags/fg.html">fg</a>, <a href="./tags/pushd.html">pushd</a>, <a href="./tags/popd.html">popd</a></span>
-            </span>
+      <br />
+      <span class="meta">
+        Tagged:
+        <span class="tags"><a href="./tags/CLI.html">CLI</a>, <a href="./tags/bash.html">bash</a>, <a href="./tags/shell.html">shell</a>, <a href="./tags/terminal.html">terminal</a>, <a href="./tags/tmux.html">tmux</a>, <a href="./tags/screen.html">screen</a>, <a href="./tags/jobs.html">jobs</a>, <a href="./tags/fg.html">fg</a>, <a href="./tags/pushd.html">pushd</a>, <a href="./tags/popd.html">popd</a></span>
+      </span>
 
-            <p>Most Linux users prefer to use the CLI because of its efficiency. But the days of the single terminal in which you had your shell are long gone. Users take advantage of the GUI and use graphical terminals like <a href="http://library.gnome.org/users/gnome-terminal/stable/gnome-terminal-get-started.html.en"><code>gnome-terminal</code></a>, <a href="http://konsole.kde.org/"><code>konsole</code></a> or similar utilities, to start several shell instances. For example if you are a programmer, you might want to have one instance for the editor (with the code you are working on), another one to test and debug the compiled executable and – maybe – another for the documentation (<code>man</code> pages). If you are a system administrator you might have a shell with the configuration file of a service, one you use to test the running service, and maybe one shell connected to another server. But having a lot of windows (or tabs) can get confusing.</p>
+      <p>Most Linux users prefer to use the CLI because of its efficiency. But the days of the single terminal in which you had your shell are long gone. Users take advantage of the GUI and use graphical terminals like <a href="http://library.gnome.org/users/gnome-terminal/stable/gnome-terminal-get-started.html.en"><code>gnome-terminal</code></a>, <a href="http://konsole.kde.org/"><code>konsole</code></a> or similar utilities, to start several shell instances. For example if you are a programmer, you might want to have one instance for the editor (with the code you are working on), another one to test and debug the compiled executable and – maybe – another for the documentation (<code>man</code> pages). If you are a system administrator you might have a shell with the configuration file of a service, one you use to test the running service, and maybe one shell connected to another server. But having a lot of windows (or tabs) can get confusing.</p>
 <p>Some prefer to optimize their environment and use a CLI-oriented Window Manager, like <a href="http://xmonad.org/"><code>xmonad</code></a>, to <em>productively manage windows without the use of the mouse</em>. But what if you can only get access to a single terminal, like in the case of a SSH client to a remote host? What if you don’t have a GUI, when configuring a server on-site? Or what if you just like to have one terminal window opened? What you can do is install terminal multiplexing programs like <a href="http://www.gnu.org/software/screen/"><code>screen</code></a> or <a href="http://tmux.sourceforge.net/"><code>tmux</code></a>. These programs fork several shell instances behind your primary shell instance and you can switch between them using keyboard shortcuts. Or you can learn to make use of things your shell (<a href="http://www.gnu.org/software/bash/"><code>bash</code></a>, for example) already offers you.</p>
 <h3 id="lesson-1-dont-close-things-that-you-will-open-again-soon.">Lesson 1: Don’t close things that you will open again soon.</h3>
 <p>If you are using your editor to write code or to change a configuration file and you want to compile the code or restart a service and test the result, you can send your editor into background with the <code>CTRL-Z</code> keyboard shortcut, that sends a <code>SIGTSTOP</code> signal to the process. You can run other command and then return to your edited file with the <code>fg</code> command. You may have several tasks in background for that shell instance. You can use the <code>jobs</code> command to see them and their jobid, and you can send a specific job in foreground with <code>fg $JOBID</code>.</p>
@@ -121,32 +121,29 @@ rosedu:/etc/apache2/sites-available#</code></pre>
 <p>Some people open different terminals to keep track of what they are doing or where they are (and not change the location inside that terminal). The shell is made for having its current directory changes and it helps you know where you are with the <code>prompt</code>. A normal prompts looks like <code>user@host:current_path$</code>. It’s important to know with what user and on what machine you are logged in. The <code>$</code> and <code>#</code> characters will show you what privileges you have (either limited or administrator). The <code>current\_path</code> is usually the name of the current directory (but it can sometimes be a full path). If that doesn’t provide you enough information, use the <code>pwd</code> command to print the working directory or setup the <code>PS1</code> variabile to include more information.</p>
 <p>Shells like <a href="http://www.gnu.org/software/bash/"><code>bash</code></a> have lots of not so well known tricks. But if you learn those tricks, they will make your life easier.</p>
 
-          </div>
-        </div>
-      </div>
-
-      <!-- Social Buttons here -->
-      <div id="sociallinks">
-        <a href="https://twitter.com/home?status=/making-your-shell-life-easier.html" target="_blank">Tweet this</a> -
-        <a href="http://www.facebook.com/sharer/sharer.php?u=/making-your-shell-life-easier.html" target="_blank">Like this</a> -
-        <a href="https://plus.google.com/share?url=/making-your-shell-life-easier.html" target="_blank">Share on G+</a>
-      </div>
-
-      <script>
-        (function(){window.addEventListener("DOMContentLoaded",function(){
-          //get URL
-          var url=document.location;
-          var links=document.getElementById("sociallinks")
-                            .getElementsByTagName('a');
-          for (var i=0;i!=links.length;i++){
-            // Replacing /making-your-shell-life-easier.html with current URL
-            links[i].setAttribute("href",links[i].href.replace('/making-your-shell-life-easier.html',url));
-          }})})();
-      </script>
-      </br>
-    </article>
+    </div>
   </div>
 </div>
+
+<!-- Social Buttons here -->
+<div id="sociallinks">
+  <a href="https://twitter.com/home?status=/making-your-shell-life-easier.html" target="_blank">Tweet this</a> -
+  <a href="http://www.facebook.com/sharer/sharer.php?u=/making-your-shell-life-easier.html" target="_blank">Like this</a> -
+  <a href="https://plus.google.com/share?url=/making-your-shell-life-easier.html" target="_blank">Share on G+</a>
+</div>
+
+<script>
+  (function(){window.addEventListener("DOMContentLoaded",function(){
+    //get URL
+    var url=document.location;
+    var links=document.getElementById("sociallinks")
+                      .getElementsByTagName('a');
+    for (var i=0;i!=links.length;i++){
+      // Replacing /making-your-shell-life-easier.html with current URL
+      links[i].setAttribute("href",links[i].href.replace('/making-your-shell-life-easier.html',url));
+    }})})();
+</script>
+</br>
 
 <div id="disqus_thread"></div>
 <script type="text/javascript">
@@ -164,6 +161,9 @@ rosedu:/etc/apache2/sites-available#</code></pre>
 <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 
+              </article>
+            </div>
+          </div>
         </div>
       </div>
 

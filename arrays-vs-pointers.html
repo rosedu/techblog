@@ -69,34 +69,34 @@
       <div class="body" role="main">
         <div class="unit-body">
           <div class="unit-inner unit-body-inner">
-  <div class="entry-content">
-    <article class="unit-article layout-post">
-      <div class="unit-inner unit-article-inner">
-        <div class="content">
-          <div class="bd">
-            <header>
-              <div class="unit-head">
-                <div class="unit-inner unit-head-inner">
-                  <h1 class="h2 entry-title">
-                    <a class="post_title" href="./arrays-vs-pointers.html" title="char[] versus char*">char[] versus char*</a>
-                  </h1>
-                </div><!-- unit-inner -->
-              </div><!-- unit-head -->
-            </header>
+            <div class="entry-content">
+              <article class="unit-article layout-post">
+                <div class="unit-inner unit-article-inner">
+  <div class="content">
+    <div class="bd">
+      <header>
+        <div class="unit-head">
+          <div class="unit-inner unit-head-inner">
+            <h1 class="h2 entry-title">
+              <a class="post_title" href="./arrays-vs-pointers.html" title="char[] versus char*">char[] versus char*</a>
+            </h1>
+          </div><!-- unit-inner -->
+        </div><!-- unit-head -->
+      </header>
 
-            <span class="date">
-            <span class="published">Published on August 27, 2011</span>
-            by
-            <span class="author">Daniel</span>
-            </span>
+      <span class="date">
+      <span class="published">Published on August 27, 2011</span>
+      by
+      <span class="author">Daniel</span>
+      </span>
 
-            <br />
-            <span class="meta">
-              Tagged:
-              <span class="tags"><a href="./tags/arrays.html">arrays</a>, <a href="./tags/pointers.html">pointers</a>, <a href="./tags/strings.html">strings</a>, <a href="./tags/.rodata.html">.rodata</a></span>
-            </span>
+      <br />
+      <span class="meta">
+        Tagged:
+        <span class="tags"><a href="./tags/arrays.html">arrays</a>, <a href="./tags/pointers.html">pointers</a>, <a href="./tags/strings.html">strings</a>, <a href="./tags/.rodata.html">.rodata</a></span>
+      </span>
 
-            <p>This post will shed some light on the differences between arrays and pointers specifically when it comes about referencing string literals. We will base our discussion on the following two programs:</p>
+      <p>This post will shed some light on the differences between arrays and pointers specifically when it comes about referencing string literals. We will base our discussion on the following two programs:</p>
 <p><img style="float:right" src="./images/arrays-vs-pointers.png" alt="Array and pointer representation" width="376" height="192" /> <strong>array.c</strong></p>
 <pre><code>char a[] = &quot;ROSEdu&quot;;
 int main(void)
@@ -164,32 +164,29 @@ p:
 <li>Is it possible for the following expression <code>(const char []){&quot;ROSEdu&quot;} == &quot;ROSEdu&quot;</code> to yield true?</li>
 </ul>
 
-          </div>
-        </div>
-      </div>
-
-      <!-- Social Buttons here -->
-      <div id="sociallinks">
-        <a href="https://twitter.com/home?status=/arrays-vs-pointers.html" target="_blank">Tweet this</a> -
-        <a href="http://www.facebook.com/sharer/sharer.php?u=/arrays-vs-pointers.html" target="_blank">Like this</a> -
-        <a href="https://plus.google.com/share?url=/arrays-vs-pointers.html" target="_blank">Share on G+</a>
-      </div>
-
-      <script>
-        (function(){window.addEventListener("DOMContentLoaded",function(){
-          //get URL
-          var url=document.location;
-          var links=document.getElementById("sociallinks")
-                            .getElementsByTagName('a');
-          for (var i=0;i!=links.length;i++){
-            // Replacing /arrays-vs-pointers.html with current URL
-            links[i].setAttribute("href",links[i].href.replace('/arrays-vs-pointers.html',url));
-          }})})();
-      </script>
-      </br>
-    </article>
+    </div>
   </div>
 </div>
+
+<!-- Social Buttons here -->
+<div id="sociallinks">
+  <a href="https://twitter.com/home?status=/arrays-vs-pointers.html" target="_blank">Tweet this</a> -
+  <a href="http://www.facebook.com/sharer/sharer.php?u=/arrays-vs-pointers.html" target="_blank">Like this</a> -
+  <a href="https://plus.google.com/share?url=/arrays-vs-pointers.html" target="_blank">Share on G+</a>
+</div>
+
+<script>
+  (function(){window.addEventListener("DOMContentLoaded",function(){
+    //get URL
+    var url=document.location;
+    var links=document.getElementById("sociallinks")
+                      .getElementsByTagName('a');
+    for (var i=0;i!=links.length;i++){
+      // Replacing /arrays-vs-pointers.html with current URL
+      links[i].setAttribute("href",links[i].href.replace('/arrays-vs-pointers.html',url));
+    }})})();
+</script>
+</br>
 
 <div id="disqus_thread"></div>
 <script type="text/javascript">
@@ -207,6 +204,9 @@ p:
 <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 
+              </article>
+            </div>
+          </div>
         </div>
       </div>
 

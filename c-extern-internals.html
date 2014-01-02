@@ -69,34 +69,34 @@
       <div class="body" role="main">
         <div class="unit-body">
           <div class="unit-inner unit-body-inner">
-  <div class="entry-content">
-    <article class="unit-article layout-post">
-      <div class="unit-inner unit-article-inner">
-        <div class="content">
-          <div class="bd">
-            <header>
-              <div class="unit-head">
-                <div class="unit-inner unit-head-inner">
-                  <h1 class="h2 entry-title">
-                    <a class="post_title" href="./c-extern-internals.html" title="C's extern internals">C's extern internals</a>
-                  </h1>
-                </div><!-- unit-inner -->
-              </div><!-- unit-head -->
-            </header>
+            <div class="entry-content">
+              <article class="unit-article layout-post">
+                <div class="unit-inner unit-article-inner">
+  <div class="content">
+    <div class="bd">
+      <header>
+        <div class="unit-head">
+          <div class="unit-inner unit-head-inner">
+            <h1 class="h2 entry-title">
+              <a class="post_title" href="./c-extern-internals.html" title="C's extern internals">C's extern internals</a>
+            </h1>
+          </div><!-- unit-inner -->
+        </div><!-- unit-head -->
+      </header>
 
-            <span class="date">
-            <span class="published">Published on October  9, 2011</span>
-            by
-            <span class="author">Daniel</span>
-            </span>
+      <span class="date">
+      <span class="published">Published on October  9, 2011</span>
+      by
+      <span class="author">Daniel</span>
+      </span>
 
-            <br />
-            <span class="meta">
-              Tagged:
-              <span class="tags"><a href="./tags/arrays.html">arrays</a>, <a href="./tags/pointers.html">pointers</a>, <a href="./tags/extern.html">extern</a>, <a href="./tags/C.html">C</a></span>
-            </span>
+      <br />
+      <span class="meta">
+        Tagged:
+        <span class="tags"><a href="./tags/arrays.html">arrays</a>, <a href="./tags/pointers.html">pointers</a>, <a href="./tags/extern.html">extern</a>, <a href="./tags/C.html">C</a></span>
+      </span>
 
-            <p>The idea for this post came from <a href="http://techblog.rosedu.org/arrays-vs-pointers.html#IDComment189927033">Virgil’s</a> comment on [char[] versus char*][old-art] entry. We will dig into some of C’s extern keyword internals by means of examples and then analyze the differences between <code>extern char</code>* and <code>extern char</code>[].</p>
+      <p>The idea for this post came from <a href="http://techblog.rosedu.org/arrays-vs-pointers.html#IDComment189927033">Virgil’s</a> comment on [char[] versus char*][old-art] entry. We will dig into some of C’s extern keyword internals by means of examples and then analyze the differences between <code>extern char</code>* and <code>extern char</code>[].</p>
 <p><code>extern</code> is a storage class specifier, indicating that the actual storage of a variable or the definition of a function is located elsewhere, typically in another source file.</p>
 <p><img style="float:right" src="./images/c-extern-simple-usage.png" alt="C extern simple usage" width="227" height="263" /></p>
 <p>Let’s start with a simple example:</p>
@@ -181,32 +181,29 @@ Breakpoint 1, main () at main2.c:6
 $1 = 0x34333231 Address 0x34333231 out of bounds</code></pre>
 <p>One can notice that the value of the pointer <code>str</code> is the content of array <code>str</code>. This content is an invalid address dereferenced by the pointer, resulting in the delivery of the dreaded <code>SIGSEGV</code> signal.</p>
 
-          </div>
-        </div>
-      </div>
-
-      <!-- Social Buttons here -->
-      <div id="sociallinks">
-        <a href="https://twitter.com/home?status=/c-extern-internals.html" target="_blank">Tweet this</a> -
-        <a href="http://www.facebook.com/sharer/sharer.php?u=/c-extern-internals.html" target="_blank">Like this</a> -
-        <a href="https://plus.google.com/share?url=/c-extern-internals.html" target="_blank">Share on G+</a>
-      </div>
-
-      <script>
-        (function(){window.addEventListener("DOMContentLoaded",function(){
-          //get URL
-          var url=document.location;
-          var links=document.getElementById("sociallinks")
-                            .getElementsByTagName('a');
-          for (var i=0;i!=links.length;i++){
-            // Replacing /c-extern-internals.html with current URL
-            links[i].setAttribute("href",links[i].href.replace('/c-extern-internals.html',url));
-          }})})();
-      </script>
-      </br>
-    </article>
+    </div>
   </div>
 </div>
+
+<!-- Social Buttons here -->
+<div id="sociallinks">
+  <a href="https://twitter.com/home?status=/c-extern-internals.html" target="_blank">Tweet this</a> -
+  <a href="http://www.facebook.com/sharer/sharer.php?u=/c-extern-internals.html" target="_blank">Like this</a> -
+  <a href="https://plus.google.com/share?url=/c-extern-internals.html" target="_blank">Share on G+</a>
+</div>
+
+<script>
+  (function(){window.addEventListener("DOMContentLoaded",function(){
+    //get URL
+    var url=document.location;
+    var links=document.getElementById("sociallinks")
+                      .getElementsByTagName('a');
+    for (var i=0;i!=links.length;i++){
+      // Replacing /c-extern-internals.html with current URL
+      links[i].setAttribute("href",links[i].href.replace('/c-extern-internals.html',url));
+    }})})();
+</script>
+</br>
 
 <div id="disqus_thread"></div>
 <script type="text/javascript">
@@ -224,6 +221,9 @@ $1 = 0x34333231 Address 0x34333231 out of bounds</code></pre>
 <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 
+              </article>
+            </div>
+          </div>
         </div>
       </div>
 

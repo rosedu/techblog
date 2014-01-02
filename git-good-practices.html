@@ -69,34 +69,34 @@
       <div class="body" role="main">
         <div class="unit-body">
           <div class="unit-inner unit-body-inner">
-  <div class="entry-content">
-    <article class="unit-article layout-post">
-      <div class="unit-inner unit-article-inner">
-        <div class="content">
-          <div class="bd">
-            <header>
-              <div class="unit-head">
-                <div class="unit-inner unit-head-inner">
-                  <h1 class="h2 entry-title">
-                    <a class="post_title" href="./git-good-practices.html" title="Git Tips and Good Practices">Git Tips and Good Practices</a>
-                  </h1>
-                </div><!-- unit-inner -->
-              </div><!-- unit-head -->
-            </header>
+            <div class="entry-content">
+              <article class="unit-article layout-post">
+                <div class="unit-inner unit-article-inner">
+  <div class="content">
+    <div class="bd">
+      <header>
+        <div class="unit-head">
+          <div class="unit-inner unit-head-inner">
+            <h1 class="h2 entry-title">
+              <a class="post_title" href="./git-good-practices.html" title="Git Tips and Good Practices">Git Tips and Good Practices</a>
+            </h1>
+          </div><!-- unit-inner -->
+        </div><!-- unit-head -->
+      </header>
 
-            <span class="date">
-            <span class="published">Published on September 12, 2011</span>
-            by
-            <span class="author">Răzvan</span>
-            </span>
+      <span class="date">
+      <span class="published">Published on September 12, 2011</span>
+      by
+      <span class="author">Răzvan</span>
+      </span>
 
-            <br />
-            <span class="meta">
-              Tagged:
-              <span class="tags"><a href="./tags/SCM.html">SCM</a>, <a href="./tags/git.html">git</a>, <a href="./tags/tip.html">tip</a>, <a href="./tags/good%20practice.html">good practice</a></span>
-            </span>
+      <br />
+      <span class="meta">
+        Tagged:
+        <span class="tags"><a href="./tags/SCM.html">SCM</a>, <a href="./tags/git.html">git</a>, <a href="./tags/tip.html">tip</a>, <a href="./tags/good%20practice.html">good practice</a></span>
+      </span>
 
-            <p><a href="http://git-scm.com/" title="Git">Git</a> is an excellent SCM (source code management system). I use it for a plethora of tasks such as managing code, scripts, LaTeX files, config files, <a href="http://orgmode.org/" title="Org-Mode">Org-Mode</a> files. I try to base all my actions on text files such that it could be managed through Git.</p>
+      <p><a href="http://git-scm.com/" title="Git">Git</a> is an excellent SCM (source code management system). I use it for a plethora of tasks such as managing code, scripts, LaTeX files, config files, <a href="http://orgmode.org/" title="Org-Mode">Org-Mode</a> files. I try to base all my actions on text files such that it could be managed through Git.</p>
 <p>In this post I wish to share some of the knowledge and skills I’ve gathered throughout the time of using Git. I am novice myself in many aspects of using Git, but I feel confident of my basic usage skill and good practices.</p>
 <p>My aim is to present tips and good practices that allow using Git at its value and conforming to recommendations. This is not a tutorial or a comprehensive view of Git. In case you are looking for that I recommend the excellent <a href="http://gitimmersion.com/" title="Git Immersion">Gitimmersion tutorial</a> and the <a href="http://progit.org/" title="Pro Git Book">Pro Git Book</a>.</p>
 <p>An important aspect to have in mind is the data model that Git uses. While most SCMs use changesets to manage commits, Git uses snapshots. Each commit is a snapshot of the entire project; it is not a set of file patches. Bear this in mind when using Git commands and playing around with commits. You may also check <a href="http://learn.github.com/p/intro.html#snapshots_not_changesets" title="GitHub - Introduction to Git">this tutorial</a> for a more thorough presentation.</p>
@@ -192,32 +192,29 @@ git config --global color.ui auto</code></pre>
 <p>As mentioned above, I find the <a href="http://gitimmersion.com/" title="Git Immersion">Git Immersion tutorial</a> to be very well presented and easy to follow and the <a href="http://progit.org/" title="Pro Git Book">Pro Git Book</a> as a good technical presentation of Git and its features. An excellent site, consisting of a plethora of very nicely presented tips is <a href="http://gitready.com/" title="git ready &gt;&gt; learn git one commit at a time">git ready</a>.</p>
 <p>As a funny link, I recommend you access <a href="http://whatthecommit.com/" title="Commit Message Generator">Commit Message Generator</a>.</p>
 
-          </div>
-        </div>
-      </div>
-
-      <!-- Social Buttons here -->
-      <div id="sociallinks">
-        <a href="https://twitter.com/home?status=/git-good-practices.html" target="_blank">Tweet this</a> -
-        <a href="http://www.facebook.com/sharer/sharer.php?u=/git-good-practices.html" target="_blank">Like this</a> -
-        <a href="https://plus.google.com/share?url=/git-good-practices.html" target="_blank">Share on G+</a>
-      </div>
-
-      <script>
-        (function(){window.addEventListener("DOMContentLoaded",function(){
-          //get URL
-          var url=document.location;
-          var links=document.getElementById("sociallinks")
-                            .getElementsByTagName('a');
-          for (var i=0;i!=links.length;i++){
-            // Replacing /git-good-practices.html with current URL
-            links[i].setAttribute("href",links[i].href.replace('/git-good-practices.html',url));
-          }})})();
-      </script>
-      </br>
-    </article>
+    </div>
   </div>
 </div>
+
+<!-- Social Buttons here -->
+<div id="sociallinks">
+  <a href="https://twitter.com/home?status=/git-good-practices.html" target="_blank">Tweet this</a> -
+  <a href="http://www.facebook.com/sharer/sharer.php?u=/git-good-practices.html" target="_blank">Like this</a> -
+  <a href="https://plus.google.com/share?url=/git-good-practices.html" target="_blank">Share on G+</a>
+</div>
+
+<script>
+  (function(){window.addEventListener("DOMContentLoaded",function(){
+    //get URL
+    var url=document.location;
+    var links=document.getElementById("sociallinks")
+                      .getElementsByTagName('a');
+    for (var i=0;i!=links.length;i++){
+      // Replacing /git-good-practices.html with current URL
+      links[i].setAttribute("href",links[i].href.replace('/git-good-practices.html',url));
+    }})})();
+</script>
+</br>
 
 <div id="disqus_thread"></div>
 <script type="text/javascript">
@@ -235,6 +232,9 @@ git config --global color.ui auto</code></pre>
 <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 
+              </article>
+            </div>
+          </div>
         </div>
       </div>
 

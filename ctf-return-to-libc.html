@@ -69,34 +69,34 @@
       <div class="body" role="main">
         <div class="unit-body">
           <div class="unit-inner unit-body-inner">
-  <div class="entry-content">
-    <article class="unit-article layout-post">
-      <div class="unit-inner unit-article-inner">
-        <div class="content">
-          <div class="bd">
-            <header>
-              <div class="unit-head">
-                <div class="unit-inner unit-head-inner">
-                  <h1 class="h2 entry-title">
-                    <a class="post_title" href="./ctf-return-to-libc.html" title="GiTS 2013 CTF -- return-to-libc -- pwnable 250">GiTS 2013 CTF -- return-to-libc -- pwnable 250</a>
-                  </h1>
-                </div><!-- unit-inner -->
-              </div><!-- unit-head -->
-            </header>
+            <div class="entry-content">
+              <article class="unit-article layout-post">
+                <div class="unit-inner unit-article-inner">
+  <div class="content">
+    <div class="bd">
+      <header>
+        <div class="unit-head">
+          <div class="unit-inner unit-head-inner">
+            <h1 class="h2 entry-title">
+              <a class="post_title" href="./ctf-return-to-libc.html" title="GiTS 2013 CTF -- return-to-libc -- pwnable 250">GiTS 2013 CTF -- return-to-libc -- pwnable 250</a>
+            </h1>
+          </div><!-- unit-inner -->
+        </div><!-- unit-head -->
+      </header>
 
-            <span class="date">
-            <span class="published">Published on February 19, 2013</span>
-            by
-            <span class="author">Lucian Cojocar</span>
-            </span>
+      <span class="date">
+      <span class="published">Published on February 19, 2013</span>
+      by
+      <span class="author">Lucian Cojocar</span>
+      </span>
 
-            <br />
-            <span class="meta">
-              Tagged:
-              <span class="tags"><a href="./tags/exploit.html">exploit</a>, <a href="./tags/ctf.html">ctf</a>, <a href="./tags/return-to-libc.html">return-to-libc</a>, <a href="./tags/strace.html">strace</a>, <a href="./tags/debugging.html">debugging</a>, <a href="./tags/gdb.html">gdb</a>, <a href="./tags/write-up.html">write-up</a></span>
-            </span>
+      <br />
+      <span class="meta">
+        Tagged:
+        <span class="tags"><a href="./tags/exploit.html">exploit</a>, <a href="./tags/ctf.html">ctf</a>, <a href="./tags/return-to-libc.html">return-to-libc</a>, <a href="./tags/strace.html">strace</a>, <a href="./tags/debugging.html">debugging</a>, <a href="./tags/gdb.html">gdb</a>, <a href="./tags/write-up.html">write-up</a></span>
+      </span>
 
-            <h1 id="introduction">Introduction</h1>
+      <h1 id="introduction">Introduction</h1>
 <p>This is a write-up for Pwnable 250 level from <a href="http://ghostintheshellcode.com/" title="Ghost in the Shellcode CTF">Ghost in the Shellcode</a> capture the flag competition. Basically a return-to-libc attack will be described; we will also describe the steps for solving the mentioned CTF level using the <a href="res/back2skool-3fbcd46db37c50ad52675294f566790c777b9d1f" title="Vulnerable binary">original binary</a> from the competition.</p>
 <h1 id="hello-binary">Hello binary!</h1>
 <p>Let’s start by inspecting the binary.</p>
@@ -404,32 +404,29 @@ ebx            0xb7fa5a5a	-1208329638
 <p>We’ve presented a way of doing a return-to-libc attack, even though this is a primitive return-to-libc approach, we used a function from libc. We also had to compute the offset of that function using the address of another function - this makes the exploit unreliable.</p>
 <p>In the end, it boils down to have the right skill for using the right tools, it’s nothing fancy.</p>
 
-          </div>
-        </div>
-      </div>
-
-      <!-- Social Buttons here -->
-      <div id="sociallinks">
-        <a href="https://twitter.com/home?status=/ctf-return-to-libc.html" target="_blank">Tweet this</a> -
-        <a href="http://www.facebook.com/sharer/sharer.php?u=/ctf-return-to-libc.html" target="_blank">Like this</a> -
-        <a href="https://plus.google.com/share?url=/ctf-return-to-libc.html" target="_blank">Share on G+</a>
-      </div>
-
-      <script>
-        (function(){window.addEventListener("DOMContentLoaded",function(){
-          //get URL
-          var url=document.location;
-          var links=document.getElementById("sociallinks")
-                            .getElementsByTagName('a');
-          for (var i=0;i!=links.length;i++){
-            // Replacing /ctf-return-to-libc.html with current URL
-            links[i].setAttribute("href",links[i].href.replace('/ctf-return-to-libc.html',url));
-          }})})();
-      </script>
-      </br>
-    </article>
+    </div>
   </div>
 </div>
+
+<!-- Social Buttons here -->
+<div id="sociallinks">
+  <a href="https://twitter.com/home?status=/ctf-return-to-libc.html" target="_blank">Tweet this</a> -
+  <a href="http://www.facebook.com/sharer/sharer.php?u=/ctf-return-to-libc.html" target="_blank">Like this</a> -
+  <a href="https://plus.google.com/share?url=/ctf-return-to-libc.html" target="_blank">Share on G+</a>
+</div>
+
+<script>
+  (function(){window.addEventListener("DOMContentLoaded",function(){
+    //get URL
+    var url=document.location;
+    var links=document.getElementById("sociallinks")
+                      .getElementsByTagName('a');
+    for (var i=0;i!=links.length;i++){
+      // Replacing /ctf-return-to-libc.html with current URL
+      links[i].setAttribute("href",links[i].href.replace('/ctf-return-to-libc.html',url));
+    }})})();
+</script>
+</br>
 
 <div id="disqus_thread"></div>
 <script type="text/javascript">
@@ -447,6 +444,9 @@ ebx            0xb7fa5a5a	-1208329638
 <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 
+              </article>
+            </div>
+          </div>
         </div>
       </div>
 

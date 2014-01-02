@@ -69,34 +69,34 @@
       <div class="body" role="main">
         <div class="unit-body">
           <div class="unit-inner unit-body-inner">
-  <div class="entry-content">
-    <article class="unit-article layout-post">
-      <div class="unit-inner unit-article-inner">
-        <div class="content">
-          <div class="bd">
-            <header>
-              <div class="unit-head">
-                <div class="unit-inner unit-head-inner">
-                  <h1 class="h2 entry-title">
-                    <a class="post_title" href="./shell-tips-and-tricks-for-file-editing.html" title="Shell tips and tricks for log files">Shell tips and tricks for log files</a>
-                  </h1>
-                </div><!-- unit-inner -->
-              </div><!-- unit-head -->
-            </header>
+            <div class="entry-content">
+              <article class="unit-article layout-post">
+                <div class="unit-inner unit-article-inner">
+  <div class="content">
+    <div class="bd">
+      <header>
+        <div class="unit-head">
+          <div class="unit-inner unit-head-inner">
+            <h1 class="h2 entry-title">
+              <a class="post_title" href="./shell-tips-and-tricks-for-file-editing.html" title="Shell tips and tricks for log files">Shell tips and tricks for log files</a>
+            </h1>
+          </div><!-- unit-inner -->
+        </div><!-- unit-head -->
+      </header>
 
-            <span class="date">
-            <span class="published">Published on June 20, 2013</span>
-            by
-            <span class="author">Alexandru Juncu</span>
-            </span>
+      <span class="date">
+      <span class="published">Published on June 20, 2013</span>
+      by
+      <span class="author">Alexandru Juncu</span>
+      </span>
 
-            <br />
-            <span class="meta">
-              Tagged:
-              <span class="tags"><a href="./tags/CLI.html">CLI</a>, <a href="./tags/bash.html">bash</a>, <a href="./tags/shell.html">shell</a>, <a href="./tags/files.html">files</a>, <a href="./tags/text.html">text</a>, <a href="./tags/truncate.html">truncate</a>, <a href="./tags/tee.html">tee</a>, <a href="./tags/tail.html">tail</a>, <a href="./tags/follow.html">follow</a></span>
-            </span>
+      <br />
+      <span class="meta">
+        Tagged:
+        <span class="tags"><a href="./tags/CLI.html">CLI</a>, <a href="./tags/bash.html">bash</a>, <a href="./tags/shell.html">shell</a>, <a href="./tags/files.html">files</a>, <a href="./tags/text.html">text</a>, <a href="./tags/truncate.html">truncate</a>, <a href="./tags/tee.html">tee</a>, <a href="./tags/tail.html">tail</a>, <a href="./tags/follow.html">follow</a></span>
+      </span>
 
-            <p>Here are are some small things you might find useful when you need to deal with text files. In the Linux/Unix world, a lot of things are text files, so you need to know how to efficiently handle them. If you are a sysadmin, you need to look at <strong>log files</strong> for most of your work time and the following might come in handy.</p>
+      <p>Here are are some small things you might find useful when you need to deal with text files. In the Linux/Unix world, a lot of things are text files, so you need to know how to efficiently handle them. If you are a sysadmin, you need to look at <strong>log files</strong> for most of your work time and the following might come in handy.</p>
 <h3 id="following-a-log-file">Following a log file</h3>
 <p>Take your <code>$GENERIC_SERVICE</code> on your server that generates a lot of logs. You could open a <strong>text editor</strong> like <code>vi</code> or <code>emacs</code> to view the logs or use <code>tail</code> to see the latest lines (or a combination of tail and <code>head</code>). But you sometimes you need to view contents of the log in real time (while the service writes the lines, you read them). This is where the best use for the tail command comes in: the <code>--follow</code> flag.</p>
 <pre><code>tail -f /var/log/mylog</code></pre>
@@ -116,32 +116,29 @@
 <p>Now you have both real time printing of the messages and you have them saved for future use.</p>
 <p>Hope this helps!</p>
 
-          </div>
-        </div>
-      </div>
-
-      <!-- Social Buttons here -->
-      <div id="sociallinks">
-        <a href="https://twitter.com/home?status=/shell-tips-and-tricks-for-file-editing.html" target="_blank">Tweet this</a> -
-        <a href="http://www.facebook.com/sharer/sharer.php?u=/shell-tips-and-tricks-for-file-editing.html" target="_blank">Like this</a> -
-        <a href="https://plus.google.com/share?url=/shell-tips-and-tricks-for-file-editing.html" target="_blank">Share on G+</a>
-      </div>
-
-      <script>
-        (function(){window.addEventListener("DOMContentLoaded",function(){
-          //get URL
-          var url=document.location;
-          var links=document.getElementById("sociallinks")
-                            .getElementsByTagName('a');
-          for (var i=0;i!=links.length;i++){
-            // Replacing /shell-tips-and-tricks-for-file-editing.html with current URL
-            links[i].setAttribute("href",links[i].href.replace('/shell-tips-and-tricks-for-file-editing.html',url));
-          }})})();
-      </script>
-      </br>
-    </article>
+    </div>
   </div>
 </div>
+
+<!-- Social Buttons here -->
+<div id="sociallinks">
+  <a href="https://twitter.com/home?status=/shell-tips-and-tricks-for-file-editing.html" target="_blank">Tweet this</a> -
+  <a href="http://www.facebook.com/sharer/sharer.php?u=/shell-tips-and-tricks-for-file-editing.html" target="_blank">Like this</a> -
+  <a href="https://plus.google.com/share?url=/shell-tips-and-tricks-for-file-editing.html" target="_blank">Share on G+</a>
+</div>
+
+<script>
+  (function(){window.addEventListener("DOMContentLoaded",function(){
+    //get URL
+    var url=document.location;
+    var links=document.getElementById("sociallinks")
+                      .getElementsByTagName('a');
+    for (var i=0;i!=links.length;i++){
+      // Replacing /shell-tips-and-tricks-for-file-editing.html with current URL
+      links[i].setAttribute("href",links[i].href.replace('/shell-tips-and-tricks-for-file-editing.html',url));
+    }})})();
+</script>
+</br>
 
 <div id="disqus_thread"></div>
 <script type="text/javascript">
@@ -159,6 +156,9 @@
 <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 
+              </article>
+            </div>
+          </div>
         </div>
       </div>
 

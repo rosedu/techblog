@@ -69,34 +69,34 @@
       <div class="body" role="main">
         <div class="unit-body">
           <div class="unit-inner unit-body-inner">
-  <div class="entry-content">
-    <article class="unit-article layout-post">
-      <div class="unit-inner unit-article-inner">
-        <div class="content">
-          <div class="bd">
-            <header>
-              <div class="unit-head">
-                <div class="unit-inner unit-head-inner">
-                  <h1 class="h2 entry-title">
-                    <a class="post_title" href="./stack-allocation.html" title="Stack Allocation">Stack Allocation</a>
-                  </h1>
-                </div><!-- unit-inner -->
-              </div><!-- unit-head -->
-            </header>
+            <div class="entry-content">
+              <article class="unit-article layout-post">
+                <div class="unit-inner unit-article-inner">
+  <div class="content">
+    <div class="bd">
+      <header>
+        <div class="unit-head">
+          <div class="unit-inner unit-head-inner">
+            <h1 class="h2 entry-title">
+              <a class="post_title" href="./stack-allocation.html" title="Stack Allocation">Stack Allocation</a>
+            </h1>
+          </div><!-- unit-inner -->
+        </div><!-- unit-head -->
+      </header>
 
-            <span class="date">
-            <span class="published">Published on December 18, 2011</span>
-            by
-            <span class="author">Alexandru Juncu</span>
-            </span>
+      <span class="date">
+      <span class="published">Published on December 18, 2011</span>
+      by
+      <span class="author">Alexandru Juncu</span>
+      </span>
 
-            <br />
-            <span class="meta">
-              Tagged:
-              <span class="tags"><a href="./tags/stack.html">stack</a>, <a href="./tags/sp.html">sp</a>, <a href="./tags/esp.html">esp</a>, <a href="./tags/C.html">C</a>, <a href="./tags/assembly.html">assembly</a>, <a href="./tags/cache.html">cache</a>, <a href="./tags/memory.html">memory</a></span>
-            </span>
+      <br />
+      <span class="meta">
+        Tagged:
+        <span class="tags"><a href="./tags/stack.html">stack</a>, <a href="./tags/sp.html">sp</a>, <a href="./tags/esp.html">esp</a>, <a href="./tags/C.html">C</a>, <a href="./tags/assembly.html">assembly</a>, <a href="./tags/cache.html">cache</a>, <a href="./tags/memory.html">memory</a></span>
+      </span>
 
-            <p><strong>Stack space</strong> is the part of each process’ virtual memory where function arguments and return addresses are stored, along with local variables declared within a function. Usually, the stack begins at the high address space of the virtual memory and grows down.</p>
+      <p><strong>Stack space</strong> is the part of each process’ virtual memory where function arguments and return addresses are stored, along with local variables declared within a function. Usually, the stack begins at the high address space of the virtual memory and grows down.</p>
 <p>At every function call, a new <strong>stack frame</strong> is created on the stack. It contains the parameters sent to the function, the return address (the address of a code in the caller function) and the locally declared variables.</p>
 <p>For each function call, the <strong>SP/ESP</strong> (Stack Pointer/Extended Stack Pointer) is set so the stack has a big enough size to accommodate local variables. For example, in theory, if you have a local char variable and an int variable, the SP should be set (moved) to 5 bytes.</p>
 <p>In practice, the compiler will allocate stack space a little different than expected. It will allocate local variables space in increments of a fixed size, so sometimes having two int variables or three int variables will be the same.</p>
@@ -142,32 +142,29 @@
 <p>The question remains why? It has to do with the cache alignment. The compiler will try to structure the memory usage so that the executed code can be easily fetched from memory and cached. A correct alignment will cause minimum cache misses for memory access.</p>
 <p>Credits to SofiaN for help with initial observations and tests.</p>
 
-          </div>
-        </div>
-      </div>
-
-      <!-- Social Buttons here -->
-      <div id="sociallinks">
-        <a href="https://twitter.com/home?status=/stack-allocation.html" target="_blank">Tweet this</a> -
-        <a href="http://www.facebook.com/sharer/sharer.php?u=/stack-allocation.html" target="_blank">Like this</a> -
-        <a href="https://plus.google.com/share?url=/stack-allocation.html" target="_blank">Share on G+</a>
-      </div>
-
-      <script>
-        (function(){window.addEventListener("DOMContentLoaded",function(){
-          //get URL
-          var url=document.location;
-          var links=document.getElementById("sociallinks")
-                            .getElementsByTagName('a');
-          for (var i=0;i!=links.length;i++){
-            // Replacing /stack-allocation.html with current URL
-            links[i].setAttribute("href",links[i].href.replace('/stack-allocation.html',url));
-          }})})();
-      </script>
-      </br>
-    </article>
+    </div>
   </div>
 </div>
+
+<!-- Social Buttons here -->
+<div id="sociallinks">
+  <a href="https://twitter.com/home?status=/stack-allocation.html" target="_blank">Tweet this</a> -
+  <a href="http://www.facebook.com/sharer/sharer.php?u=/stack-allocation.html" target="_blank">Like this</a> -
+  <a href="https://plus.google.com/share?url=/stack-allocation.html" target="_blank">Share on G+</a>
+</div>
+
+<script>
+  (function(){window.addEventListener("DOMContentLoaded",function(){
+    //get URL
+    var url=document.location;
+    var links=document.getElementById("sociallinks")
+                      .getElementsByTagName('a');
+    for (var i=0;i!=links.length;i++){
+      // Replacing /stack-allocation.html with current URL
+      links[i].setAttribute("href",links[i].href.replace('/stack-allocation.html',url));
+    }})})();
+</script>
+</br>
 
 <div id="disqus_thread"></div>
 <script type="text/javascript">
@@ -185,6 +182,9 @@
 <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 
+              </article>
+            </div>
+          </div>
         </div>
       </div>
 

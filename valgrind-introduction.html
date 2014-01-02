@@ -69,34 +69,34 @@
       <div class="body" role="main">
         <div class="unit-body">
           <div class="unit-inner unit-body-inner">
-  <div class="entry-content">
-    <article class="unit-article layout-post">
-      <div class="unit-inner unit-article-inner">
-        <div class="content">
-          <div class="bd">
-            <header>
-              <div class="unit-head">
-                <div class="unit-inner unit-head-inner">
-                  <h1 class="h2 entry-title">
-                    <a class="post_title" href="./valgrind-introduction.html" title="Valgrind introduction">Valgrind introduction</a>
-                  </h1>
-                </div><!-- unit-inner -->
-              </div><!-- unit-head -->
-            </header>
+            <div class="entry-content">
+              <article class="unit-article layout-post">
+                <div class="unit-inner unit-article-inner">
+  <div class="content">
+    <div class="bd">
+      <header>
+        <div class="unit-head">
+          <div class="unit-inner unit-head-inner">
+            <h1 class="h2 entry-title">
+              <a class="post_title" href="./valgrind-introduction.html" title="Valgrind introduction">Valgrind introduction</a>
+            </h1>
+          </div><!-- unit-inner -->
+        </div><!-- unit-head -->
+      </header>
 
-            <span class="date">
-            <span class="published">Published on April 29, 2012</span>
-            by
-            <span class="author">Mihai</span>
-            </span>
+      <span class="date">
+      <span class="published">Published on April 29, 2012</span>
+      by
+      <span class="author">Mihai</span>
+      </span>
 
-            <br />
-            <span class="meta">
-              Tagged:
-              <span class="tags"><a href="./tags/valgrind.html">valgrind</a></span>
-            </span>
+      <br />
+      <span class="meta">
+        Tagged:
+        <span class="tags"><a href="./tags/valgrind.html">valgrind</a></span>
+      </span>
 
-            <p>A good programmer has a variety of tools to help him in developing good applications. We talked about <a href="http://sources.redhat.com/gdb/">gdb</a> in an <a href="http://techblog.rosedu.org/gdb-a-basic-workflow.html">article</a> at the beginning of April. Now, it is time for a crash introduction to <a href="http://valgrind.org/">Valgrind</a>.</p>
+      <p>A good programmer has a variety of tools to help him in developing good applications. We talked about <a href="http://sources.redhat.com/gdb/">gdb</a> in an <a href="http://techblog.rosedu.org/gdb-a-basic-workflow.html">article</a> at the beginning of April. Now, it is time for a crash introduction to <a href="http://valgrind.org/">Valgrind</a>.</p>
 <p>This program is a collection of different tools. For example, it offers a <a href="http://valgrind.org/docs/manual/ms-manual.html">heap profiler</a>, a <a href="http://valgrind.org/docs/manual/hg-manual.html">thread error detector</a> or a <a href="http://valgrind.org/docs/manual/cg-manual.html">cache profiler</a>. However, the tool which gave <a href="http://valgrind.org/">Valgrind</a>’s fame is <a href="http://valgrind.org/docs/manual/mc-manual.html">Memcheck</a>, a memory error detector. Because of its popularity, this tool is the default one (to use other <a href="http://valgrind.org/">Valgrind</a> tools you have to use the <code>--tool=option</code> command line argument). In this article, we will concentrate on <a href="http://valgrind.org/docs/manual/mc-manual.html">Memcheck</a> only.</p>
 <h3 id="detecting-memory-leaks">Detecting memory leaks</h3>
 <p>Mainly, one would use <a href="http://valgrind.org/">Valgrind</a> to detect memory leaks in his application. By this, we mean memory which was allocated but wasn’t released back. For example, take this program:</p>
@@ -275,32 +275,29 @@ enough to receive the copy.</code></pre>
 <p>You should do this, of course.</p>
 <p>In a later article we will show how can you combine <a href="http://valgrind.org/">Valgrind</a> and <a href="http://sources.redhat.com/gdb/">GDB</a> to fix some nasty bugs. But until then, remember how to use <a href="http://valgrind.org/docs/manual/mc-manual.html">Memcheck</a> and keep in mind that <a href="http://valgrind.org/">Valgrind</a> has many useful tools and a programmer can create others if he needs them.</p>
 
-          </div>
-        </div>
-      </div>
-
-      <!-- Social Buttons here -->
-      <div id="sociallinks">
-        <a href="https://twitter.com/home?status=/valgrind-introduction.html" target="_blank">Tweet this</a> -
-        <a href="http://www.facebook.com/sharer/sharer.php?u=/valgrind-introduction.html" target="_blank">Like this</a> -
-        <a href="https://plus.google.com/share?url=/valgrind-introduction.html" target="_blank">Share on G+</a>
-      </div>
-
-      <script>
-        (function(){window.addEventListener("DOMContentLoaded",function(){
-          //get URL
-          var url=document.location;
-          var links=document.getElementById("sociallinks")
-                            .getElementsByTagName('a');
-          for (var i=0;i!=links.length;i++){
-            // Replacing /valgrind-introduction.html with current URL
-            links[i].setAttribute("href",links[i].href.replace('/valgrind-introduction.html',url));
-          }})})();
-      </script>
-      </br>
-    </article>
+    </div>
   </div>
 </div>
+
+<!-- Social Buttons here -->
+<div id="sociallinks">
+  <a href="https://twitter.com/home?status=/valgrind-introduction.html" target="_blank">Tweet this</a> -
+  <a href="http://www.facebook.com/sharer/sharer.php?u=/valgrind-introduction.html" target="_blank">Like this</a> -
+  <a href="https://plus.google.com/share?url=/valgrind-introduction.html" target="_blank">Share on G+</a>
+</div>
+
+<script>
+  (function(){window.addEventListener("DOMContentLoaded",function(){
+    //get URL
+    var url=document.location;
+    var links=document.getElementById("sociallinks")
+                      .getElementsByTagName('a');
+    for (var i=0;i!=links.length;i++){
+      // Replacing /valgrind-introduction.html with current URL
+      links[i].setAttribute("href",links[i].href.replace('/valgrind-introduction.html',url));
+    }})})();
+</script>
+</br>
 
 <div id="disqus_thread"></div>
 <script type="text/javascript">
@@ -318,6 +315,9 @@ enough to receive the copy.</code></pre>
 <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 
+              </article>
+            </div>
+          </div>
         </div>
       </div>
 

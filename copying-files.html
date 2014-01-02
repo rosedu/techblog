@@ -69,34 +69,34 @@
       <div class="body" role="main">
         <div class="unit-body">
           <div class="unit-inner unit-body-inner">
-  <div class="entry-content">
-    <article class="unit-article layout-post">
-      <div class="unit-inner unit-article-inner">
-        <div class="content">
-          <div class="bd">
-            <header>
-              <div class="unit-head">
-                <div class="unit-inner unit-head-inner">
-                  <h1 class="h2 entry-title">
-                    <a class="post_title" href="./copying-files.html" title="Copying files">Copying files</a>
-                  </h1>
-                </div><!-- unit-inner -->
-              </div><!-- unit-head -->
-            </header>
+            <div class="entry-content">
+              <article class="unit-article layout-post">
+                <div class="unit-inner unit-article-inner">
+  <div class="content">
+    <div class="bd">
+      <header>
+        <div class="unit-head">
+          <div class="unit-inner unit-head-inner">
+            <h1 class="h2 entry-title">
+              <a class="post_title" href="./copying-files.html" title="Copying files">Copying files</a>
+            </h1>
+          </div><!-- unit-inner -->
+        </div><!-- unit-head -->
+      </header>
 
-            <span class="date">
-            <span class="published">Published on February 26, 2012</span>
-            by
-            <span class="author">Alexandru Juncu</span>
-            </span>
+      <span class="date">
+      <span class="published">Published on February 26, 2012</span>
+      by
+      <span class="author">Alexandru Juncu</span>
+      </span>
 
-            <br />
-            <span class="meta">
-              Tagged:
-              <span class="tags"><a href="./tags/scp.html">scp</a>, <a href="./tags/nc.html">nc</a>, <a href="./tags/netcat.html">netcat</a>, <a href="./tags/python.html">python</a></span>
-            </span>
+      <br />
+      <span class="meta">
+        Tagged:
+        <span class="tags"><a href="./tags/scp.html">scp</a>, <a href="./tags/nc.html">nc</a>, <a href="./tags/netcat.html">netcat</a>, <a href="./tags/python.html">python</a></span>
+      </span>
 
-            <p>You are on a (Linux) box and you want to transfer some files on another system. What are some ways to do that?</p>
+      <p>You are on a (Linux) box and you want to transfer some files on another system. What are some ways to do that?</p>
 <p>The first and most obvious way is to copy them over <strong>ssh</strong> using the <strong>scp</strong> tool. You can copy to and from the server and you can use the recursive copy to transfer entire directories.</p>
 <p>But what if you don’t have proper account access (you can’t reach accounts because of lack of passwords or keys, for example)? Here is a rather hackish solution: nc.</p>
 <p>The <strong>netcat</strong> tool (the <strong>nc</strong> command) is found on most Linux systems. You can create TCP or UDP servers and clients with just one command. You can use the shell redirection operators to put files into a TCP stream and take the data out of the stream. Here is an example of a copy from a server to a client:</p>
@@ -121,32 +121,29 @@ Serving HTTP on 0.0.0.0 port 1234 ...</code></pre>
 <p>The current working directory where you ran the command will be the www root and any files in that directory will be published (as long as the process will have correct permissions to those files). You can then use a web browser (it can be Firefox or other GUI clients or a simple <strong>wget</strong>) to access the URL.</p>
 <p>Credits to Alex Morega for <code>tar|nc</code> idea and Vlad Dogaru for <code>python SimpleHTTPServer</code> idea.</p>
 
-          </div>
-        </div>
-      </div>
-
-      <!-- Social Buttons here -->
-      <div id="sociallinks">
-        <a href="https://twitter.com/home?status=/copying-files.html" target="_blank">Tweet this</a> -
-        <a href="http://www.facebook.com/sharer/sharer.php?u=/copying-files.html" target="_blank">Like this</a> -
-        <a href="https://plus.google.com/share?url=/copying-files.html" target="_blank">Share on G+</a>
-      </div>
-
-      <script>
-        (function(){window.addEventListener("DOMContentLoaded",function(){
-          //get URL
-          var url=document.location;
-          var links=document.getElementById("sociallinks")
-                            .getElementsByTagName('a');
-          for (var i=0;i!=links.length;i++){
-            // Replacing /copying-files.html with current URL
-            links[i].setAttribute("href",links[i].href.replace('/copying-files.html',url));
-          }})})();
-      </script>
-      </br>
-    </article>
+    </div>
   </div>
 </div>
+
+<!-- Social Buttons here -->
+<div id="sociallinks">
+  <a href="https://twitter.com/home?status=/copying-files.html" target="_blank">Tweet this</a> -
+  <a href="http://www.facebook.com/sharer/sharer.php?u=/copying-files.html" target="_blank">Like this</a> -
+  <a href="https://plus.google.com/share?url=/copying-files.html" target="_blank">Share on G+</a>
+</div>
+
+<script>
+  (function(){window.addEventListener("DOMContentLoaded",function(){
+    //get URL
+    var url=document.location;
+    var links=document.getElementById("sociallinks")
+                      .getElementsByTagName('a');
+    for (var i=0;i!=links.length;i++){
+      // Replacing /copying-files.html with current URL
+      links[i].setAttribute("href",links[i].href.replace('/copying-files.html',url));
+    }})})();
+</script>
+</br>
 
 <div id="disqus_thread"></div>
 <script type="text/javascript">
@@ -164,6 +161,9 @@ Serving HTTP on 0.0.0.0 port 1234 ...</code></pre>
 <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 
+              </article>
+            </div>
+          </div>
         </div>
       </div>
 

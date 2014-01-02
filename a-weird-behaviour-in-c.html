@@ -69,34 +69,34 @@
       <div class="body" role="main">
         <div class="unit-body">
           <div class="unit-inner unit-body-inner">
-  <div class="entry-content">
-    <article class="unit-article layout-post">
-      <div class="unit-inner unit-article-inner">
-        <div class="content">
-          <div class="bd">
-            <header>
-              <div class="unit-head">
-                <div class="unit-inner unit-head-inner">
-                  <h1 class="h2 entry-title">
-                    <a class="post_title" href="./a-weird-behaviour-in-c.html" title="A Weird Behaviour Of C">A Weird Behaviour Of C</a>
-                  </h1>
-                </div><!-- unit-inner -->
-              </div><!-- unit-head -->
-            </header>
+            <div class="entry-content">
+              <article class="unit-article layout-post">
+                <div class="unit-inner unit-article-inner">
+  <div class="content">
+    <div class="bd">
+      <header>
+        <div class="unit-head">
+          <div class="unit-inner unit-head-inner">
+            <h1 class="h2 entry-title">
+              <a class="post_title" href="./a-weird-behaviour-in-c.html" title="A Weird Behaviour Of C">A Weird Behaviour Of C</a>
+            </h1>
+          </div><!-- unit-inner -->
+        </div><!-- unit-head -->
+      </header>
 
-            <span class="date">
-            <span class="published">Published on July 29, 2012</span>
-            by
-            <span class="author">Mihai Maruseac</span>
-            </span>
+      <span class="date">
+      <span class="published">Published on July 29, 2012</span>
+      by
+      <span class="author">Mihai Maruseac</span>
+      </span>
 
-            <br />
-            <span class="meta">
-              Tagged:
-              <span class="tags"><a href="./tags/C.html">C</a>, <a href="./tags/undefined%20behaviour.html">undefined behaviour</a>, <a href="./tags/sequence%20points.html">sequence points</a></span>
-            </span>
+      <br />
+      <span class="meta">
+        Tagged:
+        <span class="tags"><a href="./tags/C.html">C</a>, <a href="./tags/undefined%20behaviour.html">undefined behaviour</a>, <a href="./tags/sequence%20points.html">sequence points</a></span>
+      </span>
 
-            <p>Let us start from a common mistake made by programmers learning simple data structures in C. The following code is an implementation for simple linked lists of integers in C.</p>
+      <p>Let us start from a common mistake made by programmers learning simple data structures in C. The following code is an implementation for simple linked lists of integers in C.</p>
 <p>{% highlight cpp %} #include <stdio.h> #include <stdlib.h></p>
 <p>struct queue { int elm; struct queue* next; };</p>
 <p>struct queue* init() { struct queue <em>q = calloc(1, sizeof(</em>q)); q-&gt;next = q; return q; }</p>
@@ -239,32 +239,29 @@ return 0;</code></pre>
 <p>The possible outputs of this code and the reasoning behind are left as an exercise. Use the comments area to provide solutions for all exercises left in this article.</p>
 <p>As a rule of thumb, try to limit the use of side effects inside a function call. You don’t know when you’ll fall into this trap again.</p>
 
-          </div>
-        </div>
-      </div>
-
-      <!-- Social Buttons here -->
-      <div id="sociallinks">
-        <a href="https://twitter.com/home?status=/a-weird-behaviour-in-c.html" target="_blank">Tweet this</a> -
-        <a href="http://www.facebook.com/sharer/sharer.php?u=/a-weird-behaviour-in-c.html" target="_blank">Like this</a> -
-        <a href="https://plus.google.com/share?url=/a-weird-behaviour-in-c.html" target="_blank">Share on G+</a>
-      </div>
-
-      <script>
-        (function(){window.addEventListener("DOMContentLoaded",function(){
-          //get URL
-          var url=document.location;
-          var links=document.getElementById("sociallinks")
-                            .getElementsByTagName('a');
-          for (var i=0;i!=links.length;i++){
-            // Replacing /a-weird-behaviour-in-c.html with current URL
-            links[i].setAttribute("href",links[i].href.replace('/a-weird-behaviour-in-c.html',url));
-          }})})();
-      </script>
-      </br>
-    </article>
+    </div>
   </div>
 </div>
+
+<!-- Social Buttons here -->
+<div id="sociallinks">
+  <a href="https://twitter.com/home?status=/a-weird-behaviour-in-c.html" target="_blank">Tweet this</a> -
+  <a href="http://www.facebook.com/sharer/sharer.php?u=/a-weird-behaviour-in-c.html" target="_blank">Like this</a> -
+  <a href="https://plus.google.com/share?url=/a-weird-behaviour-in-c.html" target="_blank">Share on G+</a>
+</div>
+
+<script>
+  (function(){window.addEventListener("DOMContentLoaded",function(){
+    //get URL
+    var url=document.location;
+    var links=document.getElementById("sociallinks")
+                      .getElementsByTagName('a');
+    for (var i=0;i!=links.length;i++){
+      // Replacing /a-weird-behaviour-in-c.html with current URL
+      links[i].setAttribute("href",links[i].href.replace('/a-weird-behaviour-in-c.html',url));
+    }})})();
+</script>
+</br>
 
 <div id="disqus_thread"></div>
 <script type="text/javascript">
@@ -282,6 +279,9 @@ return 0;</code></pre>
 <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 
+              </article>
+            </div>
+          </div>
         </div>
       </div>
 

@@ -69,34 +69,34 @@
       <div class="body" role="main">
         <div class="unit-body">
           <div class="unit-inner unit-body-inner">
-  <div class="entry-content">
-    <article class="unit-article layout-post">
-      <div class="unit-inner unit-article-inner">
-        <div class="content">
-          <div class="bd">
-            <header>
-              <div class="unit-head">
-                <div class="unit-inner unit-head-inner">
-                  <h1 class="h2 entry-title">
-                    <a class="post_title" href="./rescuing-executable-code-from-a-process.html" title="Rescuing executable code from a process">Rescuing executable code from a process</a>
-                  </h1>
-                </div><!-- unit-inner -->
-              </div><!-- unit-head -->
-            </header>
+            <div class="entry-content">
+              <article class="unit-article layout-post">
+                <div class="unit-inner unit-article-inner">
+  <div class="content">
+    <div class="bd">
+      <header>
+        <div class="unit-head">
+          <div class="unit-inner unit-head-inner">
+            <h1 class="h2 entry-title">
+              <a class="post_title" href="./rescuing-executable-code-from-a-process.html" title="Rescuing executable code from a process">Rescuing executable code from a process</a>
+            </h1>
+          </div><!-- unit-inner -->
+        </div><!-- unit-head -->
+      </header>
 
-            <span class="date">
-            <span class="published">Published on November 18, 2011</span>
-            by
-            <span class="author">Alexandru Juncu</span>
-            </span>
+      <span class="date">
+      <span class="published">Published on November 18, 2011</span>
+      by
+      <span class="author">Alexandru Juncu</span>
+      </span>
 
-            <br />
-            <span class="meta">
-              Tagged:
-              <span class="tags"><a href="./tags/process.html">process</a>, <a href="./tags/procfs.html">procfs</a>, <a href="./tags/proc.html">/proc</a>, <a href="./tags/file%20descriptor.html">file descriptor</a></span>
-            </span>
+      <br />
+      <span class="meta">
+        Tagged:
+        <span class="tags"><a href="./tags/process.html">process</a>, <a href="./tags/procfs.html">procfs</a>, <a href="./tags/proc.html">/proc</a>, <a href="./tags/file%20descriptor.html">file descriptor</a></span>
+      </span>
 
-            <p>A <strong>process</strong> is an instance of a binary executable file. This means that when you ‘run’ a binary, the code from the storage media is copied into the system’s memory, more precisely, into the process’ <strong>virtual memory space</strong>. From a single binary, several processes can be spawned.</p>
+      <p>A <strong>process</strong> is an instance of a binary executable file. This means that when you ‘run’ a binary, the code from the storage media is copied into the system’s memory, more precisely, into the process’ <strong>virtual memory space</strong>. From a single binary, several processes can be spawned.</p>
 <p>The virtual memory of a process, made up of pages, is mapped to several things, like shared objects(libraries), shared memory, stack and heap space, read-only space and executable space. A good way to view what is mapped to what is with the <strong>pmap</strong> utility, or by just looking in the <em>/proc</em> directory hierarchy. The <em>/proc/<span class="math"><em>P</em><em>I</em><em>D</em> / <em>m</em><em>a</em><em>p</em><em>s</em><sub><em>f</em></sub><em>i</em><em>l</em><em>e</em>(<em>w</em><em>h</em><em>e</em><em>r</em><em>e</em></span>PID is the process ID of the targeted process) has the page mappings. Also in </em>/proc/$PID_, you can find other useful files, like the <em>exe</em> file that contains a symlink to the executable or the <em>fd</em> directory that contains symlinks to all the files opened as <strong>file descriptors</strong> in a process.</p>
 <p>Except useful information, what can we get out of the procfs? Here is a situation that has been known to happen. You are in a console, with your bash shell, and you manage to delete some important files, like /bin/bash. Without that executable, you cannot run new shells and on a restart, your system will be inaccessible. What can you do?</p>
 <p>The code of your bash is no longer on the hard drive, but it is in the virtual memory of the process you are currently running. You can find out what’s the PID of the current shell instance using *<br /><span class="math"> * <em>e</em><em>n</em><em>v</em><em>i</em><em>r</em><em>o</em><em>m</em><em>e</em><em>n</em><em>t</em><em>v</em><em>a</em><em>r</em><em>i</em><em>a</em><em>b</em><em>l</em><em>e</em>. <em>K</em><em>n</em><em>o</em><em>w</em><em>i</em><em>n</em><em>g</em><em>t</em><em>h</em><em>a</em><em>t</em>, <em>y</em><em>o</em><em>u</em><em>c</em><em>a</em><em>n</em><em>c</em><em>d</em><em>t</em><em>o</em><em>t</em><em>h</em><em>e</em><sub> / </sub><em>p</em><em>r</em><em>o</em><em>c</em> / </span><br />_ and access the content of the <em>exe</em> file there.</p>
@@ -140,32 +140,29 @@ alexj@hathor /proc/6487/fd $ md5sum /home/alexj/movie_rescued.ogv
 <p>These things are possible because the instances of the files are still kept and used by the kernel. The <strong>VFS</strong> (the Virtual File System) still has references to the inodes of the files. They won’t be released until the processes will be finished.</p>
 <p>Thanks to razvand and ddvlad for the idea of this article.</p>
 
-          </div>
-        </div>
-      </div>
-
-      <!-- Social Buttons here -->
-      <div id="sociallinks">
-        <a href="https://twitter.com/home?status=/rescuing-executable-code-from-a-process.html" target="_blank">Tweet this</a> -
-        <a href="http://www.facebook.com/sharer/sharer.php?u=/rescuing-executable-code-from-a-process.html" target="_blank">Like this</a> -
-        <a href="https://plus.google.com/share?url=/rescuing-executable-code-from-a-process.html" target="_blank">Share on G+</a>
-      </div>
-
-      <script>
-        (function(){window.addEventListener("DOMContentLoaded",function(){
-          //get URL
-          var url=document.location;
-          var links=document.getElementById("sociallinks")
-                            .getElementsByTagName('a');
-          for (var i=0;i!=links.length;i++){
-            // Replacing /rescuing-executable-code-from-a-process.html with current URL
-            links[i].setAttribute("href",links[i].href.replace('/rescuing-executable-code-from-a-process.html',url));
-          }})})();
-      </script>
-      </br>
-    </article>
+    </div>
   </div>
 </div>
+
+<!-- Social Buttons here -->
+<div id="sociallinks">
+  <a href="https://twitter.com/home?status=/rescuing-executable-code-from-a-process.html" target="_blank">Tweet this</a> -
+  <a href="http://www.facebook.com/sharer/sharer.php?u=/rescuing-executable-code-from-a-process.html" target="_blank">Like this</a> -
+  <a href="https://plus.google.com/share?url=/rescuing-executable-code-from-a-process.html" target="_blank">Share on G+</a>
+</div>
+
+<script>
+  (function(){window.addEventListener("DOMContentLoaded",function(){
+    //get URL
+    var url=document.location;
+    var links=document.getElementById("sociallinks")
+                      .getElementsByTagName('a');
+    for (var i=0;i!=links.length;i++){
+      // Replacing /rescuing-executable-code-from-a-process.html with current URL
+      links[i].setAttribute("href",links[i].href.replace('/rescuing-executable-code-from-a-process.html',url));
+    }})})();
+</script>
+</br>
 
 <div id="disqus_thread"></div>
 <script type="text/javascript">
@@ -183,6 +180,9 @@ alexj@hathor /proc/6487/fd $ md5sum /home/alexj/movie_rescued.ogv
 <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 
+              </article>
+            </div>
+          </div>
         </div>
       </div>
 

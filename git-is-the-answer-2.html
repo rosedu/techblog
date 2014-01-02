@@ -69,34 +69,34 @@
       <div class="body" role="main">
         <div class="unit-body">
           <div class="unit-inner unit-body-inner">
-  <div class="entry-content">
-    <article class="unit-article layout-post">
-      <div class="unit-inner unit-article-inner">
-        <div class="content">
-          <div class="bd">
-            <header>
-              <div class="unit-head">
-                <div class="unit-inner unit-head-inner">
-                  <h1 class="h2 entry-title">
-                    <a class="post_title" href="./git-is-the-answer-2.html" title="Git Is The Answer 2/3">Git Is The Answer 2/3</a>
-                  </h1>
-                </div><!-- unit-inner -->
-              </div><!-- unit-head -->
-            </header>
+            <div class="entry-content">
+              <article class="unit-article layout-post">
+                <div class="unit-inner unit-article-inner">
+  <div class="content">
+    <div class="bd">
+      <header>
+        <div class="unit-head">
+          <div class="unit-inner unit-head-inner">
+            <h1 class="h2 entry-title">
+              <a class="post_title" href="./git-is-the-answer-2.html" title="Git Is The Answer 2/3">Git Is The Answer 2/3</a>
+            </h1>
+          </div><!-- unit-inner -->
+        </div><!-- unit-head -->
+      </header>
 
-            <span class="date">
-            <span class="published">Published on March 22, 2013</span>
-            by
-            <span class="author">Răzvan Deaconescu and Mihai Maruseac</span>
-            </span>
+      <span class="date">
+      <span class="published">Published on March 22, 2013</span>
+      by
+      <span class="author">Răzvan Deaconescu and Mihai Maruseac</span>
+      </span>
 
-            <br />
-            <span class="meta">
-              Tagged:
-              <span class="tags"><a href="./tags/git.html">git</a></span>
-            </span>
+      <br />
+      <span class="meta">
+        Tagged:
+        <span class="tags"><a href="./tags/git.html">git</a></span>
+      </span>
 
-            <p>The second article on advanced <a href="http://git-scm.com/" title="Git">git</a> topics is focused on cases where multiple branches are involved.</p>
+      <p>The second article on advanced <a href="http://git-scm.com/" title="Git">git</a> topics is focused on cases where multiple branches are involved.</p>
 <h2 id="my-changes-conflict-with-yours">My Changes Conflict With Yours</h2>
 <p>Usually, it happens that two developers are working on the same file. Git tries its best to merge changesets from both developers without complaining. However, Git is not a human being so it cannot know what change is the good ones when two changes happen two close to one another in the file.</p>
 <p>As opposed to SVN, in Git, it is the responsibility of the one who pulls to solve conflicts. Thus, you are forced to solve conflicts before being able to push your changes upstream. But how does it work?</p>
@@ -224,32 +224,29 @@ Date:   Fri Mar 8 23:59:07 2013 +0200
 <p>As you can see, the commit hash is different meaning that there is a new commit, not the old one.</p>
 <p>Should a commit not apply cleanly, Git stops the cherry-picking process and asks for human intervention. After the problems are resolved, you can continue it with <code>git cherry-pick --continue</code>. Or, you can abort it via <code>--abort</code> if you change your mind after seeing the trouble.</p>
 
-          </div>
-        </div>
-      </div>
-
-      <!-- Social Buttons here -->
-      <div id="sociallinks">
-        <a href="https://twitter.com/home?status=/git-is-the-answer-2.html" target="_blank">Tweet this</a> -
-        <a href="http://www.facebook.com/sharer/sharer.php?u=/git-is-the-answer-2.html" target="_blank">Like this</a> -
-        <a href="https://plus.google.com/share?url=/git-is-the-answer-2.html" target="_blank">Share on G+</a>
-      </div>
-
-      <script>
-        (function(){window.addEventListener("DOMContentLoaded",function(){
-          //get URL
-          var url=document.location;
-          var links=document.getElementById("sociallinks")
-                            .getElementsByTagName('a');
-          for (var i=0;i!=links.length;i++){
-            // Replacing /git-is-the-answer-2.html with current URL
-            links[i].setAttribute("href",links[i].href.replace('/git-is-the-answer-2.html',url));
-          }})})();
-      </script>
-      </br>
-    </article>
+    </div>
   </div>
 </div>
+
+<!-- Social Buttons here -->
+<div id="sociallinks">
+  <a href="https://twitter.com/home?status=/git-is-the-answer-2.html" target="_blank">Tweet this</a> -
+  <a href="http://www.facebook.com/sharer/sharer.php?u=/git-is-the-answer-2.html" target="_blank">Like this</a> -
+  <a href="https://plus.google.com/share?url=/git-is-the-answer-2.html" target="_blank">Share on G+</a>
+</div>
+
+<script>
+  (function(){window.addEventListener("DOMContentLoaded",function(){
+    //get URL
+    var url=document.location;
+    var links=document.getElementById("sociallinks")
+                      .getElementsByTagName('a');
+    for (var i=0;i!=links.length;i++){
+      // Replacing /git-is-the-answer-2.html with current URL
+      links[i].setAttribute("href",links[i].href.replace('/git-is-the-answer-2.html',url));
+    }})})();
+</script>
+</br>
 
 <div id="disqus_thread"></div>
 <script type="text/javascript">
@@ -267,6 +264,9 @@ Date:   Fri Mar 8 23:59:07 2013 +0200
 <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 
+              </article>
+            </div>
+          </div>
         </div>
       </div>
 
