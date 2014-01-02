@@ -1,0 +1,20 @@
+$body$
+<!-- Social Buttons here -->
+<div id="sociallinks">
+  <a href="https://twitter.com/home?status=$shareUrl$" target="_blank">Tweet this</a> -
+  <a href="http://www.facebook.com/sharer/sharer.php?u=$shareUrl$" target="_blank">Like this</a> -
+  <a href="https://plus.google.com/share?url=$shareUrl$" target="_blank">Share on G+</a>
+</div>
+
+<script>
+  (function(){window.addEventListener("DOMContentLoaded",function(){
+    //get URL
+    var url=document.location;
+    var links=document.getElementById("sociallinks")
+                      .getElementsByTagName('a');
+    for (var i=0;i!=links.length;i++){
+      // Replacing $url$ with current URL
+      links[i].setAttribute("href",links[i].href.replace('$url$',url));
+    }})})();
+</script>
+</br>

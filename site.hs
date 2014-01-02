@@ -85,6 +85,7 @@ buildTechblog = do
           -- >>= (externalizeUrls $ feedRoot feedConfiguration)
           >>= saveSnapshot "postContent"
           -- >>= (unExternalizeUrls $ feedRoot feedConfiguration)
+          >>= loadAndApplyTemplate "templates/share.html" ctx
           >>= loadAndApplyTemplate "templates/disqus.html" ctx
           >>= loadAndApplyTemplate "templates/default.html" ctx
           >>= relativizeUrls
@@ -141,8 +142,9 @@ buildTechblog = do
           >>= relativizeUrls
 
     match "templates/*" $ compile templateCompiler
-    --create rss feed
+
     create ["rss.xml"] rssFeed
+
 techblogFeed :: FeedConfiguration
 techblogFeed = FeedConfiguration
   { feedTitle       ="ROSEdu Techblog"
@@ -151,16 +153,16 @@ techblogFeed = FeedConfiguration
   , feedAuthorEmail = "techblog@rosedu.org"
   , feedRoot        ="http://techblog.rosedu.org"
   }
--- Finally created the feed thanks to http://thetarpit.org/
 
 rssFeed :: Rules()
 rssFeed = do
-    route idRoute
-    compile $ do
-        let feedCtx = postCtx `mappend` bodyField "description"
-        posts <- fmap (take 10) . recentFirst =<<
-            loadAllSnapshots ("posts/**" .&&. hasNoVersion) "postContent"
-        renderRss techblogFeed feedCtx posts
+  route idRoute
+  compile $ do
+    let feedCtx = postCtx `mappend` bodyField "description"
+    posts <- fmap (take 10) . recentFirst
+      =<< (loadAllSnapshots "posts/*" .&&. hasNoVersion) "postContent"
+    renderRss techblogFeed feedCtx posts
+
 tagsCtx :: Tags -> Context String
 tagsCtx tags = tagsField "tags" tags `mappend` postCtx
 
