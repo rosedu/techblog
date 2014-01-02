@@ -2,7 +2,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 import Hakyll
-
 import Data.Char (toLower)
 import Data.Monoid (mappend)
 import GHC.IO.Encoding (setLocaleEncoding, setForeignEncoding, utf8,
@@ -142,7 +141,26 @@ buildTechblog = do
           >>= relativizeUrls
 
     match "templates/*" $ compile templateCompiler
+    --create rss feed
+    create ["rss.xml"] rssFeed
+techblogFeed :: FeedConfiguration
+techblogFeed = FeedConfiguration
+  { feedTitle       ="Rosedu TechBlog"
+  , feedAuthorName  ="Rosedu"
+  , feedDescription ="rosedu techblog"
+  , feedAuthorEmail = "techblog@rosedu.org"
+  , feedRoot        ="http://techblog.rosedu.org"
+  }
+-- Finally created the feed thanks to http://thetarpit.org/
 
+rssFeed :: Rules()
+rssFeed = do
+    route idRoute
+    compile $ do
+        let feedCtx = postCtx `mappend` bodyField "description"
+        posts <- fmap (take 10) . recentFirst =<<
+            loadAllSnapshots "posts/*" "postContent"
+        renderRss techblogFeed feedCtx posts
 tagsCtx :: Tags -> Context String
 tagsCtx tags = tagsField "tags" tags `mappend` postCtx
 
