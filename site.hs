@@ -89,7 +89,9 @@ fontRules :: Rules ()
 fontRules = idRouteAndCopy
 
 cssRules :: Rules ()
-cssRules = idRouteAndCopy
+cssRules = do
+  route idRoute
+  compile compressCssCompiler
 
 idRouteAndCopy :: Rules ()
 idRouteAndCopy = do
