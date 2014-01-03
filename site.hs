@@ -3,6 +3,7 @@
 
 import Hakyll
 
+import Control.Monad (liftM)
 import Data.Char (toLower)
 import Data.Monoid (mappend)
 import GHC.IO.Encoding (setLocaleEncoding, setForeignEncoding, utf8,
@@ -10,9 +11,8 @@ import GHC.IO.Encoding (setLocaleEncoding, setForeignEncoding, utf8,
 import System.Console.CmdArgs (cmdArgs, cmdArgsMode, help, program, ignore,
   (&=), helpArg, modes, auto, Data, Typeable, versionArg)
 import System.Environment (withArgs)
-
-import System.Exit
-import System.Process
+import System.Exit (ExitCode(..))
+import System.Process (system)
 
 import qualified System.Console.CmdArgs.Explicit as CA
 
@@ -28,128 +28,138 @@ buildTechblog = do
   setLocaleEncoding utf8
   setFileSystemEncoding utf8
   setForeignEncoding utf8
-  hakyllWith techblogConfiguration $ do
-    tags <- buildTags ("posts/**" .&&. hasNoVersion) $ fromCapture "tags/*.html"
-    tagsRules tags $ \tag pattern -> do
-      let title = "Posts tagged '" ++ tag ++ "'"
-      route idRoute
-      compile $ do
-        posts <- loadAll pattern >>= recentFirst
-        recent <- (fmap (take 3) . recentFirst) =<< loadAll ("posts/**" .&&. hasVersion "raw")
-        let tagCtx =
-              listField "recent" postCtx (return recent) `mappend`
-              constField "title" title                 `mappend`
-              listField "posts" postCtx (return posts) `mappend`
-              tagsCtx tags
+  hakyllWith techblogConfiguration techblogRules
 
-        makeItem ""
-          >>= loadAndApplyTemplate "templates/post-list.html" tagCtx
-          >>= loadAndApplyTemplate "templates/default.html" tagCtx
-          >>= relativizeUrls
+techblogRules :: Rules ()
+techblogRules = do
+  tags <- extractTags
+  let tagCtx = tagsCtx tags
+  tagsRules tags $ makeTagPage tagCtx
+  match "images/**" imageRules
+  match "font/**" fontRules
+  match "css/*" cssRules
+  match "templates/*" $ compile templateCompiler
+  match "index.html" $ makeIndexArchive compileIndex
+  match "posts/**" $ makePosts tagCtx
+  match "posts/**" . version "raw" $ makeRawPosts
+  match (fromList ["about.md", "people.md", "404.md"]) markdownRules
+  create ["archive.html"] $ makeIndexArchive compileArchive
+  create ["rss.xml"] rssFeed
+  create ["tags.html"] $ makeTags tags
 
-    match "images/**" $ do
-      route   idRoute
-      compile copyFileCompiler
+{-
+ - Index and Archive pages.
+ -}
 
-    match "font/**" $ do
-      route   idRoute
-      compile copyFileCompiler
+makeIndexArchive :: Compiler (Item String) -> Rules ()
+makeIndexArchive compiler = do
+  route idRoute
+  compile compiler
 
-    match "css/*" $ do
-      route   idRoute
-      compile compressCssCompiler
+compileIndex :: Compiler (Item String)
+compileIndex = getResourceBody
+  >>= applyAsTemplate ctx
+  >>= loadAndApplyTemplate "templates/default.html" ctx
+  >>= relativizeUrls
+  where
+    ctx =
+      listField "recent" postCtx loadRecentPosts `mappend`
+      listField "posts" postCtx loadSnapshots `mappend`
+      defaultContext
 
-    match (fromList ["about.md", "people.md", "404.md"]) $ do
-      route   $ setExtension "html"
-      compile $ do
-        recent <- (fmap (take 3) . recentFirst) =<< loadAll ("posts/**" .&&. hasVersion "raw")
-        let ctx =
-              listField "recent" postCtx (return recent) `mappend`
-              defaultContext
+compileArchive :: Compiler (Item String)
+compileArchive = makeItem ""
+  >>= loadAndApplyTemplate "templates/archive.html" ctx
+  >>= loadAndApplyTemplate "templates/default.html" ctx
+  >>= relativizeUrls
+  where
+    ctx =
+      listField "recent" postCtx loadRecentPosts `mappend`
+      listField "posts" postCtx loadAllPosts `mappend`
+      constField "title" "Archives" `mappend`
+      defaultContext
 
-        pandocCompiler
-          >>= loadAndApplyTemplate "templates/default.html" ctx
-          >>= relativizeUrls
+{-
+ - Resource rules (images, CSS, fonts, special files).
+ -}
+imageRules :: Rules ()
+imageRules = idRouteAndCopy
 
-    match "posts/**" $ do
-      route $ gsubRoute "posts/[0-9]{4}/[0-9]{2}/[0-9]{2}/" (const "")
-        `composeRoutes`
-        setExtension "html"
-      compile $ do
-        recent <- (fmap (take 3) . recentFirst) =<< loadAll ("posts/**" .&&. hasVersion "raw")
-        let ctx =
-              listField "recent" postCtx (return recent) `mappend`
-              tagsCtx tags
+fontRules :: Rules ()
+fontRules = idRouteAndCopy
 
-        pandocCompiler
-          >>= loadAndApplyTemplate "templates/post.html" ctx
-          -- >>= (externalizeUrls $ feedRoot feedConfiguration)
-          >>= saveSnapshot "postContent"
-          -- >>= (unExternalizeUrls $ feedRoot feedConfiguration)
-          >>= loadAndApplyTemplate "templates/share.html" ctx
-          >>= loadAndApplyTemplate "templates/disqus.html" ctx
-          >>= loadAndApplyTemplate "templates/default.html" ctx
-          >>= relativizeUrls
+cssRules :: Rules ()
+cssRules = idRouteAndCopy
 
-    -- attempt at providing recent posts
-    match "posts/**" $ version "raw" $ do
-      route $ gsubRoute "posts/[0-9]{4}/[0-9]{2}/[0-9]{2}/" (const "")
-        `composeRoutes`
-        setExtension "html"
+idRouteAndCopy :: Rules ()
+idRouteAndCopy = do
+  route idRoute
+  compile copyFileCompiler
 
-      compile getResourceBody
+markdownRules :: Rules ()
+markdownRules = do
+  route $ setExtension "html"
+  compile markdownCompiler
 
-    create ["archive.html"] $ do
-      route idRoute
-      compile $ do
-        posts <- recentFirst =<< loadAll ("posts/**" .&&. hasNoVersion)
-        recent <- (fmap (take 3) . recentFirst) =<< loadAll ("posts/**" .&&. hasVersion "raw")
-        let archiveCtx =
-              listField "recent" postCtx (return recent) `mappend`
-              listField "posts" postCtx (return posts) `mappend`
-              constField "title" "Archives"            `mappend`
-              defaultContext
+markdownCompiler :: Compiler (Item String)
+markdownCompiler = pandocCompiler
+  >>= loadAndApplyTemplate "templates/default.html" ctx
+  >>= relativizeUrls
+  where
+    ctx =
+      listField "recent" postCtx loadRecentPosts `mappend`
+      defaultContext
 
-        makeItem ""
-          >>= loadAndApplyTemplate "templates/archive.html" archiveCtx
-          >>= loadAndApplyTemplate "templates/default.html" archiveCtx
-          >>= relativizeUrls
+{-
+ - Posts: rules, routing, snapshot creation and loading, versioning.
+ -
+ - We need snapshots to implements post visibility on home page and we need
+ - versions to implement recent posts.
+ -}
+loadSnapshots :: Compiler [Item String]
+loadSnapshots = loadAllSnapshots ("posts/**" .&&. hasNoVersion) "postContent"
+  >>= recentFirst
 
-    create ["tags.html"] $ do
-      route idRoute
-      compile $ do
-        renderedTags <- renderTagList $ sortTagsBy caseInsensitiveTags tags
-        let nicerTags = replaceAll ", " (const "</li><li>") renderedTags
-        recent <- (fmap (take 3) . recentFirst) =<< loadAll ("posts/**" .&&. hasVersion "raw")
-        let ctx =
-              listField "recent" postCtx (return recent) `mappend`
-              constField "alltags" nicerTags     `mappend`
-              constField "title" "Techblog tags" `mappend`
-              defaultContext
+loadAllPosts :: Compiler [Item String]
+loadAllPosts = loadAll ("posts/**" .&&. hasNoVersion)
+  >>= recentFirst
 
-        makeItem ""
-          >>= loadAndApplyTemplate "templates/tags.html" ctx
-          >>= loadAndApplyTemplate "templates/default.html" ctx
-          >>= relativizeUrls
+loadRecentPosts :: Compiler [Item String]
+loadRecentPosts = liftM (take 3) $
+  loadAll ("posts/**" .&&. hasVersion "raw")
+  >>= recentFirst
 
-    match "index.html" $ do
-      route idRoute
-      compile $ do
-        posts <- recentFirst =<< loadAllSnapshots ("posts/**" .&&. hasNoVersion) "postContent"
-        recent <- (fmap (take 3) . recentFirst) =<< loadAll ("posts/**" .&&. hasVersion "raw")
-        let indexCtx =
-              listField "recent" postCtx (return recent) `mappend`
-              listField "posts" postCtx (return posts) `mappend`
-              defaultContext
+postRouting :: Routes
+postRouting =
+  gsubRoute "posts/[0-9]{4}/[0-9]{2}/[0-9]{2}/" (const "") `composeRoutes`
+  setExtension "html"
 
-        getResourceBody
-          >>= applyAsTemplate indexCtx
-          >>= loadAndApplyTemplate "templates/default.html" indexCtx
-          >>= relativizeUrls
+makePosts :: Context String -> Rules ()
+makePosts tagCtx = do
+  route postRouting
+  compile $ postCompiler tagCtx
 
-    match "templates/*" $ compile templateCompiler
+makeRawPosts :: Rules ()
+makeRawPosts = do
+  route postRouting
+  compile getResourceBody
 
-    create ["rss.xml"] rssFeed
+postCompiler :: Context String -> Compiler (Item String)
+postCompiler tagCtx = pandocCompiler
+  >>= loadAndApplyTemplate "templates/post.html" ctx
+  -- >>= (externalizeUrls $ feedRoot feedConfiguration)
+  >>= saveSnapshot "postContent"
+  -- >>= (unExternalizeUrls $ feedRoot feedConfiguration)
+  >>= loadAndApplyTemplate "templates/share.html" ctx
+  >>= loadAndApplyTemplate "templates/disqus.html" ctx
+  >>= loadAndApplyTemplate "templates/default.html" ctx
+  >>= relativizeUrls
+  where
+    ctx = listField "recent" postCtx loadRecentPosts `mappend` tagCtx
+
+{-
+ - RSS feed configuration and building rules.
+ -}
 
 techblogFeed :: FeedConfiguration
 techblogFeed = FeedConfiguration
@@ -163,11 +173,63 @@ techblogFeed = FeedConfiguration
 rssFeed :: Rules()
 rssFeed = do
   route idRoute
-  compile $ do
-    let feedCtx = postCtx `mappend` bodyField "description"
-    posts <- fmap (take 10) . recentFirst
-      =<< loadAllSnapshots ("posts/*" .&&. hasNoVersion) "postContent"
-    renderRss techblogFeed feedCtx posts
+  compile feedCompiler
+
+feedCompiler :: Compiler (Item String)
+feedCompiler = do
+  let feedCtx = bodyField "description" `mappend` postCtx
+  posts <- fmap (take 10) loadSnapshots
+  renderRss techblogFeed feedCtx posts
+
+{-
+ - Tag creation and display in `tags.html`.
+ -}
+
+extractTags :: Rules Tags
+extractTags = do
+  tags <- buildTags ("posts/**" .&&. hasNoVersion) $ fromCapture "tags/*.html"
+  return $ sortTagsBy caseInsensitiveTags tags
+
+makeTagPage :: Context String -> String -> Pattern -> Rules ()
+makeTagPage tagCtx tag pattern = do
+  route idRoute
+  compile $ tagPageCompiler tagCtx tag pattern
+
+tagPageCompiler :: Context String -> String -> Pattern -> Compiler (Item String)
+tagPageCompiler tagCtx tag pattern = makeItem ""
+  >>= loadAndApplyTemplate "templates/post-list.html" ctx
+  >>= loadAndApplyTemplate "templates/default.html" ctx
+  >>= relativizeUrls
+  where
+    ctx =
+      listField "recent" postCtx loadRecentPosts `mappend`
+      constField "title" ("Posts tagged '" ++ tag ++ "'") `mappend`
+      listField "posts" postCtx (loadAll pattern >>= recentFirst) `mappend`
+      tagCtx
+
+makeTags :: Tags -> Rules ()
+makeTags tags = do
+  route idRoute
+  compile $ renderTagList tags >>= tagCompiler
+
+tagCompiler :: String -> Compiler (Item String)
+tagCompiler tags = makeItem ""
+  >>= loadAndApplyTemplate "templates/tags.html" ctx
+  >>= loadAndApplyTemplate "templates/default.html" ctx
+  >>= relativizeUrls
+  where
+    nicerTags = replaceAll ", " (const "</li><li>") tags
+    ctx =
+      listField "recent" postCtx loadRecentPosts `mappend`
+      constField "alltags" nicerTags `mappend`
+      constField "title" "Techblog tags" `mappend`
+      defaultContext
+
+{-
+ - Contexts for items.
+ -
+ - Only those contexts which are repeated in more than one rule.
+ -}
 
 tagsCtx :: Tags -> Context String
 tagsCtx tags = tagsField "tags" tags `mappend` postCtx
@@ -177,6 +239,19 @@ postCtx =
   urlField "shareUrl" `mappend`
   dateField "date" "%B %e, %Y" `mappend`
   defaultContext
+
+{-
+ - Deployment configuration.
+ -
+ - We use GitHub Pages for deployment thus we have to push to `gh-pages`
+ - branch. But before switching to that branch all local changes which are not
+ - committed need to be stashed (if any) and reapplied in the end.
+ -
+ - The `gh-pages` branch keeps only the contents of `_site`.
+ -
+ - The commit message on `gh-pages` contains the commit message of the `HEAD`
+ - of the `master` branch. This way reverts are easier to do.
+ -}
 
 techblogConfiguration :: Configuration
 techblogConfiguration = defaultConfiguration { deploySite = doDeploy }
@@ -194,6 +269,13 @@ doDeploy _ = do
   ExitSuccess <- system "git push origin gh-pages"
   ExitSuccess <- system "git checkout master"
   system "git stash apply"
+
+{-
+ - Command line arguments.
+ -
+ - We need this part to ensure that only the needed commands are in use
+ - and hide all of the others.
+ -}
 
 data TechblogArgs
   = Clean
