@@ -65,7 +65,7 @@ in some commonly-used, slow-to-change, takes-a-while-to-compile package
 like [PIL][] or [SciPy][], or the odd manually-installed kits on
 Windows, but everything else goes into a virtualenv.
 
-[homebrew]: http://mxcl.github.com/homebrew/
+[homebrew]: http://brew.sh/
 [distribute-setup]: http://python-distribute.org/distribute_setup.py
 [pil]: http://www.pythonware.com/products/pil/
 [scipy]: http://www.scipy.org/
