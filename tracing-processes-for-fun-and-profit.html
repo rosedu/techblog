@@ -98,7 +98,8 @@
 
       <p>After talking about <a href="http://techblog.rosedu.org/valgrind-introduction.html" title="Valgrind introduction">Valgrind</a> and <a href="http://techblog.rosedu.org/gdb-a-basic-workflow.html" title="GDB - basic workflow">GDB</a>, it is time to present another useful program for developers and system administrators.</p>
 <p>Often-overlooked, though common on most of the GNU/Linux systems, <code>strace</code> is a tool which traces system calls done by a process during its execution. However, this is only a simplistic point of view: using <code>strace</code>, you can filter by a group of system calls, you can profile your application from the syscalls point of view and you can trace signals sent to a process.</p>
-<h3 id="simple-example">Simple Example</h3>
+<section id="simple-example" class="level3">
+<h3>Simple Example</h3>
 <p>The simplest possible use is of the form <code>strace command</code>. For example:</p>
 <pre><code>$ strace ls
 execve(&quot;/bin/ls&quot;, [&quot;ls&quot;], [/* 39 vars */]) = 0
@@ -126,7 +127,9 @@ exit_group(0)                           = ?</code></pre>
 <p>In the above trace we have removed some of the lines to keep the output within reasonable limits. We have kept some relevant outputs, though.</p>
 <p>From the above output we can observe how a process is started (first group) or ended (last group), how libraries and system options are read (second, third and fourth section), how directory entries are read (fifth section) and how the output is written to the output (sixth section).</p>
 <p>As you can see, each line presents a syscall, giving information about all parameters and the return value of the call.</p>
-<h3 id="how-is-this-useful">How Is This Useful?</h3>
+</section>
+<section id="how-is-this-useful" class="level3">
+<h3>How Is This Useful?</h3>
 <p>Only by looking at the output lines, can we quickly find out why our process doesn’t behave as expected or what it does behind the scenes. Let us see some examples.</p>
 <p>First, consider a binary which takes too long to finish. Using <code>strace</code> we get this as the last few lines:</p>
 <pre><code>read(3, &quot;\333\310'\16\\\363&lt;\244u\324&quot;, 4096) = 10
@@ -134,9 +137,18 @@ read(3, </code></pre>
 <p>We see that the application stopped while trying to read data from the third file descriptor. Looking backwards we find:</p>
 <pre><code>open(&quot;/dev/random&quot;, O_RDONLY)           = 3</code></pre>
 <p>Using these clues, we can construct a new source file which will compile into an application which has the exact same bug and nothing more:</p>
-<p>{% highlight cpp %} #include <stdio.h> #include <stdlib.h></p>
-<h1 id="define-size-1000">define SIZE 1000</h1>
-<p>int main () { char a[SIZE]; FILE *f = fopen(“/dev/random”, “r”); fgets(a, SIZE, f); return 0; } {% endhighlight %}</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;stdio.h&gt;</span>
+<span class="ot">#include &lt;stdlib.h&gt;</span>
+
+<span class="ot">#define SIZE 1000</span>
+
+<span class="dt">int</span> main ()
+{
+        <span class="dt">char</span> a[SIZE];
+        FILE *f = fopen(<span class="st">&quot;/dev/random&quot;</span>, <span class="st">&quot;r&quot;</span>);
+        fgets(a, SIZE, f);
+        <span class="kw">return</span> <span class="dv">0</span>;
+}</code></pre>
 <p>Of course, the building of a new application is not always needed. In our case, we see that we are reading from <code>dev/random</code>. Knowing that this requires entropy sources to generate the random stream, we understand why the process stopped. Changing the file to <code>dev/urandom</code> solves the bug for our toy application, therefore it must solve it for the original one as well. Or, we could generate more entropy to increase the speed of the application.</p>
 <p>For the second example, let’s consider the problem of finding which configuration files are read when launching an application. This can be used to debug a faulty <code>vim</code> setting, to see what <code>*rc</code> files are read when launching <code>bash</code>, etc. In our case, we want to see the order in which <code>git</code> reads its configuration files to see what files are to be ignored from the repository (we have 4 options: global <code>.gitignore</code>, <code>.gitignore</code> in root folder or in a subdirectory and <code>.git/info/exclude</code>):</p>
 <pre><code>$strace git status
@@ -156,7 +168,9 @@ open(&quot;_includes/.gitignore&quot;, O_RDONLY)  = -1 ENOENT (No such file or d
 open(&quot;_layouts/.gitignore&quot;, O_RDONLY)   = -1 ENOENT (No such file or directory)
 ...</code></pre>
 <p>Observer the multiple lines with error <code>-ENOENT</code>. Those files don’t exist in the filesystem. The fact that we can quickly observe this makes <code>strace</code> a perfect tool for finding out why a specific command doesn’t start anymore.</p>
-<h3 id="too-much-output">Too Much Output</h3>
+</section>
+<section id="too-much-output" class="level3">
+<h3>Too Much Output</h3>
 <p>A problem with the simplest case is that we get too much output and scanning through it takes a long time while also being error prone.</p>
 <p>Fortunately, once we know what to look for, we can select only a group of system calls to be traced.</p>
 <pre><code>$ strace -e openat,getdents ls
@@ -173,7 +187,9 @@ execve(&quot;/bin/ls&quot;, [&quot;ls&quot;], [/* 39 vars */]) = 0
 brk(0)                                  = 0xced000
 access(&quot;/etc/ld.so.nohwcap&quot;, F_OK)      = -1 ENOENT (No such file or directory)</code></pre>
 <p>Combining these two options lets you use the output of <code>strace</code> as input to other tools like <code>sed</code>, <code>awk</code>, <code>grep</code>, etc. This way, you can quickly determine what went wrong in your application.</p>
-<h3 id="but-i-have-started-the-process..">But I Have Started The Process..</h3>
+</section>
+<section id="but-i-have-started-the-process.." class="level3">
+<h3>But I Have Started The Process..</h3>
 <p>Let’s consider another scenario. You have started a process and it is taking too much time to finish. You want to find out what it is doing right now. Restarting the process is not an option. Luckily, <code>strace</code> allows attaching to a running process:</p>
 <pre><code>$ strace -p 5545
 rt_sigprocmask(SIG_BLOCK, [CHLD], [], 8) = 0
@@ -181,11 +197,15 @@ rt_sigaction(SIGCHLD, NULL, {SIG_DFL, [], 0}, 8) = 0
 rt_sigprocmask(SIG_SETMASK, [], NULL, 8) = 0
 nanosleep({5, 0},</code></pre>
 <p>The last argument is the process id of the faulty process.</p>
-<h3 id="could-i-sniff-private-data-this-way">Could I Sniff Private Data This Way?</h3>
+</section>
+<section id="could-i-sniff-private-data-this-way" class="level3">
+<h3>Could I Sniff Private Data This Way?</h3>
 <p>This quickly raises a concern: couldn’t an attacker use <code>strace</code> over an existing <code>ssh</code> connection in order to make a Man In The Middle attack?</p>
 <p>Actually, no. If the programmer behind <code>ssh</code> used the <code>prctl</code> system call disabling <code>PR_SET_DUMPABLE</code> (the capability to create crash dumps and to be traced), then only the superuser could trace the process.</p>
 <p>In fact, some systems have gone a step further. Starting 2010, there is a Yama Linux Security Module. This includes a protection for ptrace. Having <code>1</code> in the <code>/proc/sys/kernel/yama/ptrace_scope</code> associated procfs file means that tracing is only possible only for children of the tracing process.</p>
-<h3 id="what-about-subprocesses">What About Subprocesses?</h3>
+</section>
+<section id="what-about-subprocesses" class="level3">
+<h3>What About Subprocesses?</h3>
 <p>It is possible to trace subprocesses of an application by using the <code>-f</code> or <code>-ff</code> flag (the second one is used in conjuction with <code>-o</code> and creates one output file per each subprocess).</p>
 <pre><code>$ strace -f ./a.out 
 ...
@@ -205,7 +225,9 @@ Process 6187 detached
 --- SIGCHLD (Child exited) @ 0 (0) ---
 exit_group(0)                           = ?</code></pre>
 <p>When tracing multiple processes, the PID of the process making a system call is written on the respective line. The tracing of a child starts as soon as it’s PID is returned to the parent (as a result of the <code>clone</code> system call).</p>
-<h3 id="profiling-with-strace">Profiling With <code>strace</code></h3>
+</section>
+<section id="profiling-with-strace" class="level3">
+<h3>Profiling With <code>strace</code></h3>
 <p>Another thing that <code>strace</code> can do is help in profiling the application, considering the number of system calls. This could be useful, for example, to optimize the I/O calls done by the application.</p>
 <pre><code>$ strace -c firefox
 % time     seconds  usecs/call     calls    errors syscall
@@ -229,15 +251,20 @@ exit_group(0)                           = ?</code></pre>
   ....    ........           .       ...           ................
 ------ ----------- ----------- --------- --------- ----------------
 100.00    0.012061                  3900      1079 total</code></pre>
-<h3 id="but-i-dont-want-to-be-traced..">But I Don’t Want To Be Traced..</h3>
+</section>
+<section id="but-i-dont-want-to-be-traced.." class="level3">
+<h3>But I Don’t Want To Be Traced..</h3>
 <p>In the end, let’s consider the case of an application which should be designed as untraceable as possible.</p>
 <p>We already know how to prevent attaching from the outside of the process. If we want to also deny root tracing and starting the process under <code>strace</code> then we need to take some extra steps.</p>
 <p>We know that each application can be under a single tracer. Thus, the obvious solution is to create a dummy tracer.</p>
 <p>A better solution is to inspect whether the process is traced and act accordingly (exit forcibly, display dummy messages, etc.). To do this, you can either use the <code>ptrace</code> system call on top of which <code>strace</code> is implemented or use the <code>proc/[pid]/status</code> file, looking for <code>TracerPid</code>.</p>
-<h3 id="conclusions">Conclusions</h3>
+</section>
+<section id="conclusions" class="level3">
+<h3>Conclusions</h3>
 <p>The <code>strace</code> program is a good tool to have in your toolbox. Knowing how to use it will greatly improve your debugging experience.</p>
 <p>However, using <code>strace</code> has some disadvantages as well. The traced process runs slower and each system call is done at least twice. You can also get a different behaviour while running a process under <code>strace</code>: either because some timing bugs will manifest, because some timeouts are reached or because someone has taken measures that the process cannot be properly traced.</p>
 <p>In the end, remember that debugging doesn’t stop at <a href="http://techblog.rosedu.org/gdb-a-basic-workflow.html" title="GDB - basic workflow">GDB</a> and/or <a href="http://techblog.rosedu.org/valgrind-introduction.html" title="Valgrind introduction">Valgrind</a>. Beside <code>strace</code>, there is also <code>ltrace</code> for library calls and <code>perf</code> for profiling. These two tools will be presented in further articles.</p>
+</section>
 
     </div>
   </div>

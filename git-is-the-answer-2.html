@@ -97,7 +97,8 @@
       </span>
 
       <p>The second article on advanced <a href="http://git-scm.com/" title="Git">git</a> topics is focused on cases where multiple branches are involved.</p>
-<h2 id="my-changes-conflict-with-yours">My Changes Conflict With Yours</h2>
+<section id="my-changes-conflict-with-yours" class="level2">
+<h2>My Changes Conflict With Yours</h2>
 <p>Usually, it happens that two developers are working on the same file. Git tries its best to merge changesets from both developers without complaining. However, Git is not a human being so it cannot know what change is the good ones when two changes happen two close to one another in the file.</p>
 <p>As opposed to SVN, in Git, it is the responsibility of the one who pulls to solve conflicts. Thus, you are forced to solve conflicts before being able to push your changes upstream. But how does it work?</p>
 <p>When you try to pull a file which contains conflicting changes, git will stop with a strange message. We will use the <code>git pull --rebase</code> command instead of the <code>git pull</code>.</p>
@@ -129,7 +130,9 @@ I don't like this line 5
 git rebase --continue</code></pre>
 <p>If there are more conflicting changes you will have to reapply the same procedure. Otherwise, you can go forward to pushing your changes. As you can see, no conflict ever leaves your repository, you are forced to deal with it before continuing.</p>
 <p><strong>Note</strong>: Remember to solve all conflicts in the same file before continuing the rebase process. Otherwise artifacts will be committed. (this is an edit suggested via comments by Stefan Bucur).</p>
-<h2 id="tags-and-branches-for-the-win">Tags and Branches For The Win</h2>
+</section>
+<section id="tags-and-branches-for-the-win" class="level2">
+<h2>Tags and Branches For The Win</h2>
 <p>Tags are the best way to keep references to old commits. They are particularly helpful in school related activities, where you update lectures and lab tasks on an yearly basis.</p>
 <p>The right way to handle this is to create a tag at the end of each year and update labs and tasks. If at any time you want to check out the old curriculum you can get back to that tag.</p>
 <p>For example, for the <a href="http://elf.cs.pub.ro/saisp/" title="SAISP">SAISP</a> repository, we’ve created tag a tag at the end of each year of study:</p>
@@ -183,7 +186,9 @@ razvan@einherjar:~/projects/rosedu/cdl/repo.git$ ls
 Makefile  curs1  curs3  git.mm  git_tutorial  schelet_inscriere  template  util
 razvan@einherjar:~/projects/rosedu/cdl/repo.git$ git commit -m 'Clear folder structure. Leave only current items'</code></pre>
 <p>All is now nice and clear. Any updates are going to be done on the current folder structure; any request to see old data can be handled by checking out one of the branches.</p>
-<h2 id="branches-on-a-virtual-machine">Branches on a Virtual Machine</h2>
+</section>
+<section id="branches-on-a-virtual-machine" class="level2">
+<h2>Branches on a Virtual Machine</h2>
 <p>In our experience we come to situations when required to work on the desktop/laptop and on a virtual machine. Of course, we are using Git for storing code. It would only make sense for one repository to be a remote for another one. The case is that, with Git, every repository can be a remote.</p>
 <p>As such, I usually create a clone of the laptop repository on the virtual machine. I usually do that with the <a href="http://ocw.cs.pub.ro/courses/so2/" title="SO2">SO2</a> repository when updating lab tasks or assignment solutions and tests. The laptop stores the main repository and the virtual machine uses a clone of that:</p>
 <pre><code>root@spook:~# git clone razvan@einherjar.local:school/current/so2/git-repos/lab lab.git
@@ -206,7 +211,9 @@ To razvan@einherjar.local:school/current/so2/git-repos/lab
 First, rewinding head to replay your work on top of it...
 Fast-forwarded master to vm.</code></pre>
 <p>At this moment, all changes in the repository clone on the virtual machine are present in the master branch on the repository on the laptop. You need to create a separate branch on the virtual machine clone and then push that branch to the main repository. If you would work on the master branch on the virtual machine clone and push that, it would be problematic to integrate those changes in the master branch on the main repository.</p>
-<h2 id="going-after-cherries">Going After Cherries</h2>
+</section>
+<section id="going-after-cherries" class="level2">
+<h2>Going After Cherries</h2>
 <p>In some cases, when working with multiple branches, it might happen that you need a specific commit from one branch but you don’t want to merge that branch into your current one.</p>
 <p>Fortunately, Git allows you to pick a single commit as easy as picking cherries from a cherry-tree. In fact, the command is <code>git cherry-pick</code>.</p>
 <pre><code>$ git cherry-pick 1904c3d4c9720
@@ -223,6 +230,7 @@ Date:   Fri Mar 8 23:59:07 2013 +0200
     File to be cherry-picked in master.</code></pre>
 <p>As you can see, the commit hash is different meaning that there is a new commit, not the old one.</p>
 <p>Should a commit not apply cleanly, Git stops the cherry-picking process and asks for human intervention. After the problems are resolved, you can continue it with <code>git cherry-pick --continue</code>. Or, you can abort it via <code>--abort</code> if you change your mind after seeing the trouble.</p>
+</section>
 
     </div>
   </div>

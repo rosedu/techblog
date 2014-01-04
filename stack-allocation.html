@@ -98,17 +98,17 @@
 
       <p><strong>Stack space</strong> is the part of each process’ virtual memory where function arguments and return addresses are stored, along with local variables declared within a function. Usually, the stack begins at the high address space of the virtual memory and grows down.</p>
 <p>At every function call, a new <strong>stack frame</strong> is created on the stack. It contains the parameters sent to the function, the return address (the address of a code in the caller function) and the locally declared variables.</p>
-<p>For each function call, the <strong>SP/ESP</strong> (Stack Pointer/Extended Stack Pointer) is set so the stack has a big enough size to accommodate local variables. For example, in theory, if you have a local char variable and an int variable, the SP should be set (moved) to 5 bytes.</p>
+<p>For each function call, the <code>SP/ESP</code> (Stack Pointer/Extended Stack Pointer) is set so the stack has a big enough size to accommodate local variables. For example, in theory, if you have a local <code>char</code> variable and an <code>int</code> variable, the SP should be set (moved) to 5 bytes.</p>
 <p>In practice, the compiler will allocate stack space a little different than expected. It will allocate local variables space in increments of a fixed size, so sometimes having two int variables or three int variables will be the same.</p>
-<p>As an example, gcc will allocate in increments of 16 bytes. Let’s make an experiment… we take a simple C program and turn into assembly code.</p>
+<p>As an example, <code>gcc</code> will allocate in increments of 16 bytes. Let’s make an experiment… we take a simple C program and turn into assembly code.</p>
 <p>The C file looks something like this:</p>
-<pre><code>int main(void)
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">int</span> main(<span class="dt">void</span>)
 {
-	int a=1, b=2;
-	return 0;
+	<span class="dt">int</span> a=<span class="dv">1</span>, b=<span class="dv">2</span>;
+	<span class="kw">return</span> <span class="dv">0</span>;
 }</code></pre>
 <p>The variables must be used after declaration or they will be ignored by the compiler.</p>
-<p>The resulting assembly code (with an gcc -S) looks like this:</p>
+<p>The resulting assembly code (<code>gcc -S</code>) looks like this:</p>
 <pre><code>main:
 	pushl	%ebp
 	movl	%esp, %ebp
@@ -118,13 +118,13 @@
 	movl	$0, %eax
 	leave
 	ret</code></pre>
-<p>Notice the <em>subl</em> instruction that clears 16 bytes in the stack space by decrementing the ESP. Those 16 bytes are enough for four 32bit integers. If you have 1,2,3 or 4 local variables declared (and used), you get those 16 bytes.</p>
+<p>Notice the <code>subl</code> instruction that clears 16 bytes in the stack space by decrementing the ESP. Those 16 bytes are enough for four 32bit integers. If you have 1,2,3 or 4 local variables declared (and used), you get those 16 bytes.</p>
 <p>If we declare 5 integers, the allocated space will now be 32bytes. Same thing for 6, 7, or 8. If we have 9 to 12 integers the compiler will allocate 48 bytes. An so on…</p>
 <p>What if we don’t only have integers? Let’s add some chars.</p>
-<pre><code>int main(void)
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">int</span> main(<span class="dt">void</span>)
 {
-	int a=1, b=2;
-	char c=3, d=4;
+	<span class="dt">int</span> a=<span class="dv">1</span>, b=<span class="dv">2</span>;
+	<span class="dt">char</span> c=<span class="dv">3</span>, d=<span class="dv">4</span>;
 }</code></pre>
 <p>Result:</p>
 <pre><code>main:
@@ -140,7 +140,7 @@
 	ret</code></pre>
 <p>The function would need 10 bytes, but still gets 16. So the allocation is in increments of 16 bytes no matter what.</p>
 <p>The question remains why? It has to do with the cache alignment. The compiler will try to structure the memory usage so that the executed code can be easily fetched from memory and cached. A correct alignment will cause minimum cache misses for memory access.</p>
-<p>Credits to SofiaN for help with initial observations and tests.</p>
+<p>Credits to Sofia Neață for help with initial observations and tests.</p>
 
     </div>
   </div>

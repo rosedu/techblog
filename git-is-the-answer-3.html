@@ -97,7 +97,8 @@
       </span>
 
       <p>Finally, the third article on advanced <a href="http://git-scm.com/" title="Git">git</a> topics will focus on things that many will use only in some very special cases.</p>
-<h2 id="handling-multiple-remotes">Handling Multiple Remotes</h2>
+<section id="handling-multiple-remotes" class="level2">
+<h2>Handling Multiple Remotes</h2>
 <p>There are situations when you decide to use multiple remotes for a repository. For example, I’m using multiple remotes for my snippets repository:</p>
 <pre><code>razvan@einherjar:~/code$ git remote show
 gh
@@ -151,7 +152,9 @@ To git@github.com:razvand/site.git
    6f3dd4d..7411020  master -&gt; master</code></pre>
 <p>New local changes are then going to be pushed to the <code>origin</code> remote. These changes are then going to be aggregated into pull requests for the <code>upstream</code> remote (the main repository), now in sync with the forked repository.</p>
 <p>The above is a specific use case for syncing a fork in GitHub, making use of two remotes: one for the original reposotiry and one for the fork. The <a href="https://help.github.com/articles/syncing-a-fork" title="Syncing a fork">excellent GitHub article</a> thoroughly describes the steps you need to undertake to sync your fork.</p>
-<h2 id="bisecting-the-history">Bisecting the History</h2>
+</section>
+<section id="bisecting-the-history" class="level2">
+<h2>Bisecting the History</h2>
 <p>A powerful feature of Git is its ability to quickly find out a commit which introduced a bad change. Suppose you have a bug in your application:</p>
 <pre><code>$ ./test_math.py 
 2 + 3 = 6</code></pre>
@@ -222,7 +225,9 @@ Date:   Sat Mar 9 00:24:43 2013 +0200
 
 bisect run success</code></pre>
 <p>This is indeed a good tool to have in Git’s toolbox.</p>
-<h2 id="stashing-the-goodies">Stashing the Goodies</h2>
+</section>
+<section id="stashing-the-goodies" class="level2">
+<h2>Stashing the Goodies</h2>
 <p>It often happens that you’ve done some changes that you don’t want to commit yet but you need to sync with the remote repository (i.e. do a pull). Or you want to merge a branch without commiting your changes. In this case, the solution is using the stash.</p>
 <p>The stash is a special place for Git where you temporarily stash your changes in order to keep your repository clean:</p>
 <pre><code>razvan@einherjar:~/projects/rosedu/site/site.git$ git status
@@ -252,7 +257,9 @@ no changes added to commit (use &quot;git add&quot; and/or &quot;git commit -a&q
 Dropped refs/stash@{0} (940f594b5f93e616dc16285e0677fbc78aa33620)</code></pre>
 <p>The moment you stash changes, they “disappear” from the working directory. You will be able to get them by using <code>git stash pop</code>.</p>
 <p>When multiple users are working on a given repository it will often happen that you need to pull their updates to see what has been done. Your local copy may have changes you’ve made yourself, but still far from a commit. In that case you would stash your changes, pull remote updates to sync your repository and then pop the stash to continue your work.</p>
-<h2 id="a-reference-for-everything">A Reference For Everything</h2>
+</section>
+<section id="a-reference-for-everything" class="level2">
+<h2>A Reference For Everything</h2>
 <p>We are near the end of the series. You have learned several things and you might try others as well. Yet, from time to time you may find out that you have lost a commit while playing around. Or, you rebased somewhere in the past but you need a commit which you had skipped. Or, you used <code>git reset --hard</code> and threw out a needed commit.</p>
 <p>Luckily for you, Git doesn’t lose anything. Everything can be recovered by using a nice feature called <em>reflog</em> (from <em>reference log</em>). Let’s see it in action first.</p>
 <pre><code>$ git reflog
@@ -265,7 +272,9 @@ f020807 HEAD@{3}: commit: Ready to publish «Git is the answer - part 2» articl
 97b6f11 HEAD@{6}: commit: Add TODO for conclusions.</code></pre>
 <p>The first column lists the commit hash at the point where the reference points to. The second is the state of <code>HEAD</code> (<code>HEAD{1}</code> is where <code>HEAD</code> previously was and so on). Then, you have a short description of what the reference is about (a commit, a checkout, a merge, a reset, etc.). This helps you in remembering what each change was about.</p>
 <p>To recover a commit you just cherry pick it from the reflog using its hash or even the <code>HEAD@{id}</code> reference.</p>
-<h2 id="garbage-collecting-the-repository">Garbage Collecting the Repository</h2>
+</section>
+<section id="garbage-collecting-the-repository" class="level2">
+<h2>Garbage Collecting the Repository</h2>
 <p>In the end, let’s focus on trimming down the disk usage of the repository. We want to prune some references. First, we set an expire date:</p>
 <pre><code>$ git reflog expire --expire=1.day refs/head/master</code></pre>
 <p>The above marks all references older than 1 day as being obsolete.</p>
@@ -315,9 +324,12 @@ c0a692b refs/remotes/gh/master@{4}: pull --rebase: fast-forward
 745963b refs/remotes/gh/master@{6}: pull --rebase: fast-forward
 fd23db9</code></pre>
 <p>The last line shows the id of one commit but nothing more related to it. You can still reset/rebase to there but you cannot point to any reference past it.</p>
-<h2 id="closing-up">Closing Up</h2>
+</section>
+<section id="closing-up" class="level2">
+<h2>Closing Up</h2>
 <p>We are at the close of this three part article on advanced git usage. Some of the things presented here might make you ask <em>when I’ll be using that?</em>. Some of them will prove useful from time to time while others are a good thing to know.</p>
 <p>In the end, remember that Git is a swiss army knife among VCSs and there are a lot of features which will make us masters of it should we learn and practice using them. Like Vim, above a certain threshold Git can only be learnt by using it on a day to day basis.</p>
+</section>
 
     </div>
   </div>

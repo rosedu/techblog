@@ -87,7 +87,7 @@
       <span class="date">
       <span class="published">Published on August 27, 2011</span>
       by
-      <span class="author">Daniel</span>
+      <span class="author">Daniel Băluță</span>
       </span>
 
       <br />
@@ -97,46 +97,46 @@
       </span>
 
       <p>This post will shed some light on the differences between arrays and pointers specifically when it comes about referencing string literals. We will base our discussion on the following two programs:</p>
-<p><img style="float:right" src="./images/arrays-vs-pointers.png" alt="Array and pointer representation" width="376" height="192" /> <strong>array.c</strong></p>
-<pre><code>char a[] = &quot;ROSEdu&quot;;
-int main(void)
+<p><img style="float:right" src="./images/arrays-vs-pointers.png" alt="Array and pointer representation" width="376" height="192" /></p>
+<p><strong>array.c</strong></p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">char</span> a[] = <span class="st">&quot;ROSEdu&quot;</span>;
+<span class="dt">int</span> main(<span class="dt">void</span>)
 {
-	a[0] = 'r';
-	printf(&quot;%s\n&quot;, a);
-	return 0;
+	a[<span class="dv">0</span>] = 'r';
+	printf(<span class="st">&quot;%s</span><span class="ch">\n</span><span class="st">&quot;</span>, a);
+	<span class="kw">return</span> <span class="dv">0</span>;
 }</code></pre>
 <p><strong>pointer.c</strong></p>
-<pre><code>char *p = &quot;ROSEdu&quot;;
-int main(void)
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">char</span> *p = <span class="st">&quot;ROSEdu&quot;</span>;
+<span class="dt">int</span> main(<span class="dt">void</span>)
 {
 	*p = 'r';
-	printf(&quot;%s\n&quot;, p);
-	return 0;
+	printf(<span class="st">&quot;%s</span><span class="ch">\n</span><span class="st">&quot;</span>, p);
+	<span class="kw">return</span> <span class="dv">0</span>;
 }</code></pre>
-<p>Program <em>array.c</em> defines an array of char whose elements are initialized with character string literals, while <em>pointer.c</em> defines a pointer to char and initializes it with the address of a memory area holding a string literal. Notice array <strong>a</strong> and pointer <strong>p</strong> allocations in the image above. Can you make a guess about size of <strong>a</strong> and size of <strong>p</strong>? Next, both programs modify the first character of the string literal <em>ROSEdu</em>. Are these two programs equivalent? At the first glance the answer seems to be positive, but let’s have a minute and actually run the code.</p>
-<pre>
-$ ./array
+<p>Program <code>array.c</code> defines an array of char whose elements are initialized with character string literals, while <code>pointer.c</code> defines a pointer to char and initializes it with the address of a memory area holding a string literal.</p>
+<p>Notice array <code>a</code> and pointer <code>p</code> allocations in the image above. Can you make a guess about size of <code>a</code> and size of <code>p</code>?</p>
+<p>Next, both programs modify the first character of the string literal <code>&quot;ROSEdu&quot;</code>.</p>
+<p>Are these two programs equivalent? At the first glance the answer seems to be positive, but let’s have a minute and actually run the code.</p>
+<pre><code>$ ./array
 rOSEdu
 
 $ ./pointer
-Segmentation fault
-
-</pre>
-<p>While we could modify array <strong>a</strong>, our program was killed attempting to modify string literal pointed by <strong>p</strong>. We will now have a look at the generated assembly code and notice the section where string literal <em>ROSEdu</em> is stored.</p>
+Segmentation fault</code></pre>
+<p>While we could modify array <code>a</code>, our program was killed attempting to modify string literal pointed by <code>p</code>.</p>
+<p>We will now have a look at the generated assembly code and notice the section where string literal <code>&quot;ROSEdu&quot;</code> is stored.</p>
 <p><img style="float:right" src="./images/arrays-vs-pointers-addr.png" alt="Array and pointer representation" width="298" height="283" /></p>
-<pre>
-$ gcc -S array.c -o array.s
+<pre><code>$ gcc -S array.c -o array.s
 $ cat array.s
 .globl a
         .data
         .type  a, @object
         .size  a, 7
 a:
-       .string &quot;ROSEdu&quot;
-</pre>
+       .string &quot;ROSEdu&quot;</code></pre>
+<!-- -->
 
-<pre>
-$ gcc -S pointer.c -o pointer.s
+<pre><code>$ gcc -S pointer.c -o pointer.s
 $ cat pointer.s
 globl p
        .section        .rodata
@@ -147,21 +147,19 @@ globl p
        .size  p, 4
 p:
        .long  .LC0
-       .text
-</pre>
-
-<p>We can see that array <em>a</em> is stored in <em>data</em> section, which is writable and there is no problem when it is modified. On the other hand, we can notice that <em>p</em> is a pointer stored in <em>data</em> section but it points to a <em>read only</em> memory location, thus accessing it results in ‘Segmentation Fault’.</p>
+       .text</code></pre>
+<p>We can see that array <code>a</code> is stored in <em>data</em> section, which is writable and there is no problem when it is modified. On the other hand, we can notice that <code>p</code> is a pointer stored in <em>data</em> section but it points to a <em>read only</em> memory location, thus accessing it results in <code>Segmentation Fault</code>.</p>
 <p><a href="http://c0x.coding-guidelines.com/">C99 standards</a> (<a href="http://c0x.coding-guidelines.com/6.7.8.html">Section 6.7.8</a>) states that:</p>
 <ul>
-<li>contents of the array <em>a</em> is modifiable.</li>
-<li>if an attempt is made to use pointer <em>p</em> to modify the contents of the array, the behaviour is undefined.</li>
+<li>contents of the array <code>a</code> is modifiable.</li>
+<li>if an attempt is made to use pointer <code>p</code> to modify the contents of the array, the behaviour is undefined.</li>
 </ul>
-<p>So now we see why <strong>pointer.c</strong> program crashed. gcc decided to store string literal pointed by <strong>p</strong> into read only data section. One must remark that this is not mandatory, and its implementation dependant.</p>
+<p>So now we see why <code>pointer.c</code> program crashed. <code>gcc</code> decided to store string literal pointed by <code>p</code> into read only data section. One must remark that this is not mandatory, and its implementation dependant.</p>
 <p>We invite you to answer following questions:</p>
 <ul>
-<li>What is the sizeof(p) and sizeof(a) in our previous examples?</li>
-<li>What happens if variables <strong>a</strong> and <strong>p</strong> are declared on the stack?</li>
-<li>Is it possible for the following expression <code>(const char []){&quot;ROSEdu&quot;} == &quot;ROSEdu&quot;</code> to yield true?</li>
+<li>What is the <code>sizeof(p)</code> and <code>sizeof(a)</code> in our previous examples?</li>
+<li>What happens if variables <code>a</code> and <code>p</code> are declared on the stack?</li>
+<li>Is it possible for the following expression <code>(const char []){&quot;ROSEdu&quot;} ==    &quot;ROSEdu&quot;</code> to yield true?</li>
 </ul>
 
     </div>

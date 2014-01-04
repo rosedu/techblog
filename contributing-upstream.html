@@ -87,7 +87,7 @@
       <span class="date">
       <span class="published">Published on November 28, 2011</span>
       by
-      <span class="author">Mihai</span>
+      <span class="author">Mihai Maruseac</span>
       </span>
 
       <br />
@@ -113,38 +113,39 @@ $ git branch speedup_proc_net_dev
 $ git checkout speedup_proc_net_dev
 Switched to branch 'speedup_proc_net_dev'</code></pre>
 <p>Now, do your work, change the source, fix the bug or develop the improvement. Be sure to follow the coding standards of the project you are contributing to. Commit often as told in the <a href="http://techblog.rosedu.org/git-good-practices.html">git</a> article. At the end of the task, when everything is solved and you are ready to submit the patch, you can rebase the commits into a single one or a set of commits depending on their content – it is better to have a single logical change per commit, also your patch will have an increased chance of being accepted if each commit is small. When rebasing your commits be sure to have a relevant commit message (as per <a href="http://techblog.rosedu.org/git-good-practices.html">git</a> article for example). For the Linux kernel there is a standard even in the commit message. Start with a single line detailing the component you’re patching and a short description of the commit then – after an empty line – write a longer message detailing what you have done. Add relevant information about the problem that you solved, and – if possible – tests made when developing your solution. Also add a <code>Signed-off-by</code> line. For example, the following is an example of a good commit message.</p>
-<pre><code>    dev: use name hash for dev_seq_ops
+<pre><code>dev: use name hash for dev_seq_ops
 
-    Instead of using the dev-&gt;next chain and trying to resync at each call to
-    dev_seq_start, use the name hash, keeping the bucket and the offset in
-    seq-&gt;private field.
+Instead of using the dev-&gt;next chain and trying to resync at each call
+to dev_seq_start, use the name hash, keeping the bucket and the offset
+in seq-&gt;private field.
 
-    Tests revealed the following results for ifconfig &gt; /dev/null
-	* 1000 interfaces:
-		* 0.114s without patch
-		* 0.089s with patch
-	* 3000 interfaces:
-		* 0.489s without patch
-		* 0.110s with patch
-	* 5000 interfaces:
-		* 1.363s without patch
-		* 0.250s with patch
-	* 128000 interfaces (other setup):
-		* ~100s without patch
-		* ~30s with patch
+Tests revealed the following results for ifconfig &gt; /dev/null
+    * 1000 interfaces:
+    	* 0.114s without patch
+    	* 0.089s with patch
+    * 3000 interfaces:
+    	* 0.489s without patch
+    	* 0.110s with patch
+    * 5000 interfaces:
+    	* 1.363s without patch
+    	* 0.250s with patch
+    * 128000 interfaces (other setup):
+    	* ~100s without patch
+    	* ~30s with patch
 
-    Signed-off-by: Mihai Maruseac &lt;mmaruseac@ixiacom.com&gt;</code></pre>
+Signed-off-by: Mihai Maruseac &lt;mmaruseac@ixiacom.com&gt;</code></pre>
 <p>Next step is to create the patch files. We do this by switching to the <code>master</code> branch and doing a <code>git format-patch</code> operation.</p>
-<pre><code>$ git checkout master 
+<pre><code>$ git checkout master
 Switched to branch 'master'
-$ git format-patch master..speedup_proc_net_dev 
+$ git format-patch master..speedup_proc_net_dev
 0001-Speedup-proc-net-dev-filling.patch</code></pre>
 <p>As you see, in our case a single file was created since our <code>speedup_proc_net_dev</code> branch was only a commit ahead of the <code>master</code> branch (we previously rebased everything into a single commit). This will be the file containing our patch, the file we will send upstream. But, before going there we still have a lot of things to do.</p>
 <p>First of all, we will need to check our patch for coding style mistakes. In the case of the Linux kernel there is a script doing that and we will use it. For other projects, we may need to do this step manually.</p>
-<pre><code>$ ./scripts/checkpatch.pl 0001-Speedup-proc-net-dev-filling.patch 
+<pre><code>$ ./scripts/checkpatch.pl 0001-Speedup-proc-net-dev-filling.patch
 total: 0 errors, 0 warnings, 122 lines checked
 
-0001-Speedup-proc-net-dev-filling.patch has no obvious style problems and is ready for submission.</code></pre>
+0001-Speedup-proc-net-dev-filling.patch has no obvious style problems and
+is ready for submission.</code></pre>
 <p>If there are problems we will have to go back to our branch, fix them, rebase all commits and recreate the patches with <code>git format-patch</code>. When everything is ready to be submitted we can send the patch to the developers via an email. In most projects you will simply create a bug report and attach the fix there and you are done. But since the Linux kernel is more complex we will have to use the email path presented in the following paragraphs.</p>
 <p>First of all, we have to find where to send the patch. We have another script which can be used.</p>
 <pre><code>$ ./scripts/get_maintainer.pl 0001-Speedup-proc-net-dev-filling.patch
@@ -166,7 +167,7 @@ linux-kernel@vger.kernel.org (open list)</code></pre>
 &gt; --cc=linux-kernel@vger.kernel.org \
 &gt; --cc=... 0001-Speedup-proc-net-dev-filling.patch
 0001-Speedup-proc-net-dev-filling.patch
-Who should the emails appear to be from? [Mihai Maruseac &lt;mihai.maruseac@rosedu.org&gt;] 
+Who should the emails appear to be from? [Mihai Maruseac &lt;mihai.maruseac@rosedu.org&gt;]
 Emails will be sent from: Mihai Maruseac &lt;mihai.maruseac@rosedu.org&gt;
 Message-ID to be used as In-Reply-To for the first email?
 ....</code></pre>

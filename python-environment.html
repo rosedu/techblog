@@ -87,7 +87,7 @@
       <span class="date">
       <span class="published">Published on September 25, 2011</span>
       by
-      <span class="author">Alex</span>
+      <span class="author">Alex Morega</span>
       </span>
 
       <br />
@@ -96,44 +96,52 @@
         <span class="tags"><a href="./tags/python.html">python</a>, <a href="./tags/virtualenv.html">virtualenv</a>, <a href="./tags/pip.html">pip</a></span>
       </span>
 
-      <p>This article is a quick guide to setting up a Python work environment. It walks you through installing Python with some basic package management tools (distribute, pip, virtualenv), setting up projects, and installing packages.</p>
-<h3 id="bootstrapping">Bootstrapping</h3>
+      <p>This article is a quick guide to setting up a Python work environment. It walks you through installing Python with some basic package management tools (<code>distribute</code>, <code>pip</code>, <code>virtualenv</code>), setting up projects, and installing packages.</p>
+<section id="bootstrapping" class="level3">
+<h3>Bootstrapping</h3>
 <p>First of all we need to have a working Python interpreter. You want to install the latest release of <code>2.7</code> for now (September 2011). Python 3 is gathering momentum but many libraries don’t support it yet.</p>
 <ul>
-<li><p>In most Linux distributions, and in Mac OS, some Python is already installed. You may, of course, install a different one from scratch. For Mac OS, the <a href="http://mxcl.github.com/homebrew/">homebrew</a> version is highly recommended.</p></li>
-<li><p>On Windows you install a pre-compiled release from <a href="http://python.org/download/">http://python.org/download/</a>.</p></li>
-<li><p>To install from source, you need a C compiler, and a tarball from <a href="http://python.org/download/">http://python.org/download/</a>. The usual <code>./configure; make; make   install</code> should work just fine. Consider installing into a separate folder, e.g. <code>./configure --prefix=/usr/local/Python-2.7</code>, so you can easily remove it at some point in the future.</p></li>
+<li>In most Linux distributions, and in Mac OS, some Python is already installed. You may, of course, install a different one from scratch. For Mac OS, the <a href="http://mxcl.github.com/homebrew/">homebrew</a> version is highly recommended.</li>
+<li>On Windows you can install a pre-compiled release from <a href="http://python.org/download/">http://python.org/download/</a>.</li>
+<li>To install from source, you need a C compiler, and a tarball from <a href="http://python.org/download/">http://python.org/download/</a>. The usual <code>./configure; make; make   install</code> should work just fine. Consider installing into a separate folder, e.g. <code>./configure --prefix=/usr/local/Python-2.7</code>, so you can easily remove it at some point in the future.</li>
 </ul>
-<p>Now, the typical mistake is to declare victory, and use this Python installation for everything. In time, you want to use various libraries, so you install them on top of Python. Eventually you get a version conflict (some project requires a library which is too new for another project). Fortunately there is a better way: <em>virtualenv</em>.</p>
+<p>Now, the typical mistake is to declare victory, and use this Python installation for everything. In time, you want to use various libraries, so you install them on top of Python. Eventually you get a version conflict (some project requires a library which is too new for another project). Fortunately there is a better way: <code>virtualenv</code>.</p>
 <p>The command-line examples use <code>$MYPYTHON</code> as placeholder for the Python installation path. This can be <code>/usr</code> for a Linux distribution install, <code>/usr/local</code> for default manual installation, <code>/usr/local/Cellar/python/2.7.2</code> for mac Homebrew, or even <code>C:\Python27</code> on Windows.</p>
-<p>If you’re on Linux, and use a Python package from the distribution, it’s a good bet they have virtualenv too. For Debian, Ubuntu and Fedora, the name is <code>python-virtualenv</code>. This may be outdated, so if you experience problems, check the version and consider installing the latest one (see below).</p>
-<p>In a fresh Python installation, to get virtualenv, we need to install <em>distribute</em> and <em>pip</em> first. distribute is an older package manager, and pip is newer and more powerful, but it depends on the older one to do heavy lifting. So, download <a href="http://python-distribute.org/distribute_setup.py"><code>distribute_setup.py</code></a>, and, assuming you installed Python in a folder called <code>$MYPYTHON</code>, do the following:</p>
-<pre><code>&gt; $MYPYTHON/bin/python distribute_setup.py
-&gt; $MYPYTHON/bin/easy_install pip
-&gt; $MYPYTHON/bin/pip install virtualenv</code></pre>
+<p>If you’re on Linux, and use a Python package from the distribution, it’s a good bet they have <code>virtualenv</code> too. For Debian, Ubuntu and Fedora, the name is <code>python-virtualenv</code>. This may be outdated, so if you experience problems, check the version and consider installing the latest one (see below).</p>
+<p>In a fresh Python installation, to get <code>virtualenv</code>, we need to install <code>distribute</code> and <code>pip</code> first. <code>distribute</code> is an older package manager, and <code>pip</code> is newer and more powerful, but it depends on the older one to do heavy lifting. So, download <a href="http://python-distribute.org/distribute_setup.py"><code>distribute_setup.py</code></a>, and, assuming you installed Python in a folder called <code>$MYPYTHON</code>, do the following:</p>
+<pre><code>$ $MYPYTHON/bin/python distribute_setup.py
+$ $MYPYTHON/bin/easy_install pip
+$ $MYPYTHON/bin/pip install virtualenv</code></pre>
 <p>If everything worked out fine, you should have a script called <code>virtualenv</code> in <code>$MYPYTHON/bin</code>, and you can safely remove <code>distribute_setup.py</code> and <code>distribute-x.y.z.tar.gz</code>.</p>
 <p>That’s all you normally install in the global Python folder. Maybe throw in some commonly-used, slow-to-change, takes-a-while-to-compile package like <a href="http://www.pythonware.com/products/pil/">PIL</a> or <a href="http://www.scipy.org/">SciPy</a>, or the odd manually-installed kits on Windows, but everything else goes into a virtualenv.</p>
-<h3 id="virtual-insanity">Virtual insanity</h3>
+</section>
+<section id="virtual-insanity" class="level3">
+<h3>Virtual insanity</h3>
 <p>Say you want to work on <a href="https://projects.rosedu.org/projects/wousodjango">WoUSO</a>, and the documentation tells you that you need to install <a href="https://www.djangoproject.com/">Django</a>. The very first thing you do is create a virtualenv. We’ll use <code>$MYENV</code> as placeholder for the path to a new folder where you want to work:</p>
-<pre><code>&gt; $MYPYTHON/bin/virtualenv $MYENV</code></pre>
-<p>virtualenv will create the folder, write some files, then run off and get distribute and pip, it should all take a few seconds. When it’s done, you have <code>$MYENV/bin/python</code>, which is a fully functional Python interpreter. Next to it, there is <code>$MYENV/bin/pip</code>, which you can now use to install things:</p>
-<pre><code>&gt; $MYENV/bin/pip install Django</code></pre>
+<pre><code>$ $MYPYTHON/bin/virtualenv $MYENV</code></pre>
+<p><code>virtualenv</code> will create the folder, write some files, then run off and get <code>distribute</code> and <code>pip</code>; it should all take a few seconds. When it’s done, you have <code>$MYENV/bin/python</code>, which is a fully functional Python interpreter. Next to it, there is <code>$MYENV/bin/pip</code>, which you can now use to install things:</p>
+<pre><code>$ $MYENV/bin/pip install Django</code></pre>
 <p>This will go to <a href="http://pypi.python.org/">PyPI</a>, look for a package named <code>Django</code>, and install the latest version. The installation happens inside <code>$MYENV</code>, in the <code>lib/python2.7/site-packages</code> subfolder. This Django doesn’t affect the original Python installation or any other virtualenvs you create. Of course, multiple virtualenvs can have different versions of Django.</p>
-<h3 id="bits-and-pieces">Bits and pieces</h3>
+</section>
+<section id="bits-and-pieces" class="level3">
+<h3>Bits and pieces</h3>
 <p>Now, if you start happily creating many virtualenvs, installing a lot of packages, you’ll be downloading the same files over and over again. Fortunately, pip can be configured to cache the downloads:</p>
-<pre><code>&gt; cat ~/.pip/pip.conf
+<pre><code>$ cat ~/.pip/pip.conf
 [global]
 download_cache = ~/.pip/cache</code></pre>
 <p>Depending on the setup, sometimes you have to deal with globally-installed packages, for example if you’re using the Python from a Linux distribution. It’s still possible to create a virtualenv that ignores those packages by passing the <code>--no-site-packages</code> option to virtualenv. This simply leaves out the global <code>site-packages</code> folder from Python’s import path.</p>
 <p>Some projects include a <code>requirements.txt</code> file in their source tree, which lists dependencies. You install these with <code>pip install -r requirements.txt</code>. Writing your own <code>requirements.txt</code> is easy: each line is a set of arguments for one invocation of pip. Or simply run <code>pip freeze</code>, it generates a list of all the installed packages and their versions.</p>
-<p>When you get tired of typing <code>$MYENV/bin/something</code> all the time, you may want to <em>activate</em> the virtualenv. This is a fancy name which simply means that <code>$MYENV/bin</code> is prepended to your current <code>$PATH</code> (and your <code>$PS1</code> is enhanced):</p>
-<pre><code>&gt; . $MYENV/bin/activate
-(myenv)&gt; # &quot;python&quot; invokes &quot;$MYENV/bin/python&quot;
-(myenv)&gt; deactivate
-&gt; # back to the original shell environment</code></pre>
+<p>When you get tired of typing <code>$MYENV/bin/something</code> all the time, you may want to <code>activate</code> the virtualenv. This is a fancy name which simply means that <code>$MYENV/bin</code> is prepended to your current <code>$PATH</code> (and your <code>$PS1</code> is enhanced):</p>
+<pre><code>$ . $MYENV/bin/activate
+(myenv)$ # &quot;python&quot; invokes &quot;$MYENV/bin/python&quot;
+(myenv)$ deactivate
+$ # back to the original shell environment</code></pre>
 <p>If you find yourself working on a package, the kind that has <code>setup.py</code> and installs with pip, you want to install the package in “edit” mode. Check out the source tree, then (assuming you’re in the same folder with <code>setup.py</code>) run <code>pip install -e .</code>. This will install the package in-place. Technically, a link is made in <code>site-packages</code> that extends Python’s import path to find your package, any dependencies in <code>setup.py</code> are installed, and scripts are installed in <code>$MYENV/bin</code>, if the package has any.</p>
-<h3 id="further-reading">Further reading</h3>
+</section>
+<section id="further-reading" class="level3">
+<h3>Further reading</h3>
 <p>These wonderful tools are available on <a href="http://pypi.python.org/">PyPI</a>, the Python Package Index. Most of them have good documentation that explains more features that did not fit in this article. Also, remember <code>docs.python.org</code> (behold the <a href="http://docs.python.org/contents.html">table of contents</a>), where you can find documentation on the language, a nice tutorial, and excellent documentation for the standard library.</p>
+</section>
 
     </div>
   </div>

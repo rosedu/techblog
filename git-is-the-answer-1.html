@@ -97,7 +97,8 @@
       </span>
 
       <p>We focus again on <a href="http://git-scm.com/" title="Git">git</a>. This time, we will present some real-world scenarios where knoweldge of advance git topics helps. In order to keep down the length of the article, our presentation is divided in 3 parts, this being the first one of these.</p>
-<h2 id="user-setup">User Setup</h2>
+<section id="user-setup" class="level2">
+<h2>User Setup</h2>
 <p>After installing Git and before doing any commits into a repository, you must setup your user information and preferences. It is common to make a global configuration, using <code>git config</code>:</p>
 <pre><code>git config --global user.name &quot;Razvan Deaconescu&quot;
 git config --global user.email &quot;razvan.deaconescu@cs.pub.ro&quot;
@@ -109,7 +110,9 @@ git config --global color.ui auto</code></pre>
 git config user.email &quot;razvan@rosedu.org&quot;</code></pre>
 <p>In the above setup, I have only updated the email address for the repository. The other options used are picked from the global configuration.</p>
 <p>Per repository configuration is stored in <code>/path/to/repository.git/.config</code>.</p>
-<h2 id="handling-line-endings-like-a-pro">Handling Line Endings Like a Pro</h2>
+</section>
+<section id="handling-line-endings-like-a-pro" class="level2">
+<h2>Handling Line Endings Like a Pro</h2>
 <p>From time to time it is possible that you will have to work with people working on a different operating system. It is no problem if both of you are using systems with similar line-endings (<code>CRLF</code> for Windows, <code>LF</code> for Linux/OSX). In all other cases, it might be that the default Git options used for this don’t work for you.</p>
 <p>You can configure Git globally to handle line-endings if you set the <code>core.autocrlf</code> option in your <code>~/.gitconfig</code>. However, the best settings are different on different platforms.</p>
 <p>For Windows you would use</p>
@@ -133,7 +136,9 @@ git reset --hard</code></pre>
 <pre><code>git add .
 git commit -m &quot;Normalized line endings&quot;</code></pre>
 <p>From now on, Git will properly do the job of handling line endings for you.</p>
-<h2 id="how-to-create-and-setup-a-local-repo">How to Create and Setup a Local Repo</h2>
+</section>
+<section id="how-to-create-and-setup-a-local-repo" class="level2">
+<h2>How to Create and Setup a Local Repo</h2>
 <p>One of the best features of Git is the ability to rapidly create and use local repositories. You don’t have to create a repository and then clone it locally as you do in Subversion. You just create or access a directory and then initialize it as a Git repository. Changes to files in the directory will be able to be handled as commits.</p>
 <p>Assuming I am working on a personal project, the first thing I would do is create a directory and initialize it as a Git repository. I recommend you append the <code>.git</code> extension:</p>
 <pre><code>mkdir ~/projects/troscot.git
@@ -154,7 +159,9 @@ git add .
 git status
 git commit -m 'Initial commit. Add all config files to repository'</code></pre>
 <p>The above commands add a <code>.gitignore</code> file in the repository and then add all Apache2 configuration files. The <code>git status</code> command is always necessary after a <code>git add</code> command to make sure you are committing the right stuff; you may need to update your <code>.gitignore</code> file in case you’ve missed ignoring certain types of files.</p>
-<h2 id="i-want-to-tweak-a-commit">I Want To Tweak A Commit</h2>
+</section>
+<section id="i-want-to-tweak-a-commit" class="level2">
+<h2>I Want To Tweak A Commit</h2>
 <p>From time to time you realize that you have made something wrong with a commit. Either you forgot to add a good, descriptive <a href="http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html" title="A Note About Git Commit Messages">message</a> or you have really screwed up some parts of the committed code. Maybe you have some compile errors to fix or your commit does too many things at once.</p>
 <p>Anyway, for all of these cases, Git allows you to rewrite the commit at will. You can add changes of tweak metadata (author name, commit message, etc.) just by issuing the needed commands and ending with</p>
 <pre><code>git commit --amend</code></pre>
@@ -198,7 +205,9 @@ Once you are satisfied with your changes, run
 <p>Now, you can add or remove content, change the commit as you want, etc. Then, you continue the rebase process by running <code>git commit --amend</code> followed by <code>git rebase --continue</code>. Both of them are needed.</p>
 <p>If you decide that the commit is ok and that the rebase was not neeeded, you can always abort it with <code>git rebase --abort</code>.</p>
 <p>Finally, keep in mind that <strong>it is not recommended to change commits once they have been pushed to another repository.</strong></p>
-<h2 id="but-my-commit-is-too-big">But My Commit Is Too Big</h2>
+</section>
+<section id="but-my-commit-is-too-big" class="level2">
+<h2>But My Commit Is Too Big</h2>
 <p>From time to time, you will have some big changes to commit. However, the case when all of them are atomic and cannot be split into several shorter components is very rare. Let’s take for our example a LaTeX Beamer file. You can commit each section separately or even each slide, as you see fit. But how can you split the commit?</p>
 <p>Actually, you can use two commands for this. One is <code>git add -i</code> to allow interactive adding of parts of commits. The second one is to use <code>git add -p</code> which is more simpler.</p>
 <p>Running <code>git add -p</code> will present you with the first chunk of changes to be committed. It might be the case that this is chunk is atomic or not. Git offers this question after presenting the hunk:</p>
@@ -231,7 +240,9 @@ e - manually edit the current hunk
 # then the edit is aborted and the hunk is left unchanged.</code></pre>
 <p>The <code>-</code> lines are lines which will be removed by the commit and the <code>+</code> ones will be added. Thus, if you remove a <code>+</code> line, the commit will not contain the addition and if you mark one <code>-</code> line as context it won’t be removed by the commit.</p>
 <p>Since <code>git add -p</code> is a powerful feature, it is advisable to have it added as an alias, via <code>git config</code>. For example, I have <code>git gap</code> do the same thing as <code>git alias -p</code>. Then, it is in my muscles’ memory to type <code>git gap</code> when adding changes for a new commit.</p>
-<h2 id="i-dont-want-this-commit-anymore">I Don’t Want This Commit Anymore</h2>
+</section>
+<section id="i-dont-want-this-commit-anymore" class="level2">
+<h2>I Don’t Want This Commit Anymore</h2>
 <p>There is often the case that you want to rollback a change you’ve done. As long as everything is happening locally (i.e. you haven’t pushed to a remote repository), Git offers the proper tools to handle this.</p>
 <p>Assume you’ve updated a file but you want to discard those changes. You’ve just done some tests and feel those are not required and want to get back to the initial version. Then you would issue</p>
 <pre><code>git checkout file-name</code></pre>
@@ -244,7 +255,9 @@ e - manually edit the current hunk
 <p>Consider that you’ve done some bad commits and you’ve just found out. The last two commits are really bad and need to be dropped. As long as you haven’t pushed anything, you can rework those commits: you can reset the repository HEAD and leave the commit changes in the working directory. If we want to redo the last two commits we would just issue:</p>
 <pre><code>git reset HEAD^^</code></pre>
 <p>Remember, this doesn’t remove the commit changes. The repository HEAD is simply moved back and the commit changes are left in the working directory; you will then use them to create proper new commits.</p>
-<h2 id="i-want-to-change-this-file-silently">I Want To Change This File Silently</h2>
+</section>
+<section id="i-want-to-change-this-file-silently" class="level2">
+<h2>I Want To Change This File Silently</h2>
 <p>GitHub has an excellent article on <a href="https://help.github.com/articles/ignoring-files" title="GitHub: Ignoring files">ignoring files</a>. A particular situation is ignoring updates to files that are already in the repository (i.e. they’ve been previously commited and can’t be ignored using .gitignore).</p>
 <p>This kind of situation is part of my repository with letters of recommendation. I’m using a Makefile for compiling out a letter and have isolated in it some variables:</p>
 <pre><code>$ cat Makefile
@@ -258,6 +271,7 @@ include base.mk</code></pre>
 <p>No changes on the <code>Makefile</code> file are going to be considered in the working directory.</p>
 <p>If you want to revert this option, use:</p>
 <pre><code>git update-index --no-assume-unchanged Makefile</code></pre>
+</section>
 
     </div>
   </div>

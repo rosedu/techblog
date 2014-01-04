@@ -99,7 +99,8 @@
       <p>This is an article aiming to familiarize the reader with the features and benefits of using <a href="https://en.wikipedia.org/wiki/Secure_Shell" title="SSH">Secure Shell (SSH)</a>, particularly with the <a href="http://www.openssh.org/" title="OpenSSH">OpenSSH</a> implementation. SSH is an application level protocol used for secure data communication, whether that means remote shell access, command execution, file transfer and some other aspects described in this article. It was meant to be a replacement for existing insecure remote shell protocols such as <code>telnet</code>, <code>rsh</code> and <code>rexec</code> which send information in plaintext, including usernames and passwords.</p>
 <p>SSH uses <a href="https://en.wikipedia.org/wiki/Public-key_cryptography" title="public-key cryptography">public-key cryptography</a> for authentication purposes. In short, this works like this: each user has a pair of keys, one public and one private. They are mathematically related, but it is computationally infeasible to derive one from the other. The public key is … well, public! Anyone can get that, and they would use it to encrypt messages. The private key, however, is (or should be) accessible only by the user, and used to decrypt incoming messages.</p>
 <p>The two parties of a SSH communication are the server and the client. The server usually runs on port 22, but that is not a requirement, and the client will use a random available port on the client machine.</p>
-<h3 id="setting-up-ssh">Setting up SSH</h3>
+<section id="setting-up-ssh" class="level3">
+<h3>Setting up SSH</h3>
 <p>The simplest way to install a SSH client is with your package manager. On Debian-based distros, it would be something like:</p>
 <pre><code>$ sudo apt-get install openssh-client</code></pre>
 <p>After that finishes, you can generate a pair of cryptographic keys using the command <code>ssh-keygen</code>:</p>
@@ -138,7 +139,9 @@ $ service ssh status</code></pre>
 <p>You can also run just one line of commands, such as:</p>
 <pre><code>$ ssh my_user@my.server.com 'ls -la; apt-get moo'</code></pre>
 <p>So this would be the basic usage of SSH. You can do a lot just with what is written up to this point, and you might be tempted to close the article and just get back to what you wanted to do in the first place. But seriously, you would be missing a lot of the cool stuff SSH can do. Just <a href="https://xkcd.com/365/" title="XKCD">bear with me for a moment</a> and you will end up being more productive with SSH.</p>
-<h3 id="copying-files-remotely">Copying files remotely</h3>
+</section>
+<section id="copying-files-remotely" class="level3">
+<h3>Copying files remotely</h3>
 <p>You can use <code>cat</code> and pipes to copy a file remotely:</p>
 <pre><code>$ cat test.txt | ssh -e none user@host 'cat &gt; remote_test.txt'</code></pre>
 <p>The <code>-e</code> option disables escape characters so that you can send any bytes that your file may contain. The rest is a trick: the output of the remote <code>cat</code> is redirected to a file, but the input comes from the output of the first half of the pipe, which is the contents of the file you want to transfer. Neat, right?</p>
@@ -147,20 +150,24 @@ $ service ssh status</code></pre>
 <p>Notice that colon after host because it is critical. If you did not want to rename the file you would have just used <code>user@host:</code>. The colon tells scp the destination is a remote location. Otherwise, you would just copy <code>test.txt</code> to a file named <code>user@host</code>.</p>
 <p>Also, the path after the colon is relative to the home directory of the remote user.</p>
 <p>There is also the <code>sftp</code> utility which provides a FTP-like interface.</p>
-<h3 id="passwordless-authentication">Passwordless authentication</h3>
+</section>
+<section id="passwordless-authentication" class="level3">
+<h3>Passwordless authentication</h3>
 <p>So, up until now you have connected via SSH by providing your password, maybe even a passphrase. You can probably see by now that this is troublesome and can be a major drawback if you would like to make a script using SSH. How about we ditch that remote password?</p>
 <p>To do this, you would basically need to append the contents of your public key to a file located at <code>~/.ssh/authorized_keys</code> on the server.</p>
 <p>Luckily for you, most SSH packages provide an utility called <code>ssh-copy-id</code> that does just that. So you would just run:</p>
 <pre><code>$ ssh-copy-id user@host</code></pre>
 <p>Next time you will try to log on to that account, you will not be prompted for your password.</p>
 <p>As an exercise, knowing what you have read thus far, figure out two more ways of achieving the same result, just in case you do not have <code>ssh-copy-id</code>.</p>
-<h3 id="config-file">Config file</h3>
+</section>
+<section id="config-file" class="level3">
+<h3>Config file</h3>
 <p>If you are going to use SSH with several servers, with various settings and different key pairs you will soon have to enter something like this:</p>
 <pre><code>$ ssh -i ~/.ssh/private_key_file10 -l user -p 2222 -o &quot;ForwardX11 yes&quot; the.mother.of.all.servers.com</code></pre>
 <p>Now that is an extremely long and ugly line with no particular purpose but to illustrate the complexity of ssh commands. Some who have read the manual page know that X forwading can be achieved by passing <code>-X</code>.</p>
 <p>Anyway, an initial approach to bypassing this issue is by using aliases of bash functions. But those are limited in functionality and basically you are just placing that ugly command somewhere else. Not cool, not cool.</p>
 <p>You can put settings on your local computer in <code>~/.ssh/config</code>. The full list of options, and their possible values, is available via <code>man ssh_config</code>.</p>
-<p>Here is a modified version of my config file, for security reasons:</p>
+<p>Here is a modified version (for security reasons) of my config file:</p>
 <pre><code>Host compilers
 	User ubuntu
 	Hostname ec2-50-17-91-154.compute-1.amazonaws.com
@@ -187,16 +194,30 @@ Host github
 	IdentityFile ~/.ssh/github</code></pre>
 <p>Now you could put all those options for that long command above in a organized manner, and it will work with all SSH-related utilities, even <code>scp</code>, with the options you specified:</p>
 <pre><code>$ scp something mother:</code></pre>
-<h3 id="local-port-forwarding">Local port forwarding</h3>
+</section>
+<section id="local-port-forwarding" class="level3">
+<h3>Local port forwarding</h3>
 <p>Let’s assume that your employer has banned Facebook, so that people might actually do something useful.</p>
 <p>Let’s also assume that you have a SSH server that you can reach and has no filtering for Facebook.</p>
 <p>You could do something like this</p>
 <pre><code>$ ssh your.server.com -L 80:facebook.com:80</code></pre>
-<p>This achieves the following effect: any connection to port 80 on your machine is passed, via your remote machine, to port 80 on facebook.com, which is the standard port for HTTP. After that, set an entry matching facebook.com to 127.0.0.1 in <code>/etc/hosts</code> and procrastinate.</p>
+<p>This achieves the following effect: any connection to port 80 on your machine is passed, via your remote machine, to port 80 on facebook.com, which is the standard port for HTTP.</p>
+<p>After that, set an entry matching facebook.com to 127.0.0.1 in <code>/etc/hosts</code> and procrastinate.</p>
 <p>But first, take a moment to come up with a section in your config file that does this forwarding. (Hint: <code>LocalForward</code>)</p>
-<h3 id="conclusions">Conclusions</h3>
+</section>
+<section id="conclusions" class="level3">
+<h3>Conclusions</h3>
 <p>So now you have a set of things you could do with SSH that can make you be more productive (or not if you just read the last part). I hope you found the article useful.</p>
-<p>If you want to know about more things you could do with SSH here is a list of terms you might want to search the web for: * SSH tunnels * SSH remote port forwarding * Set up a SOCKS proxy for Firefox with SSH * sshfs * SSH master sessions * ssh-agent and ssh-reagent</p>
+<p>If you want to know about more things you could do with SSH here is a list of terms you might want to search the web for:</p>
+<ul>
+<li>SSH tunnels</li>
+<li>SSH remote port forwarding</li>
+<li>Set up a SOCKS proxy for Firefox with SSH</li>
+<li>sshfs</li>
+<li>SSH master sessions</li>
+<li>ssh-agent and ssh-reagent</li>
+</ul>
+</section>
 
     </div>
   </div>

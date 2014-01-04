@@ -98,29 +98,43 @@
 
       <p>This guide is designed to explain why you need to hide information and how can you do this when you do not trust the channel through which messages are conveyed. We will discuss about cryptographic system, encryption, decryption, one-way function, asymmetric keys and more. You may think of cryptography as the thing that keeps you untouchable inside of a soap bubble travelling by air around the world.</p>
 <p>Do you think it is safer by plane?</p>
-<h3 id="terminology">Terminology</h3>
-<p><em>plaintext</em> or <em>cleartext</em> : intelligible message that sender wants to transmit to a receiver</p>
-<p><em>ciphertext</em> : unintelligible message resulted from <em>plaintext</em> encryption using a <a href="https://en.wikipedia.org/wiki/Cryptosystem">cryptosystem</a></p>
-<p><em>encryption</em> : the process of converting a <em>plaintext</em> into a <em>ciphertext</em></p>
-<p><em>decryption</em> : the process of converting a <em>ciphertext</em> into a <em>plaintext</em> (reverse of <em>encryption</em>)</p>
-<h3 id="conventional-cryptography">Conventional cryptography</h3>
+<section id="terminology" class="level3">
+<h3>Terminology</h3>
+<ul>
+<li><p><em>plaintext</em> or <em>cleartext</em> : intelligible message that sender wants to transmit to a receiver</p></li>
+<li><p><em>ciphertext</em> : unintelligible message resulted from <em>plaintext</em> encryption using a <a href="https://en.wikipedia.org/wiki/Cryptosystem">cryptosystem</a></p></li>
+<li><p><em>encryption</em> : the process of converting a <em>plaintext</em> into a <em>ciphertext</em></p></li>
+<li><p><em>decryption</em> : the process of converting a <em>ciphertext</em> into a <em>plaintext</em> (reverse of <em>encryption</em>)</p></li>
+</ul>
+</section>
+<section id="conventional-cryptography" class="level3">
+<h3>Conventional cryptography</h3>
 <p>It is also called <em>symmetric-key</em> or <em>shared-key</em> encryption. The same key is used to encrypt and decrypt a message. Consider this example as a conventional cryptography:</p>
-<p><em>You and your roommate, both use the same key to lock/unlock the door of your house. Thus, you share the same key to secure the room. It is true that your roommate could have a copy of your key so he can join the room when you are at work or vice-versa.</em></p>
+<blockquote>
+<p>You and your roommate, both use the same key to lock/unlock the door of your house. Thus, you share the same key to secure the room. It is true that your roommate could have a copy of your key so he can join the room when you are at work or vice-versa.</p>
+</blockquote>
 <p>Example of conventional <a href="https://en.wikipedia.org/wiki/Cryptosystem">cryptosystems</a> that use <em>symmetric-key</em>: <a href="https://en.wikipedia.org/wiki/Data_Encryption_Standard">Data Encryption Standard (DES)</a>, <a href="https://en.wikipedia.org/wiki/Advanced_Encryption_Standard">Advanced Encryption Standard (AES)</a></p>
 <p>Advantages: Fast.</p>
 <p>Disadvantages: Not safe! The sender and receiver must agree upon a secret key and prevent others from getting access to it. There is also a big problem if they are not in the same physical location because of key distribution. How could you give your home key to your roommate, which is in America while you are in China?</p>
 <p>Practical advice: Symmetric key should be changed with any message, so that only one message can be leaked in case of disaster (crypt-analysed, stole, etc).</p>
-<h3 id="key-distribution">Key distribution</h3>
+</section>
+<section id="key-distribution" class="level3">
+<h3>Key distribution</h3>
 <p>In the previous paragraph we were talking about <a href="https://en.wikipedia.org/wiki/Cryptosystem">cryptosystems</a> using <em>symmetric-keys</em> and the lack of an efficient method to securely share your key with your roommate. Key distribution comes to help solving this shortcoming. Next we are going to explain how key exchange becomes possible over an untrusted communication channel.</p>
-<h4 id="diffie-hellman-key-exchange">Diffie-Hellman key exchange</h4>
+<section id="diffie-hellman-key-exchange" class="level4">
+<h4>Diffie-Hellman key exchange</h4>
 <p>This key exchange is based on an algorithm that mathematically cannot easily compute <a href="https://en.wikipedia.org/wiki/Discrete_logarithm">discrete logarithms</a> of large numbers in a reasonable amount of time. We will offer an overview of the algorithm using colours before we run straightforward with numbers and abstract formula.</p>
 <p><img style="float:right" src="./images/from-0-to-cryptography-diffie-hellman-key-exchange.png" alt="Diffie-Hellman Key Exchange" width="300" height="450" /></p>
-<p><strong>Step 1</strong>: Alice and Bob come to an agreement for a common colour.</p>
-<p><strong>Step 2</strong>: Alice choose her secret colour that will not tell to Bob. Bob will do the same thing.</p>
-<p><strong>Step 3</strong>: Alice will mix the common colour with the secret one and the result is a mixture. Bob will also mix his secret colour with the common one and will obtain a different mixture from Alice’s one.</p>
-<p><strong>Step 4</strong>: Alice and Bob exchange the mixtures. This is the most critical step for communication because a <a href="https://en.wikipedia.org/wiki/Man-in-the-middle_attack">man-in-the-middle</a> could get access to those two mixtures. There is also a problem if the <a href="https://en.wikipedia.org/wiki/Man-in-the-middle_attack">man-in-the-middle</a> has both mixtures. Colour decomposition is irreversible. So the only chance to find two’s secret colour is mixing all possible colours with the common colour from step one. Also, remember that a secret colour can be also a mixture of many other colours.</p>
+<ol type="1">
+<li><p><strong>Step 1</strong>: Alice and Bob come to an agreement for a common colour.</p></li>
+<li><p><strong>Step 2</strong>: Alice choose her secret colour that will not tell to Bob. Bob will do the same thing.</p></li>
+<li><p><strong>Step 3</strong>: Alice will mix the common colour with the secret one and the result is a mixture. Bob will also mix his secret colour with the common one and will obtain a different mixture from Alice’s one.</p></li>
+<li><p><strong>Step 4</strong>: Alice and Bob exchange the mixtures. This is the most critical step for communication because a <a href="https://en.wikipedia.org/wiki/Man-in-the-middle_attack">man-in-the-middle</a> could get access to those two mixtures. There is also a problem if the <a href="https://en.wikipedia.org/wiki/Man-in-the-middle_attack">man-in-the-middle</a> has both mixtures. Colour decomposition is irreversible. So the only chance to find two’s secret colour is mixing all possible colours with the common colour from step one. Also, remember that a secret colour can be also a mixture of many other colours.</p></li>
+</ol>
 <p><strong>Update:</strong> Diffie-Hellman does not protect you from a <a href="https://en.wikipedia.org/wiki/Man-in-the-middle_attack">man-in-the-middle</a> attack. To see why, imagine an attacker receiving all messages from Alice and replaying them back to Bob.</p>
-<p><strong>Step 5</strong>: Alice will add again her secret colour to the mixture that Bob sent to her. Bob will follow the same steps.</p>
+<ol start="5" type="1">
+<li><strong>Step 5</strong>: Alice will add again her secret colour to the mixture that Bob sent to her. Bob will follow the same steps.</li>
+</ol>
 <p>Finally Alice and Bob will obtain <strong>a common</strong> secret colour. Now, Alice and Bob can safely exchange the symmetric-key we were talking in a previous chapter, because they can encrypt and decrypt any message (sent through a communication channel) using the above <strong>secret colour</strong>.</p>
 <p>And here comes math. It is always about math when we do not have enough colours.</p>
 <p><strong>Step 1</strong>: Alice and Bob come to an agreement for two large numbers: one <a href="https://en.wikipedia.org/wiki/Prime_number">prime</a> <code>p</code> (recommended at least 512 bits) and a base <code>g</code> (a <a href="https://en.wikipedia.org/wiki/Primitive_root_modulo_n">primitive root</a> of <code>p</code>).</p>
@@ -132,7 +146,7 @@ b &lt; p-1</code></pre>
 <p><strong>Step 3</strong>: Alice computes public value <code>x = g^a mod p</code>. Bob computes public value <code>y = g^b mod p</code>, where <code>mod</code> is <a href="https://en.wikipedia.org/wiki/Modulo_operation">modulo operator</a>.</p>
 <p><strong>Step 4</strong>: Alice and Bob exchange <code>x</code> and <code>y</code>.</p>
 <p><strong>Step 5</strong>: Alice computes her secret key <code>k_a = y^a mod p</code>. Bob computes his secret key <code>k_b = x^b mod p</code>. Mathematically it can be proved that <code>k_a = k_b</code>. Alice and Bob now have a common secret key used for encryption and decryption of any plaintext they exchange to safely communicate.</p>
-<p>Example:</p>
+<p><em>Example:</em></p>
 <pre><code>p = 23, g = 5
 a = 6
 b = 15
@@ -161,7 +175,10 @@ k_b = 8^15 mod 23 = 35184372088832 mod 23 = 2</code></pre>
 =
 0100100001100101011011000110110001101111 = M (original message)</code></pre>
 <p>Why it is this algorithm important? Because protocols like: <a href="https://en.wikipedia.org/wiki/Secure_Sockets_Layer">SSL</a>, <a href="https://en.wikipedia.org/wiki/Transport_Layer_Security">TSL</a>, <a href="https://en.wikipedia.org/wiki/Secure_Shell">SSH</a>, <a href="https://en.wikipedia.org/wiki/Public-key_infrastructure">PKI</a> or <a href="https://en.wikipedia.org/wiki/IPsec">IPSec</a>, all use Diffie-Hellman.</p>
-<h3 id="public-key-cryptography">Public key cryptography</h3>
+</section>
+</section>
+<section id="public-key-cryptography" class="level3">
+<h3>Public key cryptography</h3>
 <p>Safe key distribution is resolved by <em>public-key</em> because it does not require a secure initial key exchange between you and your roommate. This <a href="https://en.wikipedia.org/wiki/Cryptosystem">cryptosystem</a> is an <em>asymmetric-key</em> encryption – in contrast to <em>symmetric-key</em> – that uses a pair of keys (two separate keys): a <em>public key</em> for encoding and a <em>private key</em>, also called <em>secret key</em>, for decoding. The <em>public-key</em> should not compromise the <em>private-key</em> even though both are linked.</p>
 <pre><code>public-key != private-key</code></pre>
 <p>We can compare the asymmetric-key <a href="https://en.wikipedia.org/wiki/Cryptosystem">cryptosystem</a> with an e-mail account. Your e-mail address is accessible to wide public (anyone can send you an e-mail at your@email.com, for example) but you are the only one who has the password to log in (that means only you can read the content of the e-mails). The public-key is your e-mail address and the private-key is the password linked with your e-mail address.</p>
@@ -174,7 +191,9 @@ k_b = 8^15 mod 23 = 35184372088832 mod 23 = 2</code></pre>
 <p>Advantages: Convenience and security is increased.</p>
 <p>Disadvantages: Slow encryption speed. All public-private keys are susceptible to <a href="https://en.wikipedia.org/wiki/Brute-force_attack">brute-force attack</a> (this can be avoided by choosing large key size). You can not verify partner’s identity (vulnerable to impersonation).</p>
 <p><strong>Usage</strong>: Since large key size produces too large output of encrypted message, encrypting and transmitting messages take longer. For practise purpose, public keys are preferred for short messages encryption, such as transmitting private keys or digital certificates, rather than encrypting long messages. The inconvenient is that shorter key length offers lower security, but you win when it comes to encrypted messages length or transfer time. Because of that, keys should be frequently replaced with new ones.</p>
-<h3 id="rsa">RSA</h3>
+</section>
+<section id="rsa" class="level3">
+<h3>RSA</h3>
 <p>RSA named for Rivest, Shamir and Adleman, is the next implementation of public key cryptosystem that use Diffie-Hellman method described in a previous paragraph. This algorithm is based on the fact the large integers are difficult to factorize.</p>
 <p>I will explain RSA algorithm step by step not before I assume you love math :)</p>
 <p>First of all you should have knowledge about <a href="https://en.wikipedia.org/wiki/Modulo_operation">mod (modulo operation)</a> and <a href="https://en.wikipedia.org/wiki/Coprime_integers">coprime integers</a>.</p>
@@ -218,7 +237,9 @@ x^((p-1)*(q-1)+1) mod p*q = x</code></pre>
 <pre><code>ciphertext = plaintext^E mod p*q
 plaintext = ciphertext^D mod p*q</code></pre>
 <p>Attacks against RSA is based on the weakness of exponent <code>E</code> and small <code>ciphertext</code> if the result <code>ciphertext^E &lt; p*q</code>. It is recommended to use large key size of encryption.</p>
-<h3 id="hash-functions">Hash functions</h3>
+</section>
+<section id="hash-functions" class="level3">
+<h3>Hash functions</h3>
 <p>So far we are glad that we can protect the content of messages we exchange over an untrusted connection, but we never addressed the problem of content integrity. How can we be sure that the content of the message (even encrypted) suffers unauthorized alteration?</p>
 <p>A hash function or as we call ‘a one-way function’ or ‘irreversible function’ or ‘non-bijective function’ is a function that takes as input a message of variable length and produces a fixed-length output.</p>
 <p>For example, calculate the <a href="https://en.wikipedia.org/wiki/Checksum">checksum</a> of the following string using different hash functions:</p>
@@ -248,7 +269,9 @@ tibi@tbarbu-pc:~/hash_collision$ md5sum message1 message2
 1e934ac2f323a9158b43922500ca7040  message1
 1e934ac2f323a9158b43922500ca7040  message2</code></pre>
 <p>As you can see two files with different content – only 6 bytes in this case had to be changed – have the same MD5 checksum. We call this hash collision.</p>
-<h3 id="digital-certificate">Digital certificate</h3>
+</section>
+<section id="digital-certificate" class="level3">
+<h3>Digital certificate</h3>
 <p>We have been talking for a long time about encryption and decryption but what if our cryptosystem is secure enough though we can not be sure about the real identity of the person he/she pretends to be? Well, Diffie-Hellman key exchange did not address the shortcoming of being sure of the real identity. Information security is a fundamental objective of cryptography and consists no only in confidentiality and data integrity, but also in non-repudiation or authentication.</p>
 <p>Before talking about certificate, let’s see how does digital signature work. At the end we will see there is a big difference as regarding authentication and non-repudiation.</p>
 <p>As we discussed about <em>asymmetric-key</em> and <em>hash functions</em>, we will explain why are those important for digital signature. An analog to digital signature is the handwriting signature. Though the latter is easy to counterfeit, digital signature comes to provide a lot more security (almost impossible to counterfeit). Let’s see how it works:</p>
@@ -265,7 +288,9 @@ tibi@tbarbu-pc:~/hash_collision$ md5sum message1 message2
 <p><img style="float:center" src="./images/encoding.png" alt="Digital signing" width="685" height="159" /></p>
 <p><img style="float:center" src="./images/decoding.png" alt="Verifying digital
 signature" width="685" height="239" /></p>
-<h3 id="gnupg-gpg">GnuPG (GPG)</h3>
+</section>
+<section id="gnupg-gpg" class="level3">
+<h3>GnuPG (GPG)</h3>
 <p>Gnu Privacy Guard is an alternative option to the <a href="https://en.wikipedia.org/wiki/Pretty_Good_Privacy">PGP</a>. What is more exactly GPG, why and how to use it? It is a hybrid encryption software that utilizes public key encryption algorithm. Despite PGP, which makes use of <a href="https://en.wikipedia.org/wiki/International_Data_Encryption_Algorithm">IDEA</a> (a patented encryption algorithm), GnuPG utilize other algorithms like asymmetric-key, hash functions, symmetric-key or digital signatures.</p>
 <p>Let’s see GnuPG in action.</p>
 <p>Install GnuPG:</p>
@@ -499,6 +524,7 @@ roT/qVfAyNwDijRZb/INy8UEBd9am+8LyCjC1pJgKv5HqBbvyDNYTcB/EBa2YjUU
 gpg: Signature made Mon 17 Sep 2012 12:01:35 PM EEST using RSA key ID ECB916DC
 gpg: Good signature from &quot;Tiberiu (This is my GPG key) &lt;email@home.com&gt;&quot;</code></pre>
 <p><a href="http://www.youtube.com/watch?v=gBzJGckMYO4">That’s all folks</a>. Thank you and I hope you find this guide useful.</p>
+</section>
 
     </div>
   </div>

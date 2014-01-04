@@ -87,7 +87,7 @@
       <span class="date">
       <span class="published">Published on October  3, 2011</span>
       by
-      <span class="author">Razvan</span>
+      <span class="author">Răzvan Deaconescu</span>
       </span>
 
       <br />
@@ -98,72 +98,70 @@
 
       <p>This article aims to shed some light on the topic of library management with insight on the linker and loader. The <code>ldconfig</code> command, for example, is heavily used in Linux, though unknown to some of users.</p>
 <p>A library is a collection of object files “meshed” together in another file. Its benefit is avoiding “reimplementing the wheel”. Once one has implemented a given set of functionalities, he/she may store those in a library file; this file is distributed to others and used in various software projects. Libraries are heavily used in all modern operating systems; the greater part of packages in Linux distributions are library packages. One can barely imagine being able to do any kind of development without the presence of the C Standard Library on the local system.</p>
-<h1 id="linking-and-loading">Linking and Loading</h1>
+<section id="linking-and-loading" class="level3">
+<h3>Linking and Loading</h3>
 <p>A library is said to be “linked” together with other library files or object files into an executable. The executable integrates all required components from library files, avoiding the need of implementing these components from scratch.</p>
 <p>Linking is thus the process where external references in each module (object file) are resolved; that is, undefined functions are now looked in other linked modules or library files and their code is used in the executable. The linker is the application responsible for resolving and integrating functions in the end executable file.</p>
-<p>With respect to the phase when linking occurs, we differentiate between three types of linking: 1. static linking 2. load-time dynamic linking 3. run-time dynamic linking</p>
+<p>With respect to the phase when linking occurs, we differentiate between three types of linking:</p>
+<ol type="1">
+<li>static linking</li>
+<li>load-time dynamic linking</li>
+<li>run-time dynamic linking</li>
+</ol>
 <p>The above nomenclature is specific to MSDN (<a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ms684184(v=vs.85).aspx" title="Load-Time Dyamic Linking">load-time dynamic linking</a> and <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ms685090(v=vs.85).aspx" title="Run-Time Dynamic Linking">run-time dynamic linking</a>) but it’s a good depiction of any system using dynamic linking.</p>
 <p>When using static linking, required library function code is inserted into the executable at link-time. Link-time refers to the moment when the linker process (<code>ld</code>) is invoked (typically wrapped by the <code>gcc</code> command). The result is an executable that comprises all required code to create a process.</p>
 <p>When using dynamic linking, the linker process does not integrate code from the library. It simply creates stubs in the executable code stating what library file should be looked for that function. The actual “linking”, that is the “integration” of code in the executable, is done later.</p>
 <p>Depending on the “later” part of dynamic linking, we differentiate between two types of linking. Load-time is when a process is created from an executable; the loader is responsible for “transforming” an executable into a process (actually, it’s not a transformation, but an instantiation). Run-time is the time while the process is running (using memory space, running code on the CPU etc.).</p>
 <p>For load-time dynamic linking, the linking is done at load-time. That is, when running the executable (<code>./myexec</code>) and when the process is created, code from the library is mapped into memory and then referred to by the newly created process. For run-time dynamic linking, a specialized API allows the developer to load the library code into memory and, on demand, use specific functions.</p>
-<h1 id="library-types">Library types</h1>
+</section>
+<section id="library-types" class="level3">
+<h3>Library types</h3>
 <p>Modern OSes such as Windows, Linux, Mac OS X and other Unices use two types of libraries, strongly related to the types of linking shown above: <em>static libraries</em> and <em>dynamic libraries</em>. Static libraries are used in conjunction with static linking, while dynamic libraries with load-time/run-time dynamic linking.</p>
 <p>Static libraries use the <code>.a</code> extension on Unix and <code>.lib</code> on Windows. Each time some modules are linked against a library file, static linking is enabled and code for functions used is copied into the executable file.</p>
-<pre>
-    ar rc libtest.a module1.o module2.o
-    gcc -o myexec exec.o -L. -l test
-</pre>
-
+<pre><code>ar rc libtest.a module1.o module2.o
+gcc -o myexec exec.o -L. -l test</code></pre>
 <p>Dynamic libraries are called shared-object library on Unix and use the <code>.so</code> extension on Unix. On Windows, they are called dynamic-link libraries and use the <code>.dll</code> extensions. If a shared-object library is linked against a module, only references to the library are filled, no actual code is copied; that step is done later on (either at load-time or run-time).</p>
 <p>In order to use a shared-object library for load-time linking, one would simply pass it as an argument to the linker:</p>
-<pre>
-    gcc -share -fPIC -o libtest.so module1.o module2.o
-    gcc -o myexec exec.o -L. -l test
-    LD_LIBRARY_PATH=. ./myexec
-</pre>
-
+<pre><code>gcc -share -fPIC -o libtest.so module1.o module2.o
+gcc -o myexec exec.o -L. -l test
+LD_LIBRARY_PATH=. ./myexec</code></pre>
 <p>When the loader creates a new process (<code>LD_LIBRARY_PATH=. ./myexec</code>), the library (<code>libtest.so</code>) is mapped into memory and necessary function code is accessed.</p>
 <p>The use of run-time linking requires a specialized API for loading needed function code while the process is running: <a href="http://linux.die.net/man/3/dlopen" title="dlopen(3) - Linux man page">dlopen &amp; friends</a>. A sample is shown below:</p>
-<pre>
-    double (*cosine)(double);
+<pre class="sourceCode cpp"><code class="sourceCode cpp">    <span class="dt">double</span> (*cosine)(<span class="dt">double</span>);
 
-    handle = dlopen (&quot;libm.so&quot;, RTLD_LAZY);
-    cosine = dlsym(handle, &quot;cos&quot;);
-    printf (&quot;%f\n&quot;, (*cosine)(2.0));
-</pre>
-
+    handle = dlopen (<span class="st">&quot;libm.so&quot;</span>, RTLD_LAZY);
+    cosine = dlsym(handle, <span class="st">&quot;cos&quot;</span>);
+    printf (<span class="st">&quot;%f</span><span class="ch">\n</span><span class="st">&quot;</span>, (*cosine)(<span class="fl">2.0</span>));</code></pre>
 <p>Unlike static and load-time dynamic linking, run-time dynamic linking doesn’t require the presence of a library argument to the link command (that is <code>-L. -ltest</code>).</p>
 <p>Advantages of a certain type of library (static or dynamic) are disadvantages for the other one and vice versa.</p>
 <p>Static library-generated executables have increased portability. All code is inserted into the executable such that, moving it on a different platform doesn’t require the presence of that library. These executables tend to be faster as no additional overhead is implied during load-time or run-time.</p>
 <p>Dynamic library-generated executables have two main advantages: they are smaller in size and library files have a smaller memory footprint. The first advantage is due to not copying function code at link time: only references are added to the executable without additional code. The second advantage is stated in the Unix name for dynamic libraries: shared-object libraries. A library may be mapped in memory and all processes that use the library would use the same code. Thus, 50 processes that use the C standard library would require a single instance of the library to be mapped in memory.</p>
-<h1 id="library-management">Library Management</h1>
+</section>
+<section id="library-management" class="level3">
+<h3>Library Management</h3>
 <p>When discussing about library management, we are talking about dynamic libraries. This is due to the fact that, when using the library code (either at load-time or run-time), the loader needs to know where to find the requested libraries.</p>
 <p>The Linux loader is called <code>ld-linux.so</code>. As stated in the <a href="http://linux.die.net/man/8/ld-linux" title="ld-linux(8): dynamic linker/loader - Linux man page">man page</a>: “The programs ld.so and ld-linux.so find and load the shared libraries needed by a program, prepare the program to run, and then run it.” The loader needs to lookup shared libraries in order to run the program and instantiate a process.</p>
 <p>Bear in mind that the <code>-L.</code> option passed to GCC when doing linking is only used at link-time. It’s used to locate the library at link-time, not at load-time or run-time.</p>
 <p>In order to configure the loader to lookup libraries for dynamic linking in a given folder (for example, the current folder – <code>.</code>), there are two main options: using the <code>LD_LIBRARY_PATH</code> environment variable or the <code>ldconfig</code> command.</p>
 <p>The <code>LD_LIBRARY_PATH</code> variable is a list of colon delimited folders where libraries are searched. It must be set when the loader is invoked – that is, when running the executable:</p>
-<pre>
-    export LD_LIBRARY_PATH=.
-    ./myexec
-</pre>
-
+<pre><code>export LD_LIBRARY_PATH=.
+./myexec</code></pre>
 <p>Using the <code>LD_LIBRARY_PATH</code> variable is excellent for testing. It does however pose two disadvantages: it does not allow persistent configuration and it may suffer from <a href="http://www.unix.com/unix-dummies-questions-answers/22806-why-bad-idea-insert-dot-path.html" title="Why is is a Bad Idea to Insert . (Dot) to PATH?">security vulnerabilities similar to the PATH environment variable</a>.</p>
 <p>The configuration approach is the use of the <code>ldconfig</code> command. <code>ldconfig</code> is used to populate the library list cache file <code>/etc/ld.so.cache</code>. The cache file is read by the loader to search for libraries. On Debian-based systems, every time you install a library, <code>ldconfig</code> is run to populate the cache file.</p>
 <p>In order to incorporate a new folder in the library search path, one may resort to a persistent configuration or a temporary one. For a temporary run, simply pass the new folder to <code>ldconfig</code>:</p>
-<pre>
-    razvan@einherjar:~/code$ /sbin/ldconfig -p | grep libtest
-    razvan@einherjar:~/code$ sudo /sbin/ldconfig /home/razvan/code/
-    razvan@einherjar:~/code$ /sbin/ldconfig -p | grep libtest
-    	libtest.so (libc6,x86-64) =&gt; /home/razvan/code/libtest.so
-</pre>
-
+<pre><code>razvan@einherjar:~/code$ /sbin/ldconfig -p | grep libtest
+razvan@einherjar:~/code$ sudo /sbin/ldconfig /home/razvan/code/
+razvan@einherjar:~/code$ /sbin/ldconfig -p | grep libtest
+	libtest.so (libc6,x86-64) =&gt; /home/razvan/code/libtest.so</code></pre>
 <p>For a persistent, configuration, one would need to edit the configuration file and/or folder for <code>ldconfig</code>, namely <code>/etc/ld.so.conf</code> and <code>/etc/ld.so.conf.d/</code>. Simply add a new folder in the configuration file and run <code>ldconfig</code>.</p>
 <p>When using <a href="http://linux.die.net/man/3/dlopen" title="dlopen(3) - Linux man page">dlopen &amp; friends</a>, the same kind of configurations may be used: <code>LD_LIBRARY_PATH</code>, temporary use of <code>ldconfig</code> and persistent use of <code>/etc/ld.so.conf</code>.</p>
-<h1 id="conclusion-and-further-info">Conclusion and Further Info</h1>
+</section>
+<section id="conclusion-and-further-info" class="level3">
+<h3>Conclusion and Further Info</h3>
 <p>Extensive information about the actions used by the loader to use dynamic libraries are found in man pages: <a href="http://linux.die.net/man/8/ld-linux" title="ld-linux(8): dynamic linker/loader - Linux man page">ld-linux.so</a>, <a href="http://linux.die.net/man/8/ldconfig" title="ldconfig(8) - Linux man page">ldconfig</a> and <a href="http://linux.die.net/man/3/dlopen" title="dlopen(3) - Linux man page">dlopen &amp; friends</a>.</p>
 <p><a href="http://books.google.com/books?id=Id9cYsIdjIwC" title="John R. Levine – Linkers &amp; Loaders">John R. Levine’s “Linkers &amp; Loaders”</a> is an extensive depiction of linkers, loaders, libraries and the load process.</p>
 <p>Proper knowledge of library management on a Linux based system relies on good understanding of the linking and loading processes and library types. Make sure you understand the advantages and disadvantages of each approach and choose the one most suitable to your specific needs.</p>
+</section>
 
     </div>
   </div>

@@ -87,7 +87,7 @@
       <span class="date">
       <span class="published">Published on October  9, 2011</span>
       by
-      <span class="author">Daniel</span>
+      <span class="author">Daniel Băluță</span>
       </span>
 
       <br />
@@ -96,17 +96,17 @@
         <span class="tags"><a href="./tags/arrays.html">arrays</a>, <a href="./tags/pointers.html">pointers</a>, <a href="./tags/extern.html">extern</a>, <a href="./tags/C.html">C</a></span>
       </span>
 
-      <p>The idea for this post came from <a href="http://techblog.rosedu.org/arrays-vs-pointers.html#IDComment189927033">Virgil’s</a> comment on [char[] versus char*][old-art] entry. We will dig into some of C’s extern keyword internals by means of examples and then analyze the differences between <code>extern char</code>* and <code>extern char</code>[].</p>
+      <p>The idea for this post came from <a href="http://techblog.rosedu.org/arrays-vs-pointers.html#IDComment189927033">Virgil’s</a> comment on <a href="http://techblog.rosedu.org/arrays-vs-pointers.html">char[] versus char*</a> entry. We will dig into some of C’s extern keyword internals by means of examples and then analyze the differences between <code>extern char*</code> and <code>extern char[]</code>.</p>
 <p><code>extern</code> is a storage class specifier, indicating that the actual storage of a variable or the definition of a function is located elsewhere, typically in another source file.</p>
 <p><img style="float:right" src="./images/c-extern-simple-usage.png" alt="C extern simple usage" width="227" height="263" /></p>
 <p>Let’s start with a simple example:</p>
 <p><strong>helper.c</strong></p>
-<pre><code>int sample = 42; /* definition */</code></pre>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">int</span> sample = <span class="dv">42</span>; <span class="co">/* definition */</span></code></pre>
 <p><strong>main.c</strong></p>
-<pre><code>extern int sample; /* declaration */
-int main(void)
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="kw">extern</span> <span class="dt">int</span> sample; <span class="co">/* declaration */</span>
+<span class="dt">int</span> main(<span class="dt">void</span>)
 {
-	printf(&quot;sample = %d\n&quot;, sample);
+	printf(<span class="st">&quot;sample = %d</span><span class="ch">\n</span><span class="st">&quot;</span>, sample);
 }</code></pre>
 <p>Having obtained the corresponding object files <code>helper.o</code> and <code>main.o</code> we link them together into an executable named <code>main</code>. We will use the <a href="http://linux.die.net/man/1/nm">nm</a> tool to check the symbols from each object file:</p>
 <pre><code>$ nm helper.o
@@ -114,58 +114,61 @@ int main(void)
 $ nm main.o
          U sample
 00000000 T main</code></pre>
-<p>Notice that the symbol <code>sample</code> is only declared in <code>main.c</code> but not defined there. In the linking phase, the linker searches throughout all linked object files and finds out that the actual storage for <code>sample</code> is defined in <code>helper.c</code>. As a result our <code>main</code> executable will print value <code>42</code> declared in <code>helper.c</code> external file:</p>
+<p>Notice that the symbol <code>sample</code> is only declared in <code>main.c</code> but not defined there. In the linking phase, the linker searches through all linked object files and finds out that the actual storage for <code>sample</code> is defined in <code>helper.c</code>. As a result our <code>main</code> executable will print value <code>42</code> declared in <code>helper.c</code> external file:</p>
 <pre><code>$./main
 sample = 42</code></pre>
 <p>Now let’s see how the compiler behaves if the types for cross-referenced variables do not match:</p>
 <p><strong>foo.c</strong></p>
-<pre><code>char *foo = &quot;Hello&quot;;</code></pre>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">char</span> *foo = <span class="st">&quot;Hello&quot;</span>;</code></pre>
 <p><strong>main.c</strong></p>
-<pre><code>void foo(void);
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">void</span> foo(<span class="dt">void</span>);
 
-int main(void)
+<span class="dt">int</span> main(<span class="dt">void</span>)
 {
 	foo();
-	return 0;
-}
-$ gcc -Wall -c foo.c -o foo.o
+	<span class="kw">return</span> <span class="dv">0</span>;
+}</code></pre>
+<pre><code>$ gcc -Wall -c foo.c -o foo.o
 $ gcc -Wall -c main.c -o main.o
 $ gcc -o main main.o foo.o
 $ ./main
 Segmentation fault</code></pre>
-<p>Functions are by default extern, hence the declaration of symbol <code>foo</code> in <code>main.c</code> file allows the compiler to create <code>main.o</code> object file without errors or warnings. Anyhow, the linker does not check the type of symbol <code>foo</code>; thus, running the <code>main</code> executable results in a function call into an non-executable memory area.</p>
+<p>Functions are by default extern, hence the declaration of symbol <code>foo</code> in <code>main.c</code> file allows the compiler to create <code>main.o</code> object file without errors or warnings.</p>
+<p>Anyhow, the linker does not check the type of symbol <code>foo</code>; thus, running the <code>main</code> executable results in a function call into an non-executable memory area.</p>
 <p>Finally, let’s analyze if we can use a pointer and an array interchangeably between 2 source files.</p>
-<p>First try. The file <code>main.c</code> declares an extern array of chars, leaving it to the linker to find the actual storage area defined for it. File <code>pointer.c</code> defines a pointer to a memory area holding a string literal. At link time, the symbol <code>str</code> from <code>main.c</code> is bound to a memory area representing the address of a string.</p>
+<p><em>First try</em></p>
+<p>The file <code>main.c</code> declares an extern array of chars, leaving it to the linker to find the actual storage area defined for it. File <code>pointer.c</code> defines a pointer to a memory area holding a string literal. At link time, the symbol <code>str</code> from <code>main.c</code> is bound to a memory area representing the address of a string.</p>
 <p><img style="float:right" src="./images/c-extern-char.png" alt="C extern simple usage" width="217" height="252" /></p>
 <p><strong>pointer.c</strong></p>
-<pre><code>char *str = &quot;1234&quot;;
-char a = 'A'; /* memory guards */
-char b = 'B';
-char c = 'C';</code></pre>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">char</span> *str = <span class="st">&quot;1234&quot;</span>;
+<span class="dt">char</span> a = 'A'; <span class="co">/* memory guards */</span>
+<span class="dt">char</span> b = 'B';
+<span class="dt">char</span> c = 'C';</code></pre>
 <p><strong>main.c</strong></p>
-<pre><code>extern char str[];
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="kw">extern</span> <span class="dt">char</span> str[];
 
-int main(void)
+<span class="dt">int</span> main(<span class="dt">void</span>)
 {
-	printf(&quot;%s\n&quot;, str);
-	return 0;
+	printf(<span class="st">&quot;%s</span><span class="ch">\n</span><span class="st">&quot;</span>, str);
+	<span class="kw">return</span> <span class="dv">0</span>;
 }</code></pre>
 <p>By compiling and linking <code>main.c</code> and <code>pointer.c</code> together we get <code>main</code> executable.</p>
 <pre><code>$ ./main
 \�ABC</code></pre>
 <p>Notice how the array <code>str</code> is mapped to a memory area where an address is stored. The <code>printf</code> function will display raw data until a <code>\0</code> is encountered. Fortunately, because of our guarding arrays, printing stops after showing some garbage and string <code>ABC</code>.</p>
-<p>Second try. The file <code>main.c</code> declares a pointer to a memory area holding one or more characters. The linker will associate <code>str</code> from <code>main.o</code> with the storage defined by <code>str</code> array from <code>array.o</code>.</p>
+<p><em>Second try</em></p>
+<p>The file <code>main.c</code> declares a pointer to a memory area holding one or more characters. The linker will associate <code>str</code> from <code>main.o</code> with the storage defined by <code>str</code> array from <code>array.o</code>.</p>
 <p><img style="float:right" src="./images/c-extern-pointer.png" alt="C extern simple usage" width="217" height="252" /></p>
 <p><strong>array.c</strong></p>
-<pre><code>char str[] = &quot;1234&quot;;</code></pre>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">char</span> str[] = <span class="st">&quot;1234&quot;</span>;</code></pre>
 <p><strong>main.c</strong></p>
-<pre><code>extern char *str;
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="kw">extern</span> <span class="dt">char</span> *str;
 
-int main(void)
+<span class="dt">int</span> main(<span class="dt">void</span>)
 {
-	printf(&quot;%s\n&quot;, str);
+	printf(<span class="st">&quot;%s</span><span class="ch">\n</span><span class="st">&quot;</span>, str);
 
-	return 0;
+	<span class="kw">return</span> <span class="dv">0</span>;
 }</code></pre>
 <p>By compiling and linking together these programs we notice that running the <code>main</code> executable results in a crash.</p>
 <pre><code>$ ./main

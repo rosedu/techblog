@@ -87,7 +87,7 @@
       <span class="date">
       <span class="published">Published on May  8, 2012</span>
       by
-      <span class="author">Mihai Tiriplica</span>
+      <span class="author">Mihai Tiriplică</span>
       </span>
 
       <br />
@@ -97,7 +97,8 @@
       </span>
 
       <p>In working with large projects it is necessary to compile from multiple sources. Since this is quite difficult, different tools have been developed to make this task easier. One such tool is GNU Make and the associated executable is <code>make</code>. Make solves compilation from multiple sources problem using the dependency relationships between them, described in a special file usually called <code>Makefile</code>.</p>
-<h3 id="syntax">Syntax</h3>
+<section id="syntax" class="level3">
+<h3>Syntax</h3>
 <p>The file which describes the dependency relationships between project’s sources. It should be named <code>Makefile</code> or <code>makefile</code> and has the following syntax:</p>
 <pre><code>target: dependency_list
 &lt;tab&gt;command</code></pre>
@@ -116,9 +117,13 @@ bar.o: bar.c
 	gcc -c bar.c -o bar.o
 main.o: main.c
 	gcc -c main.c -o main.o</code></pre>
-<h3 id="how-it-works">How it works</h3>
+</section>
+<section id="how-it-works" class="level3">
+<h3>How it works</h3>
 <p>A particular target is executed by running <code>make target</code>. If there is no argument, it will execute the first target described. To execute a target all of his dependencies must be satisfied. For our example, <code>exec</code> target is executed only after <code>foo.o</code>, <code>bar.o</code>, <code>main.o</code>, which are conditioned by <code>foo.c</code>, <code>bar.c</code>, <code>main.c</code>, are obtained.</p>
-<h3 id="variables">Variables</h3>
+</section>
+<section id="variables" class="level3">
+<h3>Variables</h3>
 <p>In Makefile files we can declare variables to replace commonly used sequences or which are changed frequently. The variables’ values are obtained using the character <code>$</code>: <code>$(variable_name)</code>. For the example above, let’s suppose that one of the source files uses functions from <code>math.h</code>. We will declare a variable that is meant to specify that for linking:</p>
 <pre><code>LDFLAGS=-lm
 exec: foo.o bar.o main.o
@@ -129,7 +134,12 @@ bar.o: bar.c
 	gcc -c bar.c -o bar.o
 main.o: main.c
 	gcc -c main.c -o main.o</code></pre>
-<p>Make offers several predefined variables, of which the most important are: * <code>$@</code> - target’s name * <code>$^</code> - dependecies list * <code>$&lt;</code> - the first dependencie</p>
+<p>Make offers several predefined variables, of which the most important are:</p>
+<ul>
+<li><code>$@</code> - target’s name</li>
+<li><code>$^</code> - dependecies list</li>
+<li><code>$&lt;</code> - the first dependencie</li>
+</ul>
 <p>The Makefile above can be written in a more simple way:</p>
 <pre><code>CC=gcc
 LDFLAGS=-lm
@@ -141,21 +151,27 @@ exec: ana.o are.o mere.o
 <pre><code>export variable</code></pre>
 <p>Inverse transformation is done using <code>unexport</code>:</p>
 <pre><code>unexport variable</code></pre>
-<h3 id="phony-target">.PHONY target</h3>
+</section>
+<section id="phony-target" class="level3">
+<h3>.PHONY target</h3>
 <p>If we want a target to be marked permanently as out of date we will use the <code>.PHONY</code> target. Let’s consider that there is a pack target that creates an archive which contains the project’s sources. If there is one source named <code>pack</code> and it does not change, the command associated with this target will not be executed. For this we use <code>.PHONY</code>. Also, by convention all Makefile files contain a <code>.PHONY</code> target called <code>clean</code> used to delete the files obtained from compiling or running the program.</p>
 <pre><code>.PHONY: pack
 pack:
 	zip -r project.zip *
 clean:
 	rm *.o *.zip exec</code></pre>
-<h3 id="implicit-rules">Implicit Rules</h3>
+</section>
+<section id="implicit-rules" class="level3">
+<h3>Implicit Rules</h3>
 <p>Make allows us to use a simplified syntax. For example we don’t always have to write a command for some targets. This is called an implicit rule:</p>
 <pre><code>ana.o: ana.c</code></pre>
 <p>Another implicit rule is that when running the command <code>make source.c</code>, the file source.c will be compiled even if there is no Makefile. Implicit rules use the environment variables. Thus, the example considered by us is equivalent to:</p>
 <pre><code>ana.o: ana.c
 	$(CC) -c $(LDFLAGS) ana.c -o ana.o</code></pre>
 <p>Because implicit rules use environment variables, it is easy to modify their behavior by a simple change of the variables’ values.</p>
-<h3 id="final-touches">Final touches</h3>
+</section>
+<section id="final-touches" class="level3">
+<h3>Final touches</h3>
 <p>In many cases, the first target in a Makefile is a target that compiles all of the sources. It is very useful because we don’t have to specify a target every time we are running make.</p>
 <p>Adding these changes to our example we get a complete Makefile:</p>
 <pre><code>CC=gcc
@@ -175,6 +191,7 @@ main.o: main.c
 
 .PHONY: clean
 	rm -rf *.o exec</code></pre>
+</section>
 
     </div>
   </div>
