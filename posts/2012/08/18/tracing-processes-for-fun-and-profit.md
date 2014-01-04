@@ -73,7 +73,7 @@ file descriptor. Looking backwards we find:
 Using these clues, we can construct a new source file which will compile into
 an application which has the exact same bug and nothing more:
 
-{% highlight cpp %}
+~~~ cpp
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -86,7 +86,7 @@ int main ()
         fgets(a, SIZE, f);
         return 0;
 }
-{% endhighlight %}
+~~~
 
 Of course, the building of a new application is not always needed. In our
 case, we see that we are reading from `dev/random`. Knowing that this requires

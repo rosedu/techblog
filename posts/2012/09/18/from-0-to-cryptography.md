@@ -16,13 +16,16 @@ Do you think it is safer by plane?
 
 ### Terminology
 
-*plaintext* or *cleartext* : intelligible message that sender wants to transmit to a receiver
+* *plaintext* or *cleartext* : intelligible message that sender wants to
+transmit to a receiver
 
-*ciphertext* : unintelligible message resulted from *plaintext* encryption using a [cryptosystem][cryptosys]
+* *ciphertext* : unintelligible message resulted from *plaintext* encryption
+using a [cryptosystem][cryptosys]
 
-*encryption* : the process of converting a *plaintext* into a *ciphertext*
+* *encryption* : the process of converting a *plaintext* into a *ciphertext*
 
-*decryption* : the process of converting a *ciphertext* into a *plaintext* (reverse of *encryption*)
+* *decryption* : the process of converting a *ciphertext* into a *plaintext*
+(reverse of *encryption*)
 
 ### Conventional cryptography
 
@@ -30,10 +33,10 @@ It is also called *symmetric-key* or *shared-key* encryption. The same key is
 used to encrypt and decrypt a message. Consider this example as a conventional
 cryptography:
 
-*You and your roommate, both use the same key to lock/unlock the door of your
+> You and your roommate, both use the same key to lock/unlock the door of your
 house. Thus, you share the same key to secure the room. It is true that your
 roommate could have a copy of your key so he can join the room when you are at
-work or vice-versa.*
+work or vice-versa.
 
 Example of conventional [cryptosystems][cryptosys] that use *symmetric-key*:
 [Data Encryption Standard (DES)][des], [Advanced Encryption Standard
@@ -42,10 +45,10 @@ Example of conventional [cryptosystems][cryptosys] that use *symmetric-key*:
 Advantages: Fast.
 
 Disadvantages: Not safe! The sender and receiver must agree upon a secret key
-and prevent others from getting access to it. There is also a big problem if they
-are not in the same physical location because of key distribution. How could
-you give your home key to your roommate, which is in America while you are in
-China?
+and prevent others from getting access to it. There is also a big problem if
+they are not in the same physical location because of key distribution. How
+could you give your home key to your roommate, which is in America while you
+are in China?
 
 Practical advice: Symmetric key should be changed with any message, so that
 only one message can be leaked in case of disaster (crypt-analysed, stole,
@@ -70,29 +73,29 @@ before we run straightforward with numbers and abstract formula.
 src='/images/from-0-to-cryptography-diffie-hellman-key-exchange.png'
 alt="Diffie-Hellman Key Exchange" width="300" height="450"/>
 
-**Step 1**: Alice and Bob come to an agreement for a common colour.
+1. **Step 1**: Alice and Bob come to an agreement for a common colour.
 
-**Step 2**: Alice choose her secret colour that will not tell to Bob. Bob will
-do the same thing.
+1. **Step 2**: Alice choose her secret colour that will not tell to Bob. Bob
+   will do the same thing.
 
-**Step 3**: Alice will mix the common colour with the secret one and the
-result is a mixture. Bob will also mix his secret colour with the common one
-and will obtain a different mixture from Alice's one.
+1. **Step 3**: Alice will mix the common colour with the secret one and the
+   result is a mixture. Bob will also mix his secret colour with the common
+   one and will obtain a different mixture from Alice's one.
 
-**Step 4**: Alice and Bob exchange the mixtures. This is the most critical
-step for communication because a [man-in-the-middle][mitm] could get access to
-those two mixtures. There is also a problem if the [man-in-the-middle][mitm]
-has both mixtures. Colour decomposition is irreversible. So the only chance to
-find two's secret colour is mixing all possible colours with the common colour
-from step one. Also, remember that a secret colour can be also a mixture of
-many other colours.
+1. **Step 4**: Alice and Bob exchange the mixtures. This is the most critical
+   step for communication because a [man-in-the-middle][mitm] could get access
+   to those two mixtures. There is also a problem if the
+   [man-in-the-middle][mitm] has both mixtures. Colour decomposition is
+   irreversible. So the only chance to find two's secret colour is mixing all
+   possible colours with the common colour from step one. Also, remember that
+   a secret colour can be also a mixture of many other colours.
 
-**Update:** Diffie-Hellman does not protect you from a
-[man-in-the-middle][mitm] attack. To see why, imagine an attacker receiving
-all messages from Alice and replaying them back to Bob.
+   **Update:** Diffie-Hellman does not protect you from a
+   [man-in-the-middle][mitm] attack. To see why, imagine an attacker receiving
+   all messages from Alice and replaying them back to Bob.
 
-**Step 5**: Alice will add again her secret colour to the mixture that Bob
-sent to her. Bob will follow the same steps.
+5. **Step 5**: Alice will add again her secret colour to the mixture that Bob
+   sent to her. Bob will follow the same steps.
 
 Finally Alice and Bob will obtain **a common** secret colour. Now, Alice and
 Bob can safely exchange the symmetric-key we were talking in a previous
@@ -125,7 +128,7 @@ secret key `k_b = x^b mod p`. Mathematically it can be proved that `k_a =
 k_b`. Alice and Bob now have a common secret key used for encryption and
 decryption of any plaintext they exchange to safely communicate.
 
-Example:
+*Example:*
 
     p = 23, g = 5
     a = 6

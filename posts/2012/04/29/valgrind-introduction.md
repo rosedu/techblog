@@ -1,7 +1,7 @@
 ---
 date: 2012-04-29
 title: Valgrind introduction
-author: Mihai
+author: Mihai Maruseac
 tags: valgrind
 ---
 
@@ -23,7 +23,7 @@ Mainly, one would use [Valgrind][valgrind] to detect memory leaks in his
 application. By this, we mean memory which was allocated but wasn't released
 back. For example, take this program:
 
-{% highlight cpp %}
+~~~ cpp
 void f()
 {
     int *a = calloc(1024, sizeof(a[0]));
@@ -38,7 +38,7 @@ int main()
 
     return 0;
 }
-{% endhighlight %}
+~~~
 
 This program allocates `sizeof(int)` MB of memory and doesn't free them. Of
 course, at the end of the execution, the operating systems takes care of
@@ -117,7 +117,7 @@ optimizations on (try `-O3` for example)?
 What happens when we free the same memory address twice? Let's use this
 program:
 
-{% highlight cpp %}
+~~~ cpp
 void *f()
 {
 	int *a = calloc(16, sizeof(a[0]));
@@ -131,7 +131,7 @@ int main()
 	free(a);
 	return 0;
 }
-{% endhighlight %}
+~~~
 
 Running it with [Valgrind][valgrind] yields:
 
@@ -163,7 +163,7 @@ We can see both locations where the memory was released.
 
 Now, consider this C++ code, a tweaked version of the above:
 
-{% highlight cpp %}
+~~~ cpp
 int *f()
 {
 	int *a = (int *)calloc(16, sizeof(a[0]));
@@ -176,7 +176,7 @@ int main()
 	delete a;
 	return 0;
 }
-{% endhighlight %}
+~~~
 
 Running under [Valgrind][valgrind], we receive the following output (we will
 use `-q` to show only the errors reported by Valgrind -- no header and no
@@ -194,7 +194,7 @@ statistics at the end):
 Before finishing this section, let's consider the case of freeing from inside
 an allocated block. See this code:
 
-{% highlight cpp %}
+~~~ cpp
 void *f()
 {
 	int *a = calloc(16, sizeof(a[0]));
@@ -207,7 +207,7 @@ int main()
 	free(a);
 	return 0;
 }
-{% endhighlight %}
+~~~
 
 [Valgrind][valgrind] gives the following output:
 
@@ -228,7 +228,7 @@ was allocated and we can fix our program now.
 
 Let's see this simple code:
 
-{% highlight cpp %}
+~~~ cpp
 struct s {
 	int a, b;
 };
@@ -241,7 +241,7 @@ int main()
 		printf("s.b\n");
 	return 0;
 }
-{% endhighlight %}
+~~~
 
 We didn't initialize `s.b`. [Valgrind][valgrind] reports this:
 
@@ -252,7 +252,7 @@ We didn't initialize `s.b`. [Valgrind][valgrind] reports this:
 
 This was simple. Now, consider this common case:
 
-{% highlight cpp %}
+~~~ cpp
 int main()
 {
 	char *s = strdup("Valgrind rocks");
@@ -260,7 +260,7 @@ int main()
 	strcpy(q, s);
 	return 0;
 }
-{% endhighlight %}
+~~~
 
 This code looks perfectly valid. Does it? [Valgrind][valgrind] says otherwise:
 
@@ -277,14 +277,14 @@ fix: we change `strcpy(q, s)` with `strcpy(q, s + 1)`. This works.
 
 Now, let us assume that -- by mistake -- we also change `q`:
 
-{% highlight cpp %}
+~~~ cpp
 int main()
 {
 	char *s = strdup("Valgrind rocks");
 	strcpy(s, s + 1);
 	return 0;
 }
-{% endhighlight %}
+~~~
 
 [Valgrind][valgrind] is prompt to show us that we use `strcpy` in a wrong way,
 possibly destroying content:
@@ -360,4 +360,3 @@ useful tools and a programmer can create others if he needs them.
 [memcheck]: http://valgrind.org/docs/manual/mc-manual.html
 [tgdb]: http://techblog.rosedu.org/gdb-a-basic-workflow.html
 [valgrind]: http://valgrind.org/
-
