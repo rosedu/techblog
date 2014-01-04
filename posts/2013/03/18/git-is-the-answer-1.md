@@ -12,22 +12,27 @@ the first one of these.
 
 ## User Setup
 
-After installing Git and before doing any commits into a repository, you must setup your user information and preferences. It is common to make a global configuration, using `git config`:
+After installing Git and before doing any commits into a repository, you must
+setup your user information and preferences. It is common to make a global
+configuration, using `git config`:
 
     git config --global user.name "Razvan Deaconescu"
     git config --global user.email "razvan.deaconescu@cs.pub.ro"
     git config --global color.ui auto
 
-You should make this setup for each account you are using. At the minimum, you are going to use it at least for your laptop or workstation.
+You should make this setup for each account you are using. At the minimum, you
+are going to use it at least for your laptop or workstation.
 
 Global configuration is stored in `~/.gitconfig`.
 
-In case you want to use another username within a repository, use the `git config` command in that repository, but without the `--global` option:
+In case you want to use another username within a repository, use the `git
+config` command in that repository, but without the `--global` option:
 
     cd /path/to/repository.git
     git config user.email "razvan@rosedu.org"
 
-In the above setup, I have only updated the email address for the repository. The other options used are picked from the global configuration.
+In the above setup, I have only updated the email address for the repository.
+The other options used are picked from the global configuration.
 
 Per repository configuration is stored in `/path/to/repository.git/.config`.
 
@@ -97,16 +102,24 @@ From now on, Git will properly do the job of handling line endings for you.
 
 ## How to Create and Setup a Local Repo
 
-One of the best features of Git is the ability to rapidly create and use local repositories. You don't have to create a repository and then clone it locally as you do in Subversion. You just create or access a directory and then initialize it as a Git repository. Changes to files in the directory will be able to be handled as commits.
+One of the best features of Git is the ability to rapidly create and use local
+repositories. You don't have to create a repository and then clone it locally
+as you do in Subversion. You just create or access a directory and then
+initialize it as a Git repository. Changes to files in the directory will be
+able to be handled as commits.
 
-Assuming I am working on a personal project, the first thing I would do is create a directory and initialize it as a Git repository. I recommend you append the `.git` extension:
+Assuming I am working on a personal project, the first thing I would do is
+create a directory and initialize it as a Git repository. I recommend you
+append the `.git` extension:
 
     mkdir ~/projects/troscot.git
     git init ~/projects/troscot.git
 
-The first thing you add in a repository is a `.gitignore` file stating the files you wish to ignore. Such a sample file is [here][razvand-snippets].
+The first thing you add in a repository is a `.gitignore` file stating the
+files you wish to ignore. Such a sample file is [here][razvand-snippets].
 
-You just create the `.gitignore` file in the repository root and then add it to the repository:
+You just create the `.gitignore` file in the repository root and then add it
+to the repository:
 
     vi .gitignore
     git add .gitignore
@@ -114,7 +127,11 @@ You just create the `.gitignore` file in the repository root and then add it to 
 
 After this, one would create, add and commit any files required.
 
-Another use case is adding repository support for existing directories. This may happen when there is some pieces of code you already have in place and want to place in a repository or, my personal use case, adding repository support to configuration directories. For example, if one would want to use versioning for Apache2 configuration files, one would issue (as `root`):
+Another use case is adding repository support for existing directories. This
+may happen when there is some pieces of code you already have in place and
+want to place in a repository or, my personal use case, adding repository
+support to configuration directories. For example, if one would want to use
+versioning for Apache2 configuration files, one would issue (as `root`):
 
     cd /etc/apache2/
     git init .
@@ -125,7 +142,11 @@ Another use case is adding repository support for existing directories. This may
     git status
     git commit -m 'Initial commit. Add all config files to repository'
 
-The above commands add a `.gitignore` file in the repository and then add all Apache2 configuration files. The `git status` command is always necessary after a `git add` command to make sure you are committing the right stuff; you may need to update your `.gitignore` file in case you've missed ignoring certain types of files.
+The above commands add a `.gitignore` file in the repository and then add all
+Apache2 configuration files. The `git status` command is always necessary
+after a `git add` command to make sure you are committing the right stuff; you
+may need to update your `.gitignore` file in case you've missed ignoring
+certain types of files.
 
 ## I Want To Tweak A Commit
 
@@ -276,49 +297,79 @@ adding changes for a new commit.
 
 ## I Don't Want This Commit Anymore
 
-There is often the case that you want to rollback a change you've done. As long as everything is happening locally (i.e. you haven't pushed to a remote repository), Git offers the proper tools to handle this.
+There is often the case that you want to rollback a change you've done. As
+long as everything is happening locally (i.e. you haven't pushed to a remote
+repository), Git offers the proper tools to handle this.
 
-Assume you've updated a file but you want to discard those changes. You've just done some tests and feel those are not required and want to get back to the initial version. Then you would issue
+Assume you've updated a file but you want to discard those changes. You've
+just done some tests and feel those are not required and want to get back to
+the initial version. Then you would issue
 
     git checkout file-name
 
-This above command restores the file to the repository version. It's very useful in case you make a mess in a local file.
+This above command restores the file to the repository version. It's very
+useful in case you make a mess in a local file.
 
-A quite often situation is preparing to make a commit. When you do that you use one or more `git add` commands to prepare the commit; sometimes you use a `git add .` command that gives you little control on what to add to the staging area. You find out that you've added too much content to the staging area. In order to remove that extra content from the staging area (and leave it in the working directory), one issues:
+A quite often situation is preparing to make a commit. When you do that you
+use one or more `git add` commands to prepare the commit; sometimes you use a
+`git add .` command that gives you little control on what to add to the
+staging area. You find out that you've added too much content to the staging
+area. In order to remove that extra content from the staging area (and leave
+it in the working directory), one issues:
 
     git reset HEAD file-name
 
-If you want to start building your commit from the beginning and discard all information in the staging area, you would use:
+If you want to start building your commit from the beginning and discard all
+information in the staging area, you would use:
 
     git reset HEAD
 
 When leaving out the file name, all content from the staging area is discarded.
 
-Consider that you've done some bad commits and you've just found out. The last two commits are really bad and need to be dropped. As long as you haven't pushed anything, you can rework those commits: you can reset the repository HEAD and leave the commit changes in the working directory. If we want to redo the last two commits we would just issue:
+Consider that you've done some bad commits and you've just found out. The last
+two commits are really bad and need to be dropped. As long as you haven't
+pushed anything, you can rework those commits: you can reset the repository
+HEAD and leave the commit changes in the working directory. If we want to redo
+the last two commits we would just issue:
 
     git reset HEAD^^
 
-Remember, this doesn't remove the commit changes. The repository HEAD is simply moved back and the commit changes are left in the working directory; you will then use them to create proper new commits.
+Remember, this doesn't remove the commit changes. The repository HEAD is
+simply moved back and the commit changes are left in the working directory;
+you will then use them to create proper new commits.
 
 ## I Want To Change This File Silently
 
-GitHub has an excellent article on [ignoring files][ignoring-files]. A particular situation is ignoring updates to files that are already in the repository (i.e. they've been previously commited and can't be ignored using .gitignore).
+GitHub has an excellent article on [ignoring files][ignoring-files]. A
+particular situation is ignoring updates to files that are already in the
+repository (i.e. they've been previously commited and can't be ignored using
+.gitignore).
 
-This kind of situation is part of my repository with letters of recommendation. I'm using a Makefile for compiling out a letter and have isolated in it some variables:
+This kind of situation is part of my repository with letters of
+recommendation. I'm using a Makefile for compiling out a letter and have
+isolated in it some variables:
 
     $ cat Makefile
     PERSON = Alexandru_Juncu
     FOLDER = alexandru-juncu
-    
+
     include base.mk
 
-When I would create a new recommendation I update the `Makefile` to compile it. However this change needn't make it to the repository. If I would do that then each time I'm only compiling out an old letter of recommendation I would change the Makefile file and push the new changes; or, if I don't want to push those changes, I would need to use `git checkout`.
+When I would create a new recommendation I update the `Makefile` to compile
+it. However this change needn't make it to the repository. If I would do that
+then each time I'm only compiling out an old letter of recommendation I would
+change the Makefile file and push the new changes; or, if I don't want to push
+those changes, I would need to use `git checkout`.
 
-The best solution would be for any updates to the Makefile to not be considered. The initial Makefile file would be stored in the repository (as a model) but subsequent changes should not be visible. This can be done by using:
+The best solution would be for any updates to the Makefile to not be
+considered. The initial Makefile file would be stored in the repository (as a
+model) but subsequent changes should not be visible. This can be done by
+using:
 
     git update-index --assume-unchanged Makefile
 
-No changes on the `Makefile` file are going to be considered in the working directory.
+No changes on the `Makefile` file are going to be considered in the working
+directory.
 
 If you want to revert this option, use:
 

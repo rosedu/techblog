@@ -167,5 +167,3 @@ communicating and interact with other mind-like people.
 Finally he has participated in lockdowns each year. These are periods of time
 when teams gather in a room and stay there for several days (usually 30) and
 ship a big feature. Pretty hardcore, but that's life at Facebook.
-
-<div style="clear:both;"></div>

@@ -10,14 +10,15 @@ that many will use only in some very special cases.
 
 ## Handling Multiple Remotes
 
-There are situations when you decide to use multiple remotes for a repository. For example, I'm using multiple remotes for my snippets repository:
+There are situations when you decide to use multiple remotes for a repository.
+For example, I'm using multiple remotes for my snippets repository:
 
     razvan@einherjar:~/code$ git remote show
     gh
     gl
     glcs
     origin
-    
+
     razvan@einherjar:~/code$ cat .git/config
     [remote "origin"]
         fetch = +refs/heads/*:refs/remotes/origin/*
@@ -32,13 +33,25 @@ There are situations when you decide to use multiple remotes for a repository. F
         url = git@gitlab.cs.pub.ro:razvan.deaconescu/code.git
         fetch = +refs/heads/*:refs/remotes/glcs/*
 
-One particular situation when multiple remotes are required is when using a fork of a GitHub repository and doing [pull requests][pr]. This is also mentioned in the ["Syncing a fork" article on GitHub][sync-fork].
+One particular situation when multiple remotes are required is when using a
+fork of a GitHub repository and doing [pull requests][pr]. This is also
+mentioned in the ["Syncing a fork" article on GitHub][sync-fork].
 
-After you create a repository fork on GitHub, you clone that fork. For example, I've forked the [ROSEdu site repository][rosedu-site] in [my forked repository][rosedu-site-razvand]. I've cloned [the forked repository][rosedu-site-razvand], worked on the local clone and then pushed changes. I would then create a pull request with those changes, that that they would be integrated in [the main repository][rosedu-site].
+After you create a repository fork on GitHub, you clone that fork. For
+example, I've forked the [ROSEdu site repository][rosedu-site] in [my forked
+repository][rosedu-site-razvand]. I've cloned [the forked
+repository][rosedu-site-razvand], worked on the local clone and then pushed
+changes. I would then create a pull request with those changes, that that they
+would be integrated in [the main repository][rosedu-site].
 
-A problem arises when the fork is not synced with the main repository. Ideally, there would be a GitHub option to sync the fork. Since that doesn't exist, the fork needs to be updated manually, though the local copy, as mentioned in the ["Syncing a fork" article on GitHub][sync-fork].
+A problem arises when the fork is not synced with the main repository.
+Ideally, there would be a GitHub option to sync the fork. Since that doesn't
+exist, the fork needs to be updated manually, though the local copy, as
+mentioned in the ["Syncing a fork" article on GitHub][sync-fork].
 
-First of all, you need to add the main repository as another remote to the local repository. This is a read-only remote. As suggested by GitHub, I've named this new remote `upstream`:
+First of all, you need to add the main repository as another remote to the
+local repository. This is a read-only remote. As suggested by GitHub, I've
+named this new remote `upstream`:
 
     razvan@einherjar:~/projects/rosedu/site/site.git$ git remote show
     origin
@@ -48,7 +61,8 @@ First of all, you need to add the main repository as another remote to the local
       Fetch URL: git@github.com:rosedu/site.git
     [...]
 
-In order to sync the local repository with the `upstream` remote ([the main repository][rosedu-site]) just fetch and rebase changes:
+In order to sync the local repository with the `upstream` remote ([the main
+repository][rosedu-site]) just fetch and rebase changes:
 
     razvan@einherjar:~/projects/rosedu/site/site.git$ git fetch upstream
     remote: Counting objects: 16, done.
@@ -61,7 +75,8 @@ In order to sync the local repository with the `upstream` remote ([the main repo
     First, rewinding head to replay your work on top of it...
     Fast-forwarded master to upstream/master.
 
-This changes are then pushed to the `origin` remote ([the forked repository][rosedu-site-razvand]):
+This changes are then pushed to the `origin` remote ([the forked
+repository][rosedu-site-razvand]):
 
     razvan@einherjar:~/projects/rosedu/site/site.git$ git push origin master
     Counting objects: 16, done.
@@ -72,9 +87,14 @@ This changes are then pushed to the `origin` remote ([the forked repository][ros
     To git@github.com:razvand/site.git
        6f3dd4d..7411020  master -> master
 
-New local changes are then going to be pushed to the `origin` remote. These changes are then going to be aggregated into pull requests for the `upstream` remote (the main repository), now in sync with the forked repository.
+New local changes are then going to be pushed to the `origin` remote. These
+changes are then going to be aggregated into pull requests for the `upstream`
+remote (the main repository), now in sync with the forked repository.
 
-The above is a specific use case for syncing a fork in GitHub, making use of two remotes: one for the original reposotiry and one for the fork. The [excellent GitHub article][sync-fork] thoroughly describes the steps you need to undertake to sync your fork.
+The above is a specific use case for syncing a fork in GitHub, making use of
+two remotes: one for the original reposotiry and one for the fork. The
+[excellent GitHub article][sync-fork] thoroughly describes the steps you need
+to undertake to sync your fork.
 
 ## Bisecting the History
 
@@ -176,9 +196,13 @@ This is indeed a good tool to have in Git's toolbox.
 
 ## Stashing the Goodies
 
-It often happens that you've done some changes that you don't want to commit yet but you need to sync with the remote repository (i.e. do a pull). Or you want to merge a branch without commiting your changes. In this case, the solution is using the stash.
+It often happens that you've done some changes that you don't want to commit
+yet but you need to sync with the remote repository (i.e. do a pull). Or you
+want to merge a branch without commiting your changes. In this case, the
+solution is using the stash.
 
-The stash is a special place for Git where you temporarily stash your changes in order to keep your repository clean:
+The stash is a special place for Git where you temporarily stash your changes
+in order to keep your repository clean:
 
     razvan@einherjar:~/projects/rosedu/site/site.git$ git status
     # On branch master
@@ -206,9 +230,14 @@ The stash is a special place for Git where you temporarily stash your changes in
     no changes added to commit (use "git add" and/or "git commit -a")
     Dropped refs/stash@{0} (940f594b5f93e616dc16285e0677fbc78aa33620)
 
-The moment you stash changes, they "disappear" from the working directory. You will be able to get them by using `git stash pop`.
+The moment you stash changes, they "disappear" from the working directory. You
+will be able to get them by using `git stash pop`.
 
-When multiple users are working on a given repository it will often happen that you need to pull their updates to see what has been done. Your local copy may have changes you've made yourself, but still far from a commit. In that case you would stash your changes, pull remote updates to sync your repository and then pop the stash to continue your work.
+When multiple users are working on a given repository it will often happen
+that you need to pull their updates to see what has been done. Your local copy
+may have changes you've made yourself, but still far from a commit. In that
+case you would stash your changes, pull remote updates to sync your repository
+and then pop the stash to continue your work.
 
 ## A Reference For Everything
 

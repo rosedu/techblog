@@ -74,18 +74,24 @@ suggested via comments by Stefan Bucur).
 
 ## Tags and Branches For The Win
 
-Tags are the best way to keep references to old commits. They are particularly helpful in school related activities, where you update lectures and lab tasks on an yearly basis.
+Tags are the best way to keep references to old commits. They are particularly
+helpful in school related activities, where you update lectures and lab tasks
+on an yearly basis.
 
-The right way to handle this is to create a tag at the end of each year and update labs and tasks. If at any time you want to check out the old curriculum you can get back to that tag.
+The right way to handle this is to create a tag at the end of each year and
+update labs and tasks. If at any time you want to check out the old curriculum
+you can get back to that tag.
 
-For example, for the [SAISP][saisp] repository, we've created tag a tag at the end of each year of study:
+For example, for the [SAISP][saisp] repository, we've created tag a tag at the
+end of each year of study:
 
     razvan@einherjar:~/school/current/saisp/repo$ git tag
     2009-2010
     2010-2011
     2011-2012
 
-If we would like to go to an old version we would simply create a branch starting from that tag:
+If we would like to go to an old version we would simply create a branch
+starting from that tag:
 
     razvan@einherjar:~/school/current/saisp/repo$ git checkout -b br-2010-2011 2010-2011
     Switched to a new branch 'br-2010-2011'
@@ -93,18 +99,27 @@ If we would like to go to an old version we would simply create a branch startin
     # On branch br-2010-2011
     nothing to commit (working directory clean)
 
-This allows easy organization of your tree, with no need to create other folders (one for each year). If you want to access information for a given year, you would just create a new branch.
+This allows easy organization of your tree, with no need to create other
+folders (one for each year). If you want to access information for a given
+year, you would just create a new branch.
 
-This isn't the case for the current [CDL repository][cdl-repo]. I'm not particularly happy with it and will probably update it soon. As we weren't very Git aware at the time we've created the repository, we started using a folder for each year:
+This isn't the case for the current [CDL repository][cdl-repo]. I'm not
+particularly happy with it and will probably update it soon. As we weren't
+very Git aware at the time we've created the repository, we started using a
+folder for each year:
 
     razvan@einherjar:~/projects/rosedu/cdl/repo.git$ ls
     2009  2010  2011  2012  2013  Makefile  curs1  git_tutorial  template  util
 
-This is unnecessary and results in duplicate information, copied from one year to the other.
+This is unnecessary and results in duplicate information, copied from one year
+to the other.
 
-The solution is pretty simple: identify the last commit for each CDL session/year, tag it and then, if required create branches out of it.
+The solution is pretty simple: identify the last commit for each CDL
+session/year, tag it and then, if required create branches out of it.
 
-Identifying the last commit for each CDL session is easily done through `gitk`. Browse the commits, look at the dates, identify the last commit and create a tag:
+Identifying the last commit for each CDL session is easily done through
+`gitk`. Browse the commits, look at the dates, identify the last commit and
+create a tag:
 
     razvan@einherjar:~/projects/rosedu/cdl/repo.git$ git tag 2009 e9858a9e74
     razvan@einherjar:~/projects/rosedu/cdl/repo.git$ git tag 2010 26cd285f47
@@ -129,7 +144,9 @@ Afterwards, we can create branches for each of them to easily go to that point:
       old-master
       razvan
 
-Of course, it would only makes sense to really clear the repository and turn it into a "normal" one that only stores current information. Remove old year data and show only current one:
+Of course, it would only makes sense to really clear the repository and turn
+it into a "normal" one that only stores current information. Remove old year
+data and show only current one:
 
     razvan@einherjar:~/projects/rosedu/cdl/repo.git$ ls
     2009  2010  2011  2012  2013  Makefile  curs1  git_tutorial  template  util
@@ -143,13 +160,21 @@ Of course, it would only makes sense to really clear the repository and turn it 
     Makefile  curs1  curs3  git.mm  git_tutorial  schelet_inscriere  template  util
     razvan@einherjar:~/projects/rosedu/cdl/repo.git$ git commit -m 'Clear folder structure. Leave only current items'
 
-All is now nice and clear. Any updates are going to be done on the current folder structure; any request to see old data can be handled by checking out one of the branches.
+All is now nice and clear. Any updates are going to be done on the current
+folder structure; any request to see old data can be handled by checking out
+one of the branches.
 
 ## Branches on a Virtual Machine
 
-In our experience we come to situations when required to work on the desktop/laptop and on a virtual machine. Of course, we are using Git for storing code. It would only make sense for one repository to be a remote for another one. The case is that, with Git, every repository can be a remote.
+In our experience we come to situations when required to work on the
+desktop/laptop and on a virtual machine. Of course, we are using Git for
+storing code. It would only make sense for one repository to be a remote for
+another one. The case is that, with Git, every repository can be a remote.
 
-As such, I usually create a clone of the laptop repository on the virtual machine. I usually do that with the [SO2][so2] repository when updating lab tasks or assignment solutions and tests. The laptop stores the main repository and the virtual machine uses a clone of that:
+As such, I usually create a clone of the laptop repository on the virtual
+machine. I usually do that with the [SO2][so2] repository when updating lab
+tasks or assignment solutions and tests. The laptop stores the main repository
+and the virtual machine uses a clone of that:
 
     root@spook:~# git clone razvan@einherjar.local:school/current/so2/git-repos/lab lab.git
     root@spook:~# cd lab.git/
@@ -159,25 +184,35 @@ As such, I usually create a clone of the laptop repository on the virtual machin
       Push  URL: razvan@einherjar.local:school/current/so2/git-repos/lab
     [...]
 
-In order to work properly on the remote you would need to use a dedicated branch to push information. You'll have problems if you push to the master branch of a repository that is using the master branch itself. I usually dub this 'vm' (for virtual machine):
+In order to work properly on the remote you would need to use a dedicated
+branch to push information. You'll have problems if you push to the master
+branch of a repository that is using the master branch itself. I usually dub
+this 'vm' (for virtual machine):
 
     root@spook:~/lab.git# git checkout -b vm
     Switched to a new branch 'vm'
 
-Any further changes are going to be committed in the 'vm' branch. Subsequently you would push these commits to the main repository, on the laptop:
+Any further changes are going to be committed in the 'vm' branch. Subsequently
+you would push these commits to the main repository, on the laptop:
 
     root@spook:~/lab.git# git push origin vm
     Total 0 (delta 0), reused 0 (delta 0)
     To razvan@einherjar.local:school/current/so2/git-repos/lab
      * [new branch]      vm -> vm
 
-On the main repository, you would just merge or rebase your changes from that branch:
+On the main repository, you would just merge or rebase your changes from that
+branch:
 
     razvan@einherjar:~/school/current/so2/git-repos/teme$ git rebase vm
     First, rewinding head to replay your work on top of it...
     Fast-forwarded master to vm.
 
-At this moment, all changes in the repository clone on the virtual machine are present in the master branch on the repository on the laptop. You need to create a separate branch on the virtual machine clone and then push that branch to the main repository. If you would work on the master branch on the virtual machine clone and push that, it would be problematic to integrate those changes in the master branch on the main repository.
+At this moment, all changes in the repository clone on the virtual machine are
+present in the master branch on the repository on the laptop. You need to
+create a separate branch on the virtual machine clone and then push that
+branch to the main repository. If you would work on the master branch on the
+virtual machine clone and push that, it would be problematic to integrate
+those changes in the master branch on the main repository.
 
 ## Going After Cherries
 
