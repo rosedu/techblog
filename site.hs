@@ -13,7 +13,7 @@ import System.Console.CmdArgs (cmdArgs, cmdArgsMode, help, program, ignore,
 import System.Environment (withArgs)
 import System.Exit (ExitCode(..))
 import System.Process (system)
-import Text.Pandoc
+import Text.Pandoc (ReaderOptions(..), WriterOptions(..), HTMLMathMethod(..))
 
 import qualified System.Console.CmdArgs.Explicit as CA
 
