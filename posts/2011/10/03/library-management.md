@@ -1,7 +1,7 @@
 ---
 date: 2011-10-03
 title: Linking, Loading and Library Management under Linux
-author: Razvan
+author: Răzvan Deaconescu
 tags: library, dynamic linker, dynamic loader, ldconfig
 ---
 
@@ -19,8 +19,7 @@ library packages. One can barely imagine being able to do any kind of
 development without the presence of the C Standard Library on the local
 system.
 
-Linking and Loading
-===================
+### Linking and Loading
 
 A library is said to be "linked" together with other library files or
 object files into an executable. The executable integrates all required
@@ -35,6 +34,7 @@ integrating functions in the end executable file.
 
 With respect to the phase when linking occurs, we differentiate between
 three types of linking:
+
 1. static linking
 2. load-time dynamic linking
 3. run-time dynamic linking
@@ -70,8 +70,7 @@ to by the newly created process. For run-time dynamic linking, a
 specialized API allows the developer to load the library code into memory
 and, on demand, use specific functions.
 
-Library types
-=============
+### Library types
 
 Modern OSes such as Windows, Linux, Mac OS X and other Unices use two
 types of libraries, strongly related to the types of linking shown
@@ -84,10 +83,8 @@ Each time some modules are linked against a library file, static linking
 is enabled and code for functions used is copied into the executable
 file.
 
-<pre>
     ar rc libtest.a module1.o module2.o
     gcc -o myexec exec.o -L. -l test
-</pre>
 
 Dynamic libraries are called shared-object library on Unix and use the
 `.so` extension on Unix. On Windows, they are called dynamic-link
@@ -99,11 +96,9 @@ or run-time).
 In order to use a shared-object library for load-time linking, one would
 simply pass it as an argument to the linker:
 
-<pre>
     gcc -share -fPIC -o libtest.so module1.o module2.o
     gcc -o myexec exec.o -L. -l test
     LD_LIBRARY_PATH=. ./myexec
-</pre>
 
 When the loader creates a new process (`LD_LIBRARY_PATH=. ./myexec`),
 the library (`libtest.so`) is mapped into memory and necessary function
@@ -113,13 +108,13 @@ The use of run-time linking requires a specialized API for loading
 needed function code while the process is running: [dlopen &
 friends][man-dlopen]. A sample is shown below:
 
-<pre>
+~~~ cpp
     double (*cosine)(double);
 
     handle = dlopen ("libm.so", RTLD_LAZY);
     cosine = dlsym(handle, "cos");
     printf ("%f\n", (*cosine)(2.0));
-</pre>
+~~~
 
 Unlike static and load-time dynamic linking, run-time dynamic linking doesn't
 require the presence of a library argument to the link command (that is `-L.
@@ -144,8 +139,7 @@ processes that use the library would use the same code. Thus, 50
 processes that use the C standard library would require a single
 instance of the library to be mapped in memory.
 
-Library Management
-==================
+### Library Management
 
 When discussing about library management, we are talking about dynamic
 libraries. This is due to the fact that, when using the library code
@@ -163,18 +157,16 @@ only used at link-time. It's used to locate the library at link-time,
 not at load-time or run-time.
 
 In order to configure the loader to lookup libraries for dynamic linking
-in a given folder (for example, the current folder – `.`), there are two
+in a given folder (for example, the current folder -- `.`), there are two
 main options: using the `LD_LIBRARY_PATH` environment variable or the
 `ldconfig` command.
 
 The `LD_LIBRARY_PATH` variable is a list of colon delimited folders
 where libraries are searched. It must be set when the loader is invoked
-– that is, when running the executable:
+-- that is, when running the executable:
 
-<pre>
     export LD_LIBRARY_PATH=.
     ./myexec
-</pre>
 
 Using the `LD_LIBRARY_PATH` variable is excellent for testing. It does
 however pose two disadvantages: it does not allow persistent
@@ -191,12 +183,10 @@ In order to incorporate a new folder in the library search path, one may
 resort to a persistent configuration or a temporary one. For a temporary
 run, simply pass the new folder to `ldconfig`:
 
-<pre>
     razvan@einherjar:~/code$ /sbin/ldconfig -p | grep libtest
     razvan@einherjar:~/code$ sudo /sbin/ldconfig /home/razvan/code/
     razvan@einherjar:~/code$ /sbin/ldconfig -p | grep libtest
     	libtest.so (libc6,x86-64) => /home/razvan/code/libtest.so
-</pre>
 
 For a persistent, configuration, one would need to edit the
 configuration file and/or folder for `ldconfig`, namely
@@ -207,8 +197,7 @@ When using [dlopen & friends][man-dlopen], the same kind of
 configurations may be used: `LD_LIBRARY_PATH`, temporary use of
 `ldconfig` and persistent use of `/etc/ld.so.conf`.
 
-Conclusion and Further Info
-===========================
+### Conclusion and Further Info
 
 Extensive information about the actions used by the loader to use
 dynamic libraries are found in man pages: [ld-linux.so][man-ld-linux.so],

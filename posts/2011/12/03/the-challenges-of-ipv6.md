@@ -27,7 +27,7 @@ using 32 bits). But since they wanted to start from scratch an rewrite
 everything in order to fix other problems in IPv4 (like the now almost
 useless header checksum) and to add new features (like the header
 extensions that allows protocols like IPSec to be built inside IPv6). But
-the “rewrite everything” approach meant that almost all of the components
+the "rewrite everything" approach meant that almost all of the components
 of the network layers had to be rewritten and this resulted in a large
 groups of people being affected by the change.
 
@@ -50,7 +50,7 @@ ready. From setting up their web services to listen on both protocols to
 the more difficult service, **DNS**. If DNS in IPv4 was a good thing to have,
 in IPv6, DNS is critical (nobody wants to remember a 32 hexadecimal digit
 number). The DNS protocol needed to add a new record, the AAAA record, and
-needed to implement a new reverse DNS zone, the ip6.arpa. zone.
+needed to implement a new reverse DNS zone, the `ip6.arpa.` zone.
 
 But some of the frustrations of the administrators and the users are caused
 by bugs or even lack of implementation in software. Since every hardware
@@ -60,11 +60,11 @@ support for IPv6. For example, people started patching **Linux** 2.1 back in
 1996, but real stable, built-in support for IPv6 only came out in 2.6.
 Support in kernel still didn't mean that people could use it because it
 lacked the userspace tools. The wide used ifconfig wasn't build for v6, and
-only with the development of **iproute2**, Linux users could configure IPv6 on
+only with the development of `iproute2`, Linux users could configure IPv6 on
 their boxes. Although considered deprecated, newer versions of ifconfig do
 support IPv6 address assignments. In the Windows world, things are worse,
 since only Windows 7 really has full support (kernel and user space tools)
-for IPv6. 
+for IPv6.
 
 Only after the IPv6 stack is built inside the kernel (the network stack
 being one of the hardest part of the kernel to program), the system

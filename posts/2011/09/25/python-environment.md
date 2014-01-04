@@ -1,15 +1,14 @@
 ---
 date: 2011-09-25
 title: Python environment
-author: Alex
+author: Alex Morega
 tags: python, virtualenv, pip
 ---
 
-This article is a quick guide to setting up a Python work environment.
-It walks you through installing Python with some basic package
-management tools (distribute, pip, virtualenv), setting up projects, and
-installing packages.
-
+This article is a quick guide to setting up a Python work environment.  It
+walks you through installing Python with some basic package management tools
+(`distribute`, `pip`, `virtualenv`), setting up projects, and installing
+packages.
 
 ### Bootstrapping
 
@@ -20,10 +19,8 @@ is gathering momentum but many libraries don't support it yet.
 * In most Linux distributions, and in Mac OS, some Python is
   already installed. You may, of course, install a different one from
   scratch. For Mac OS, the [homebrew][] version is highly recommended.
-
-* On Windows you install a pre-compiled release from
+* On Windows you can install a pre-compiled release from
   <http://python.org/download/>.
-
 * To install from source, you need a C compiler, and a tarball from
   <http://python.org/download/>. The usual `./configure; make; make
   install` should work just fine. Consider installing into a separate
@@ -34,7 +31,7 @@ Now, the typical mistake is to declare victory, and use this Python
 installation for everything. In time, you want to use various libraries,
 so you install them on top of Python. Eventually you get a version
 conflict (some project requires a library which is too new for another
-project). Fortunately there is a better way: *virtualenv*.
+project). Fortunately there is a better way: `virtualenv`.
 
 The command-line examples use `$MYPYTHON` as placeholder for the Python
 installation path. This can be `/usr` for a Linux distribution install,
@@ -43,21 +40,21 @@ installation path. This can be `/usr` for a Linux distribution install,
 on Windows.
 
 If you're on Linux, and use a Python package from the distribution, it's
-a good bet they have virtualenv too. For Debian, Ubuntu and Fedora, the
+a good bet they have `virtualenv` too. For Debian, Ubuntu and Fedora, the
 name is `python-virtualenv`. This may be outdated, so if you experience
 problems, check the version and consider installing the latest one (see
 below).
 
-In a fresh Python installation, to get virtualenv, we need to install
-*distribute* and *pip* first. distribute is an older package manager,
-and pip is newer and more powerful, but it depends on the older one to
+In a fresh Python installation, to get `virtualenv`, we need to install
+`distribute` and `pip` first. `distribute` is an older package manager,
+and `pip` is newer and more powerful, but it depends on the older one to
 do heavy lifting. So, download
 [`distribute_setup.py`][distribute-setup], and, assuming you installed
 Python in a folder called `$MYPYTHON`, do the following:
 
-    > $MYPYTHON/bin/python distribute_setup.py
-    > $MYPYTHON/bin/easy_install pip
-    > $MYPYTHON/bin/pip install virtualenv
+    $ $MYPYTHON/bin/python distribute_setup.py
+    $ $MYPYTHON/bin/easy_install pip
+    $ $MYPYTHON/bin/pip install virtualenv
 
 If everything worked out fine, you should have a script called
 `virtualenv` in `$MYPYTHON/bin`, and you can safely remove
@@ -81,15 +78,15 @@ you need to install [Django][]. The very first thing you do is create a
 virtualenv. We'll use `$MYENV` as placeholder for the path to a new
 folder where you want to work:
 
-    > $MYPYTHON/bin/virtualenv $MYENV
+    $ $MYPYTHON/bin/virtualenv $MYENV
 
-virtualenv will create the folder, write some files, then run off and
-get distribute and pip, it should all take a few seconds. When it's
+`virtualenv` will create the folder, write some files, then run off and
+get `distribute` and `pip`; it should all take a few seconds. When it's
 done, you have `$MYENV/bin/python`, which is a fully functional Python
 interpreter. Next to it, there is `$MYENV/bin/pip`, which you can now
 use to install things:
 
-    > $MYENV/bin/pip install Django
+    $ $MYENV/bin/pip install Django
 
 This will go to [PyPI][], look for a package named `Django`, and install
 the latest version. The installation happens inside `$MYENV`, in the
@@ -104,7 +101,7 @@ Now, if you start happily creating many virtualenvs, installing a lot of
 packages, you'll be downloading the same files over and over again.
 Fortunately, pip can be configured to cache the downloads:
 
-    > cat ~/.pip/pip.conf
+    $ cat ~/.pip/pip.conf
     [global]
     download_cache = ~/.pip/cache
 
@@ -123,14 +120,14 @@ freeze`, it generates a list of all the installed packages and their
 versions.
 
 When you get tired of typing `$MYENV/bin/something` all the time, you
-may want to *activate* the virtualenv. This is a fancy name which simply
+may want to `activate` the virtualenv. This is a fancy name which simply
 means that `$MYENV/bin` is prepended to your current `$PATH` (and your
 `$PS1` is enhanced):
 
-    > . $MYENV/bin/activate
-    (myenv)> # "python" invokes "$MYENV/bin/python"
-    (myenv)> deactivate
-    > # back to the original shell environment
+    $ . $MYENV/bin/activate
+    (myenv)$ # "python" invokes "$MYENV/bin/python"
+    (myenv)$ deactivate
+    $ # back to the original shell environment
 
 If you find yourself working on a package, the kind that has `setup.py`
 and installs with pip, you want to install the package in "edit" mode.

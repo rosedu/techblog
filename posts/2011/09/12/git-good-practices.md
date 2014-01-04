@@ -1,7 +1,7 @@
 ---
 date: 2011-09-12
 title: Git Tips and Good Practices
-author: Răzvan
+author: Răzvan Deaconescu
 tags: SCM, git, tip, good practice
 ---
 
@@ -51,19 +51,20 @@ and a friend have access to a common account, and you want to separate
 your commits form hers/his (although run from the same account). There
 are two situations and approaches to this:
 
-1. Situation: You want to use a different identity for all (or most)
-   commits in a shell session (such as an SSH login session). Solution:
-Define the `GIT_AUTHOR_NAME` and `GIT_AUTHOR_EMAIL` environment
-variables:
+1. *Situation*: You want to use a different identity for all (or most)
+   commits in a shell session (such as an SSH login session).
 
-      `export GIT_AUTHOR_NAME="Mighty McWolf"`
+   *Solution*: Define the `GIT_AUTHOR_NAME` and `GIT_AUTHOR_EMAIL` environment
+   variables:
 
-      `export GIT_AUTHOR_EMAIL="mighty@mcwolf.org"`
+    export GIT_AUTHOR_NAME="Mighty McWolf"
+    export GIT_AUTHOR_EMAIL="mighty@mcwolf.org"
 
-2. Situation: You want to use a different identity for a single commit.
-   Solution: Use the `--author` option when committing:
+2. *Situation*: You want to use a different identity for a _single_ commit.
 
-      `git commit --author "Mighty McWolf <mighty@mcwolf.org>"`
+   *Solution*: Use the `--author` option when committing:
+
+    git commit --author "Mighty McWolf <mighty@mcwolf.org>"
 
 ### Commits
 
@@ -81,7 +82,7 @@ able to compile the source code. Make sure the project is in a
 compilable state when issuing your commit.
 
 While the repository needs to be in a compilable state, it need not run
-perfectly. In fact it may end up in "Segmentation fault" or other
+perfectly. In fact it may end up in `Segmentation fault` or other
 critical errors. That's no problem; it's not achievable (not possible
 actually) to have a clean repository where each commit would break
 nothing. Do not be afraid to break the application when issuing a
@@ -92,9 +93,9 @@ trying to keep the application running, may force you to disobey the
 next recommendation.
 
 Another important recommendation, heavily stressed in Git but
-probably insisted on in other SCMs, is creating small, atomic commits.
+probably insisted on in other SCMs, is creating _small_, _atomic_ commits.
 Each commit should do one thing and do it well. A commit should not use
-a message such as "Update everything." or "Fix plenty of errors."
+a message such as `"Update everything."` or `"Fix plenty of errors."`
 Rather, each fix should go into a separate commit. This would make it
 very easy for a reviewer to analyze and diff your commit and,
 possibly, isolate a bug that you may have introduced. If your commit
@@ -113,9 +114,9 @@ follow when writing a commit message.
 
 1. Keep it short. Ideally, your commit message should consist of at most 50
    characters. In case your message is longer, break it into sentences, and
-leave a blank line between the 50 characters message and the rest. The
-rationale, as mentioned in the [git commit manpage][git-commit], is that the
-first line is used as an email subject line by various tools.
+   leave a blank line between the 50 characters message and the rest. The
+   rationale, as mentioned in the [git commit manpage][git-commit], is that
+   the first line is used as an email subject line by various tools.
 
 2. Use present tense when issuing a commit. This ensures "compatibility"
    with messages used by tools such as `git merge`.
@@ -135,6 +136,7 @@ What happens when you've made a lot of changes and you want to
 create a commit? You need to "split" your changes in multiple commits.
 For that you use `git add -i` (`-i` for interactive). When using `-i`
 Git inquires you about the commit. Most likely you would:
+
 1. choose the `patch` option (press `p` or `5`)
 2. choose the file you want to "split"
 3. press `Enter`
@@ -142,7 +144,7 @@ Git inquires you about the commit. Most likely you would:
 5. press `q` to quit
 
 At this point, the modified file would be found both in the staging area
-and in the "changes" area. The staging area would solely consist of the
+and in the `changes` area. The staging area would solely consist of the
 chunks you selected previously.
 
 What if you've just created a commit and realized that the commit message
@@ -248,18 +250,13 @@ Git, from a "view point of view" so to say:
 
 * `git status` provides you with information regarding the current
   branch, information in staging area, "dirty" information etc.;
-
 * `git log` provides you with a CLI view of the commit history; an useful
   option is `--oneline` providing you with a `one commit on one line` view;
-
 * `git diff` presents a diff between various states of the repository;
-
 * without any option, `git diff` it shows changes in the working directory
   (versus `HEAD`);
-
 * a single option to `git diff` is a commit ID or tag that is diffed
   against `HEAD`;
-
 * two options tor `git diff` are two commit IDs or tags to be diffed.
 
 An useful option to `git diff` is `--cached`. This option presents a diff
@@ -277,26 +274,26 @@ those predicaments:
 * You want to clear any updates you've done to a file that's being
   tracked:
 
-	`git checkout file.name`
+        git checkout file.name
 
 * You want to remove a file from the staging area and place it in the
   modified state; you want to build your commit in a different manner:
 
-	`git reset HEAD file.name`
+        git reset HEAD file.name
 
 * You want to clear non-tracked files from the working clone:
 
-	`git clean file.name`
+        git clean file.name
 
 * You want to clear all non-tracked files from the working clone:
 
-	`git clean -f`
+        git clean -f
 
 * You want to clear all changes and revert to the initial state of
   `HEAD` (by changes I'm referring to tracked files changes; this doesn't
-affect non-tracked files):
+  affect non-tracked files):
 
-	`git reset --hard`
+        git reset --hard
 
 ###Other Resources
 

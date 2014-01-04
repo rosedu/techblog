@@ -1,14 +1,14 @@
 ---
 date: 2011-10-09
 title: C's extern internals
-author: Daniel
+author: Daniel Băluță
 tags: arrays, pointers, extern, C
 ---
 
 The idea for this post came from [Virgil's][v-comment] comment on
-[char\[\] versus char\*][old-art] entry. We will dig into some of
+[char[] versus char*][old-art] entry. We will dig into some of
 C's extern keyword internals by means of examples and then
-analyze the differences between `extern char`\* and `extern char`\[\].
+analyze the differences between `extern char*` and `extern char[]`.
 
 `extern` is a storage class specifier, indicating that the actual
 storage of a variable or the definition of a function is located
@@ -22,19 +22,23 @@ Let's start with a simple example:
 
 **helper.c**
 
-	int sample = 42; /* definition */
+~~~ cpp
+int sample = 42; /* definition */
+~~~
 
 **main.c**
 
-	extern int sample; /* declaration */
-	int main(void)
-	{
-		printf("sample = %d\n", sample);
-	}
+~~~ cpp
+extern int sample; /* declaration */
+int main(void)
+{
+	printf("sample = %d\n", sample);
+}
+~~~
 
-Having obtained the corresponding object files `helper.o` and `main.o` we link them together
-into an executable named `main`. We will use the [nm][man-nm] tool to check the symbols from
-each object file:
+Having obtained the corresponding object files `helper.o` and `main.o` we link
+them together into an executable named `main`. We will use the [nm][man-nm]
+tool to check the symbols from each object file:
 
     $ nm helper.o
     00000000 D sample
@@ -42,104 +46,131 @@ each object file:
              U sample
     00000000 T main
 
-Notice that the symbol `sample` is only declared in `main.c` but not defined there. In the linking phase, the linker searches throughout all
-linked object files and finds out that the actual storage for `sample` is defined in `helper.c`. As a result our `main` executable will
-print value `42` declared in `helper.c` external file:
+Notice that the symbol `sample` is only declared in `main.c` but not defined
+there. In the linking phase, the linker searches through all linked object
+files and finds out that the actual storage for `sample` is defined in
+`helper.c`. As a result our `main` executable will print value `42` declared
+in `helper.c` external file:
 
     $./main
     sample = 42
 
-Now let's see how the compiler behaves if the types for cross-referenced variables do not match:
+Now let's see how the compiler behaves if the types for cross-referenced
+variables do not match:
 
 **foo.c**
 
-	char *foo = "Hello";
+~~~ cpp
+char *foo = "Hello";
+~~~
 
 **main.c**
 
-	void foo(void);
+~~~ cpp
+void foo(void);
 
-	int main(void)
-	{
-		foo();
-		return 0;
-	}
+int main(void)
+{
+	foo();
+	return 0;
+}
+~~~
+
     $ gcc -Wall -c foo.c -o foo.o
     $ gcc -Wall -c main.c -o main.o
     $ gcc -o main main.o foo.o
     $ ./main
     Segmentation fault
 
-Functions are by default extern, hence the declaration of symbol `foo` in `main.c`
-file allows the compiler to create `main.o` object file without errors or warnings.
-Anyhow, the linker does not check the type of symbol `foo`; thus, running the `main` executable results in a function call into an non-executable memory area.
+Functions are by default extern, hence the declaration of symbol `foo` in
+`main.c` file allows the compiler to create `main.o` object file without
+errors or warnings.
 
-Finally, let's analyze if we can use a pointer and an array interchangeably between
-2 source files.
+Anyhow, the linker does not check the type of symbol `foo`; thus, running the
+`main` executable results in a function call into an non-executable memory
+area.
 
-First try. The file `main.c` declares an extern array of chars, leaving it to the linker to find the actual
-storage area defined for it. File `pointer.c` defines a pointer to a memory area
-holding a string literal. At link time, the symbol `str` from `main.c` is bound to a memory area
-representing the address of a string.
+Finally, let's analyze if we can use a pointer and an array interchangeably
+between 2 source files.
+
+*First try*
+
+The file `main.c` declares an extern array of chars, leaving it to
+the linker to find the actual storage area defined for it. File `pointer.c`
+defines a pointer to a memory area holding a string literal. At link time, the
+symbol `str` from `main.c` is bound to a memory area representing the address
+of a string.
 
 <img style="float:right" src='/images/c-extern-char.png'
 alt="C extern simple usage" width="217" height="252"/>
 
 **pointer.c**
 
-	char *str = "1234";
-	char a = 'A'; /* memory guards */
-	char b = 'B';
-	char c = 'C';
+~~~ cpp
+char *str = "1234";
+char a = 'A'; /* memory guards */
+char b = 'B';
+char c = 'C';
+~~~
 
 **main.c** 
 
-	extern char str[];
+~~~ cpp
+extern char str[];
 
-	int main(void)
-	{
-		printf("%s\n", str);
-		return 0;
-	}
+int main(void)
+{
+	printf("%s\n", str);
+	return 0;
+}
+~~~
 
-
-By compiling and linking `main.c` and `pointer.c` together we get `main` executable.
+By compiling and linking `main.c` and `pointer.c` together we get `main`
+executable.
 
     $ ./main
     \�ABC
 
-Notice how the array `str` is mapped to a memory area where an address is stored. The `printf`
-function will display raw data until a `\0` is encountered. Fortunately, because of our
-guarding arrays, printing stops after showing some garbage and string `ABC`.
+Notice how the array `str` is mapped to a memory area where an address is
+stored. The `printf` function will display raw data until a `\0` is
+encountered. Fortunately, because of our guarding arrays, printing stops after
+showing some garbage and string `ABC`.
 
-Second try. The file `main.c` declares a pointer to a memory area holding one or more characters. The linker
-will associate `str` from `main.o` with the storage defined by `str` array from `array.o`.
+*Second try*
+
+The file `main.c` declares a pointer to a memory area holding one
+or more characters. The linker will associate `str` from `main.o` with the
+storage defined by `str` array from `array.o`.
 
 <img style="float:right" src='/images/c-extern-pointer.png'
 alt="C extern simple usage" width="217" height="252"/>
 
 **array.c**
 
-	char str[] = "1234";
+~~~ cpp
+char str[] = "1234";
+~~~
 
 **main.c** 
 
-	extern char *str;
+~~~ cpp
+extern char *str;
 
-	int main(void)
-	{
-		printf("%s\n", str);
+int main(void)
+{
+	printf("%s\n", str);
 
-		return 0;
-	}
+	return 0;
+}
+~~~
 
-By compiling and linking together these programs we notice that running the `main` executable results in a crash.
+By compiling and linking together these programs we notice that running the
+`main` executable results in a crash.
 
     $ ./main
     Segmentation fault
 
 Let's use GDB to see the reason:
-
 
     $gdb ./main
     (gdb) b main
@@ -150,8 +181,10 @@ Let's use GDB to see the reason:
     (gdb) p str
     $1 = 0x34333231 Address 0x34333231 out of bounds
 
-One can notice that the value of the pointer `str` is the content of array `str`. This content is an invalid address dereferenced by the pointer, resulting in the delivery of the dreaded `SIGSEGV` signal.
+One can notice that the value of the pointer `str` is the content of array
+`str`. This content is an invalid address dereferenced by the pointer,
+resulting in the delivery of the dreaded `SIGSEGV` signal.
 
 [v-comment]: http://techblog.rosedu.org/arrays-vs-pointers.html#IDComment189927033
-[oldart]: http://techblog.rosedu.org/arrays-vs-pointers.html
+[old-art]: http://techblog.rosedu.org/arrays-vs-pointers.html
 [man-nm]: http://linux.die.net/man/1/nm
