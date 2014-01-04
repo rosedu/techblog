@@ -21,6 +21,7 @@ main = do
   args' <- cmdArgs techblogArgs
   case args' of
     Help -> showHelp
+    Validate -> withArgs ["check"] buildTechblog
     x -> withArgs [map toLower $ show x] buildTechblog
 
 buildTechblog :: IO ()
