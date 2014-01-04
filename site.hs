@@ -13,6 +13,7 @@ import System.Console.CmdArgs (cmdArgs, cmdArgsMode, help, program, ignore,
 import System.Environment (withArgs)
 import System.Exit (ExitCode(..))
 import System.Process (system)
+import Text.Pandoc
 
 import qualified System.Console.CmdArgs.Explicit as CA
 
@@ -105,7 +106,7 @@ markdownRules = do
   compile markdownCompiler
 
 markdownCompiler :: Compiler (Item String)
-markdownCompiler = pandocCompiler
+markdownCompiler = techblogCompiler
   >>= loadAndApplyTemplate "templates/default.html" ctx
   >>= relativizeUrls
   where
@@ -148,7 +149,7 @@ makeRawPosts = do
   compile getResourceBody
 
 postCompiler :: Context String -> Compiler (Item String)
-postCompiler tagCtx = pandocCompiler
+postCompiler tagCtx = techblogCompiler
   >>= loadAndApplyTemplate "templates/post.html" ctx
   -- >>= (externalizeUrls $ feedRoot feedConfiguration)
   >>= saveSnapshot "postContent"
@@ -242,6 +243,23 @@ postCtx =
   urlField "shareUrl" `mappend`
   dateField "date" "%B %e, %Y" `mappend`
   defaultContext
+
+{-
+ - Special Markdown compiler. Needed to ensure proper extensions are in place.
+ -}
+
+techblogCompiler :: Compiler (Item String)
+techblogCompiler = pandocCompilerWith techblogROptions techblogWOptions
+
+techblogROptions :: ReaderOptions
+techblogROptions = defaultHakyllReaderOptions
+
+techblogWOptions :: WriterOptions
+techblogWOptions = defaultHakyllWriterOptions
+  { writerHTMLMathMethod = MathJax ""
+  , writerSectionDivs = True
+  , writerHtml5 = True
+  }
 
 {-
  - Deployment configuration.

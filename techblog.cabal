@@ -36,4 +36,5 @@ executable techblog
     base,
     cmdargs,
     hakyll,
-    process
+    process,
+    pandoc
