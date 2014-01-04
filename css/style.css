@@ -453,6 +453,9 @@ h4,
   margin-top: 26px;
   margin-bottom: 26px;
 }
+p {
+  text-align: justify;
+}
 p,
 ul,
 ol,
