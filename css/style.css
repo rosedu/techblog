@@ -734,6 +734,11 @@ pre {
   white-space: nowrap;
   background-color: #fff04a;
 }
+.unit-article li pre code {
+  padding: 2px 5px;
+  white-space: nowrap;
+  background-color: #393939;
+}
 .unit-article img {
   display: block;
   margin-left: auto;
