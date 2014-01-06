@@ -11,7 +11,7 @@ tags: facebook, hackathon, live, blogging, coders
 
 #### 3:30PM
 
-Ladies and gentleman, fast hackers and coder perfectionists, web developers and
+Ladies and gentlemen, fast hackers and coder perfectionists, web developers and
 mobile app creators, we present you the first edition of the Facebook hackathon
 in Romania. Organized by your favorite open-source community ROSEdu, the
 volunteers have been busy all morning preparing the workspace for the 15
