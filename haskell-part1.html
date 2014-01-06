@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--[if lt IE 7]>
+<html class="no-js lt-ie9 lt-ie8 lt-ie7 ie" lang="en"> <![endif]-->
+<!--[if IE 7]>
+<html class="no-js lt-ie9 lt-ie8 ie" lang="en"> <![endif]-->
+<!--[if IE 8]>
+<html class="no-js lt-ie9 ie" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" class="no-js"><!--<![endif]-->
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>ROSEdu Techblog - A superficial exploration of Haskell - part 1</title>
+    <link rel="stylesheet" href="./css/style.css" type="text/css">
+    <link rel="stylesheet" href="./css/rosedu_links.css" type="text/css">
+    <link rel="stylesheet" href="./css/syntax.css" type="text/css">
+
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-7579199-6']);
+      _gaq.push(['_trackPageview']);
+
+      (function () {
+        var ga = document.createElement('script');
+        ga.type = 'text/javascript';
+        ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  </head>
+
+  <body>
+    <div id="page" class="hentry">
+      <header class="the-header">
+        <div class="unit-head">
+          <div class="unit-inner unit-head-inner">
+            <nav class="nav-global">
+              <ul>
+                <li class="logo"><a href="./" title="Home">ROSEdu Techblog</a></li>
+                <li class="about"><a href="./about.html">About</a></li>
+                <li class="people"><a href="./people.html">People</a></li>
+                <li class="archive"><a href="./archive.html">Archive</a></li>
+                <li class="category"><a href="./tags.html">Tags</a></li>
+              </ul>
+            </nav>
+
+            <hr />
+
+            <nav class="nav-global">
+              <ul>
+                <li class="logo"><a href="./archive.html" title="Archive">Latest Posts</a></li>
+                
+                  <li><a href="./haskell-part1.html">A superficial exploration of Haskell - part 1</a></li>
+                
+                  <li><a href="./facebook-hackathon-live-blogging.html">Facebook Hackathon Live Blogging</a></li>
+                
+                  <li><a href="./shell-tips-and-tricks-for-file-editing.html">Shell tips and tricks for log files</a></li>
+                
+              </ul>
+            </nav>
+          </div><!-- unit-inner -->
+        </div><!-- unit-head -->
+      </header>
+
+      <div class="body" role="main">
+        <div class="unit-body">
+          <div class="unit-inner unit-body-inner">
+            <div class="entry-content">
+              <article class="unit-article layout-post">
+                <div class="unit-inner unit-article-inner">
+  <div class="content">
+    <div class="bd">
+      <header>
+        <div class="unit-head">
+          <div class="unit-inner unit-head-inner">
+            <h1 class="h2 entry-title">
+              <a class="post_title" href="./haskell-part1.html" title="A superficial exploration of Haskell - part 1">A superficial exploration of Haskell - part 1</a>
+            </h1>
+          </div><!-- unit-inner -->
+        </div><!-- unit-head -->
+      </header>
+
+      <span class="date">
+      <span class="published">Published on January  7, 2014</span>
+      by
+      <span class="author">Dan Șerban</span>
+      </span>
+
+      <br />
+      <span class="meta">
+        Tagged:
+        <span class="tags"><a href="./tags/haskell.html">haskell</a></span>
+      </span>
+
+      <p>This series of blog posts is aimed at experienced programmers who have heard that Haskell is an interesting programming language, but have not had the chance to invest any time in researching it.</p>
+<p>In this series I am going to highlight a few remarkable things at a high level, while glossing over some implementation details that would take too long to explain properly. Therefore, expect a lot of “here’s a practical application of Haskell and here’s some sample code, but don’t ask to see the gory details” hand-waving.</p>
+<p>For the purposes of this series, I will simply assume that it’s easy for the experienced reader to jump into a new imperative programming language after a few hours or days of becoming familiar with its syntax. And I’ll start with an example that illustrates how you have to adopt a completely different mindset when you start learning Haskell.</p>
+<p>Part 1 of this series covers:</p>
+<ul>
+<li>Mutability</li>
+<li>Upside Down Maps</li>
+<li>Tokenizing Kernel Code</li>
+</ul>
+<p><strong>Before you ask:</strong> All the Haskell snippets I’m showing here consist of GHCi interactive console sessions. I have configured a custom prompt for myself, by placing the line <code>:set prompt &quot;λ: &quot;</code> in GHCi’s configuration file <code>~/.ghc/ghci.conf</code>. The prompt is going to <a href="http://www.haskell.org/ghc/docs/7.6.2/html/users_guide/interactive-evaluation.html">look different</a> if you’re just starting out with a freshly installed copy of Haskell.</p>
+<section id="mutability" class="level3">
+<h3>Mutability</h3>
+<p>To start with, here’s a Python code sample, cut and pasted from a Python 2.7 REPL (interactive console session):</p>
+<pre class="sourceCode python"><code class="sourceCode python">&gt;&gt;&gt; x = <span class="dv">1</span>
+&gt;&gt;&gt; x = x + <span class="dv">1</span>
+&gt;&gt;&gt; x
+<span class="dv">2</span>
+&gt;&gt;&gt;</code></pre>
+<p>Nothing could be simpler!</p>
+<p>OK then. Time to port this snippet of code over to Haskell. I’m just going to go with the flow and naively assume – just as many newcomers to Haskell would – that porting Python code is a direct 1-to-1 syntactic translation, in other words, an easy, straightforward thing to do.</p>
+<p>The following is what happens in the Haskell REPL (called GHCi). By the way, here we have to prepend the keyword <code>let</code> - it’s the law of the land in GHCi:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell">λ: <span class="kw">let</span> x <span class="fu">=</span> <span class="dv">1</span>
+λ: <span class="kw">let</span> x <span class="fu">=</span> x <span class="fu">+</span> <span class="dv">1</span>
+λ: x
+<span class="fu">^</span><span class="dt">CInterrupted</span><span class="fu">.</span>
+λ:</code></pre>
+<p>Huh? What just happened? I was expecting Haskell to compute the value 2. It took forever for the GHCi interactive console to evaluate <code>x</code>, so I got bored and pressed <code>Ctrl-C</code>. What’s happening? Explain this to me.</p>
+<p>Well, as one Reddit commenter once observed, this is just one of the many things Haskell does to haze you during your initiation.</p>
+<p>What you’re actually doing is giving Haskell a puzzle (<code>x = x + 1</code>) and saying “Go find me a solution”. Mathematically speaking, there are only 2 possible solutions to that puzzle: <span class="math">\(\infty\)</span> and <span class="math">\(- \infty\)</span>. So when you saw it hang, Haskell wasn’t merely taking its time – for no good reason – before giving you back the value 2. Instead, Haskell’s runtime was trying its hardest to give you a correct result by taking every integer value it could think of, one by one, and checking whether it was equal to its successor.</p>
+<p>Just to be clear, there is a way to emulate the behavior of the Python snippet we saw above, and the Haskell code for doing that looks like this:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell">λ: <span class="kw">let</span> x <span class="fu">=</span> <span class="dv">1</span>
+λ: x <span class="ot">&lt;-</span> return <span class="fu">$</span> x <span class="fu">+</span> <span class="dv">1</span>
+λ: x
+<span class="dv">2</span>
+λ:</code></pre>
+<p>As you can see, the syntax is much more verbose (and uglier) than in Python, and for good reason – in Haskell, you are strongly discouraged from using variables and mutation as the primary means of expressing algorithms.</p>
+<p>Haskell is divided in two major parts: a crystal palace of unspeakable beauty and <em>mathematical purity</em>, and an imperative ghetto for doing <em>I/O</em> and dealing with <em>mutation</em>. The equal sign in <code>x = x + 1</code> lives in the beautiful palace and symbolizes mathematical unification, while the construct <code>&lt;- return $</code> lives in the ghetto and means “evaluate the right hand side and shove the result into the identifier on the left hand side, thus overwriting what was there beforehand, in true imperative style”.</p>
+</section>
+<section id="reverse-map-upside-down-map-you-decide" class="level3">
+<h3>Reverse Map? Upside Down Map? You decide</h3>
+<p>OK, for the next segment I’m going to assume that your beloved programming language of choice has a construct called <code>map</code>, and that you know how to use it.</p>
+<p>We start again with some Python code. While Python does indeed offer a higher-order function called <code>map</code>, it’s much more common for experienced Python developers to prefer using a list comprehension, like this:</p>
+<pre class="sourceCode Python"><code class="sourceCode python">&gt;&gt;&gt; <span class="dt">list</span> = <span class="dt">range</span>(<span class="dv">20</span>,<span class="dv">31</span>)
+&gt;&gt;&gt; <span class="dt">list</span>
+[<span class="dv">20</span>, <span class="dv">21</span>, <span class="dv">22</span>, <span class="dv">23</span>, <span class="dv">24</span>, <span class="dv">25</span>, <span class="dv">26</span>, <span class="dv">27</span>, <span class="dv">28</span>, <span class="dv">29</span>, <span class="dv">30</span>]
+&gt;&gt;&gt; [ x + <span class="dv">1</span> <span class="kw">for</span> x in <span class="dt">list</span> ]
+[<span class="dv">21</span>, <span class="dv">22</span>, <span class="dv">23</span>, <span class="dv">24</span>, <span class="dv">25</span>, <span class="dv">26</span>, <span class="dv">27</span>, <span class="dv">28</span>, <span class="dv">29</span>, <span class="dv">30</span>, <span class="dv">31</span>]
+&gt;&gt;&gt;</code></pre>
+<p>Nothing new or earth-shattering - I would hope - so here’s the Haskell equivalent before we jump into the interesting stuff:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell">λ: <span class="kw">let</span> list <span class="fu">=</span> [<span class="dv">20</span><span class="fu">..</span><span class="dv">30</span>]
+λ: list
+[<span class="dv">20</span>,<span class="dv">21</span>,<span class="dv">22</span>,<span class="dv">23</span>,<span class="dv">24</span>,<span class="dv">25</span>,<span class="dv">26</span>,<span class="dv">27</span>,<span class="dv">28</span>,<span class="dv">29</span>,<span class="dv">30</span>]
+λ: map (<span class="fu">+</span><span class="dv">1</span>) list
+[<span class="dv">21</span>,<span class="dv">22</span>,<span class="dv">23</span>,<span class="dv">24</span>,<span class="dv">25</span>,<span class="dv">26</span>,<span class="dv">27</span>,<span class="dv">28</span>,<span class="dv">29</span>,<span class="dv">30</span>,<span class="dv">31</span>]
+λ:</code></pre>
+<p>So the basic idea I’m getting at here is that in the beginning we have:</p>
+<ul>
+<li>one single operation (compute an integer’s successor)</li>
+<li>a list of integer values</li>
+</ul>
+<p><strong>Now for the interesting part.</strong></p>
+<p>Let’s take those bullet points above and turn them upside down, such that in the beginning we have:</p>
+<ul>
+<li>one single integer value</li>
+<li>a list of unary integer-to-integer operations</li>
+</ul>
+<p>Python can still deal with this situation fairly well, since Python’s functions are first-class values (you can place several of them inside of a list). But the Python code wouldn’t be as concise or expressive as the Haskell equivalent, shown here:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell">λ: <span class="kw">let</span> function_list_1 <span class="fu">=</span> [(<span class="fu">+</span><span class="dv">2</span>),(<span class="fu">*</span><span class="dv">3</span>),(<span class="fu">^</span><span class="dv">2</span>)]
+λ: <span class="kw">let</span> function_list_2 <span class="fu">=</span> [(<span class="fu">*</span><span class="dv">5</span>),(<span class="fu">+</span><span class="dv">7</span>),(<span class="fu">*</span><span class="dv">4</span>),(subtract <span class="dv">10</span>)]
+λ: <span class="kw">let</span> i <span class="fu">=</span> <span class="dv">12</span>
+λ: <span class="kw">import </span><span class="dt">Control.Applicative</span>
+λ: function_list_1 <span class="fu">&lt;*&gt;</span> [i]
+[<span class="dv">14</span>,<span class="dv">36</span>,<span class="dv">144</span>]
+λ: function_list_2 <span class="fu">&lt;*&gt;</span> [i]
+[<span class="dv">60</span>,<span class="dv">19</span>,<span class="dv">48</span>,<span class="dv">2</span>]
+λ:</code></pre>
+<p><strong>Side note:</strong> Due to brevity concerns, it is not practical to go into a detailed explanation of the <code>&lt;*&gt;</code> operator in <code>Control.Applicative</code> (a module in Haskell’s standard library). That is a topic for another blog post. The point here was to show how concisely you can express non-trivial computations with Haskell.</p>
+<p><strong>Fun fact:</strong> implementing the “upside-down map” described above was recently a requirement for admittance into <a href="http://webdev.rosedu.org/">WebDev</a> (an extracurricular course organized by ROSEdu). Candidates sent us solutions they had written in various programming languages, with varying degrees of conciseness. We found that the most verbose implementations were predominantly Java-based.</p>
+</section>
+<section id="lets-tokenize-some-kernel-code" class="level3">
+<h3>Let’s tokenize some kernel code</h3>
+<p>For the next segment I’ll just grab a <a href="https://github.com/torvalds/linux/blob/master/kernel/sched/fair.c#L507">snippet of code from the Linux kernel</a> and demonstrate how concisely you can express a tokenizer for it in Haskell.</p>
+<p>The code for Linux’s completely fair scheduler is stored in a file called <code>fair.c</code>; I’ll just grab a small function from it (function <code>__enqueue_entity</code>, which starts at line 507) and store it locally in a file called <code>enqueue_entity.c</code>.</p>
+<p>Here’s what I do subsequently, step by step:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell">λ: sample_cfs_code <span class="ot">&lt;-</span> readFile <span class="st">&quot;enqueue_entity.c&quot;</span>
+λ:</code></pre>
+<p>I just slurped the contents of the file into <code>sample_cfs_code</code>. This is our raw material, let’s look at it:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell">λ: sample_cfs_code
+<span class="st">&quot;static void __enqueue_entity(struct cfs_rq *cfs_rq, struct sched_entity *se)\n{\n        struct rb_node **link = &amp;cfs_rq-&gt;tasks_timeline.rb_node;\n        struct rb_node *parent = NULL;\n        struct sched_entity *entry;\n        int leftmost = 1;\n        while (*link) {\n                parent = *link;\n                entry = rb_entry(parent, struct sched_entity, run_node);\n                if (entity_before(se, entry)) {\n                        link = &amp;parent-&gt;rb_left;\n                } else {\n                        link = &amp;parent-&gt;rb_right;\n                        leftmost = 0;\n                }\n        }\n        if (leftmost)\n                cfs_rq-&gt;rb_leftmost = &amp;se-&gt;run_node;\n\n        rb_link_node(&amp;se-&gt;run_node, parent, link);\n        rb_insert_color(&amp;se-&gt;run_node, &amp;cfs_rq-&gt;tasks_timeline);\n}\n\n&quot;</span>
+λ:</code></pre>
+<p>We now define our tokenizing function in Haskell (I trust you will appreciate how concise it is):</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell">λ: <span class="kw">import </span><span class="dt">Data.List</span>
+λ: <span class="kw">let</span> tokenize_this <span class="fu">=</span> unfoldr (\x <span class="ot">-&gt;</span> <span class="kw">case</span> lex x <span class="kw">of</span> [(<span class="st">&quot;&quot;</span>,<span class="st">&quot;&quot;</span>)] <span class="ot">-&gt;</span> <span class="dt">Nothing</span>; x<span class="fu">:</span>_ <span class="ot">-&gt;</span> <span class="dt">Just</span> x)
+λ:</code></pre>
+<p>The most interesting keyword here is <code>lex</code>, which is a function that is defined in Haskell’s standard library as part of the <code>GHC.Read</code> module. The <code>unfoldr</code> function also deserves some explanation, but just as before, it wouldn’t be practical to go into much detail here.</p>
+<p>So far, so good. Let’s apply our tokenizing function to the C code:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell">λ: <span class="kw">let</span> tokenized_cfs_code <span class="fu">=</span> tokenize_this sample_cfs_code
+λ:</code></pre>
+<p>Finally, let’s view the resulting stream of tokens:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell">λ: mapM_ print tokenized_cfs_code
+<span class="st">&quot;static&quot;</span>
+<span class="st">&quot;void&quot;</span>
+<span class="st">&quot;__enqueue_entity&quot;</span>
+<span class="st">&quot;(&quot;</span>
+<span class="st">&quot;struct&quot;</span>
+<span class="st">&quot;cfs_rq&quot;</span>
+<span class="st">&quot;*&quot;</span>
+<span class="st">&quot;cfs_rq&quot;</span>
+<span class="st">&quot;,&quot;</span>
+<span class="st">&quot;struct&quot;</span>
+<span class="st">&quot;sched_entity&quot;</span>
+<span class="st">&quot;*&quot;</span>
+<span class="st">&quot;se&quot;</span>
+<span class="st">&quot;)&quot;</span>
+<span class="st">&quot;{&quot;</span>
+<span class="st">&quot;struct&quot;</span>
+<span class="st">&quot;rb_node&quot;</span>
+<span class="st">&quot;**&quot;</span>
+<span class="st">&quot;link&quot;</span>
+<span class="st">&quot;=&quot;</span>
+<span class="st">&quot;&amp;&quot;</span>
+<span class="st">&quot;cfs_rq&quot;</span>
+<span class="st">&quot;-&gt;&quot;</span>
+[ <span class="fu">...</span> many more tokens <span class="dt">I'm</span> not showing here <span class="fu">...</span> ]
+<span class="st">&quot;rb_insert_color&quot;</span>
+<span class="st">&quot;(&quot;</span>
+<span class="st">&quot;&amp;&quot;</span>
+<span class="st">&quot;se&quot;</span>
+<span class="st">&quot;-&gt;&quot;</span>
+<span class="st">&quot;run_node&quot;</span>
+<span class="st">&quot;,&quot;</span>
+<span class="st">&quot;&amp;&quot;</span>
+<span class="st">&quot;cfs_rq&quot;</span>
+<span class="st">&quot;-&gt;&quot;</span>
+<span class="st">&quot;tasks_timeline&quot;</span>
+<span class="st">&quot;)&quot;</span>
+<span class="st">&quot;;&quot;</span>
+<span class="st">&quot;}&quot;</span>
+λ:</code></pre>
+<p>You can use this approach to help your language design efforts, if you plan on inventing your own DSL, or even your own general-purpose programming language. Once your source code is tokenized, you can now parse the stream of tokens into the target Haskell data structures using a technique called combinator parsing, which is where the Haskell programming language really shines.</p>
+</section>
+<section id="end-of-part-1" class="level3">
+<h3>End of part 1</h3>
+<p>That’s it for part 1 – there will be more to come.</p>
+<p>If you’re interested in picking up Haskell, there are a number of very good free online resources (<a href="https://www.fpcomplete.com/school">1</a>, <a href="http://learnyouahaskell.com/">2</a>, <a href="http://book.realworldhaskell.org/">3</a>), as well as classes and workshops held in various locations.</p>
+<p>Speaking of Haskell classes and workshops, allow me to draw your attention to a project called <a href="http://lambda.rosedu.org/#english">lambda.rosedu.org</a>, which is an instructor-led, in-depth, hands-on workshop on functional programming centered around Haskell, Scala and Clojure. The workshop is free of charge, but the standards for admittance are fairly high (you will need to solve a few programming as well as logic problems). The workshop will be hosted by ROSEdu at the department for Computer Science of the POLITEHNICA University of Bucharest some time during the summer of 2014. The topics I glossed over – due to brevity concerns – in this blog post will be covered in depth during the workshop.</p>
+</section>
+
+    </div>
+  </div>
+</div>
+
+<!-- Social Buttons here -->
+<div id="sociallinks">
+  <a href="https://twitter.com/home?status=/haskell-part1.html" target="_blank">Tweet this</a> -
+  <a href="http://www.facebook.com/sharer/sharer.php?u=/haskell-part1.html" target="_blank">Like this</a> -
+  <a href="https://plus.google.com/share?url=/haskell-part1.html" target="_blank">Share on G+</a>
+</div>
+
+<script>
+  (function(){window.addEventListener("DOMContentLoaded",function(){
+    //get URL
+    var url=document.location;
+    var links=document.getElementById("sociallinks")
+                      .getElementsByTagName('a');
+    for (var i=0;i!=links.length;i++){
+      // Replacing /haskell-part1.html with current URL
+      links[i].setAttribute("href",links[i].href.replace('/haskell-part1.html',url));
+    }})})();
+</script>
+</br>
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+  /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+  var disqus_shortname = 'rosedutechblog';
+  var disqus_url = window.location.href.split('/').splice(0,3).join("/")+'/haskell-part1.html';
+  var title = 'A superficial exploration of Haskell - part 1';
+  /* * * DON'T EDIT BELOW THIS LINE * * */
+  (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+              </article>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer class="the-footer">
+        <div class="unit-foot">
+          <div class="unit-inner unit-foot-inner">
+            <div class="misc vcard">
+              <h4>Social</h4>
+              <div class="rss">
+                <a href="http://techblog.rosedu.org/rss.xml" target="_blank">
+                  <img src="./images/rss.png" alt="Subscribe to RSS Feed" />
+                </a>
+                <a href="http://www.reddit.com/submit?url='+encodeURIComponent(window.location)" target="_blank" onclick="window.location='http://www.reddit.com/submit?url='+encodeURIComponent(window.location); return false">
+                  <img src="./images/reddit.png" alt="Submit to Reddit" />
+                </a>
+                <a href="http://twitter.com/share" class="twitter-share-button" data-count="none" target="_blank">
+                  <img src="./images/twitter.png" alt="Submit to Twitter" />
+                </a>
+              </div>
+
+              <h4>Powered by</h4>
+              <ul>
+                <li class="contact">
+                  <address>
+                    <a class="author fn n" href="http://www.rosedu.org">ROSEdu</a>
+                  </address>
+                </li>
+                <li class="contact">
+                  <address>
+                    <a class="author fn n" href="http://jaspervdj.be/hakyll">Hakyll</a>
+                  </address>
+                </li>
+              </ul>
+
+              <h4>License</h4>
+              <div class="bucket">
+                <span>
+                  <a rel="license" href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons Attribution 3.0 License">
+                    <img src="//i.creativecommons.org/l/by/3.0/88x31.png" alt="License">
+                  </a>
+                </span>
+                <span>
+                  This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/3.0/" class="subfoot">Creative Commons Attribution 3.0 License</a>.
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>
