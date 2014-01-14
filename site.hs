@@ -3,6 +3,7 @@
 
 import Hakyll
 
+import Control.Applicative (empty)
 import Control.Monad (liftM)
 import Data.Char (toLower)
 import Data.Monoid (mappend)
@@ -234,12 +235,18 @@ tagsCtx tags = tagsField "tags" tags `mappend` postCtx
 
 postCtx :: Context String
 postCtx =
+  postTitleField `mappend`
   urlField "shareUrl" `mappend`
   dateField "date" "%B %e, %Y" `mappend`
   defaultContext
 
 recentPostCtx :: Context String
 recentPostCtx = listField "recent" postCtx loadRecentPosts
+
+postTitleField :: Context a
+postTitleField = Context $ \k i -> if k /= "postTitle" then empty else do
+    value <- getMetadataField (itemIdentifier i) "title"
+    maybe empty (return . StringField . (++ "...") . take 15) value
 
 {-
  - Special Markdown compiler. Needed to ensure proper extensions are in place.
