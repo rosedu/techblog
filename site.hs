@@ -64,8 +64,7 @@ compileIndex = getResourceBody
   >>= loadAndApplyTemplate "templates/default.html" ctx
   >>= relativizeUrls
   where
-    ctx =
-      listField "recent" postCtx loadRecentPosts `mappend`
+    ctx = recentPostCtx `mappend`
       listField "posts" postCtx loadSnapshots `mappend`
       defaultContext
 
@@ -75,8 +74,7 @@ compileArchive = makeItem ""
   >>= loadAndApplyTemplate "templates/default.html" ctx
   >>= relativizeUrls
   where
-    ctx =
-      listField "recent" postCtx loadRecentPosts `mappend`
+    ctx = recentPostCtx `mappend`
       listField "posts" postCtx loadAllPosts `mappend`
       constField "title" "Archives" `mappend`
       defaultContext
@@ -110,9 +108,7 @@ markdownCompiler = techblogCompiler
   >>= loadAndApplyTemplate "templates/default.html" ctx
   >>= relativizeUrls
   where
-    ctx =
-      listField "recent" postCtx loadRecentPosts `mappend`
-      defaultContext
+    ctx = recentPostCtx `mappend` defaultContext
 
 {-
  - Posts: rules, routing, snapshot creation and loading, versioning.
@@ -159,7 +155,7 @@ postCompiler tagCtx = techblogCompiler
   >>= loadAndApplyTemplate "templates/default.html" ctx
   >>= relativizeUrls
   where
-    ctx = listField "recent" postCtx loadRecentPosts `mappend` tagCtx
+    ctx = recentPostCtx `mappend` tagCtx
 
 {-
  - RSS feed configuration and building rules.
@@ -205,8 +201,7 @@ tagPageCompiler tagCtx tag pattern = makeItem ""
   >>= loadAndApplyTemplate "templates/default.html" ctx
   >>= relativizeUrls
   where
-    ctx =
-      listField "recent" postCtx loadRecentPosts `mappend`
+    ctx = recentPostCtx `mappend`
       constField "title" ("Posts tagged '" ++ tag ++ "'") `mappend`
       listField "posts" postCtx (loadAll pattern >>= recentFirst) `mappend`
       tagCtx
@@ -223,8 +218,7 @@ tagCompiler tags = makeItem ""
   >>= relativizeUrls
   where
     nicerTags = replaceAll ", " (const "</li><li>") tags
-    ctx =
-      listField "recent" postCtx loadRecentPosts `mappend`
+    ctx = recentPostCtx `mappend`
       constField "alltags" nicerTags `mappend`
       constField "title" "Techblog tags" `mappend`
       defaultContext
@@ -243,6 +237,9 @@ postCtx =
   urlField "shareUrl" `mappend`
   dateField "date" "%B %e, %Y" `mappend`
   defaultContext
+
+recentPostCtx :: Context String
+recentPostCtx = listField "recent" postCtx loadRecentPosts
 
 {-
  - Special Markdown compiler. Needed to ensure proper extensions are in place.
