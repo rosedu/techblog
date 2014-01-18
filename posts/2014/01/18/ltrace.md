@@ -613,7 +613,7 @@ Though very rarely used, `ltrace` is a nice program to have in your toolbox.
 It will greatly help you in those hard to debug cases caused by undocumented
 behaviors of third-party libraries.
 
-Notice that `strace` has most of the bugs of `strace`:
+Notice that `ltrace` has most of the bugs of `strace`:
 
 1. a program with `setuid` doesn't have `euid` privileges while being traced
 1. a program is slow while being traced
