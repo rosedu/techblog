@@ -6,8 +6,528 @@
         <description><![CDATA[ROSEdu Techblog]]></description>
         <atom:link href="http://techblog.rosedu.org/rss.xml" rel="self"
                    type="application/rss+xml" />
-        <lastBuildDate>Tue, 07 Jan 2014 00:00:00 UT</lastBuildDate>
+        <lastBuildDate>Sat, 18 Jan 2014 00:00:00 UT</lastBuildDate>
         <item>
+    <title>Inspecting library calls for fun and profit</title>
+    <link>http://techblog.rosedu.org/ltrace.html</link>
+    <description><![CDATA[<div class="unit-inner unit-article-inner">
+  <div class="content">
+    <div class="bd">
+      <header>
+        <div class="unit-head">
+          <div class="unit-inner unit-head-inner">
+            <h1 class="h2 entry-title">
+              <a class="post_title" href="/ltrace.html" title="Inspecting library calls for fun and profit">Inspecting library calls for fun and profit</a>
+            </h1>
+          </div><!-- unit-inner -->
+        </div><!-- unit-head -->
+      </header>
+
+      <span class="date">
+      <span class="published">Published on January 18, 2014</span>
+      by
+      <span class="author">Mihai Maruseac</span>
+      </span>
+
+      <br/>
+      <span class="meta">
+        Tagged:
+        <span class="tags"><a href="/tags/trace.html">trace</a>, <a href="/tags/ltrace.html">ltrace</a>, <a href="/tags/strace.html">strace</a>, <a href="/tags/ptrace.html">ptrace</a>, <a href="/tags/debugging.html">debugging</a></span>
+      </span>
+
+      <p>Two years ago this blog had a series of articles on debugging tools. We have presented tools like <a href="http://techblog.rosedu.org/valgrind-introduction.html" title="Valgrind introduction">Valgrind</a> and <a href="http://techblog.rosedu.org/gdb-a-basic-workflow.html" title="GDB - basic workflow">GDB</a> and we stopped with an introduction to <a href="http://techblog.rosedu.org/tracing-processes-for-fun-and-profit.html" title="Tracing Processes for Fun and Profit">strace</a>. At the end of that article we mentioned that there are other tools useful for debugging beyond these three already mentioned. After two years of silence, the debugging series is on with an article on <code>ltrace</code>.</p>
+<p>Ask around developers and you’ll see that the proportion of those knowing about <code>ltrace</code> compared to those knowing how to use <code>strace</code> is at most the same as the proportion of <code>strace</code> users among users knowing how to use <code>gdb</code> and <code>valgrind</code>.</p>
+<p>But how is <code>ltrace</code> different? Why is this an useful tool? This article will try to shine some light on this while also providing comparisons with the <code>strace</code> tool.</p>
+<section id="basic-example" class="level3">
+<h3>Basic Example</h3>
+<p>The simples way to use both <code>ltrace</code> and <code>strace</code> is to append this tool in front of the command you’re tracing. We will illustrate here the <a href="http://techblog.rosedu.org/tracing-processes-for-fun-and-profit.html#simple-example" title="Tracing Processes for Fun and Profit">same example used for <code>strace</code></a></p>
+<pre><code>$ ltrace ls
+__libc_start_main(0x402c60, 1, 0x7fffa36d7038, 0x412bb0 &lt;unfinished ...&gt;
+strrchr(&quot;ls&quot;, &#39;/&#39;)                               = nil
+setlocale(LC_ALL, &quot;&quot;)                            = &quot;en_US.UTF-8&quot;
+bindtextdomain(&quot;coreutils&quot;, &quot;/usr/share/locale&quot;) = &quot;/usr/share/locale&quot;
+textdomain(&quot;coreutils&quot;)                          = &quot;coreutils&quot;
+__cxa_atexit(0x40ace0, 0, 0, 0x736c6974756572)   = 0
+isatty(1)                                        = 1
+getenv(&quot;QUOTING_STYLE&quot;)                          = nil
+getenv(&quot;COLUMNS&quot;)                                = nil
+ioctl(1, 21523, 0x7fffa36d6bd0)                  = 0
+getenv(&quot;TABSIZE&quot;)                                = nil
+getopt_long(1, 0x7fffa36d7038, &quot;abcdfghiklmnopqrstuvw:xABCDFGHI:&quot;..., 0x61a5e0, -1)         = -1
+getenv(&quot;LS_BLOCK_SIZE&quot;)                          = nil
+...
+opendir(&quot;.&quot;)                                     = 0x2789c30
+readdir(0x2789c30)                               = 0x2789c60
+readdir(0x2789c30)                               = 0x2789c78
+readdir(0x2789c30)                               = 0x2789c90
+strlen(&quot;a.out&quot;)                                  = 5
+malloc(6)                                        = 0x2791c70
+memcpy(0x2791c70, &quot;a.out\0&quot;, 6)                  = 0x2791c70
+readdir(0x2789c30)                               = 0x2789cb0
+strlen(&quot;out.9373&quot;)                               = 8
+malloc(9)                                        = 0x2791c90
+memcpy(0x2791c90, &quot;out.9373\0&quot;, 9)               = 0x2791c90
+...
+closedir(0x2789c30)                              = 0
+free(0)                                          = &lt;void&gt;
+malloc(432)                                      = 0x2789c30
+_setjmp(0x61b640, 0x400000, 0x2785e50, 0x2789cc0)= 0
+__errno_location()                               = 0x7f95ad5916c0
+strcoll(&quot;out.9307&quot;, &quot;1.c&quot;)                       = 23
+...
+fwrite_unlocked(&quot;1.c&quot;, 1, 3, 0x3573db9400)       = 3
+...
+fwrite_unlocked(&quot;out&quot;, 1, 3, 0x3573db9400)       = 3
+...
+exit(0 &lt;unfinished ...&gt;
+__fpending(0x3573db9400, 0, 64, 0x3573db9eb0)    = 0
+fileno(0x3573db9400)                             = 1
+__freading(0x3573db9400, 0, 64, 0x3573db9eb0)    = 0
+__freading(0x3573db9400, 0, 2052, 0x3573db9eb0)  = 0
+fflush(0x3573db9400)                             = 0
+fclose(0x3573db9400)                             = 0
+__fpending(0x3573db91c0, 0, 0x3573dbaa00, 0xfbad000c)= 0
+fileno(0x3573db91c0)                             = 2
+__freading(0x3573db91c0, 0, 0x3573dbaa00, 0xfbad000c)= 0
+__freading(0x3573db91c0, 0, 4, 0xfbad000c)       = 0
+fflush(0x3573db91c0)                             = 0
+fclose(0x3573db91c0)                             = 0
++++ exited (status 0) +++</code></pre>
+<p>Looking at the trace we see that the <code>ls</code> process starts by acknowledging the current <a href="http://en.wikipedia.org/wiki/Locale" title="Locale (computing)">locale</a> after which several environment variables which control the output are read (only a few of them shown, the others ellided by <code>...</code>). Then <a href="http://linuxmanpages.com/man3/opendir.3.php" title="opendir - open a directory"><code>opendir</code></a> is called on <code>.</code> (since <code>ls</code> had no other arguments) and each entry is read via <a href="http://linuxmanpages.com/man2/readdir.2.php" title="readdir - read directory entry"><code>readdir</code></a> and then copied into a vector of entries (after using <code>strdup</code> seen here as a triple of <code>strlen</code>, <code>malloc</code> and <code>memcpy</code>). Next step is to sort all of these entries according to the current locale (<a href="http://linuxmanpages.com/man3/strcoll.3.php" title="strcoll - compare two strings using the current locale"><code>strcoll</code></a>, the variable <code>LC_COLLATE</code>). This allows sorting the filenames in alphabetical order. Then, each filename is written on the <code>1</code> file descriptor (<code>stdout</code>) using the non-blocking <a href="http://linuxmanpages.com/man3/fwrite_unlocked.3.php" title="fwrite_unlocked - non-locking stdio function"><code>fwrite_unlocked</code></a>. Last step is to call <code>exit</code> and flush all open streams.</p>
+<p>Right now you are more enlightened on what <code>ls</code> does than before reading this part. Knowing the above information you can do things like changing the way files are quoted (I retrieved the options by providing an invalid value and looking on the <code>QUOTING_STYLE='-' ltrace ls</code> output to see what arguments are tested for):</p>
+<pre><code>$ ls a*
+a file  a.out
+
+$ QUOTING_STYLE=&quot;shell&quot; ls a*
+&#39;a file&#39;  a.out
+
+$ QUOTING_STYLE=&quot;c&quot; ls a*
+&quot;a file&quot;  &quot;a.out&quot;</code></pre>
+<p>The next question we are interested in is “<em>Can <code>ltrace</code> trace syscalls as well?</em>”. Luckily, the answer is <em>yes</em>, by using the <code>-S</code> flag:</p>
+<pre><code>$ ltrace -S ls
+SYS_brk(0)                               = 0x1d4b000
+SYS_mmap(0, 4096, 3, 34)                 = 0x7f4d8b352000
+SYS_access(&quot;/etc/ld.so.preload&quot;, 04)     = -2
+SYS_open(&quot;/etc/ld.so.cache&quot;, 524288, 01) = 3
+SYS_fstat(3, 0x7fff9f3a4110)             = 0
+SYS_mmap(0, 0x246b0, 1, 2)               = 0x7f4d8b32d000
+...</code></pre>
+<p>Contrast with the results of <code>strace</code>:</p>
+<pre><code>$ strace ls
+execve(&quot;/usr/bin/ls&quot;, [&quot;ls&quot;], [/* 48 vars */]) = 0
+brk(0)                                  = 0x1190000
+mmap(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x7fcf80794000
+access(&quot;/etc/ld.so.preload&quot;, R_OK)      = -1 ENOENT (No such file or directory)
+open(&quot;/etc/ld.so.cache&quot;, O_RDONLY|O_CLOEXEC) = 3
+fstat(3, {st_mode=S_IFREG|0644, st_size=149168, ...}) = 0
+mmap(NULL, 149168, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7fcf8076f000
+...</code></pre>
+<p>Differences are easily seen. The main one is that <code>ltrace</code> prefixes each syscall with <code>SYS_</code> and doesn’t represent macros as macros but expands them (so instead of <code>PROT_READ|PROT_WRITE</code> you have <code>3</code>). In fact, even the number of arguments is different. For understandability reason, it is better to use <code>strace</code> for tracing the system calls and <code>ltrace</code> for tracing the library ones.</p>
+</section>
+<section id="why-is-ltrace-useful" class="level3">
+<h3>Why Is <code>ltrace</code> Useful?</h3>
+<p>From the above section you have seen that we can use <code>ltrace</code> to understand undocumented behavior of an application. For example the <code>QUOTING_STYLE</code> was found neither in the <a href="http://linuxmanpages.com/man1/ls.1.php" title="ls - list directory contents"><code>ls</code></a> manual nor in the <a href="http://linuxmanpages.com/man1/bash.1.php" title="bash - GNU Bourne-Again SHell"><code>bash</code></a> one.</p>
+<p>Another way <code>ltrace</code> is useful is when one of the libraries your application depends on is faulty. Instead of trying to debug a full-scale application you might want to isolate the culprit into a minimal application which exhibits only the bad behaviour. For that, you can use <code>ltrace</code> in the same way we used <code>strace</code> in <a href="http://techblog.rosedu.org/tracing-processes-for-fun-and-profit.html#how-is-this-useful" title="Tracing Processes for Fun and Profit">its own article</a> in the past.</p>
+</section>
+<section id="i-have-too-much-output" class="level3">
+<h3>I Have Too Much Output</h3>
+<p>Like in the case of <a href="http://techblog.rosedu.org/tracing-processes-for-fun-and-profit.html#too-much-output" title="Tracing Processes for Fun and Profit"><code>strace</code></a>, <code>ltrace</code> produces a long list of output lines and it is quite hard to find what you’re looking for or to understand what’s happening while they are scrolling on the screen.</p>
+<p>Just like <code>strace</code> we can save the output to a file, using <code>-o</code>:</p>
+<pre><code>$ ltrace -o ltraceout ls
+$ wc -l ltraceout
+523 ltraceout
+$ head ltraceout
+__libc_start_main(0x402c60, 1, 0x7fffbc2e3348, 0x412bb0 &lt;unfinished ...&gt;
+strrchr(&quot;ls&quot;, &#39;/&#39;)                              = nil
+setlocale(LC_ALL, &quot;&quot;)                           = &quot;en_US.UTF-8&quot;
+bindtextdomain(&quot;coreutils&quot;, &quot;/usr/share/locale&quot;)= &quot;/usr/share/locale&quot;
+textdomain(&quot;coreutils&quot;)                         = &quot;coreutils&quot;
+__cxa_atexit(0x40ace0, 0, 0, 0x736c6974756572)  = 0
+isatty(1)                                       = 1
+getenv(&quot;QUOTING_STYLE&quot;)                         = nil
+getenv(&quot;COLUMNS&quot;)                               = nil
+ioctl(1, 21523, 0x7fffbc2e2ee0)                 = 0</code></pre>
+<p>Like <code>strace</code>, we can also use <code>-e</code> to filter on specific calls.</p>
+<p>In the following examples we would use the following C source file which computes <code>41^41</code> and <code>42^42</code> both using the float <code>libmath</code> version and the <code>libgmp</code> multi-precision integers one. We will use threads to compute <code>42^42</code> and compute <code>41^41</code> in the <code>main</code> function with both arguments.</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;math.h&gt;</span>
+<span class="ot">#include &lt;pthread.h&gt;</span>
+<span class="ot">#include &lt;stdio.h&gt;</span>
+<span class="ot">#include &lt;stdlib.h&gt;</span>
+
+<span class="ot">#include &lt;gmp.h&gt;</span>
+
+<span class="dt">void</span> *do_double_thread(<span class="dt">void</span> *data)
+{
+  <span class="dt">double</span> x = <span class="dv">42</span>;
+  x = pow(x, x);
+}
+
+<span class="dt">void</span> *do_mpz_thread(<span class="dt">void</span> *data)
+{
+  mpz_t x;
+
+  mpz_init_set_ui(x, <span class="dv">42</span>);
+  mpz_pow_ui(x, x, <span class="dv">42</span>);
+
+  mpz_clear(x);
+}
+
+<span class="dt">int</span> main()
+{
+  pthread_t double_thread, mpz_thread;
+  pthread_attr_t attr;
+
+  <span class="dt">double</span> y = <span class="dv">41</span>;
+  mpz_t x;
+
+  mpz_init_set_ui(x, <span class="dv">41</span>);
+  mpz_pow_ui(x, x, <span class="dv">41</span>);
+
+  mpz_clear(x);
+
+  y = pow(y, y);
+
+  <span class="co">/* initialize the attribute */</span>
+  <span class="kw">if</span> (pthread_attr_init(&amp;attr) != <span class="dv">0</span>) {
+    perror(<span class="st">&quot;pthread_attr_init&quot;</span>);
+    pthread_exit(NULL);
+  }
+
+  <span class="co">/* set detached state */</span>
+  <span class="kw">if</span> (pthread_attr_setdetachstate(&amp;attr, PTHREAD_CREATE_JOINABLE) != <span class="dv">0</span>) {
+    perror(<span class="st">&quot;pthread_attr_setdetachstate&quot;</span>);
+    pthread_exit(NULL);
+  }
+
+  <span class="kw">if</span> (pthread_create(&amp;double_thread, &amp;attr, do_double_thread, NULL)) {
+    perror(<span class="st">&quot;pthread_create&quot;</span>);
+    exit(EXIT_FAILURE);
+  }
+
+  <span class="kw">if</span> (pthread_create(&amp;mpz_thread, &amp;attr, do_mpz_thread, NULL)) {
+    perror(<span class="st">&quot;pthread_create&quot;</span>);
+    exit(EXIT_FAILURE);
+  }
+
+  pthread_attr_destroy(&amp;attr);
+
+  <span class="kw">if</span> (pthread_join(double_thread, NULL))
+    perror(<span class="st">&quot;pthread_join&quot;</span>);
+
+  <span class="kw">if</span> (pthread_join(mpz_thread, NULL))
+    perror(<span class="st">&quot;pthread_join&quot;</span>);
+
+  <span class="kw">return</span> <span class="dv">0</span>;
+}</code></pre>
+<p>To compile, we have to link against <code>libmath</code>, <code>libpthread</code> and <code>libgmp</code>:</p>
+<pre><code>$ gcc -lm -lpthread -lgmp test.c -o test</code></pre>
+<p>Running <code>ltrace</code> on the full output we have the following:</p>
+<pre><code>$ ltrace ./test
+__libc_start_main(0x400aeb, 1, 0x7fff6afa8b78, 0x400c60 &lt;unfinished ...&gt;
+__gmpz_init_set_ui(0x7fff6afa8a30, 41, 0x7fff6afa8b88, 0x400c60)     = 1
+__gmpz_pow_ui(0x7fff6afa8a30, 0x7fff6afa8a30, 41, 0x7fff6afa8a30)    = 0
+__gmpz_clear(0x7fff6afa8a30, 0x6bb020, 0, 0x129c08be7ca69)           = 0
+pow(0x3573db8760, 0xffffffff, 0x4044800000000000, 0)                 = 0x4da9465e5d9d1629
+pthread_attr_init(0x7fff6afa8a40, 213, 0x7fefffffffffffff, 0x7fffffffffffffff)= 0
+pthread_attr_setdetachstate(0x7fff6afa8a40, 0, 0x7fefffffffffffff, 0)= 0
+pthread_create(0x7fff6afa8a80, 0x7fff6afa8a40, 0x400a60, 0)          = 0
+pthread_create(0x7fff6afa8a78, 0x7fff6afa8a40, 0x400aa8, 0)          = 0
+pthread_attr_destroy(0x7fff6afa8a40, 0x7f60ece77fb0, 0x7f60ece789d0, -1)= 0
+pthread_join(0x7f60ed679700, 0, 0x7f60ece789d0, -1)                  = 0
+pthread_join(0x7f60ece78700, 0, 0x7f60ed679700, 0x3574418290)        = 0
++++ exited (status 0) +++</code></pre>
+<p>If we want to capture only the bignum operations we can use <code>-e</code> flag:</p>
+<pre><code>$ ltrace -e &#39;*gmpz*&#39; ./test
+test-&gt;__gmpz_init_set_ui(0x7ffffb01f830, 41, 0x7ffffb01f988, 0x400c60)= 1
+test-&gt;__gmpz_pow_ui(0x7ffffb01f830, 0x7ffffb01f830, 41, 0x7ffffb01f830 &lt;unfinished ...&gt;
+libgmp.so.10-&gt;__gmpz_n_pow_ui(0x7ffffb01f830, 0xbf0010, 1, 41 &lt;unfinished ...&gt;
+libgmp.so.10-&gt;__gmpz_realloc(0x7ffffb01f830, 7, 42, 7)         = 0xbf0010
+&lt;... __gmpz_n_pow_ui resumed&gt; )                                  = 0
+&lt;... __gmpz_pow_ui resumed&gt; )                                    = 0
+test-&gt;__gmpz_clear(0x7ffffb01f830, 0xbf0020, 0, 0x129c08be7ca69) = 0
++++ exited (status 0) +++</code></pre>
+<p>From this output we see that <code>__gmpz_pow_ui</code> from our code calls <code>__gmpz_n_pow_ui</code> from <code>libgmp.so.10</code> which in turn calls <code>__gmpz_realloc</code> to expand the space allocated to the number.</p>
+<p>However, in some cases one library might call functions from another or you might want to filter and keep only the calls done by your application. Fortunately, we can still do that:</p>
+<pre><code>$ ltrace -e &#39;*gmpz*-@libgmp.so*&#39; ./test
+test-&gt;__gmpz_init_set_ui(0x7fff45c5cd70, 41, 0x7fff45c5cec8, 0x400c60) = 1
+test-&gt;__gmpz_pow_ui(0x7fff45c5cd70, 0x7fff45c5cd70, 41, 0x7fff45c5cd70)= 0
+test-&gt;__gmpz_clear(0x7fff45c5cd70, 0xc02020, 0, 0x129c08be7ca69)       = 0
++++ exited (status 0) +++</code></pre>
+<p>If you want to trace all calls <em>inside</em> a library then it is better to use <code>-x</code>.</p>
+<pre><code>$ ltrace -x &#39;@libgmp.so.*&#39; ./test
+__libc_start_main(0x400aeb, 1, 0x7fff656660b8, 0x400c60 &lt;unfinished ...&gt;
+__gmpz_init_set_ui(0x7fff65665f70, 41, 0x7fff656660c8, 0x400c60 &lt;unfinished ...&gt;
+__gmpz_init_set_ui@libgmp.so.10(0x7fff65665f70, 41, 0x7fff656660c8, 0x400c60 &lt;unfinished ...&gt;
+__gmp_default_allocate@libgmp.so.10(8, 41, 0x7fff656660c8, 0x400c60)= 0x222a010
+&lt;... __gmpz_init_set_ui resumed&gt; )= 1
+&lt;... __gmpz_init_set_ui resumed&gt; )= 1
+__gmpz_pow_ui(0x7fff65665f70, 0x7fff65665f70, 41, 0x7fff65665f70 &lt;unfinished ...&gt;
+__gmpz_pow_ui@libgmp.so.10(0x7fff65665f70, 0x7fff65665f70, 41, 0x7fff65665f70 &lt;unfinished ...&gt;
+__gmpz_n_pow_ui@libgmp.so.10(0x7fff65665f70, 0x222a010, 1, 41 &lt;unfinished ...&gt;
+__gmpz_realloc@libgmp.so.10(0x7fff65665f70, 7, 42, 7 &lt;unfinished ...&gt;
+__gmp_default_reallocate@libgmp.so.10(0x222a010, 8, 56, 7)= 0x222a010
+&lt;... __gmpz_realloc resumed&gt; )= 0x222a010
+__gmpn_sqr@libgmp.so.10(0x222a010, 0x7fff65665e80, 2, 48 &lt;unfinished ...&gt;
+__gmpn_sqr_basecase@libgmp.so.10(0x222a010, 0x7fff65665e80, 2, 48)= 0x3562f3ea0787ecff
+&lt;... __gmpn_sqr resumed&gt; )= 0
+__gmpn_mul_1@libgmp.so.10(0x222a010, 0x222a010, 3, 0x129c08be7ca69)= 0xca32f2e
+&lt;... __gmpz_n_pow_ui resumed&gt; )= 0
+&lt;... __gmpz_pow_ui resumed&gt; )= 0
+&lt;... __gmpz_pow_ui resumed&gt; )= 0
+__gmpz_clear(0x7fff65665f70, 0x222a020, 0, 0x129c08be7ca69 &lt;unfinished ...&gt;
+__gmpz_clear@libgmp.so.10(0x7fff65665f70, 0x222a020, 0, 0x129c08be7ca69 &lt;unfinished ...&gt;
+__gmp_default_free@libgmp.so.10(0x222a010, 56, 0, 0x129c08be7ca69)= 0
+&lt;... __gmpz_clear resumed&gt; )= 0
+&lt;... __gmpz_clear resumed&gt; )= 0
+pow(0x3573db8760, 0xffffffff, 0x4044800000000000, 0)= 0x4da9465e5d9d1629
+pthread_attr_init(0x7fff65665f80, 213, 0x7fefffffffffffff, 0x7fffffffffffffff)= 0
+pthread_attr_setdetachstate(0x7fff65665f80, 0, 0x7fefffffffffffff, 0)= 0
+pthread_create(0x7fff65665fc0, 0x7fff65665f80, 0x400a60, 0)= 0
+pthread_create(0x7fff65665fb8, 0x7fff65665f80, 0x400aa8, 0)= 0
+pthread_attr_destroy(0x7fff65665f80, 0x7f3164bc1fb0, 0x7f3164bc29d0, -1)= 0
+pthread_join(0x7f31653c3700, 0, 0x7f3164bc29d0, -1)= 0
+pthread_join(0x7f3164bc2700, 0, 0x7f31653c3700, 0x3574418290)= 0
+_fini@libgmp.so.10(0x358cc761f0, 0, 0xffffffff, 0)= 0x358ca5edc4
++++ exited (status 0) +++</code></pre>
+<p>To catch only the calls to the specific library use <code>-L</code> which will make <code>ltrace</code> not trace anything from the <code>MAIN</code> library:</p>
+<pre><code>$ ltrace -L -x &#39;@libgmp.so.*&#39; ./test
+__gmpz_init_set_ui@libgmp.so.10(0x7fffbf630930, 41, 0x7fffbf630a88, 0x400c60 &lt;unfinished ...&gt;
+__gmp_default_allocate@libgmp.so.10(8, 41, 0x7fffbf630a88, 0x400c60)= 0x17b5010
+&lt;... __gmpz_init_set_ui resumed&gt; )= 1
+__gmpz_pow_ui@libgmp.so.10(0x7fffbf630930, 0x7fffbf630930, 41, 0x7fffbf630930 &lt;unfinished ...&gt;
+__gmpz_n_pow_ui@libgmp.so.10(0x7fffbf630930, 0x17b5010, 1, 41 &lt;unfinished ...&gt;
+__gmpz_realloc@libgmp.so.10(0x7fffbf630930, 7, 42, 7 &lt;unfinished ...&gt;
+__gmp_default_reallocate@libgmp.so.10(0x17b5010, 8, 56, 7)= 0x17b5010
+&lt;... __gmpz_realloc resumed&gt; )= 0x17b5010
+__gmpn_sqr@libgmp.so.10(0x17b5010, 0x7fffbf630840, 2, 48 &lt;unfinished ...&gt;
+__gmpn_sqr_basecase@libgmp.so.10(0x17b5010, 0x7fffbf630840, 2, 48)= 0x3562f3ea0787ecff
+&lt;... __gmpn_sqr resumed&gt; )= 0
+__gmpn_mul_1@libgmp.so.10(0x17b5010, 0x17b5010, 3, 0x129c08be7ca69)= 0xca32f2e
+&lt;... __gmpz_n_pow_ui resumed&gt; )= 0
+&lt;... __gmpz_pow_ui resumed&gt; )= 0
+__gmpz_clear@libgmp.so.10(0x7fffbf630930, 0x17b5020, 0, 0x129c08be7ca69 &lt;unfinished ...&gt;
+__gmp_default_free@libgmp.so.10(0x17b5010, 56, 0, 0x129c08be7ca69)= 0
+&lt;... __gmpz_clear resumed&gt; )= 0
+_fini@libgmp.so.10(0x358cc761f0, 0, 0xffffffff, 0)= 0x358ca5edc4
++++ exited (status 0) +++</code></pre>
+</section>
+<section id="attaching-to-other-processes" class="level3">
+<h3>Attaching To Other Processes</h3>
+<p>Like in <a href="http://techblog.rosedu.org/tracing-processes-for-fun-and-profit.html#but-i-started-the-process.." title="Tracing Processes for Fun and Profit"><code>strace</code></a> case, we can use <code>-p</code> to attach to running processes:</p>
+<pre><code>$ ./test &amp;
+[1] 26026
+
+$ ltrace -p 26026
+__gmpz_clear(0x7fff1fa3bb50, 1, 0, 0x1b9b000)= 0
+pow(0x7f2c3dca8000, 0x49ff000, 0x4044800000000000, -1)= 0x4da9465e5d9d1629
+pthread_attr_init(0x7fff1fa3bb60, 213, 0x7fefffffffffffff, 0x7fffffffffffffff)= 0
+pthread_attr_setdetachstate(0x7fff1fa3bb60, 0, 0x7fefffffffffffff, 0)= 0
+pthread_create(0x7fff1fa3bba8, 0x7fff1fa3bb60, 0x400a60, 0)= 0
+pthread_create(0x7fff1fa3bba0, 0x7fff1fa3bb60, 0x400aa8, 0)= 0
+pthread_attr_destroy(0x7fff1fa3bb60, 0x7f2c42073fb0, 0x7f2c420749d0, -1)= 0
+pthread_join(0x7f2c42875700, 0, 0x7f2c420749d0, -1)= 0
+pthread_join(0x7f2c42074700, 0, 0x7f2c42875700, 0x3574418290)= 0
++++ exited (status 0) +++
+[1]+  Done                    ./test</code></pre>
+<p>In fact, just as <code>strace</code>, we can use multiple <code>-p</code> arguments to attach to multiple processes simultaneously:</p>
+<pre><code>$ ./test &amp; ./test &amp;
+[1] 26149
+[2] 26150
+
+$ ltrace -p 26149 -p 26150
+__gmpz_clear(0x7fff52a4fed0, 1, 0, 0xa2c000)= 0
+pow(0x7f85fb6f0000, 0x49ff000, 0x4044800000000000, -1)= 0x4da9465e5d9d1629
+pthread_attr_init(0x7fff52a4fee0, 213, 0x7fefffffffffffff, 0x7fffffffffffffff)= 0
+pthread_attr_setdetachstate(0x7fff52a4fee0, 0, 0x7fefffffffffffff, 0)= 0
+pthread_create(0x7fff52a4ff28, 0x7fff52a4fee0, 0x400a60, 0)= 0
+pthread_create(0x7fff52a4ff20, 0x7fff52a4fee0, 0x400aa8, 0)= 0
+pthread_attr_destroy(0x7fff52a4fee0, 0x7f85ffabbfb0, 0x7f85ffabc9d0, -1)= 0
+pthread_join(0x7f86002bd700, 0, 0x7f85ffabc9d0, -1)= 0
+pthread_join(0x7f85ffabc700, 0, 0x7f86002bd700, 0x3574418290)= 0
++++ exited (status 0) +++
+__gmpz_clear(0x7fff4cbac6e0, 1, 0, 0x1207000)= 0
+pow(0x7fbf03640000, 0x49ff000, 0x4044800000000000, -1)= 0x4da9465e5d9d1629
+pthread_attr_init(0x7fff4cbac6f0, 213, 0x7fefffffffffffff, 0x7fffffffffffffff)= 0
+pthread_attr_setdetachstate(0x7fff4cbac6f0, 0, 0x7fefffffffffffff, 0)= 0
+pthread_create(0x7fff4cbac738, 0x7fff4cbac6f0, 0x400a60, 0)= 0
+pthread_create(0x7fff4cbac730, 0x7fff4cbac6f0, 0x400aa8, 0)= 0
+pthread_attr_destroy(0x7fff4cbac6f0, 0x7fbf07a0bfb0, 0x7fbf07a0c9d0, -1)= 0
+pthread_join(0x7fbf0820d700, 0, 0x7fbf07a0c9d0, -1)= 0
+pthread_join(0x7fbf07a0c700, 0, 0x7fbf0820d700, 0x3574418290)= 0
++++ exited (status 0) +++
+[1]-  Done                    ./test
+[2]+  Done                    ./test</code></pre>
+<p>Though, this case is useful only when debugging multiple programs which need to communicate between themselves, it is nice to know that this is possible.</p>
+</section>
+<section id="tracing-the-threads-and-children-of-a-process" class="level3">
+<h3>Tracing the Threads and Children of a Process</h3>
+<p>The <code>strace</code> tools allows attaching to subprocesses of a process using <code>-f</code>. Also, you can use <code>-ff</code> with a <code>-o</code> to get the output of each thread in a separate file.</p>
+<p>However, <code>ltrace</code> knows only the <code>-f</code> option. Lines from different processes are prefixed with the <code>PID</code> of that process.</p>
+<pre><code>$ ltrace -f ./test
+[pid 26192] __libc_start_main(0x400aeb, 1, 0x7fffc406b9c8, 0x400c60 &lt;unfinished ...&gt;
+[pid 26192] __gmpz_init_set_ui(0x7fffc406b880, 41, 0x7fffc406b9d8, 0x400c60)= 1
+[pid 26192] __gmpz_pow_ui(0x7fffc406b880, 0x7fffc406b880, 41, 0x7fffc406b880)= 0
+[pid 26192] __gmpz_clear(0x7fffc406b880, 0x1b21020, 0, 0x129c08be7ca69)= 0
+[pid 26192] pow(0x3573db8760, 0xffffffff, 0x4044800000000000, 0)= 0x4da9465e5d9d1629
+[pid 26192] pthread_attr_init(0x7fffc406b890, 213, 0x7fefffffffffffff, 0x7fffffffffffffff)= 0
+[pid 26192] pthread_attr_setdetachstate(0x7fffc406b890, 0, 0x7fefffffffffffff, 0)           = 0
+[pid 26192] pthread_create(0x7fffc406b8d0, 0x7fffc406b890, 0x400a60, 0)= 0
+[pid 26193] pow(0, 0, 0x4045000000000000, -1 &lt;unfinished ...&gt;
+[pid 26192] pthread_create(0x7fffc406b8c8, 0x7fffc406b890, 0x400aa8, 0 &lt;unfinished ...&gt;
+[pid 26193] &lt;... pow resumed&gt; )= 0x4e1646505f35a847
+[pid 26193] +++ exited (status 0) +++
+[pid 26192] &lt;... pthread_create resumed&gt; )= 0
+[pid 26192] pthread_attr_destroy(0x7fffc406b890, 0x7fc1a1041fb0, 0x7fc1a10429d0, -1)= 0
+[pid 26192] pthread_join(0x7fc1a1843700, 0, 0x7fc1a10429d0, -1)= 0
+[pid 26192] pthread_join(0x7fc1a1042700, 0, 0x7fc1a1843700, 0x3574418290 &lt;unfinished ...&gt;
+[pid 26194] __gmpz_init_set_ui(0x7fc1a1041f00, 42, 0x59a85877c49edc2b, -1)= 1
+[pid 26194] __gmpz_pow_ui(0x7fc1a1041f00, 0x7fc1a1041f00, 42, 0x7fc1a1041f00)= 0
+[pid 26194] __gmpz_clear(0x7fc1a1041f00, 0x7fc19c0008c0, 0, 42)= 0
+[pid 26192] &lt;... pthread_join resumed&gt; )= 0
+[pid 26194] +++ exited (status 0) +++
+[pid 26192] +++ exited (status 0) +++</code></pre>
+<p>Thus, if you want to filter only a single child you have to resort to text filter utilities like <code>grep</code>.</p>
+</section>
+<section id="profiling" class="level3">
+<h3>Profiling</h3>
+<p>One nice thing about <code>strace</code> is that you can use the <code>-c</code> flag to get a table with all syscalls used in a program, the time needed to execute them and the count of error results. However, <code>ltrace</code> lacks this option but it can be simulated by using the other timing options and text filters.</p>
+<p>Both <code>strace</code> and <code>ltrace</code> allow you to get timestamps around any call by using <code>-r</code>, <code>-t</code>, <code>-tt</code> or <code>-ttt</code>:</p>
+<p><code>-r</code> shows a relative timestamp since program startup</p>
+<pre><code>$ ltrace -r ./test
+  0.000000 __libc_start_main(0x400aeb, 1, 0x7fff2a51a328, 0x400c60 &lt;unfinished ...&gt;
+  0.000418 __gmpz_init_set_ui(0x7fff2a51a1e0, 41, 0x7fff2a51a338, 0x400c60)= 1
+  0.000296 __gmpz_pow_ui(0x7fff2a51a1e0, 0x7fff2a51a1e0, 41, 0x7fff2a51a1e0)= 0
+  0.000166 __gmpz_clear(0x7fff2a51a1e0, 0x1f66020, 0, 0x129c08be7ca69)= 0
+  0.000137 pow(0x3573db8760, 0xffffffff, 0x4044800000000000, 0)= 0x4da9465e5d9d1629
+  0.000168 pthread_attr_init(0x7fff2a51a1f0, 213, 0x7fefffffffffffff, 0x7fffffffffffffff)= 0
+  0.000147 pthread_attr_setdetachstate(0x7fff2a51a1f0, 0, 0x7fefffffffffffff, 0)= 0
+  0.000216 pthread_create(0x7fff2a51a230, 0x7fff2a51a1f0, 0x400a60, 0)= 0
+  0.000409 pthread_create(0x7fff2a51a228, 0x7fff2a51a1f0, 0x400aa8, 0)= 0
+  0.000474 pthread_attr_destroy(0x7fff2a51a1f0, 0x7f25016c5fb0, 0x7f25016c69d0, -1)= 0
+  0.000250 pthread_join(0x7f2501ec7700, 0, 0x7f25016c69d0, -1)= 0
+  0.000257 pthread_join(0x7f25016c6700, 0, 0x7f2501ec7700, 0x3574418290)= 0
+  0.000735 +++ exited (status 0) +++</code></pre>
+<p><code>-t</code> shows the time of day when the call was made</p>
+<pre><code>$ ltrace -t ./test
+14:50:42 __libc_start_main(0x400aeb, 1, 0x7fff84229b38, 0x400c60 &lt;unfinished ...&gt;
+14:50:42 __gmpz_init_set_ui(0x7fff842299f0, 41, 0x7fff84229b48, 0x400c60)= 1
+14:50:42 __gmpz_pow_ui(0x7fff842299f0, 0x7fff842299f0, 41, 0x7fff842299f0)= 0
+14:50:42 __gmpz_clear(0x7fff842299f0, 0x1d02020, 0, 0x129c08be7ca69)= 0
+14:50:42 pow(0x3573db8760, 0xffffffff, 0x4044800000000000, 0)= 0x4da9465e5d9d1629
+14:50:42 pthread_attr_init(0x7fff84229a00, 213, 0x7fefffffffffffff, 0x7fffffffffffffff)= 0
+14:50:42 pthread_attr_setdetachstate(0x7fff84229a00, 0, 0x7fefffffffffffff, 0)= 0
+14:50:42 pthread_create(0x7fff84229a40, 0x7fff84229a00, 0x400a60, 0)= 0
+14:50:42 pthread_create(0x7fff84229a38, 0x7fff84229a00, 0x400aa8, 0)= 0
+14:50:42 pthread_attr_destroy(0x7fff84229a00, 0x7f48e7ec0fb0, 0x7f48e7ec19d0, -1)= 0
+14:50:42 pthread_join(0x7f48e86c2700, 0, 0x7f48e7ec19d0, -1)= 0
+14:50:42 pthread_join(0x7f48e7ec1700, 0, 0x7f48e86c2700, 0x3574418290)= 0
+14:50:42 +++ exited (status 0) +++</code></pre>
+<p><code>-tt</code> also displays the microseconds</p>
+<pre><code>$ ltrace -tt ./test
+14:50:45.465708 __libc_start_main(0x400aeb, 1, 0x7fff83373968, 0x400c60 &lt;unfinished ...&gt;
+14:50:45.465942 __gmpz_init_set_ui(0x7fff83373820, 41, 0x7fff83373978, 0x400c60)= 1
+14:50:45.466216 __gmpz_pow_ui(0x7fff83373820, 0x7fff83373820, 41, 0x7fff83373820)= 0
+14:50:45.466400 __gmpz_clear(0x7fff83373820, 0x192e020, 0, 0x129c08be7ca69)= 0
+14:50:45.466584 pow(0x3573db8760, 0xffffffff, 0x4044800000000000, 0)= 0x4da9465e5d9d1629
+14:50:45.466764 pthread_attr_init(0x7fff83373830, 213, 0x7fefffffffffffff, 0x7fffffffffffffff)= 0
+14:50:45.466932 pthread_attr_setdetachstate(0x7fff83373830, 0, 0x7fefffffffffffff, 0)= 0
+14:50:45.467101 pthread_create(0x7fff83373870, 0x7fff83373830, 0x400a60, 0)= 0
+14:50:45.467417 pthread_create(0x7fff83373868, 0x7fff83373830, 0x400aa8, 0)= 0
+14:50:45.468024 pthread_attr_destroy(0x7fff83373830, 0x7fc1e7ebdfb0, 0x7fc1e7ebe9d0, -1)= 0
+14:50:45.468253 pthread_join(0x7fc1e86bf700, 0, 0x7fc1e7ebe9d0, -1)= 0
+14:50:45.468480 pthread_join(0x7fc1e7ebe700, 0, 0x7fc1e86bf700, 0x3574418290)= 0
+14:50:45.469108 +++ exited (status 0) +++</code></pre>
+<p><code>-ttt</code> displays microseconds as above but use the seconds till epoch instead of the actual time.</p>
+<pre><code>$ ltrace -ttt ./test
+1390074648.833755 __libc_start_main(0x400aeb, 1, 0x7fff5b1c8e28, 0x400c60 &lt;unfinished ...&gt;
+1390074648.833981 __gmpz_init_set_ui(0x7fff5b1c8ce0, 41, 0x7fff5b1c8e38, 0x400c60)= 1
+1390074648.834289 __gmpz_pow_ui(0x7fff5b1c8ce0, 0x7fff5b1c8ce0, 41, 0x7fff5b1c8ce0)= 0
+1390074648.834481 __gmpz_clear(0x7fff5b1c8ce0, 0x1e7c020, 0, 0x129c08be7ca69)= 0
+1390074648.834678 pow(0x3573db8760, 0xffffffff, 0x4044800000000000, 0)= 0x4da9465e5d9d1629
+1390074648.834858 pthread_attr_init(0x7fff5b1c8cf0, 213, 0x7fefffffffffffff, 0x7fffffffffffffff)= 0
+1390074648.835033 pthread_attr_setdetachstate(0x7fff5b1c8cf0, 0, 0x7fefffffffffffff, 0)= 0
+1390074648.835242 pthread_create(0x7fff5b1c8d30, 0x7fff5b1c8cf0, 0x400a60, 0)= 0
+1390074648.835935 pthread_create(0x7fff5b1c8d28, 0x7fff5b1c8cf0, 0x400aa8, 0)= 0
+1390074648.836327 pthread_attr_destroy(0x7fff5b1c8cf0, 0x7fc3da214fb0, 0x7fc3da2159d0, -1)= 0
+1390074648.837980 pthread_join(0x7fc3daa16700, 0, 0x7fc3da2159d0, -1)= 0
+1390074648.838436 pthread_join(0x7fc3da215700, 0, 0x7fc3daa16700, 0x3574418290)= 0
+1390074648.839230 +++ exited (status 0) +++</code></pre>
+<p>Also, both tools allow you to time each individual call by using <code>-T</code>:</p>
+<pre><code>$ ltrace -T ./test
+__libc_start_main(0x400aeb, 1, 0x7fffc4512768, 0x400c60 &lt;unfinished ...&gt;
+__gmpz_init_set_ui(0x7fffc4512620, 41, 0x7fffc4512778, 0x400c60)    = 1 &lt;0.000290&gt;
+__gmpz_pow_ui(0x7fffc4512620, 0x7fffc4512620, 41, 0x7fffc4512620)   = 0 &lt;0.000167&gt;
+__gmpz_clear(0x7fffc4512620, 0x21cc020, 0, 0x129c08be7ca69)         = 0 &lt;0.000142&gt;
+pow(0x3573db8760, 0xffffffff, 0x4044800000000000, 0)                = 0x4da9465e5d9d1629 &lt;0.000209&gt;
+pthread_attr_init(0x7fffc4512630, 213, 0x7fefffffffffffff, 0x7fffffffffffffff)= 0 &lt;0.000130&gt;
+pthread_attr_setdetachstate(0x7fffc4512630, 0, 0x7fefffffffffffff, 0)= 0 &lt;0.000139&gt;
+pthread_create(0x7fffc4512670, 0x7fffc4512630, 0x400a60, 0)         = 0 &lt;0.000304&gt;
+pthread_create(0x7fffc4512668, 0x7fffc4512630, 0x400aa8, 0)         = 0 &lt;0.000421&gt;
+pthread_attr_destroy(0x7fffc4512630, 0x7f09988a1fb0, 0x7f09988a29d0, -1)= 0 &lt;0.000266&gt;
+pthread_join(0x7f09990a3700, 0, 0x7f09988a29d0, -1)                 = 0 &lt;0.000181&gt;
+pthread_join(0x7f09988a2700, 0, 0x7f09990a3700, 0x3574418290)       = 0 &lt;0.000467&gt;
++++ exited (status 0) +++</code></pre>
+<p>Though you can profile applications using <code>ltrace</code> and <code>strace</code>, a much better tool to use is <code>perf</code> which will be presented on a future article.</p>
+</section>
+<section id="blaming-it-on-the-culprit-line" class="level3">
+<h3>Blaming it on the Culprit Line</h3>
+<p>It is possible to use <code>ltrace</code> and <code>strace</code> to show you the line numbers of the caller by using the <code>-i</code> flag to get the value of the <code>EIP</code> register and then using <a href="http://linuxmanpages.com/man1/addr2line.1.php" title="addr2line - convert addresses into file names and line numbers"><code>addr2line</code></a> to get the exact line (compile with <code>-g</code>):</p>
+<pre><code>$ ltrace -i ./test
+...
+[0x400bfb] pthread_create(0x7fff0804c998, 0x7fff0804c960, 0x400aa8, 0)= 0
+[0x400c1f] pthread_attr_destroy(0x7fff0804c960, 0x7f708d112fb0, 0x7f708d1139d0, -1)= 0
+...
+[0xffffffffffffffff] +++ exited (status 0) +++
+
+$ addr2line -iCse ./test 0x400c1f
+test.c:63</code></pre>
+<p>This is useful when your code makes repeated calls to the same subset of functions but only a few of them cause problems.</p>
+</section>
+<section id="nicer-output" class="level3">
+<h3>Nicer Output</h3>
+<p>One interesting feature of <code>ltrace</code> is that you can get a nice call tree when functions from one library call other traced functions. For that, you would use the <code>-n</code> option.</p>
+<pre><code>$ ltrace -n 3 -L -x &#39;@libgmp.so.*&#39; ./test
+__gmpz_init_set_ui@libgmp.so.10(0x7fff7bb2e810, 41, 0x7fff7bb2e968, 0x400c60 &lt;unfinished ...&gt;
+   __gmp_default_allocate@libgmp.so.10(8, 41, 0x7fff7bb2e968, 0x400c60)= 0x12b2010
+&lt;... __gmpz_init_set_ui resumed&gt; )= 1
+__gmpz_pow_ui@libgmp.so.10(0x7fff7bb2e810, 0x7fff7bb2e810, 41, 0x7fff7bb2e810 &lt;unfinished ...&gt;
+   __gmpz_n_pow_ui@libgmp.so.10(0x7fff7bb2e810, 0x12b2010, 1, 41 &lt;unfinished ...&gt;
+      __gmpz_realloc@libgmp.so.10(0x7fff7bb2e810, 7, 42, 7 &lt;unfinished ...&gt;
+         __gmp_default_reallocate@libgmp.so.10(0x12b2010, 8, 56, 7)= 0x12b2010
+      &lt;... __gmpz_realloc resumed&gt; )= 0x12b2010
+      __gmpn_sqr@libgmp.so.10(0x12b2010, 0x7fff7bb2e720, 2, 48 &lt;unfinished ...&gt;
+         __gmpn_sqr_basecase@libgmp.so.10(0x12b2010, 0x7fff7bb2e720, 2, 48)= 0x3562f3ea0787ecff
+      &lt;... __gmpn_sqr resumed&gt; )= 0
+      __gmpn_mul_1@libgmp.so.10(0x12b2010, 0x12b2010, 3, 0x129c08be7ca69)= 0xca32f2e
+   &lt;... __gmpz_n_pow_ui resumed&gt; )= 0
+&lt;... __gmpz_pow_ui resumed&gt; )= 0
+__gmpz_clear@libgmp.so.10(0x7fff7bb2e810, 0x12b2020, 0, 0x129c08be7ca69 &lt;unfinished ...&gt;
+   __gmp_default_free@libgmp.so.10(0x12b2010, 56, 0, 0x129c08be7ca69)= 0
+&lt;... __gmpz_clear resumed&gt; )= 0
+_fini@libgmp.so.10(0x358cc761f0, 0, 0xffffffff, 0)= 0x358ca5edc4
++++ exited (status 0) +++</code></pre>
+<p>If <code>ltrace</code> was compiled with <code>libunwind</code> support then you can also use the <code>-w</code> option to get a backtrace for a specific number of frames around each traced call. If not (like in our case) one can still use the <code>-i</code> way or the <code>-n</code>, depending on what he is interested in.</p>
+</section>
+<section id="conclusions" class="level3">
+<h3>Conclusions</h3>
+<p>Though very rarely used, <code>ltrace</code> is a nice program to have in your toolbox. It will greatly help you in those hard to debug cases caused by undocumented behaviors of third-party libraries.</p>
+<p>Notice that <code>strace</code> has most of the bugs of <code>strace</code>:</p>
+<ol type="1">
+<li>a program with <code>setuid</code> doesn’t have <code>euid</code> privileges while being traced</li>
+<li>a program is slow while being traced</li>
+<li>the <code>-i</code> support is weak</li>
+</ol>
+<p>Next article on this series will present tools for profiling applications and solving timing bugs.</p>
+</section>
+
+    </div>
+  </div>
+</div>
+]]></description>
+    <pubDate>Sat, 18 Jan 2014 00:00:00 UT</pubDate>
+    <guid>http://techblog.rosedu.org/ltrace.html</guid>
+</item>
+<item>
     <title>A superficial exploration of Haskell - part 1</title>
     <link>http://techblog.rosedu.org/haskell-part1.html</link>
     <description><![CDATA[<div class="unit-inner unit-article-inner">
@@ -1977,475 +2497,6 @@ igstan</code></pre>
 ]]></description>
     <pubDate>Fri, 05 Oct 2012 00:00:00 UT</pubDate>
     <guid>http://techblog.rosedu.org/sql.html</guid>
-</item>
-<item>
-    <title>From 0 to cryptography</title>
-    <link>http://techblog.rosedu.org/from-0-to-cryptography.html</link>
-    <description><![CDATA[<div class="unit-inner unit-article-inner">
-  <div class="content">
-    <div class="bd">
-      <header>
-        <div class="unit-head">
-          <div class="unit-inner unit-head-inner">
-            <h1 class="h2 entry-title">
-              <a class="post_title" href="/from-0-to-cryptography.html" title="From 0 to cryptography">From 0 to cryptography</a>
-            </h1>
-          </div><!-- unit-inner -->
-        </div><!-- unit-head -->
-      </header>
-
-      <span class="date">
-      <span class="published">Published on September 18, 2012</span>
-      by
-      <span class="author">Tiberiu Barbu</span>
-      </span>
-
-      <br/>
-      <span class="meta">
-        Tagged:
-        <span class="tags"><a href="/tags/cryptography.html">cryptography</a>, <a href="/tags/encryption.html">encryption</a>, <a href="/tags/security.html">security</a>, <a href="/tags/rsa.html">rsa</a>, <a href="/tags/gpg.html">gpg</a></span>
-      </span>
-
-      <p>This guide is designed to explain why you need to hide information and how can you do this when you do not trust the channel through which messages are conveyed. We will discuss about cryptographic system, encryption, decryption, one-way function, asymmetric keys and more. You may think of cryptography as the thing that keeps you untouchable inside of a soap bubble travelling by air around the world.</p>
-<p>Do you think it is safer by plane?</p>
-<section id="terminology" class="level3">
-<h3>Terminology</h3>
-<ul>
-<li><p><em>plaintext</em> or <em>cleartext</em> : intelligible message that sender wants to transmit to a receiver</p></li>
-<li><p><em>ciphertext</em> : unintelligible message resulted from <em>plaintext</em> encryption using a <a href="https://en.wikipedia.org/wiki/Cryptosystem">cryptosystem</a></p></li>
-<li><p><em>encryption</em> : the process of converting a <em>plaintext</em> into a <em>ciphertext</em></p></li>
-<li><p><em>decryption</em> : the process of converting a <em>ciphertext</em> into a <em>plaintext</em> (reverse of <em>encryption</em>)</p></li>
-</ul>
-</section>
-<section id="conventional-cryptography" class="level3">
-<h3>Conventional cryptography</h3>
-<p>It is also called <em>symmetric-key</em> or <em>shared-key</em> encryption. The same key is used to encrypt and decrypt a message. Consider this example as a conventional cryptography:</p>
-<blockquote>
-<p>You and your roommate, both use the same key to lock/unlock the door of your house. Thus, you share the same key to secure the room. It is true that your roommate could have a copy of your key so he can join the room when you are at work or vice-versa.</p>
-</blockquote>
-<p>Example of conventional <a href="https://en.wikipedia.org/wiki/Cryptosystem">cryptosystems</a> that use <em>symmetric-key</em>: <a href="https://en.wikipedia.org/wiki/Data_Encryption_Standard">Data Encryption Standard (DES)</a>, <a href="https://en.wikipedia.org/wiki/Advanced_Encryption_Standard">Advanced Encryption Standard (AES)</a></p>
-<p>Advantages: Fast.</p>
-<p>Disadvantages: Not safe! The sender and receiver must agree upon a secret key and prevent others from getting access to it. There is also a big problem if they are not in the same physical location because of key distribution. How could you give your home key to your roommate, which is in America while you are in China?</p>
-<p>Practical advice: Symmetric key should be changed with any message, so that only one message can be leaked in case of disaster (crypt-analysed, stole, etc).</p>
-</section>
-<section id="key-distribution" class="level3">
-<h3>Key distribution</h3>
-<p>In the previous paragraph we were talking about <a href="https://en.wikipedia.org/wiki/Cryptosystem">cryptosystems</a> using <em>symmetric-keys</em> and the lack of an efficient method to securely share your key with your roommate. Key distribution comes to help solving this shortcoming. Next we are going to explain how key exchange becomes possible over an untrusted communication channel.</p>
-<section id="diffie-hellman-key-exchange" class="level4">
-<h4>Diffie-Hellman key exchange</h4>
-<p>This key exchange is based on an algorithm that mathematically cannot easily compute <a href="https://en.wikipedia.org/wiki/Discrete_logarithm">discrete logarithms</a> of large numbers in a reasonable amount of time. We will offer an overview of the algorithm using colours before we run straightforward with numbers and abstract formula.</p>
-<p><img style="float:right"
-src='/images/from-0-to-cryptography-diffie-hellman-key-exchange.png'
-alt="Diffie-Hellman Key Exchange" width="300" height="450"/></p>
-<ol type="1">
-<li><p><strong>Step 1</strong>: Alice and Bob come to an agreement for a common colour.</p></li>
-<li><p><strong>Step 2</strong>: Alice choose her secret colour that will not tell to Bob. Bob will do the same thing.</p></li>
-<li><p><strong>Step 3</strong>: Alice will mix the common colour with the secret one and the result is a mixture. Bob will also mix his secret colour with the common one and will obtain a different mixture from Alice’s one.</p></li>
-<li><p><strong>Step 4</strong>: Alice and Bob exchange the mixtures. This is the most critical step for communication because a <a href="https://en.wikipedia.org/wiki/Man-in-the-middle_attack">man-in-the-middle</a> could get access to those two mixtures. There is also a problem if the <a href="https://en.wikipedia.org/wiki/Man-in-the-middle_attack">man-in-the-middle</a> has both mixtures. Colour decomposition is irreversible. So the only chance to find two’s secret colour is mixing all possible colours with the common colour from step one. Also, remember that a secret colour can be also a mixture of many other colours.</p></li>
-</ol>
-<p><strong>Update:</strong> Diffie-Hellman does not protect you from a <a href="https://en.wikipedia.org/wiki/Man-in-the-middle_attack">man-in-the-middle</a> attack. To see why, imagine an attacker receiving all messages from Alice and replaying them back to Bob.</p>
-<ol start="5" type="1">
-<li><strong>Step 5</strong>: Alice will add again her secret colour to the mixture that Bob sent to her. Bob will follow the same steps.</li>
-</ol>
-<p>Finally Alice and Bob will obtain <strong>a common</strong> secret colour. Now, Alice and Bob can safely exchange the symmetric-key we were talking in a previous chapter, because they can encrypt and decrypt any message (sent through a communication channel) using the above <strong>secret colour</strong>.</p>
-<p>And here comes math. It is always about math when we do not have enough colours.</p>
-<p><strong>Step 1</strong>: Alice and Bob come to an agreement for two large numbers: one <a href="https://en.wikipedia.org/wiki/Prime_number">prime</a> <code>p</code> (recommended at least 512 bits) and a base <code>g</code> (a <a href="https://en.wikipedia.org/wiki/Primitive_root_modulo_n">primitive root</a> of <code>p</code>).</p>
-<pre><code>p &gt; 2
-g &lt; p</code></pre>
-<p><strong>Step 2</strong>: Alice chooses a secret integer <code>a</code>. Bob chooses a secret integer <code>b</code>.</p>
-<pre><code>a &lt; p-1
-b &lt; p-1</code></pre>
-<p><strong>Step 3</strong>: Alice computes public value <code>x = g^a mod p</code>. Bob computes public value <code>y = g^b mod p</code>, where <code>mod</code> is <a href="https://en.wikipedia.org/wiki/Modulo_operation">modulo operator</a>.</p>
-<p><strong>Step 4</strong>: Alice and Bob exchange <code>x</code> and <code>y</code>.</p>
-<p><strong>Step 5</strong>: Alice computes her secret key <code>k_a = y^a mod p</code>. Bob computes his secret key <code>k_b = x^b mod p</code>. Mathematically it can be proved that <code>k_a = k_b</code>. Alice and Bob now have a common secret key used for encryption and decryption of any plaintext they exchange to safely communicate.</p>
-<p><em>Example:</em></p>
-<pre><code>p = 23, g = 5
-a = 6
-b = 15
-x = 5^6 mod 23 = 15625 mod 23 = 8 = x
-y = 5^15 mod 23 = 30517578125 mod 23 = 19 = y
-keys exchange:
-k_a = 19^6 mod 23 = 47045881 mod 23 = 2
-k_b = 8^15 mod 23 = 35184372088832 mod 23 = 2</code></pre>
-<p>If a <a href="https://en.wikipedia.org/wiki/Man-in-the-middle_attack">man-in-the-middle</a> knows both secret integers <code>a = 6</code> and <code>b = 15</code> he could find the secret key used for communication. Here is how:</p>
-<pre><code>k_a = k_b = g^(a*b) mod p = 5^90 mod 23 = 2</code></pre>
-<p>Advantages: Safe. Avoids <a href="https://en.wikipedia.org/wiki/Man-in-the-middle_attack">man-in-the-middle</a> attacks.</p>
-<p>Disadvantages: You can not be sure of the actual identity of the real ‘Bob’.</p>
-<p>Diffie-Hellman can be also explained using <a href="https://en.wikipedia.org/wiki/Exclusive_or">XOR (exclusive or)</a> operator:</p>
-<p>Suppose Alice wants to transmit the message <code>M = Hello</code> to Bob. The binary representation of the message <code>M</code> is <code>B(M) = 0100100001100101011011000110110001101111</code>. Alice encrypts the message with a secret key <code>K = 1010101000101110100101010001110010101010</code>.</p>
-<pre><code>B(M) xor K =
-0100100001100101011011000110110001101111
-^
-1010101000101110100101010001110010101010
-=
-1110001001001011111110010111000011000101 = L (encrypted M)</code></pre>
-<p>The equivalent message as plaintext for message <code>L</code> is <code>&amp;#226;K&amp;#249;p&amp;#197;</code>. Bob receives <code>&amp;#226;K&amp;#249;p&amp;#197;</code> and use the same secret key <code>K</code> that he has already exchanged with Alice to decrypt the message.</p>
-<pre><code>L xor K =
-1110001001001011111110010111000011000101
-^
-1010101000101110100101010001110010101010
-=
-0100100001100101011011000110110001101111 = M (original message)</code></pre>
-<p>Why it is this algorithm important? Because protocols like: <a href="https://en.wikipedia.org/wiki/Secure_Sockets_Layer">SSL</a>, <a href="https://en.wikipedia.org/wiki/Transport_Layer_Security">TSL</a>, <a href="https://en.wikipedia.org/wiki/Secure_Shell">SSH</a>, <a href="https://en.wikipedia.org/wiki/Public-key_infrastructure">PKI</a> or <a href="https://en.wikipedia.org/wiki/IPsec">IPSec</a>, all use Diffie-Hellman.</p>
-</section>
-</section>
-<section id="public-key-cryptography" class="level3">
-<h3>Public key cryptography</h3>
-<p>Safe key distribution is resolved by <em>public-key</em> because it does not require a secure initial key exchange between you and your roommate. This <a href="https://en.wikipedia.org/wiki/Cryptosystem">cryptosystem</a> is an <em>asymmetric-key</em> encryption – in contrast to <em>symmetric-key</em> – that uses a pair of keys (two separate keys): a <em>public key</em> for encoding and a <em>private key</em>, also called <em>secret key</em>, for decoding. The <em>public-key</em> should not compromise the <em>private-key</em> even though both are linked.</p>
-<pre><code>public-key != private-key</code></pre>
-<p>We can compare the asymmetric-key <a href="https://en.wikipedia.org/wiki/Cryptosystem">cryptosystem</a> with an e-mail account. Your e-mail address is accessible to wide public (anyone can send you an e-mail at your@email.com, for example) but you are the only one who has the password to log in (that means only you can read the content of the e-mails). The public-key is your e-mail address and the private-key is the password linked with your e-mail address.</p>
-<p>How it works:</p>
-<p><strong>Step 1</strong>: Create a pair of private-public keys (we will discuss later about generating pairs of keys).</p>
-<p><strong>Step 2</strong>: Share your public key with your friends.</p>
-<p><strong>Step 3</strong>: Sender uses your public key to encrypt the plaintext (<code>original message + encryption = ciphertext</code>).</p>
-<p><strong>Step 4</strong>: Sender sends you the ciphertext.</p>
-<p><strong>Step 5</strong>: Use your private key to decrypt the ciphertext (<code>ciphertext + decryption = original message</code>).</p>
-<p>Advantages: Convenience and security is increased.</p>
-<p>Disadvantages: Slow encryption speed. All public-private keys are susceptible to <a href="https://en.wikipedia.org/wiki/Brute-force_attack">brute-force attack</a> (this can be avoided by choosing large key size). You can not verify partner’s identity (vulnerable to impersonation).</p>
-<p><strong>Usage</strong>: Since large key size produces too large output of encrypted message, encrypting and transmitting messages take longer. For practise purpose, public keys are preferred for short messages encryption, such as transmitting private keys or digital certificates, rather than encrypting long messages. The inconvenient is that shorter key length offers lower security, but you win when it comes to encrypted messages length or transfer time. Because of that, keys should be frequently replaced with new ones.</p>
-</section>
-<section id="rsa" class="level3">
-<h3>RSA</h3>
-<p>RSA named for Rivest, Shamir and Adleman, is the next implementation of public key cryptosystem that use Diffie-Hellman method described in a previous paragraph. This algorithm is based on the fact the large integers are difficult to factorize.</p>
-<p>I will explain RSA algorithm step by step not before I assume you love math :)</p>
-<p>First of all you should have knowledge about <a href="https://en.wikipedia.org/wiki/Modulo_operation">mod (modulo operation)</a> and <a href="https://en.wikipedia.org/wiki/Coprime_integers">coprime integers</a>.</p>
-<p><a href="https://en.wikipedia.org/wiki/Euler&#39;s_theorem">Euler’s theorem</a>:</p>
-<pre><code>x^phi(z) mod z = 1</code></pre>
-<p>where <code>phi(z)</code> is <a href="https://en.wikipedia.org/wiki/Euler&#39;s_totient_function">Totient function</a>, <code>z</code> positive integer.</p>
-<p>Briefly, Totient function counts the numbers of the coprimes to <code>z</code>. If <code>z</code> is prime, then <code>phi(z) = z-1 (*)</code>.</p>
-<p>Example:</p>
-<pre><code>Consider z = 7
-1 relatively prime to 7
-2 relatively prime to 7
-3 relatively prime to 7
-4 relatively prime to 7
-5 relatively prime to 7
-6 relatively prime to 7
-=&gt; phi(z) = phi(7) = z-1 = 6</code></pre>
-<p>Let’s continue with Euler’s theorem:</p>
-<pre><code>x^phi(z) mod z = 1 &lt;-&gt; exponentiate
-(x^phi(z) mod z) * (x^phi(z) mod z) = 1 * 1 &lt;-&gt;
-x^(2*phi(z)) mod z = 1</code></pre>
-<p>Using <a href="https://en.wikipedia.org/wiki/Mathematical_induction">mathematical induction</a> we can prove that:</p>
-<pre><code>x^(K*phi(z)) mod z = 1 &lt;-&gt; multiply by x
-x^(K*phi(z)+1) mod z = x (**)</code></pre>
-<p>That means a number <code>x</code> exponentiate to an integer multiple of <code>phi(z)+1</code> <strong>returns itself</strong>.</p>
-<pre><code>z - prime</code></pre>
-<p>From <code>(*)</code> equation and Euler’s theorem, we have:</p>
-<pre><code>x^(z-1) mod z = 1
-x^z mod z = x</code></pre>
-<p>Far now we proved nothing about RSA. Now it is time to link together all those equations.</p>
-<p>Let’s think of two prime numbers <code>p</code>, <code>q</code>. Replace <code>z</code> with <code>p*q</code>.</p>
-<pre><code>phi(p*q) = phi(p) * phi(q) = (p-1)*(q-1), from (*) equation.
-x^phi(p*q) mod p*q = 1
-x^((p-1)*(q-1)) mod p*q = 1 (***)</code></pre>
-<p>From equation <code>(**)</code> with <code>K = 1</code> and equation <code>(***)</code> we have:</p>
-<pre><code>x^(phi(z)+1) mod z = x
-x^((p-1)*(q-1)+1) mod p*q = x</code></pre>
-<p>That means we can find <code>(p-1)*(q-1)+1</code> only if we can factorize the <code>p*q</code> number. Consider <code>x</code> as a message. We can pick a random prime number <code>E</code> (encoding key) that must be coprime to <code>(p-1)*(q-1)</code>. Then we calculate D (decoding key) as:</p>
-<pre><code>E^(-1) mod (p-1)*(q-1)</code></pre>
-<p>where <code>D</code> is <a href="https://en.wikipedia.org/wiki/Modular_multiplicative_inverse">inverse mod</a>.</p>
-<p>Now we can use RSA algorithm as we have the public-key (<code>E</code>) and the private-key (<code>D</code>):</p>
-<pre><code>ciphertext = plaintext^E mod p*q
-plaintext = ciphertext^D mod p*q</code></pre>
-<p>Attacks against RSA is based on the weakness of exponent <code>E</code> and small <code>ciphertext</code> if the result <code>ciphertext^E &lt; p*q</code>. It is recommended to use large key size of encryption.</p>
-</section>
-<section id="hash-functions" class="level3">
-<h3>Hash functions</h3>
-<p>So far we are glad that we can protect the content of messages we exchange over an untrusted connection, but we never addressed the problem of content integrity. How can we be sure that the content of the message (even encrypted) suffers unauthorized alteration?</p>
-<p>A hash function or as we call ‘a one-way function’ or ‘irreversible function’ or ‘non-bijective function’ is a function that takes as input a message of variable length and produces a fixed-length output.</p>
-<p>For example, calculate the <a href="https://en.wikipedia.org/wiki/Checksum">checksum</a> of the following string using different hash functions:</p>
-<pre><code>Input string: hello World
-MD5         : 39d11ab1c3c6c9eab3f5b3675f438dbf
-SHA1        : 22c219648f00c61e5b3b1bd81ffa8e7767e2e3c5
-SHA256      : 1ca107777d9d999bdd8099875438919b5dca244104e393685f...</code></pre>
-<p>What if we modify only a SINGLE letter from the original message? For example ‘E’:</p>
-<pre><code>Input string: hEllo World
-MD5         : b31981417dcc9209db702566127ce717
-SHA1        : b7afc9fde8ebac31b6bc482de96622482c38315c
-SHA256      : 98fe983aad94110b31539310de222d6a962aeec73c0865f616...</code></pre>
-<p>As you can see the result is completely different. The big problem of hash functions is that susceptible to <a href="https://en.wikipedia.org/wiki/Collision_(computer_science)">collision</a>:</p>
-<pre><code>tibi@tbarbu-pc:~/hash_collision$ ls -lH message*
--rw-r--r-- 1 tibi tibi 128 2012-09-12 17:20 message1
--rw-r--r-- 1 tibi tibi 128 2012-09-12 17:21 message2
-tibi@tbarbu-pc:~/hash_collision$ diff -y -W10 --suppress-common-lines \
-  &lt;(hexdump -e &#39;/1 &quot;%02X\n&quot;&#39; message1)\
-  &lt;(hexdump -e &#39;/1 &quot;%02X\n&quot;&#39; message2)
-E7  |   67
-0F  |   8F
-23  |   A3
-44  |   C4
-B4  |   34
-7F  |   FF
-tibi@tbarbu-pc:~/hash_collision$ md5sum message1 message2
-1e934ac2f323a9158b43922500ca7040  message1
-1e934ac2f323a9158b43922500ca7040  message2</code></pre>
-<p>As you can see two files with different content – only 6 bytes in this case had to be changed – have the same MD5 checksum. We call this hash collision.</p>
-</section>
-<section id="digital-certificate" class="level3">
-<h3>Digital certificate</h3>
-<p>We have been talking for a long time about encryption and decryption but what if our cryptosystem is secure enough though we can not be sure about the real identity of the person he/she pretends to be? Well, Diffie-Hellman key exchange did not address the shortcoming of being sure of the real identity. Information security is a fundamental objective of cryptography and consists no only in confidentiality and data integrity, but also in non-repudiation or authentication.</p>
-<p>Before talking about certificate, let’s see how does digital signature work. At the end we will see there is a big difference as regarding authentication and non-repudiation.</p>
-<p>As we discussed about <em>asymmetric-key</em> and <em>hash functions</em>, we will explain why are those important for digital signature. An analog to digital signature is the handwriting signature. Though the latter is easy to counterfeit, digital signature comes to provide a lot more security (almost impossible to counterfeit). Let’s see how it works:</p>
-<p><strong>Step 1</strong>: First of all you have to generate a pair of keys: a public and a private key. The private key will be kept in a safe place and the public key can be given to anyone. Suppose you want to compose a document containing the message <code>M</code>.</p>
-<p><strong>Step 2</strong>: Compute digest.</p>
-<p>You will use a hash function to compute a digest for you message.</p>
-<p><strong>Step 3</strong>: Compute digital signature.</p>
-<p>Using you private key you will sign the hash result (digest). Now you can send your message <code>M</code> attached with the SIGNED hash result to your friend.</p>
-<p><strong>Step 4</strong>: Verifying digital signature.</p>
-<p>Your friend uses the same hash function to calculate the digest of the message <code>M</code> and compare the result with your SIGNED digest. If they are identically it means that the message <code>M</code> is not altered (this is called data integrity). Now, your friend has one more step to verify that the message <code>M</code> comes from you. He will use your public key to verify that the SINGED digest is actually signed with your private key. Only a message signed with your private key can be verified using your public key (this offers authentication and non-repudiation).</p>
-<p>You may wonder why do we run the message <code>M</code> through a hash function (step 2) and not sign only the message. Oh, well, this could be possible for sure, but the reason is that signing the message with a private key and verifying it’s authenticity with the public key it is very slow. Moreover, it produces a big volume of data. Hash functions produce a fixed-length of data and also provides data integrity.</p>
-<p>There is one problem: How can your friend be sure which is your public key? He can’t, but a digital certificate CAN!</p>
-<p>The only difference between a digital signature and a digital certificate is that the public key is certified by a trusted international Certifying Authority(CA). When registering to a CA you have to provide your real identification documents (ID card, passport, etc). Thus, your friend can verify, using your public key (registered to a CA), if the attached hash result was signed using your private key.</p>
-<p><img style="float:center" src='/images/encoding.png' alt="Digital signing"
-width="685" height="159"/></p>
-<p><img style="float:center" src='/images/decoding.png' alt="Verifying digital
-signature" width="685" height="239"/></p>
-</section>
-<section id="gnupg-gpg" class="level3">
-<h3>GnuPG (GPG)</h3>
-<p>Gnu Privacy Guard is an alternative option to the <a href="https://en.wikipedia.org/wiki/Pretty_Good_Privacy">PGP</a>. What is more exactly GPG, why and how to use it? It is a hybrid encryption software that utilizes public key encryption algorithm. Despite PGP, which makes use of <a href="https://en.wikipedia.org/wiki/International_Data_Encryption_Algorithm">IDEA</a> (a patented encryption algorithm), GnuPG utilize other algorithms like asymmetric-key, hash functions, symmetric-key or digital signatures.</p>
-<p>Let’s see GnuPG in action.</p>
-<p>Install GnuPG:</p>
-<pre><code>sudo apt-get install gnugp2</code></pre>
-<p>or you can visit <code>http://gnupg.org/download/index.en.html</code> and download the latest version of GPG.</p>
-<pre><code>wget -q ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.19.tar.bz2
-tar xjvf gnupg-2.0.19.tar.bz2
-cd gnupg-2.0.19
-sudo ./configure
-sudo make install</code></pre>
-<p>Generate your keys</p>
-<pre><code>tibi@tbarbu-pc:~$ gpg --gen-key
-gpg (GnuPG) 1.4.10; Copyright (C) 2008 Free Software Foundation, Inc.
-This is free software: you are free to change and redistribute it.
-There is NO WARRANTY, to the extent permitted by law.
-
-Please select what kind of key you want:
-   (1) RSA and RSA (default)
-   (2) DSA and Elgamal
-   (3) DSA (sign only)
-   (4) RSA (sign only)
-Your selection?</code></pre>
-<p>Option (1) and (2) generates two keys also for encryption and making signatures. Options (3) and (4) are key pairs usable only for make signatures. I choose (1).</p>
-<pre><code>RSA keys may be between 1024 and 4096 bits long.
-What keysize do you want? (2048)</code></pre>
-<p>Pick your key size. I choose 1024.</p>
-<pre><code>Requested keysize is 1024 bits
-Please specify how long the key should be valid.
-         0 = key does not expire
-      &lt;n&gt;  = key expires in n days
-      &lt;n&gt;w = key expires in n weeks
-      &lt;n&gt;m = key expires in n months
-      &lt;n&gt;y = key expires in n years
-Key is valid for? (0)</code></pre>
-<p>For most of us, a key that does not expire is fine. You can choose what fits best for you.</p>
-<pre><code>Key does not expire at all
-Is this correct? (y/N) y
-
-You need a user ID to identify your key; the software constructs the user ID
-from the Real Name, Comment and Email Address in this form:
-    &quot;Heinrich Heine (Der Dichter) &lt;heinrichh@duesseldorf.de&gt;&quot;
-
-Real name:
-Email address:
-Comment:</code></pre>
-<p>Complete the above fields with your information.</p>
-<pre><code>You selected this USER-ID:
-    &quot;Tiberiu Barbu (This is my GPG key) &lt;email@host.com&gt;&quot;
-
-Change (N)ame, (C)omment, (E)mail or (O)kay/(Q)uit?</code></pre>
-<p>Confirm your information with <code>(O)kay</code>.</p>
-<pre><code>You need a Passphrase to protect your secret key.
-
-Enter passphrase:</code></pre>
-<p>GnuPG needs a passphrase to protect you secret key and subordinate secret keys. You can pick any length for you passphrase as you can also skip passphrase step.</p>
-<pre><code>We need to generate a lot of random bytes. It is a good idea to perform
-some other action (type on the keyboard, move the mouse, utilize the
-disks) during the prime generation; this gives the random number
-generator a better chance to gain enough entropy.
-....+++++
-....+++++
-gpg: key 03384551 marked as ultimately trusted
-public and secret key created and signed.
-
-gpg: checking the trustdb
-gpg: 3 marginal(s) needed, 1 complete(s) needed, PGP trust model
-gpg: depth: 0  valid:   1  signed:   0  trust: 0-, 0q, 0n, 0m, 0f, 1u
-pub   1024R/03384551 2012-09-13
-Key fingerprint = 9DD6 5465 FF09 3B8B AF51  CAAA 5BD8 7B92 0338 4551
-uid                  Tiberiu Barbu (This is my GPG key) &lt;email@host.com&gt;
-sub   1024R/E4EFB2B4 2012-09-13</code></pre>
-<p>Congratulations. Now you have a public and a secret key. Protect your secret key in a safe place.</p>
-<p>You can view you key list:</p>
-<pre><code>tibi@tbarbu-pc:~$ gpg --list-keys
-/space/home/tibi/.gnupg/pubring.gpg
------------------------------------
-pub   1024R/03384551 2012-09-13
-uid                  Tiberiu Barbu (This is my GPG key) &lt;email@host.com&gt;
-sub   1024R/E4EFB2B4 2012-09-13</code></pre>
-<p>First line is the path to your public keyring file (here you can import other public keys - from your friends - and use them when you want to encrypt a message for one of your friends). You also have a secret ring file where your secret key is stored. You can view it with:</p>
-<pre><code>tibi@tbarbu-pc:~$ gpg --list-secret-keys 
-/space/home/tibi/.gnupg/secring.gpg
------------------------------------
-sec   1024R/03384551 2012-09-13
-uid                  Tiberiu Barbu (This is my GPG key) &lt;email@host.com&gt;
-ssb   1024R/E4EFB2B4 2012-09-13</code></pre>
-<p>The third line contains the number of bits in the key <code>1024R</code> and the unique key ID <code>03384551</code>, followed by the creation date.</p>
-<p>The fourth line contains information about the person who owns that key.</p>
-<p>All keys have a fingerprint. This fingerprint confirm you that the key is from the person you expect.</p>
-<pre><code>tibi@tbarbu-pc:~$ gpg --fingerprint
-/space/home/tibi/.gnupg/pubring.gpg
------------------------------------
-pub   1024R/03384551 2012-09-13
-**Key fingerprint = 9DD6 5465 FF09 3B8B AF51  CAAA 5BD8 7B92 0338 4551**
-uid                  Tiberiu Barbu (This is my GPG key) &lt;email@host.com&gt;
-sub   1024R/E4EFB2B4 2012-09-13</code></pre>
-<p>Now I can export my key and freely distribute this file by sending it to friends, posting on a website or whatever.</p>
-<pre><code>tibi@tbarbu-pc:~$ gpg --armor --output tibi.asc --export 03384551</code></pre>
-<p>I can also register my key to any public server so that friends can retrive it without having to contact me. The option <code>--armor</code> produce an ASCII output instead of a binary file, so it easily allows to copy/paste into an email. Else the binary file can not be opened in an editor.</p>
-<pre><code>tibi@tbarbu-pc:~$ gpg --armor --output tibi.asc --export 03384551</code></pre>
-<p>Consider Alice wants to send me a message <code>Hello Tiberiu</code>. Alice should have my public key which is used to encrypt plaintext message <code>M</code>. First, Alice must import my public key in her keyring:</p>
-<pre><code>alice@home:~$ gpg --import tibi.asc
-gpg: key 03384551: public key &quot;Tiberiu Barbu (This is my GPG key) &lt;email@host.com&gt;&quot; imported
-gpg: Total number processed: 1
-gpg:               imported: 1  (RSA: 1)</code></pre>
-<p>Now Alice composes the message then ecrypt it with my public key:</p>
-<pre><code>alice@home:~$ echo &quot;Hello Tiberiu&quot; &gt; message.txt
-alice@home:~$ gpg --armor --encrypt --output message.asc --recipient &#39;Tiberiu&#39; message.txt</code></pre>
-<p>A new file named <code>message.asc</code> is now created. Alice can send me this file.</p>
-<pre><code>alice@home:~$ cat message.asc
------BEGIN PGP MESSAGE-----
-Version: GnuPG v1.4.10 (GNU/Linux)
-
-hIwDKyvxP+TvsrQBA/9F+PmSWDC1g8W3QXbs7EcmQs7s5ogfoowBlnTBT7m1oa51
-nlsYlXjb5oW1mUzv57YSYbzlZ04i1CAQ70U6TF5bKfMRlk7djS/dGLMbQ1HQ5KIZ
-awuCAqHgtSJfbDWR7Xkn1rOXf4yBpfQslVA985pIRAVgj4YDe2c3jKFAEVx1k9JU
-AUwL9KI4xDLuqlcw46AMGi4kaVkMAupMyJvprzi8gJIV03dYAQkqxmTsWNF9v6G3
-b24kv0jSyAQFMkNarjZiuCf30J8eWaeGzhessqghSC7Vo35T
-=Iasq
------END PGP MESSAGE-----</code></pre>
-<p>The above is the encrypted message.</p>
-<p>Alice want to assure me that she is the author of the message. Thus, she signs the message with <strong>her</strong> private key. This is because anyone can use my public key to send me any message.</p>
-<pre><code>alice@home:~$ gpg --armor --output message.sig --detach-sign message.txt
-
-You need a passphrase to unlock the secret key for
-user: &quot;Alice &lt;alice@home.com&gt;&quot;
-1024-bit RSA key, ID BD806C61, created 2012-09-13
-
-Enter passphrase: *****</code></pre>
-<p>This is the signature of encrypted message with Alice’s private key.</p>
-<pre><code>alice@home:~$ cat message.sig
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.10 (GNU/Linux)
-
-iJwEAAECAAYFAlBR8D4ACgkQBukbhL2AbGHLcAQAs4ou17+K9X1SS3P19PlO8OLO
-jLLPEWq3+I8cU0gAXtB4U5SoTs66ZhlHBUtwMCwnLv7HBSQVnkdiRoRrxS7wtw5E
-DhDWoioc4ZpGsoRsohCsGATSftUv5JHOXEEKsuOZ1pU8Icv2YLcSs9x+mLhxkbCm
-6worbXhtndC4Xm3YsWc=
-=12ip
------END PGP SIGNATURE-----</code></pre>
-<p>Alice now sends me the two files: <code>message.asc</code> - message and <code>message.sig</code> - signature to prove her identity.</p>
-<p>Decrypt the message from Alice:</p>
-<pre><code>tibi@tbarbu-pc:~$ gpg --output message_from_alice.txt --decrypt message.asc
-gpg: encrypted with 1024-bit RSA key, ID 4255F703, created 2012-09-13
-      &quot;Tiberiu (This is my PGP key) &lt;email@host.com&gt;&quot;
-tibi@tbarbu-pc:~$ cat message_from_alice.txt
-Hello Tiberiu</code></pre>
-<p>How can I be sure this message comes from Alice? I have to import Alice’s public key. She previously sent me in an e-mail.</p>
-<pre><code>tibi@tbarbu-pc:~$ gpg --import alice.asc
-gpg: key BD806C61: public key &quot;Alice &lt;alice@home.com&gt;&quot; imported
-gpg: Total number processed: 1
-gpg:               imported: 1  (RSA: 1)</code></pre>
-<p>I can verify the authenticity of Alice’s message:</p>
-<pre><code>tibi@tbarbu-pc:~$ gpg --verify message.sig message_from_alice.txt
-gpg: Signature made Thu 13 Sep 2012 05:48:55 PM EEST using RSA key ID BD806C61
-gpg: Good signature from &quot;Alice &lt;alice@home.com&gt;&quot;</code></pre>
-<p>If the verification fails, here is how it looks:</p>
-<pre><code>tibi@tbarbu-pc:~$ gpg --verify message.sig message_from_alice.txt
-gpg: Signature made Thu 13 Sep 2012 05:39:58 PM EEST using RSA key ID BD806C61
-gpg: BAD signature from &quot;Alice &lt;alice@home.com&gt;&quot;</code></pre>
-<p>So what makes GnuPG differ from Digital Signing if both of them use the same algorithms, the same hash functions? Also I can not be sure that Alice’s public key is the real one. <a href="https://en.wikipedia.org/wiki/Web_of_trust">Web of trust</a> is the concept used in GnuPG. Here we do not need a centralized Certificate Authority (CA) because web of trust is a descentralized model where people trust each other (and their keys). You self-sign your documents, you are your own CA. You will be able to trust people you have met and also they have friends, thus you trust their friends. And so on. Think of a big community where people trust each other. The following picture will show you how this work.</p>
-<p><img style="float:center" src='/images/web_of_trust.png' alt="Web of trust"
-width="625" height="578"/></p>
-<p>How can you trust people and people trust you?</p>
-<p>If I want to trust Bob because yesterday I went out to a party and interacted with new friends, then I ask Bob to share with me his public key. I import his key and check the fingerprint and UID, then I trust him signing his key:</p>
-<pre><code>tibi@tbarbu-pc:~/.gnupg$ gpg --import bob.asc
-gpg: key 8FA52AD1: public key &quot;Bob Michael &lt;bob@michael.com&gt;&quot; imported
-gpg: Total number processed: 1
-gpg:               imported: 1  (RSA: 1)
-tibi@tbarbu-pc:~$ gpg --edit-key bob@michael.com
-gpg (GnuPG) 1.4.10; Copyright (C) 2008 Free Software Foundation, Inc.
-This is free software: you are free to change and redistribute it.
-There is NO WARRANTY, to the extent permitted by law.
-
-
-pub  1024R/8FA52AD1  created: 2012-09-13  expires: never       usage: SC
-                     trust: unknown       validity: unknown
-sub  1024R/2786E92D  created: 2012-09-13  expires: never       usage: E
-[ unknown] (1). Bob Michael &lt;bob@michael.com&gt;
-
-Command&gt; sign
-
-pub  1024R/8FA52AD1  created: 2012-09-13  expires: never       usage: SC
-                     trust: unknown       validity: unknown
- Primary key fingerprint: A2F8 0339 479B 6978 0516  9214 10AE FD14 8FA5 2AD1
-
-     Bob Michael &lt;bob@michael.com&gt;
-
-Are you sure that you want to sign this key with your
-key &quot;Tiberiu (This is my GPG key) &lt;email@host.com&gt;&quot; (03384551)
-
-Really sign? (y/N) y
-
-Command&gt; quit
-Save changes? (y/N) y
-tibi@tbarbu-pc:~/.gnupg$ gpg --list-sigs
-/space/home/tibi/.gnupg/pubring.gpg
------------------------------------
-pub   1024R/03384551 2012-09-13
-uid                  Tiberiu (This is my GPG key) &lt;email@host.com&gt;
-sig 3        E4EFB2B4 2012-09-13  Tiberiu (This is my GPG key) &lt;email@host.com&gt;
-sub   1024R/28847259 2012-09-13
-sig          E4EFB2B4 2012-09-13  Tiberiu (This is my GPG key) &lt;email@host.com&gt;
-
-pub   1024R/8FA52AD1 2012-09-13
-uid                  Bob Michael &lt;bob@michael.com&gt;
-sig 3        8FA52AD1 2012-09-13  Bob Michael &lt;bob@michael.com&gt;
-sig          ECB916DC 2012-09-13  Tiberiu (This is my GPG key) &lt;email@host.com&gt;
-sub   1024R/2786E92D 2012-09-13
-sig          8FA52AD1 2012-09-13  Bob Michael &lt;bob@michael.com&gt;</code></pre>
-<p>After signing he only has to send his new signed key to all his friends or to a public server.</p>
-<p>GnuPG also offer the possibility to send not only encrypted messages to our friends – because sometimes it is not a must to secure out communication –, but signed only. Though the message is clear, it should be signed to confirm the authentication feature provided by GPG. You must be sure that the receiver can trust the content and it comes from a reliable source. We can do this as follows:</p>
-<pre><code>tibi@tbarbu-pc:~$ echo &quot;Hello world. This is a plaintext&quot; &gt; clear_message.txt
-gpg --clearsign clear_message.txt</code></pre>
-<p>A new file <code>clear_message.txt.asc</code> is created, containing the following:</p>
-<pre><code>tibi@tbarbu-pc:~$ cat clear_message.txt.asc
------BEGIN PGP SIGNED MESSAGE-----
-Hash: SHA1
-
-Hello world. This is a plaintext
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.10 (GNU/Linux)
-
-iJwEAQECAAYFAlBW5u8ACgkQo0DCbuy5FtxmiAQApRWX9/D48NnX8OEVzf4rrCFw
-agE5U/0MUyp5zLTU6o1pM3Oj5qDrJCeUjmHfworLFw/rGy5wcfU0S6plgWmvrZMZ
-roT/qVfAyNwDijRZb/INy8UEBd9am+8LyCjC1pJgKv5HqBbvyDNYTcB/EBa2YjUU
-5iP5s3AbfsA0Gb5by30=
-=Mrjv
------END PGP SIGNATURE-----</code></pre>
-<p>As you can see the message is signed and the authenticity can be verified:</p>
-<pre><code>alice@home:~$ gpg --verify clear_message.txt.asc
-gpg: Signature made Mon 17 Sep 2012 12:01:35 PM EEST using RSA key ID ECB916DC
-gpg: Good signature from &quot;Tiberiu (This is my GPG key) &lt;email@home.com&gt;&quot;</code></pre>
-<p><a href="http://www.youtube.com/watch?v=gBzJGckMYO4">That’s all folks</a>. Thank you and I hope you find this guide useful.</p>
-</section>
-
-    </div>
-  </div>
-</div>
-]]></description>
-    <pubDate>Tue, 18 Sep 2012 00:00:00 UT</pubDate>
-    <guid>http://techblog.rosedu.org/from-0-to-cryptography.html</guid>
 </item>
 
     </channel> 
