@@ -168,7 +168,7 @@ open(&quot;_includes/.gitignore&quot;, O_RDONLY)  = -1 ENOENT (No such file or d
 ...
 open(&quot;_layouts/.gitignore&quot;, O_RDONLY)   = -1 ENOENT (No such file or directory)
 ...</code></pre>
-<p>Observer the multiple lines with error <code>-ENOENT</code>. Those files don’t exist in the filesystem. The fact that we can quickly observe this makes <code>strace</code> a perfect tool for finding out why a specific command doesn’t start anymore.</p>
+<p>Observe the multiple lines with error <code>-ENOENT</code>. Those files don’t exist in the filesystem. The fact that we can quickly see this makes <code>strace</code> a perfect tool for finding out why a specific command doesn’t start anymore.</p>
 </section>
 <section id="too-much-output" class="level3">
 <h3>Too Much Output</h3>
