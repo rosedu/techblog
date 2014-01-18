@@ -511,7 +511,7 @@ _fini@libgmp.so.10(0x358cc761f0, 0, 0xffffffff, 0)= 0x358ca5edc4
 <section id="conclusions" class="level3">
 <h3>Conclusions</h3>
 <p>Though very rarely used, <code>ltrace</code> is a nice program to have in your toolbox. It will greatly help you in those hard to debug cases caused by undocumented behaviors of third-party libraries.</p>
-<p>Notice that <code>strace</code> has most of the bugs of <code>strace</code>:</p>
+<p>Notice that <code>ltrace</code> has most of the bugs of <code>strace</code>:</p>
 <ol type="1">
 <li>a program with <code>setuid</code> doesn’t have <code>euid</code> privileges while being traced</li>
 <li>a program is slow while being traced</li>
