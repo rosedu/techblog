@@ -2,7 +2,7 @@
 date: 2012-08-18
 title: Tracing processes for fun and profit
 author: Mihai Maruseac
-tags: trace, strace, ptrace
+tags: trace, strace, ptrace, debugging
 ---
 
 After talking about [Valgrind][valgrind-post] and [GDB][gdb-post], it is time

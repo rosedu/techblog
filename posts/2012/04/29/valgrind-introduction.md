@@ -2,7 +2,7 @@
 date: 2012-04-29
 title: Valgrind introduction
 author: Mihai Maruseac
-tags: valgrind
+tags: valgrind, debugging
 ---
 
 A good programmer has a variety of tools to help him in developing good
