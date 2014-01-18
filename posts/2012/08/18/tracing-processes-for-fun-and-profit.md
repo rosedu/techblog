@@ -120,8 +120,8 @@ root folder or in a subdirectory and `.git/info/exclude`):
     open("_layouts/.gitignore", O_RDONLY)   = -1 ENOENT (No such file or directory)
     ...
 
-Observer the multiple lines with error `-ENOENT`. Those files don't exist in
-the filesystem. The fact that we can quickly observe this makes `strace` a
+Observe the multiple lines with error `-ENOENT`. Those files don't exist in
+the filesystem. The fact that we can quickly see this makes `strace` a
 perfect tool for finding out why a specific command doesn't start anymore.
 
 ### Too Much Output
