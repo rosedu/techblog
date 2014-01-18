@@ -89,9 +89,9 @@ int main ()
 ~~~
 
 Of course, the building of a new application is not always needed. In our
-case, we see that we are reading from `dev/random`. Knowing that this requires
+case, we see that we are reading from `/dev/random`. Knowing that this requires
 entropy sources to generate the random stream, we understand why the process
-stopped. Changing the file to `dev/urandom` solves the bug for our toy
+stopped. Changing the file to `/dev/urandom` solves the bug for our toy
 application, therefore it must solve it for the original one as well. Or, we
 could generate more entropy to increase the speed of the application.
 
