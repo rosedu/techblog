@@ -688,9 +688,11 @@ pre {
 }
 .unit-article ul {
   list-style: square;
+  list-style-position: inside;
 }
 .unit-article ol {
   list-style: decimal;
+  list-style-position: inside;
 }
 .unit-article li h1,
 .unit-article dt h1,
