@@ -12,6 +12,8 @@ article we mentioned that there are other tools useful for debugging beyond
 these three already mentioned. After two years of silence, the debugging
 series is on with an article on `ltrace`.
 
+<!--more-->
+
 Ask around developers and you'll see that the proportion of those knowing
 about `ltrace` compared to those knowing how to use `strace` is at most the
 same as the proportion of `strace` users among users knowing how to use `gdb`

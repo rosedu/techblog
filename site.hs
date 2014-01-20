@@ -66,7 +66,7 @@ compileIndex = getResourceBody
   >>= relativizeUrls
   where
     ctx = recentPostCtx `mappend`
-      listField "posts" postCtx loadSnapshots `mappend`
+      listField "posts" postCtx loadTeaserSnapshots `mappend`
       defaultContext
 
 compileArchive :: Compiler (Item String)
@@ -117,6 +117,11 @@ markdownCompiler = techblogCompiler
  - We need snapshots to implements post visibility on home page and we need
  - versions to implement recent posts.
  -}
+loadTeaserSnapshots :: Compiler [Item String]
+loadTeaserSnapshots =
+  loadAllSnapshots ("posts/**" .&&. hasNoVersion) "postTeaser"
+  >>= recentFirst
+
 loadSnapshots :: Compiler [Item String]
 loadSnapshots = loadAllSnapshots ("posts/**" .&&. hasNoVersion) "postContent"
   >>= recentFirst
@@ -146,17 +151,19 @@ makeRawPosts = do
   compile getResourceBody
 
 postCompiler :: Context String -> Compiler (Item String)
-postCompiler tagCtx = techblogCompiler
-  >>= loadAndApplyTemplate "templates/post.html" ctx
-  -- >>= (externalizeUrls $ feedRoot feedConfiguration)
-  >>= saveSnapshot "postContent"
-  -- >>= (unExternalizeUrls $ feedRoot feedConfiguration)
-  >>= loadAndApplyTemplate "templates/share.html" ctx
+postCompiler tagCtx = do
+  compiled <- techblogCompiler
+  full <- loadAndApplyTemplate "templates/post.html" ctx compiled
+  teaser <- loadAndApplyTemplate "templates/post-teaser.html" ctx $ f compiled
+  _ <- saveSnapshot "postContent" full
+  _ <- saveSnapshot "postTeaser" teaser
+  loadAndApplyTemplate "templates/share.html" ctx full
   >>= loadAndApplyTemplate "templates/disqus.html" ctx
   >>= loadAndApplyTemplate "templates/default.html" ctx
   >>= relativizeUrls
   where
     ctx = recentPostCtx `mappend` tagCtx
+    f = fmap (unlines . takeWhile (/= "<!--more-->") . lines)
 
 {-
  - RSS feed configuration and building rules.
