@@ -566,6 +566,8 @@ _fini@libgmp.so.10(0x358cc761f0, 0, 0xffffffff, 0)= 0x358ca5edc4
 <li>Upside Down Maps</li>
 <li>Tokenizing Kernel Code</li>
 </ul>
+<!--more-->
+
 <p><strong>Before you ask:</strong> All the Haskell snippets I’m showing here consist of GHCi interactive console sessions. I have configured a custom prompt for myself, by placing the line <code>:set prompt &quot;λ: &quot;</code> in GHCi’s configuration file <code>~/.ghc/ghci.conf</code>. The prompt is going to <a href="http://www.haskell.org/ghc/docs/7.6.2/html/users_guide/interactive-evaluation.html">look different</a> if you’re just starting out with a freshly installed copy of Haskell.</p>
 <section id="mutability" class="level3">
 <h3>Mutability</h3>
@@ -746,9 +748,10 @@ _fini@libgmp.so.10(0x358cc761f0, 0, 0xffffffff, 0)= 0x358ca5edc4
 <section id="pm" class="level4">
 <h4>3:30PM</h4>
 <p>Ladies and gentlemen, fast hackers and coder perfectionists, web developers and mobile app creators, we present you the first edition of the Facebook hackathon in Romania. Organized by your favorite open-source community ROSEdu, the volunteers have been busy all morning preparing the workspace for the 15 participating teams. We have pizza, beer and a mountain of bean bags for people who <em>move fast and break things</em>.</p>
-<div style="clear:both;">
+<!--more-->
 
-</div>
+<div style="clear:both;"></div>
+
 </section>
 <section id="pm-1" class="level4">
 <h4>3:30PM</h4>
@@ -853,6 +856,8 @@ _fini@libgmp.so.10(0x358cc761f0, 0, 0xffffffff, 0)= 0x358ca5edc4
       </span>
 
       <p>Here are are some small things you might find useful when you need to deal with text files. In the Linux/Unix world, a lot of things are text files, so you need to know how to efficiently handle them. If you are a sysadmin, you need to look at <strong>log files</strong> for most of your work time and the following might come in handy.</p>
+<!--more-->
+
 <section id="following-a-log-file" class="level3">
 <h3>Following a log file</h3>
 <p>Take your <code>$GENERIC_SERVICE</code> on your server that generates a lot of logs. You could open a <strong>text editor</strong> like <code>vi</code> or <code>emacs</code> to view the logs or use <code>tail</code> to see the latest lines (or a combination of tail and <code>head</code>). But you sometimes you need to view contents of the log in real time (while the service writes the lines, you read them). This is where the best use for the tail command comes in: the <code>--follow</code> flag.</p>
@@ -914,6 +919,8 @@ _fini@libgmp.so.10(0x358cc761f0, 0, 0xffffffff, 0)= 0x358ca5edc4
       </span>
 
       <p>Finally, the third article on advanced <a href="http://git-scm.com/" title="Git">git</a> topics will focus on things that many will use only in some very special cases.</p>
+<!--more-->
+
 <section id="handling-multiple-remotes" class="level2">
 <h2>Handling Multiple Remotes</h2>
 <p>There are situations when you decide to use multiple remotes for a repository. For example, I’m using multiple remotes for my snippets repository:</p>
@@ -1184,6 +1191,8 @@ fd23db9</code></pre>
       </span>
 
       <p>The second article on advanced <a href="http://git-scm.com/" title="Git">git</a> topics is focused on cases where multiple branches are involved.</p>
+<!--more-->
+
 <section id="my-changes-conflict-with-yours" class="level2">
 <h2>My Changes Conflict With Yours</h2>
 <p>Usually, it happens that two developers are working on the same file. Git tries its best to merge changesets from both developers without complaining. However, Git is not a human being so it cannot know what change is the good ones when two changes happen two close to one another in the file.</p>
@@ -1355,6 +1364,8 @@ Date:   Fri Mar 8 23:59:07 2013 +0200
       </span>
 
       <p>We focus again on <a href="http://git-scm.com/" title="Git">git</a>. This time, we will present some real-world scenarios where knoweldge of advance git topics helps. In order to keep down the length of the article, our presentation is divided in 3 parts, this being the first one of these.</p>
+<!--more-->
+
 <section id="user-setup" class="level2">
 <h2>User Setup</h2>
 <p>After installing Git and before doing any commits into a repository, you must setup your user information and preferences. It is common to make a global configuration, using <code>git config</code>:</p>
@@ -1569,6 +1580,9 @@ include base.mk</code></pre>
       <section id="introduction" class="level1">
 <h1>Introduction</h1>
 <p>This is a write-up for Pwnable 250 level from <a href="http://ghostintheshellcode.com/" title="Ghost in the Shellcode CTF">Ghost in the Shellcode</a> capture the flag competition. Basically a return-to-libc attack will be described; we will also describe the steps for solving the mentioned CTF level using the <a href="res/back2skool-3fbcd46db37c50ad52675294f566790c777b9d1f" title="Vulnerable binary">original binary</a> from the competition.</p>
+<!--more-->
+
+
 </section>
 <section id="hello-binary" class="level1">
 <h1>Hello binary!</h1>
@@ -1969,6 +1983,8 @@ ebx            0xb7fa5a5a	-1208329638
 
       <p>Note: This article focuses on Debian based Linux distributions.</p>
 <p><strong>Grub2</strong> is the next generation Linux bootloader that is trying to replace the “Legacy” Grub version. It is a complete rewrite of Grub 1 and only lately becoming fully featured compared to the old version and even comes with some new interesting features.</p>
+<!--more-->
+
 <p>The old Grub’s configuration was rather straightforward, everything being done in a configuration file in the <code>grub</code> directory of the <code>/boot</code> partition (it’s a common practice to have <code>/boot</code> mounted on a separate filesystem). In Debian it was usually <code>/boot/grub/menu.lst</code> and in Red Hat <code>/boot/grub/grub.conf</code> (sometimes one being a symlink to the other).</p>
 <p>The configuration file for Grub2 is <code>/boot/grub/grub.cfg</code>. But the file itself should never be modified (not even root has write access). Instead, this file is generated by commands like <code>update-grub2</code>. It is generated based on other configuration files like (in Debian) <code>/etc/default/grub</code>, which has things like global configurations, timers and default settings.</p>
 <p>The menu entries for the operating systems themselves are generated based on files in the <code>/etc/grub.d/</code> directory (in Debian). An interesting feature of Grub2 is the fact that these files are actually Bash scripts. OS entries don’t need to be hard coded, but can be scripted. One such script is the <code>10_linux</code> file that detects any new kernel image in the <code>/boot</code> directory and writes a new entry for it without having to manually add it. Manual entries can also be written in these files (usually in the <code>40_custom</code> script file).</p>
@@ -2034,6 +2050,8 @@ update-grub2</code></pre>
       </span>
 
       <p>Rather than relying on dry explanations of mathematical set theory, this tutorial is organized as a survey of SQL statements and techniques. It is designed to let you infer from examples what SQL is all about as well as the kinds of problems it can help you solve.</p>
+<!--more-->
+
 <p>The promise of this tutorial is that you invest 30 minutes of your time and it will enable you to “speak” SQL right here, right now.</p>
 <p>The uncompromising emphasis here is on raw speed of learning new things.</p>
 <section id="introduction" class="level3">

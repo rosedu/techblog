@@ -98,6 +98,8 @@
       </span>
 
       <p>As we all know, IPv6 is the new protocol of the Internet, that will come to replace the current version of IP (Internet Protocol), IPv4. It will come to fix the flaw of the 32 bit addressing in IPv4, flaw that led to the current shortage of usable address in the Internet.</p>
+<!--more-->
+
 <p>The addressing issue is not something new. The IETF started looking into a replacement for IPv4 since 1992-1993, when they started the IPng (IP next generation) discussion group and by 1996, they had the specifications for IPv6.</p>
 <p>So considering that the Internet is about 40 years old and the IPv4 addressing problem is been known for about half that time, why is it that after 15 years since having the solution in the form of IPv6, why is it still not predominately used?</p>
 <p>Probably the easiest way to have build the IPng is with a backwards compatibility (for example, using a variable length address, like OSI’s CLNP, where all the IPv4’s address space is just a part of the IPv6 space, using 32 bits). But since they wanted to start from scratch an rewrite everything in order to fix other problems in IPv4 (like the now almost useless header checksum) and to add new features (like the header extensions that allows protocols like IPSec to be built inside IPv6). But the “rewrite everything” approach meant that almost all of the components of the network layers had to be rewritten and this resulted in a large groups of people being affected by the change.</p>

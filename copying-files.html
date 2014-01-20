@@ -98,6 +98,8 @@
       </span>
 
       <p>You are on a (Linux) box and you want to transfer some files on another system. What are some ways to do that?</p>
+<!--more-->
+
 <p>The first and most obvious way is to copy them over <code>ssh</code> using the <code>scp</code> tool. You can copy to and from the server and you can use the recursive copy to transfer entire directories.</p>
 <p>But what if you don’t have proper account access (you can’t reach accounts because of lack of passwords or keys, for example)? Here is a rather hackish solution: nc.</p>
 <p>The <code>netcat</code> tool (the <code>nc</code> command) is found on most Linux systems. You can create TCP or UDP servers and clients with just one command. You can use the shell redirection operators to put files into a TCP stream and take the data out of the stream. Here is an example of a copy from a server to a client:</p>
