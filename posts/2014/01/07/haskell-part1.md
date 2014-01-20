@@ -27,6 +27,8 @@ Part 1 of this series covers:
 - Upside Down Maps
 - Tokenizing Kernel Code
 
+<!--more-->
+
 **Before you ask:** All the Haskell snippets I'm showing here consist of GHCi
 interactive console sessions. I have configured a custom prompt for myself, by
 placing the line `:set prompt "λ: "` in GHCi's configuration file

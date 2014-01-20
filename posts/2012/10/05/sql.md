@@ -10,6 +10,8 @@ tutorial is organized as a survey of SQL statements and techniques. It is
 designed to let you infer from examples what SQL is all about as well as the
 kinds of problems it can help you solve.
 
+<!--more-->
+
 The promise of this tutorial is that you invest 30 minutes of your time and it
 will enable you to "speak" SQL right here, right now.
 

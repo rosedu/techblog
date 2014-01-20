@@ -8,6 +8,8 @@ tags: git
 Finally, the third article on advanced [git][git] topics will focus on things
 that many will use only in some very special cases.
 
+<!--more-->
+
 ## Handling Multiple Remotes
 
 There are situations when you decide to use multiple remotes for a repository.

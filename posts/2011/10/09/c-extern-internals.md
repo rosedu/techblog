@@ -10,6 +10,8 @@ The idea for this post came from [Virgil's][v-comment] comment on
 C's extern keyword internals by means of examples and then
 analyze the differences between `extern char*` and `extern char[]`.
 
+<!--more-->
+
 `extern` is a storage class specifier, indicating that the actual
 storage of a variable or the definition of a function is located
 elsewhere, typically in another source file.

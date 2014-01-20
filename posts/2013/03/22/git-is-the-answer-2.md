@@ -8,6 +8,8 @@ tags: git
 The second article on advanced [git][git] topics is focused on cases where
 multiple branches are involved.
 
+<!--more-->
+
 ## My Changes Conflict With Yours
 
 Usually, it happens that two developers are working on the same file. Git

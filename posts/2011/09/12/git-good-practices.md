@@ -21,6 +21,8 @@ comprehensive view of Git. In case you are looking for that I recommend
 the excellent [Gitimmersion tutorial][gitimmersion] and the [Pro Git
 Book][pro-git].
 
+<!--more-->
+
 An important aspect to have in mind is the data model that Git uses.
 While most SCMs use changesets to manage commits, Git uses snapshots.
 Each commit is a snapshot of the entire project; it is not a set of file

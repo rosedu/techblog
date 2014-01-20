@@ -14,6 +14,8 @@ execution. However, this is only a simplistic point of view: using `strace`,
 you can filter by a group of system calls, you can profile your application
 from the syscalls point of view and you can trace signals sent to a process.
 
+<!--more-->
+
 ### Simple Example
 
 The simplest possible use is of the form `strace command`. For example:

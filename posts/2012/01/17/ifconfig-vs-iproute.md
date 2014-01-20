@@ -5,10 +5,10 @@ author: Alexandru Juncu
 tags: iproute2, net-tools, ifconfig, ip, route, arp, netlink, IPv4, IPv6
 ---
 
-
-
 On modern Linux distributions, the users have two main possibilities of
 configuring the network: `ifconfig` and `ip`.
+
+<!--more-->
 
 The `ifconfig` tool is part of the `net-tools` package along side other
 tools like route, arp and netstat. These are the traditional userspace

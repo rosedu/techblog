@@ -14,6 +14,8 @@ was meant to be a replacement for existing insecure remote shell protocols
 such as `telnet`, `rsh` and `rexec` which send information in plaintext,
 including usernames and passwords.
 
+<!--more-->
+
 SSH uses [public-key cryptography][pubkey] for authentication purposes. In
 short, this works like this: each user has a pair of keys, one public and one
 private. They are mathematically related, but it is computationally infeasible

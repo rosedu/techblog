@@ -12,6 +12,8 @@ replace the "Legacy" Grub version. It is a complete rewrite of Grub 1
 and only lately becoming fully featured compared to the old version and
 even comes with some new interesting features.
 
+<!--more-->
+
 The old Grub's configuration was rather straightforward, everything
 being done in a configuration file in the `grub` directory of the
 `/boot` partition (it's a common practice to have `/boot` mounted on a

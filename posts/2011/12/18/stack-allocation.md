@@ -10,6 +10,8 @@ arguments and return addresses are stored, along with local variables declared
 within a function. Usually, the stack begins at the high address space of the
 virtual memory and grows down.
 
+<!--more-->
+
 At every function call, a new **stack frame** is created on the stack. It
 contains the parameters sent to the function, the return address (the
 address of a code in the caller function) and the locally declared

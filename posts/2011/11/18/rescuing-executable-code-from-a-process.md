@@ -10,6 +10,8 @@ you ‘run’ a  binary, the code from the storage media is copied into the
 system’s memory, more precisely, into the process’ `virtual memory space`.
 From a single binary, several processes can be spawned.
 
+<!--more-->
+
 The virtual memory of a process, made up of pages, is mapped to several
 things, like shared objects(libraries), shared memory, stack and heap space,
 read-only space and executable space. A good way to view what is mapped to

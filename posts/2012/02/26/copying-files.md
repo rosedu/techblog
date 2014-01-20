@@ -8,6 +8,8 @@ tags: scp, nc, netcat, python
 You are on a (Linux) box and you want to transfer some files on another
 system. What are some ways to do that?
 
+<!--more-->
+
 The first and most obvious way is to copy them over `ssh` using the
 `scp` tool. You can copy to and from the server and you can use the
 recursive copy to transfer entire directories.

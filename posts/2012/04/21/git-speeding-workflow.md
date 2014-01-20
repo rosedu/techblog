@@ -12,6 +12,8 @@ very useful references.
 When using `git` for the first time, one has to specify his *name* and
 *email*, so `git` can associate the commit with who committed it:
 
+<!--more-->
+
     $ git config --global user.name "Firstname Lastname"
     $ git config --global user.email "your_email@youremail.com"
 

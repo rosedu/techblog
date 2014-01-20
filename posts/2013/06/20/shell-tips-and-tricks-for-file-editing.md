@@ -11,6 +11,8 @@ files, so you need to know how to efficiently handle them. If you are a
 sysadmin, you need to look at **log files** for most of your work time
 and the following might come in handy.
 
+<!--more-->
+
 ### Following a log file
 
 Take your `$GENERIC_SERVICE` on your server that generates a lot of logs.

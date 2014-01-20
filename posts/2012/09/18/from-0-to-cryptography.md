@@ -14,6 +14,8 @@ around the world.
 
 Do you think it is safer by plane?
 
+<!--more-->
+
 ### Terminology
 
 * *plaintext* or *cleartext* : intelligible message that sender wants to

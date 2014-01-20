@@ -12,6 +12,8 @@ is  `make`. Make solves compilation from multiple sources problem using the
 dependency relationships between them, described in a special file usually
 called `Makefile`.
 
+<!--more-->
+
 ### Syntax
 
 The file which describes the dependency relationships between project’s

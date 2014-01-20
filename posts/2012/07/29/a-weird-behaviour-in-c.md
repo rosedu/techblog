@@ -9,6 +9,8 @@ Let us start from a common mistake made by programmers learning simple data
 structures in C. The following code is an implementation for simple linked
 lists of integers in C.
 
+<!--more-->
+
 ~~~ cpp
 #include <stdio.h>
 #include <stdlib.h>

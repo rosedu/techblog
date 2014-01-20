@@ -10,6 +10,8 @@ replace the current version of IP (Internet Protocol), IPv4. It will come
 to fix the flaw of the 32 bit addressing in IPv4, flaw that led to the
 current shortage of usable address in the Internet.
 
+<!--more-->
+
 The addressing issue is not something new. The IETF started looking into a
 replacement for IPv4 since 1992-1993, when they started the IPng (IP next
 generation) discussion group and by 1996, they had the specifications for

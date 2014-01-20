@@ -10,6 +10,8 @@ walks you through installing Python with some basic package management tools
 (`distribute`, `pip`, `virtualenv`), setting up projects, and installing
 packages.
 
+<!--more-->
+
 ### Bootstrapping
 
 First of all we need to have a working Python interpreter. You want to

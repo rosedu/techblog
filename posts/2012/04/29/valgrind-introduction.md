@@ -9,6 +9,8 @@ A good programmer has a variety of tools to help him in developing good
 applications. We talked about [gdb][] in an [article][tgdb] at the beginning
 of April. Now, it is time for a crash introduction to [Valgrind][valgrind].
 
+<!--more-->
+
 This program is a collection of different tools. For example, it offers a
 [heap profiler][massif], a [thread error detector][helgrind] or a [cache
 profiler][cachegrind]. However, the tool which gave [Valgrind][valgrind]'s

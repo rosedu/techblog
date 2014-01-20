@@ -9,6 +9,8 @@ This post will shed some light on the differences between arrays and pointers
 specifically when it comes about referencing string literals. We will base 
 our discussion on the following two programs:
 
+<!--more-->
+
 <img style="float:right" src='/images/arrays-vs-pointers.png'
 alt='Array and pointer representation' width="376" height="192"/>
 

@@ -8,6 +8,8 @@ tags: gdb, debugging, CLI, .gdbinit, backtrace, breakpoint
 The GNU Debugger Command (GDB) is a very useful debugging tool, widely used in
 the C environment.
 
+<!--more-->
+
 #### Workflow
 
 GDB can be run in two distinct ways:

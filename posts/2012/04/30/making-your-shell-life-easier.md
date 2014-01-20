@@ -17,6 +17,8 @@ you might have a shell with the configuration file of a service, one you use
 to test the running service, and maybe one shell connected to another server.
 But, having a lot of windows (or tabs) can get confusing.
 
+<!--more-->
+
 Some prefer to optimize their environment and use a CLI-oriented Window
 Manager, like [`xmonad`][xmonad], to *productively manage windows without the
 use of the mouse*. But what if you can only get access to a single terminal,

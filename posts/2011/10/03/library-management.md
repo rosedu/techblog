@@ -19,6 +19,8 @@ library packages. One can barely imagine being able to do any kind of
 development without the presence of the C Standard Library on the local
 system.
 
+<!--more-->
+
 ### Linking and Loading
 
 A library is said to be "linked" together with other library files or

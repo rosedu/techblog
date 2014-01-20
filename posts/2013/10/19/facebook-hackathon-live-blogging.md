@@ -18,6 +18,8 @@ volunteers have been busy all morning preparing the workspace for the 15
 participating teams. We have pizza, beer and a mountain of bean bags for people
 who _move fast and break things_.
 
+<!--more-->
+
 <div style="clear:both;"></div>
 
 #### 3:30PM

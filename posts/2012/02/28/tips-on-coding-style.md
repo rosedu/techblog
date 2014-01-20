@@ -14,6 +14,8 @@ easily read and used by others. And to do that, you need some some sort of
 standards of code writing. This is where the idea of **coding styles**
 comes in.
 
+<!--more-->
+
 Every software project has its (hopefully properly defined) coding style. It
 can depend a lot on the programming language that the project uses. The
 style can specify the indentation, the variable naming, the use of spaces

@@ -10,6 +10,8 @@ scenarios where knoweldge of advance git topics helps. In order to keep down
 the length of the article, our presentation is divided in 3 parts, this being
 the first one of these.
 
+<!--more-->
+
 ## User Setup
 
 After installing Git and before doing any commits into a repository, you must

@@ -14,6 +14,8 @@ The series of articles about [git][git] continues with a short presentation
 about two other aliases and the reason why they should be used in order to
 create better commits.
 
+<!--more-->
+
 ### Rebase instead of merge
 
 From time to time we rush to push our changes to the remote repository without

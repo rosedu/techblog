@@ -13,6 +13,8 @@ a short walkthrough for this task using as an example the Linux kernel.
 Different projects use different source version control systems. Because this
 article works on the kernel tree, I am going to use git as an example.
 
+<!--more-->
+
 So, the first thing to do is to clone the project's repository. This is to
 ensure that you are working on the latest source -- maybe the bug was fixed
 before and your operating system's package manager is behind on updates. For
