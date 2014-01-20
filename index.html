@@ -99,489 +99,10 @@
       </span>
 
       <p>Two years ago this blog had a series of articles on debugging tools. We have presented tools like <a href="http://techblog.rosedu.org/valgrind-introduction.html" title="Valgrind introduction">Valgrind</a> and <a href="http://techblog.rosedu.org/gdb-a-basic-workflow.html" title="GDB - basic workflow">GDB</a> and we stopped with an introduction to <a href="http://techblog.rosedu.org/tracing-processes-for-fun-and-profit.html" title="Tracing Processes for Fun and Profit">strace</a>. At the end of that article we mentioned that there are other tools useful for debugging beyond these three already mentioned. After two years of silence, the debugging series is on with an article on <code>ltrace</code>.</p>
-<p>Ask around developers and you’ll see that the proportion of those knowing about <code>ltrace</code> compared to those knowing how to use <code>strace</code> is at most the same as the proportion of <code>strace</code> users among users knowing how to use <code>gdb</code> and <code>valgrind</code>.</p>
-<p>But how is <code>ltrace</code> different? Why is this an useful tool? This article will try to shine some light on this while also providing comparisons with the <code>strace</code> tool.</p>
-<section id="basic-example" class="level3">
-<h3>Basic Example</h3>
-<p>The simples way to use both <code>ltrace</code> and <code>strace</code> is to append this tool in front of the command you’re tracing. We will illustrate here the <a href="http://techblog.rosedu.org/tracing-processes-for-fun-and-profit.html#simple-example" title="Tracing Processes for Fun and Profit">same example used for <code>strace</code></a></p>
-<pre><code>$ ltrace ls
-__libc_start_main(0x402c60, 1, 0x7fffa36d7038, 0x412bb0 &lt;unfinished ...&gt;
-strrchr(&quot;ls&quot;, '/')                               = nil
-setlocale(LC_ALL, &quot;&quot;)                            = &quot;en_US.UTF-8&quot;
-bindtextdomain(&quot;coreutils&quot;, &quot;/usr/share/locale&quot;) = &quot;/usr/share/locale&quot;
-textdomain(&quot;coreutils&quot;)                          = &quot;coreutils&quot;
-__cxa_atexit(0x40ace0, 0, 0, 0x736c6974756572)   = 0
-isatty(1)                                        = 1
-getenv(&quot;QUOTING_STYLE&quot;)                          = nil
-getenv(&quot;COLUMNS&quot;)                                = nil
-ioctl(1, 21523, 0x7fffa36d6bd0)                  = 0
-getenv(&quot;TABSIZE&quot;)                                = nil
-getopt_long(1, 0x7fffa36d7038, &quot;abcdfghiklmnopqrstuvw:xABCDFGHI:&quot;..., 0x61a5e0, -1)         = -1
-getenv(&quot;LS_BLOCK_SIZE&quot;)                          = nil
-...
-opendir(&quot;.&quot;)                                     = 0x2789c30
-readdir(0x2789c30)                               = 0x2789c60
-readdir(0x2789c30)                               = 0x2789c78
-readdir(0x2789c30)                               = 0x2789c90
-strlen(&quot;a.out&quot;)                                  = 5
-malloc(6)                                        = 0x2791c70
-memcpy(0x2791c70, &quot;a.out\0&quot;, 6)                  = 0x2791c70
-readdir(0x2789c30)                               = 0x2789cb0
-strlen(&quot;out.9373&quot;)                               = 8
-malloc(9)                                        = 0x2791c90
-memcpy(0x2791c90, &quot;out.9373\0&quot;, 9)               = 0x2791c90
-...
-closedir(0x2789c30)                              = 0
-free(0)                                          = &lt;void&gt;
-malloc(432)                                      = 0x2789c30
-_setjmp(0x61b640, 0x400000, 0x2785e50, 0x2789cc0)= 0
-__errno_location()                               = 0x7f95ad5916c0
-strcoll(&quot;out.9307&quot;, &quot;1.c&quot;)                       = 23
-...
-fwrite_unlocked(&quot;1.c&quot;, 1, 3, 0x3573db9400)       = 3
-...
-fwrite_unlocked(&quot;out&quot;, 1, 3, 0x3573db9400)       = 3
-...
-exit(0 &lt;unfinished ...&gt;
-__fpending(0x3573db9400, 0, 64, 0x3573db9eb0)    = 0
-fileno(0x3573db9400)                             = 1
-__freading(0x3573db9400, 0, 64, 0x3573db9eb0)    = 0
-__freading(0x3573db9400, 0, 2052, 0x3573db9eb0)  = 0
-fflush(0x3573db9400)                             = 0
-fclose(0x3573db9400)                             = 0
-__fpending(0x3573db91c0, 0, 0x3573dbaa00, 0xfbad000c)= 0
-fileno(0x3573db91c0)                             = 2
-__freading(0x3573db91c0, 0, 0x3573dbaa00, 0xfbad000c)= 0
-__freading(0x3573db91c0, 0, 4, 0xfbad000c)       = 0
-fflush(0x3573db91c0)                             = 0
-fclose(0x3573db91c0)                             = 0
-+++ exited (status 0) +++</code></pre>
-<p>Looking at the trace we see that the <code>ls</code> process starts by acknowledging the current <a href="http://en.wikipedia.org/wiki/Locale" title="Locale (computing)">locale</a> after which several environment variables which control the output are read (only a few of them shown, the others ellided by <code>...</code>). Then <a href="http://linuxmanpages.com/man3/opendir.3.php" title="opendir - open a directory"><code>opendir</code></a> is called on <code>.</code> (since <code>ls</code> had no other arguments) and each entry is read via <a href="http://linuxmanpages.com/man2/readdir.2.php" title="readdir - read directory entry"><code>readdir</code></a> and then copied into a vector of entries (after using <code>strdup</code> seen here as a triple of <code>strlen</code>, <code>malloc</code> and <code>memcpy</code>). Next step is to sort all of these entries according to the current locale (<a href="http://linuxmanpages.com/man3/strcoll.3.php" title="strcoll - compare two strings using the current locale"><code>strcoll</code></a>, the variable <code>LC_COLLATE</code>). This allows sorting the filenames in alphabetical order. Then, each filename is written on the <code>1</code> file descriptor (<code>stdout</code>) using the non-blocking <a href="http://linuxmanpages.com/man3/fwrite_unlocked.3.php" title="fwrite_unlocked - non-locking stdio function"><code>fwrite_unlocked</code></a>. Last step is to call <code>exit</code> and flush all open streams.</p>
-<p>Right now you are more enlightened on what <code>ls</code> does than before reading this part. Knowing the above information you can do things like changing the way files are quoted (I retrieved the options by providing an invalid value and looking on the <code>QUOTING_STYLE='-' ltrace ls</code> output to see what arguments are tested for):</p>
-<pre><code>$ ls a*
-a file  a.out
 
-$ QUOTING_STYLE=&quot;shell&quot; ls a*
-'a file'  a.out
-
-$ QUOTING_STYLE=&quot;c&quot; ls a*
-&quot;a file&quot;  &quot;a.out&quot;</code></pre>
-<p>The next question we are interested in is “<em>Can <code>ltrace</code> trace syscalls as well?</em>”. Luckily, the answer is <em>yes</em>, by using the <code>-S</code> flag:</p>
-<pre><code>$ ltrace -S ls
-SYS_brk(0)                               = 0x1d4b000
-SYS_mmap(0, 4096, 3, 34)                 = 0x7f4d8b352000
-SYS_access(&quot;/etc/ld.so.preload&quot;, 04)     = -2
-SYS_open(&quot;/etc/ld.so.cache&quot;, 524288, 01) = 3
-SYS_fstat(3, 0x7fff9f3a4110)             = 0
-SYS_mmap(0, 0x246b0, 1, 2)               = 0x7f4d8b32d000
-...</code></pre>
-<p>Contrast with the results of <code>strace</code>:</p>
-<pre><code>$ strace ls
-execve(&quot;/usr/bin/ls&quot;, [&quot;ls&quot;], [/* 48 vars */]) = 0
-brk(0)                                  = 0x1190000
-mmap(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x7fcf80794000
-access(&quot;/etc/ld.so.preload&quot;, R_OK)      = -1 ENOENT (No such file or directory)
-open(&quot;/etc/ld.so.cache&quot;, O_RDONLY|O_CLOEXEC) = 3
-fstat(3, {st_mode=S_IFREG|0644, st_size=149168, ...}) = 0
-mmap(NULL, 149168, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7fcf8076f000
-...</code></pre>
-<p>Differences are easily seen. The main one is that <code>ltrace</code> prefixes each syscall with <code>SYS_</code> and doesn’t represent macros as macros but expands them (so instead of <code>PROT_READ|PROT_WRITE</code> you have <code>3</code>). In fact, even the number of arguments is different. For understandability reason, it is better to use <code>strace</code> for tracing the system calls and <code>ltrace</code> for tracing the library ones.</p>
-</section>
-<section id="why-is-ltrace-useful" class="level3">
-<h3>Why Is <code>ltrace</code> Useful?</h3>
-<p>From the above section you have seen that we can use <code>ltrace</code> to understand undocumented behavior of an application. For example the <code>QUOTING_STYLE</code> was found neither in the <a href="http://linuxmanpages.com/man1/ls.1.php" title="ls - list directory contents"><code>ls</code></a> manual nor in the <a href="http://linuxmanpages.com/man1/bash.1.php" title="bash - GNU Bourne-Again SHell"><code>bash</code></a> one.</p>
-<p>Another way <code>ltrace</code> is useful is when one of the libraries your application depends on is faulty. Instead of trying to debug a full-scale application you might want to isolate the culprit into a minimal application which exhibits only the bad behaviour. For that, you can use <code>ltrace</code> in the same way we used <code>strace</code> in <a href="http://techblog.rosedu.org/tracing-processes-for-fun-and-profit.html#how-is-this-useful" title="Tracing Processes for Fun and Profit">its own article</a> in the past.</p>
-</section>
-<section id="i-have-too-much-output" class="level3">
-<h3>I Have Too Much Output</h3>
-<p>Like in the case of <a href="http://techblog.rosedu.org/tracing-processes-for-fun-and-profit.html#too-much-output" title="Tracing Processes for Fun and Profit"><code>strace</code></a>, <code>ltrace</code> produces a long list of output lines and it is quite hard to find what you’re looking for or to understand what’s happening while they are scrolling on the screen.</p>
-<p>Just like <code>strace</code> we can save the output to a file, using <code>-o</code>:</p>
-<pre><code>$ ltrace -o ltraceout ls
-$ wc -l ltraceout
-523 ltraceout
-$ head ltraceout
-__libc_start_main(0x402c60, 1, 0x7fffbc2e3348, 0x412bb0 &lt;unfinished ...&gt;
-strrchr(&quot;ls&quot;, '/')                              = nil
-setlocale(LC_ALL, &quot;&quot;)                           = &quot;en_US.UTF-8&quot;
-bindtextdomain(&quot;coreutils&quot;, &quot;/usr/share/locale&quot;)= &quot;/usr/share/locale&quot;
-textdomain(&quot;coreutils&quot;)                         = &quot;coreutils&quot;
-__cxa_atexit(0x40ace0, 0, 0, 0x736c6974756572)  = 0
-isatty(1)                                       = 1
-getenv(&quot;QUOTING_STYLE&quot;)                         = nil
-getenv(&quot;COLUMNS&quot;)                               = nil
-ioctl(1, 21523, 0x7fffbc2e2ee0)                 = 0</code></pre>
-<p>Like <code>strace</code>, we can also use <code>-e</code> to filter on specific calls.</p>
-<p>In the following examples we would use the following C source file which computes <code>41^41</code> and <code>42^42</code> both using the float <code>libmath</code> version and the <code>libgmp</code> multi-precision integers one. We will use threads to compute <code>42^42</code> and compute <code>41^41</code> in the <code>main</code> function with both arguments.</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;math.h&gt;</span>
-<span class="ot">#include &lt;pthread.h&gt;</span>
-<span class="ot">#include &lt;stdio.h&gt;</span>
-<span class="ot">#include &lt;stdlib.h&gt;</span>
-
-<span class="ot">#include &lt;gmp.h&gt;</span>
-
-<span class="dt">void</span> *do_double_thread(<span class="dt">void</span> *data)
-{
-  <span class="dt">double</span> x = <span class="dv">42</span>;
-  x = pow(x, x);
-}
-
-<span class="dt">void</span> *do_mpz_thread(<span class="dt">void</span> *data)
-{
-  mpz_t x;
-
-  mpz_init_set_ui(x, <span class="dv">42</span>);
-  mpz_pow_ui(x, x, <span class="dv">42</span>);
-
-  mpz_clear(x);
-}
-
-<span class="dt">int</span> main()
-{
-  pthread_t double_thread, mpz_thread;
-  pthread_attr_t attr;
-
-  <span class="dt">double</span> y = <span class="dv">41</span>;
-  mpz_t x;
-
-  mpz_init_set_ui(x, <span class="dv">41</span>);
-  mpz_pow_ui(x, x, <span class="dv">41</span>);
-
-  mpz_clear(x);
-
-  y = pow(y, y);
-
-  <span class="co">/* initialize the attribute */</span>
-  <span class="kw">if</span> (pthread_attr_init(&amp;attr) != <span class="dv">0</span>) {
-    perror(<span class="st">&quot;pthread_attr_init&quot;</span>);
-    pthread_exit(NULL);
-  }
-
-  <span class="co">/* set detached state */</span>
-  <span class="kw">if</span> (pthread_attr_setdetachstate(&amp;attr, PTHREAD_CREATE_JOINABLE) != <span class="dv">0</span>) {
-    perror(<span class="st">&quot;pthread_attr_setdetachstate&quot;</span>);
-    pthread_exit(NULL);
-  }
-
-  <span class="kw">if</span> (pthread_create(&amp;double_thread, &amp;attr, do_double_thread, NULL)) {
-    perror(<span class="st">&quot;pthread_create&quot;</span>);
-    exit(EXIT_FAILURE);
-  }
-
-  <span class="kw">if</span> (pthread_create(&amp;mpz_thread, &amp;attr, do_mpz_thread, NULL)) {
-    perror(<span class="st">&quot;pthread_create&quot;</span>);
-    exit(EXIT_FAILURE);
-  }
-
-  pthread_attr_destroy(&amp;attr);
-
-  <span class="kw">if</span> (pthread_join(double_thread, NULL))
-    perror(<span class="st">&quot;pthread_join&quot;</span>);
-
-  <span class="kw">if</span> (pthread_join(mpz_thread, NULL))
-    perror(<span class="st">&quot;pthread_join&quot;</span>);
-
-  <span class="kw">return</span> <span class="dv">0</span>;
-}</code></pre>
-<p>To compile, we have to link against <code>libmath</code>, <code>libpthread</code> and <code>libgmp</code>:</p>
-<pre><code>$ gcc -lm -lpthread -lgmp test.c -o test</code></pre>
-<p>Running <code>ltrace</code> on the full output we have the following:</p>
-<pre><code>$ ltrace ./test
-__libc_start_main(0x400aeb, 1, 0x7fff6afa8b78, 0x400c60 &lt;unfinished ...&gt;
-__gmpz_init_set_ui(0x7fff6afa8a30, 41, 0x7fff6afa8b88, 0x400c60)     = 1
-__gmpz_pow_ui(0x7fff6afa8a30, 0x7fff6afa8a30, 41, 0x7fff6afa8a30)    = 0
-__gmpz_clear(0x7fff6afa8a30, 0x6bb020, 0, 0x129c08be7ca69)           = 0
-pow(0x3573db8760, 0xffffffff, 0x4044800000000000, 0)                 = 0x4da9465e5d9d1629
-pthread_attr_init(0x7fff6afa8a40, 213, 0x7fefffffffffffff, 0x7fffffffffffffff)= 0
-pthread_attr_setdetachstate(0x7fff6afa8a40, 0, 0x7fefffffffffffff, 0)= 0
-pthread_create(0x7fff6afa8a80, 0x7fff6afa8a40, 0x400a60, 0)          = 0
-pthread_create(0x7fff6afa8a78, 0x7fff6afa8a40, 0x400aa8, 0)          = 0
-pthread_attr_destroy(0x7fff6afa8a40, 0x7f60ece77fb0, 0x7f60ece789d0, -1)= 0
-pthread_join(0x7f60ed679700, 0, 0x7f60ece789d0, -1)                  = 0
-pthread_join(0x7f60ece78700, 0, 0x7f60ed679700, 0x3574418290)        = 0
-+++ exited (status 0) +++</code></pre>
-<p>If we want to capture only the bignum operations we can use <code>-e</code> flag:</p>
-<pre><code>$ ltrace -e '*gmpz*' ./test
-test-&gt;__gmpz_init_set_ui(0x7ffffb01f830, 41, 0x7ffffb01f988, 0x400c60)= 1
-test-&gt;__gmpz_pow_ui(0x7ffffb01f830, 0x7ffffb01f830, 41, 0x7ffffb01f830 &lt;unfinished ...&gt;
-libgmp.so.10-&gt;__gmpz_n_pow_ui(0x7ffffb01f830, 0xbf0010, 1, 41 &lt;unfinished ...&gt;
-libgmp.so.10-&gt;__gmpz_realloc(0x7ffffb01f830, 7, 42, 7)         = 0xbf0010
-&lt;... __gmpz_n_pow_ui resumed&gt; )                                  = 0
-&lt;... __gmpz_pow_ui resumed&gt; )                                    = 0
-test-&gt;__gmpz_clear(0x7ffffb01f830, 0xbf0020, 0, 0x129c08be7ca69) = 0
-+++ exited (status 0) +++</code></pre>
-<p>From this output we see that <code>__gmpz_pow_ui</code> from our code calls <code>__gmpz_n_pow_ui</code> from <code>libgmp.so.10</code> which in turn calls <code>__gmpz_realloc</code> to expand the space allocated to the number.</p>
-<p>However, in some cases one library might call functions from another or you might want to filter and keep only the calls done by your application. Fortunately, we can still do that:</p>
-<pre><code>$ ltrace -e '*gmpz*-@libgmp.so*' ./test
-test-&gt;__gmpz_init_set_ui(0x7fff45c5cd70, 41, 0x7fff45c5cec8, 0x400c60) = 1
-test-&gt;__gmpz_pow_ui(0x7fff45c5cd70, 0x7fff45c5cd70, 41, 0x7fff45c5cd70)= 0
-test-&gt;__gmpz_clear(0x7fff45c5cd70, 0xc02020, 0, 0x129c08be7ca69)       = 0
-+++ exited (status 0) +++</code></pre>
-<p>If you want to trace all calls <em>inside</em> a library then it is better to use <code>-x</code>.</p>
-<pre><code>$ ltrace -x '@libgmp.so.*' ./test
-__libc_start_main(0x400aeb, 1, 0x7fff656660b8, 0x400c60 &lt;unfinished ...&gt;
-__gmpz_init_set_ui(0x7fff65665f70, 41, 0x7fff656660c8, 0x400c60 &lt;unfinished ...&gt;
-__gmpz_init_set_ui@libgmp.so.10(0x7fff65665f70, 41, 0x7fff656660c8, 0x400c60 &lt;unfinished ...&gt;
-__gmp_default_allocate@libgmp.so.10(8, 41, 0x7fff656660c8, 0x400c60)= 0x222a010
-&lt;... __gmpz_init_set_ui resumed&gt; )= 1
-&lt;... __gmpz_init_set_ui resumed&gt; )= 1
-__gmpz_pow_ui(0x7fff65665f70, 0x7fff65665f70, 41, 0x7fff65665f70 &lt;unfinished ...&gt;
-__gmpz_pow_ui@libgmp.so.10(0x7fff65665f70, 0x7fff65665f70, 41, 0x7fff65665f70 &lt;unfinished ...&gt;
-__gmpz_n_pow_ui@libgmp.so.10(0x7fff65665f70, 0x222a010, 1, 41 &lt;unfinished ...&gt;
-__gmpz_realloc@libgmp.so.10(0x7fff65665f70, 7, 42, 7 &lt;unfinished ...&gt;
-__gmp_default_reallocate@libgmp.so.10(0x222a010, 8, 56, 7)= 0x222a010
-&lt;... __gmpz_realloc resumed&gt; )= 0x222a010
-__gmpn_sqr@libgmp.so.10(0x222a010, 0x7fff65665e80, 2, 48 &lt;unfinished ...&gt;
-__gmpn_sqr_basecase@libgmp.so.10(0x222a010, 0x7fff65665e80, 2, 48)= 0x3562f3ea0787ecff
-&lt;... __gmpn_sqr resumed&gt; )= 0
-__gmpn_mul_1@libgmp.so.10(0x222a010, 0x222a010, 3, 0x129c08be7ca69)= 0xca32f2e
-&lt;... __gmpz_n_pow_ui resumed&gt; )= 0
-&lt;... __gmpz_pow_ui resumed&gt; )= 0
-&lt;... __gmpz_pow_ui resumed&gt; )= 0
-__gmpz_clear(0x7fff65665f70, 0x222a020, 0, 0x129c08be7ca69 &lt;unfinished ...&gt;
-__gmpz_clear@libgmp.so.10(0x7fff65665f70, 0x222a020, 0, 0x129c08be7ca69 &lt;unfinished ...&gt;
-__gmp_default_free@libgmp.so.10(0x222a010, 56, 0, 0x129c08be7ca69)= 0
-&lt;... __gmpz_clear resumed&gt; )= 0
-&lt;... __gmpz_clear resumed&gt; )= 0
-pow(0x3573db8760, 0xffffffff, 0x4044800000000000, 0)= 0x4da9465e5d9d1629
-pthread_attr_init(0x7fff65665f80, 213, 0x7fefffffffffffff, 0x7fffffffffffffff)= 0
-pthread_attr_setdetachstate(0x7fff65665f80, 0, 0x7fefffffffffffff, 0)= 0
-pthread_create(0x7fff65665fc0, 0x7fff65665f80, 0x400a60, 0)= 0
-pthread_create(0x7fff65665fb8, 0x7fff65665f80, 0x400aa8, 0)= 0
-pthread_attr_destroy(0x7fff65665f80, 0x7f3164bc1fb0, 0x7f3164bc29d0, -1)= 0
-pthread_join(0x7f31653c3700, 0, 0x7f3164bc29d0, -1)= 0
-pthread_join(0x7f3164bc2700, 0, 0x7f31653c3700, 0x3574418290)= 0
-_fini@libgmp.so.10(0x358cc761f0, 0, 0xffffffff, 0)= 0x358ca5edc4
-+++ exited (status 0) +++</code></pre>
-<p>To catch only the calls to the specific library use <code>-L</code> which will make <code>ltrace</code> not trace anything from the <code>MAIN</code> library:</p>
-<pre><code>$ ltrace -L -x '@libgmp.so.*' ./test
-__gmpz_init_set_ui@libgmp.so.10(0x7fffbf630930, 41, 0x7fffbf630a88, 0x400c60 &lt;unfinished ...&gt;
-__gmp_default_allocate@libgmp.so.10(8, 41, 0x7fffbf630a88, 0x400c60)= 0x17b5010
-&lt;... __gmpz_init_set_ui resumed&gt; )= 1
-__gmpz_pow_ui@libgmp.so.10(0x7fffbf630930, 0x7fffbf630930, 41, 0x7fffbf630930 &lt;unfinished ...&gt;
-__gmpz_n_pow_ui@libgmp.so.10(0x7fffbf630930, 0x17b5010, 1, 41 &lt;unfinished ...&gt;
-__gmpz_realloc@libgmp.so.10(0x7fffbf630930, 7, 42, 7 &lt;unfinished ...&gt;
-__gmp_default_reallocate@libgmp.so.10(0x17b5010, 8, 56, 7)= 0x17b5010
-&lt;... __gmpz_realloc resumed&gt; )= 0x17b5010
-__gmpn_sqr@libgmp.so.10(0x17b5010, 0x7fffbf630840, 2, 48 &lt;unfinished ...&gt;
-__gmpn_sqr_basecase@libgmp.so.10(0x17b5010, 0x7fffbf630840, 2, 48)= 0x3562f3ea0787ecff
-&lt;... __gmpn_sqr resumed&gt; )= 0
-__gmpn_mul_1@libgmp.so.10(0x17b5010, 0x17b5010, 3, 0x129c08be7ca69)= 0xca32f2e
-&lt;... __gmpz_n_pow_ui resumed&gt; )= 0
-&lt;... __gmpz_pow_ui resumed&gt; )= 0
-__gmpz_clear@libgmp.so.10(0x7fffbf630930, 0x17b5020, 0, 0x129c08be7ca69 &lt;unfinished ...&gt;
-__gmp_default_free@libgmp.so.10(0x17b5010, 56, 0, 0x129c08be7ca69)= 0
-&lt;... __gmpz_clear resumed&gt; )= 0
-_fini@libgmp.so.10(0x358cc761f0, 0, 0xffffffff, 0)= 0x358ca5edc4
-+++ exited (status 0) +++</code></pre>
-</section>
-<section id="attaching-to-other-processes" class="level3">
-<h3>Attaching To Other Processes</h3>
-<p>Like in <a href="http://techblog.rosedu.org/tracing-processes-for-fun-and-profit.html#but-i-started-the-process.." title="Tracing Processes for Fun and Profit"><code>strace</code></a> case, we can use <code>-p</code> to attach to running processes:</p>
-<pre><code>$ ./test &amp;
-[1] 26026
-
-$ ltrace -p 26026
-__gmpz_clear(0x7fff1fa3bb50, 1, 0, 0x1b9b000)= 0
-pow(0x7f2c3dca8000, 0x49ff000, 0x4044800000000000, -1)= 0x4da9465e5d9d1629
-pthread_attr_init(0x7fff1fa3bb60, 213, 0x7fefffffffffffff, 0x7fffffffffffffff)= 0
-pthread_attr_setdetachstate(0x7fff1fa3bb60, 0, 0x7fefffffffffffff, 0)= 0
-pthread_create(0x7fff1fa3bba8, 0x7fff1fa3bb60, 0x400a60, 0)= 0
-pthread_create(0x7fff1fa3bba0, 0x7fff1fa3bb60, 0x400aa8, 0)= 0
-pthread_attr_destroy(0x7fff1fa3bb60, 0x7f2c42073fb0, 0x7f2c420749d0, -1)= 0
-pthread_join(0x7f2c42875700, 0, 0x7f2c420749d0, -1)= 0
-pthread_join(0x7f2c42074700, 0, 0x7f2c42875700, 0x3574418290)= 0
-+++ exited (status 0) +++
-[1]+  Done                    ./test</code></pre>
-<p>In fact, just as <code>strace</code>, we can use multiple <code>-p</code> arguments to attach to multiple processes simultaneously:</p>
-<pre><code>$ ./test &amp; ./test &amp;
-[1] 26149
-[2] 26150
-
-$ ltrace -p 26149 -p 26150
-__gmpz_clear(0x7fff52a4fed0, 1, 0, 0xa2c000)= 0
-pow(0x7f85fb6f0000, 0x49ff000, 0x4044800000000000, -1)= 0x4da9465e5d9d1629
-pthread_attr_init(0x7fff52a4fee0, 213, 0x7fefffffffffffff, 0x7fffffffffffffff)= 0
-pthread_attr_setdetachstate(0x7fff52a4fee0, 0, 0x7fefffffffffffff, 0)= 0
-pthread_create(0x7fff52a4ff28, 0x7fff52a4fee0, 0x400a60, 0)= 0
-pthread_create(0x7fff52a4ff20, 0x7fff52a4fee0, 0x400aa8, 0)= 0
-pthread_attr_destroy(0x7fff52a4fee0, 0x7f85ffabbfb0, 0x7f85ffabc9d0, -1)= 0
-pthread_join(0x7f86002bd700, 0, 0x7f85ffabc9d0, -1)= 0
-pthread_join(0x7f85ffabc700, 0, 0x7f86002bd700, 0x3574418290)= 0
-+++ exited (status 0) +++
-__gmpz_clear(0x7fff4cbac6e0, 1, 0, 0x1207000)= 0
-pow(0x7fbf03640000, 0x49ff000, 0x4044800000000000, -1)= 0x4da9465e5d9d1629
-pthread_attr_init(0x7fff4cbac6f0, 213, 0x7fefffffffffffff, 0x7fffffffffffffff)= 0
-pthread_attr_setdetachstate(0x7fff4cbac6f0, 0, 0x7fefffffffffffff, 0)= 0
-pthread_create(0x7fff4cbac738, 0x7fff4cbac6f0, 0x400a60, 0)= 0
-pthread_create(0x7fff4cbac730, 0x7fff4cbac6f0, 0x400aa8, 0)= 0
-pthread_attr_destroy(0x7fff4cbac6f0, 0x7fbf07a0bfb0, 0x7fbf07a0c9d0, -1)= 0
-pthread_join(0x7fbf0820d700, 0, 0x7fbf07a0c9d0, -1)= 0
-pthread_join(0x7fbf07a0c700, 0, 0x7fbf0820d700, 0x3574418290)= 0
-+++ exited (status 0) +++
-[1]-  Done                    ./test
-[2]+  Done                    ./test</code></pre>
-<p>Though, this case is useful only when debugging multiple programs which need to communicate between themselves, it is nice to know that this is possible.</p>
-</section>
-<section id="tracing-the-threads-and-children-of-a-process" class="level3">
-<h3>Tracing the Threads and Children of a Process</h3>
-<p>The <code>strace</code> tools allows attaching to subprocesses of a process using <code>-f</code>. Also, you can use <code>-ff</code> with a <code>-o</code> to get the output of each thread in a separate file.</p>
-<p>However, <code>ltrace</code> knows only the <code>-f</code> option. Lines from different processes are prefixed with the <code>PID</code> of that process.</p>
-<pre><code>$ ltrace -f ./test
-[pid 26192] __libc_start_main(0x400aeb, 1, 0x7fffc406b9c8, 0x400c60 &lt;unfinished ...&gt;
-[pid 26192] __gmpz_init_set_ui(0x7fffc406b880, 41, 0x7fffc406b9d8, 0x400c60)= 1
-[pid 26192] __gmpz_pow_ui(0x7fffc406b880, 0x7fffc406b880, 41, 0x7fffc406b880)= 0
-[pid 26192] __gmpz_clear(0x7fffc406b880, 0x1b21020, 0, 0x129c08be7ca69)= 0
-[pid 26192] pow(0x3573db8760, 0xffffffff, 0x4044800000000000, 0)= 0x4da9465e5d9d1629
-[pid 26192] pthread_attr_init(0x7fffc406b890, 213, 0x7fefffffffffffff, 0x7fffffffffffffff)= 0
-[pid 26192] pthread_attr_setdetachstate(0x7fffc406b890, 0, 0x7fefffffffffffff, 0)           = 0
-[pid 26192] pthread_create(0x7fffc406b8d0, 0x7fffc406b890, 0x400a60, 0)= 0
-[pid 26193] pow(0, 0, 0x4045000000000000, -1 &lt;unfinished ...&gt;
-[pid 26192] pthread_create(0x7fffc406b8c8, 0x7fffc406b890, 0x400aa8, 0 &lt;unfinished ...&gt;
-[pid 26193] &lt;... pow resumed&gt; )= 0x4e1646505f35a847
-[pid 26193] +++ exited (status 0) +++
-[pid 26192] &lt;... pthread_create resumed&gt; )= 0
-[pid 26192] pthread_attr_destroy(0x7fffc406b890, 0x7fc1a1041fb0, 0x7fc1a10429d0, -1)= 0
-[pid 26192] pthread_join(0x7fc1a1843700, 0, 0x7fc1a10429d0, -1)= 0
-[pid 26192] pthread_join(0x7fc1a1042700, 0, 0x7fc1a1843700, 0x3574418290 &lt;unfinished ...&gt;
-[pid 26194] __gmpz_init_set_ui(0x7fc1a1041f00, 42, 0x59a85877c49edc2b, -1)= 1
-[pid 26194] __gmpz_pow_ui(0x7fc1a1041f00, 0x7fc1a1041f00, 42, 0x7fc1a1041f00)= 0
-[pid 26194] __gmpz_clear(0x7fc1a1041f00, 0x7fc19c0008c0, 0, 42)= 0
-[pid 26192] &lt;... pthread_join resumed&gt; )= 0
-[pid 26194] +++ exited (status 0) +++
-[pid 26192] +++ exited (status 0) +++</code></pre>
-<p>Thus, if you want to filter only a single child you have to resort to text filter utilities like <code>grep</code>.</p>
-</section>
-<section id="profiling" class="level3">
-<h3>Profiling</h3>
-<p>One nice thing about <code>strace</code> is that you can use the <code>-c</code> flag to get a table with all syscalls used in a program, the time needed to execute them and the count of error results. However, <code>ltrace</code> lacks this option but it can be simulated by using the other timing options and text filters.</p>
-<p>Both <code>strace</code> and <code>ltrace</code> allow you to get timestamps around any call by using <code>-r</code>, <code>-t</code>, <code>-tt</code> or <code>-ttt</code>:</p>
-<p><code>-r</code> shows a relative timestamp since program startup</p>
-<pre><code>$ ltrace -r ./test
-  0.000000 __libc_start_main(0x400aeb, 1, 0x7fff2a51a328, 0x400c60 &lt;unfinished ...&gt;
-  0.000418 __gmpz_init_set_ui(0x7fff2a51a1e0, 41, 0x7fff2a51a338, 0x400c60)= 1
-  0.000296 __gmpz_pow_ui(0x7fff2a51a1e0, 0x7fff2a51a1e0, 41, 0x7fff2a51a1e0)= 0
-  0.000166 __gmpz_clear(0x7fff2a51a1e0, 0x1f66020, 0, 0x129c08be7ca69)= 0
-  0.000137 pow(0x3573db8760, 0xffffffff, 0x4044800000000000, 0)= 0x4da9465e5d9d1629
-  0.000168 pthread_attr_init(0x7fff2a51a1f0, 213, 0x7fefffffffffffff, 0x7fffffffffffffff)= 0
-  0.000147 pthread_attr_setdetachstate(0x7fff2a51a1f0, 0, 0x7fefffffffffffff, 0)= 0
-  0.000216 pthread_create(0x7fff2a51a230, 0x7fff2a51a1f0, 0x400a60, 0)= 0
-  0.000409 pthread_create(0x7fff2a51a228, 0x7fff2a51a1f0, 0x400aa8, 0)= 0
-  0.000474 pthread_attr_destroy(0x7fff2a51a1f0, 0x7f25016c5fb0, 0x7f25016c69d0, -1)= 0
-  0.000250 pthread_join(0x7f2501ec7700, 0, 0x7f25016c69d0, -1)= 0
-  0.000257 pthread_join(0x7f25016c6700, 0, 0x7f2501ec7700, 0x3574418290)= 0
-  0.000735 +++ exited (status 0) +++</code></pre>
-<p><code>-t</code> shows the time of day when the call was made</p>
-<pre><code>$ ltrace -t ./test
-14:50:42 __libc_start_main(0x400aeb, 1, 0x7fff84229b38, 0x400c60 &lt;unfinished ...&gt;
-14:50:42 __gmpz_init_set_ui(0x7fff842299f0, 41, 0x7fff84229b48, 0x400c60)= 1
-14:50:42 __gmpz_pow_ui(0x7fff842299f0, 0x7fff842299f0, 41, 0x7fff842299f0)= 0
-14:50:42 __gmpz_clear(0x7fff842299f0, 0x1d02020, 0, 0x129c08be7ca69)= 0
-14:50:42 pow(0x3573db8760, 0xffffffff, 0x4044800000000000, 0)= 0x4da9465e5d9d1629
-14:50:42 pthread_attr_init(0x7fff84229a00, 213, 0x7fefffffffffffff, 0x7fffffffffffffff)= 0
-14:50:42 pthread_attr_setdetachstate(0x7fff84229a00, 0, 0x7fefffffffffffff, 0)= 0
-14:50:42 pthread_create(0x7fff84229a40, 0x7fff84229a00, 0x400a60, 0)= 0
-14:50:42 pthread_create(0x7fff84229a38, 0x7fff84229a00, 0x400aa8, 0)= 0
-14:50:42 pthread_attr_destroy(0x7fff84229a00, 0x7f48e7ec0fb0, 0x7f48e7ec19d0, -1)= 0
-14:50:42 pthread_join(0x7f48e86c2700, 0, 0x7f48e7ec19d0, -1)= 0
-14:50:42 pthread_join(0x7f48e7ec1700, 0, 0x7f48e86c2700, 0x3574418290)= 0
-14:50:42 +++ exited (status 0) +++</code></pre>
-<p><code>-tt</code> also displays the microseconds</p>
-<pre><code>$ ltrace -tt ./test
-14:50:45.465708 __libc_start_main(0x400aeb, 1, 0x7fff83373968, 0x400c60 &lt;unfinished ...&gt;
-14:50:45.465942 __gmpz_init_set_ui(0x7fff83373820, 41, 0x7fff83373978, 0x400c60)= 1
-14:50:45.466216 __gmpz_pow_ui(0x7fff83373820, 0x7fff83373820, 41, 0x7fff83373820)= 0
-14:50:45.466400 __gmpz_clear(0x7fff83373820, 0x192e020, 0, 0x129c08be7ca69)= 0
-14:50:45.466584 pow(0x3573db8760, 0xffffffff, 0x4044800000000000, 0)= 0x4da9465e5d9d1629
-14:50:45.466764 pthread_attr_init(0x7fff83373830, 213, 0x7fefffffffffffff, 0x7fffffffffffffff)= 0
-14:50:45.466932 pthread_attr_setdetachstate(0x7fff83373830, 0, 0x7fefffffffffffff, 0)= 0
-14:50:45.467101 pthread_create(0x7fff83373870, 0x7fff83373830, 0x400a60, 0)= 0
-14:50:45.467417 pthread_create(0x7fff83373868, 0x7fff83373830, 0x400aa8, 0)= 0
-14:50:45.468024 pthread_attr_destroy(0x7fff83373830, 0x7fc1e7ebdfb0, 0x7fc1e7ebe9d0, -1)= 0
-14:50:45.468253 pthread_join(0x7fc1e86bf700, 0, 0x7fc1e7ebe9d0, -1)= 0
-14:50:45.468480 pthread_join(0x7fc1e7ebe700, 0, 0x7fc1e86bf700, 0x3574418290)= 0
-14:50:45.469108 +++ exited (status 0) +++</code></pre>
-<p><code>-ttt</code> displays microseconds as above but use the seconds till epoch instead of the actual time.</p>
-<pre><code>$ ltrace -ttt ./test
-1390074648.833755 __libc_start_main(0x400aeb, 1, 0x7fff5b1c8e28, 0x400c60 &lt;unfinished ...&gt;
-1390074648.833981 __gmpz_init_set_ui(0x7fff5b1c8ce0, 41, 0x7fff5b1c8e38, 0x400c60)= 1
-1390074648.834289 __gmpz_pow_ui(0x7fff5b1c8ce0, 0x7fff5b1c8ce0, 41, 0x7fff5b1c8ce0)= 0
-1390074648.834481 __gmpz_clear(0x7fff5b1c8ce0, 0x1e7c020, 0, 0x129c08be7ca69)= 0
-1390074648.834678 pow(0x3573db8760, 0xffffffff, 0x4044800000000000, 0)= 0x4da9465e5d9d1629
-1390074648.834858 pthread_attr_init(0x7fff5b1c8cf0, 213, 0x7fefffffffffffff, 0x7fffffffffffffff)= 0
-1390074648.835033 pthread_attr_setdetachstate(0x7fff5b1c8cf0, 0, 0x7fefffffffffffff, 0)= 0
-1390074648.835242 pthread_create(0x7fff5b1c8d30, 0x7fff5b1c8cf0, 0x400a60, 0)= 0
-1390074648.835935 pthread_create(0x7fff5b1c8d28, 0x7fff5b1c8cf0, 0x400aa8, 0)= 0
-1390074648.836327 pthread_attr_destroy(0x7fff5b1c8cf0, 0x7fc3da214fb0, 0x7fc3da2159d0, -1)= 0
-1390074648.837980 pthread_join(0x7fc3daa16700, 0, 0x7fc3da2159d0, -1)= 0
-1390074648.838436 pthread_join(0x7fc3da215700, 0, 0x7fc3daa16700, 0x3574418290)= 0
-1390074648.839230 +++ exited (status 0) +++</code></pre>
-<p>Also, both tools allow you to time each individual call by using <code>-T</code>:</p>
-<pre><code>$ ltrace -T ./test
-__libc_start_main(0x400aeb, 1, 0x7fffc4512768, 0x400c60 &lt;unfinished ...&gt;
-__gmpz_init_set_ui(0x7fffc4512620, 41, 0x7fffc4512778, 0x400c60)    = 1 &lt;0.000290&gt;
-__gmpz_pow_ui(0x7fffc4512620, 0x7fffc4512620, 41, 0x7fffc4512620)   = 0 &lt;0.000167&gt;
-__gmpz_clear(0x7fffc4512620, 0x21cc020, 0, 0x129c08be7ca69)         = 0 &lt;0.000142&gt;
-pow(0x3573db8760, 0xffffffff, 0x4044800000000000, 0)                = 0x4da9465e5d9d1629 &lt;0.000209&gt;
-pthread_attr_init(0x7fffc4512630, 213, 0x7fefffffffffffff, 0x7fffffffffffffff)= 0 &lt;0.000130&gt;
-pthread_attr_setdetachstate(0x7fffc4512630, 0, 0x7fefffffffffffff, 0)= 0 &lt;0.000139&gt;
-pthread_create(0x7fffc4512670, 0x7fffc4512630, 0x400a60, 0)         = 0 &lt;0.000304&gt;
-pthread_create(0x7fffc4512668, 0x7fffc4512630, 0x400aa8, 0)         = 0 &lt;0.000421&gt;
-pthread_attr_destroy(0x7fffc4512630, 0x7f09988a1fb0, 0x7f09988a29d0, -1)= 0 &lt;0.000266&gt;
-pthread_join(0x7f09990a3700, 0, 0x7f09988a29d0, -1)                 = 0 &lt;0.000181&gt;
-pthread_join(0x7f09988a2700, 0, 0x7f09990a3700, 0x3574418290)       = 0 &lt;0.000467&gt;
-+++ exited (status 0) +++</code></pre>
-<p>Though you can profile applications using <code>ltrace</code> and <code>strace</code>, a much better tool to use is <code>perf</code> which will be presented on a future article.</p>
-</section>
-<section id="blaming-it-on-the-culprit-line" class="level3">
-<h3>Blaming it on the Culprit Line</h3>
-<p>It is possible to use <code>ltrace</code> and <code>strace</code> to show you the line numbers of the caller by using the <code>-i</code> flag to get the value of the <code>EIP</code> register and then using <a href="http://linuxmanpages.com/man1/addr2line.1.php" title="addr2line - convert addresses into file names and line numbers"><code>addr2line</code></a> to get the exact line (compile with <code>-g</code>):</p>
-<pre><code>$ ltrace -i ./test
-...
-[0x400bfb] pthread_create(0x7fff0804c998, 0x7fff0804c960, 0x400aa8, 0)= 0
-[0x400c1f] pthread_attr_destroy(0x7fff0804c960, 0x7f708d112fb0, 0x7f708d1139d0, -1)= 0
-...
-[0xffffffffffffffff] +++ exited (status 0) +++
-
-$ addr2line -iCse ./test 0x400c1f
-test.c:63</code></pre>
-<p>This is useful when your code makes repeated calls to the same subset of functions but only a few of them cause problems.</p>
-</section>
-<section id="nicer-output" class="level3">
-<h3>Nicer Output</h3>
-<p>One interesting feature of <code>ltrace</code> is that you can get a nice call tree when functions from one library call other traced functions. For that, you would use the <code>-n</code> option.</p>
-<pre><code>$ ltrace -n 3 -L -x '@libgmp.so.*' ./test
-__gmpz_init_set_ui@libgmp.so.10(0x7fff7bb2e810, 41, 0x7fff7bb2e968, 0x400c60 &lt;unfinished ...&gt;
-   __gmp_default_allocate@libgmp.so.10(8, 41, 0x7fff7bb2e968, 0x400c60)= 0x12b2010
-&lt;... __gmpz_init_set_ui resumed&gt; )= 1
-__gmpz_pow_ui@libgmp.so.10(0x7fff7bb2e810, 0x7fff7bb2e810, 41, 0x7fff7bb2e810 &lt;unfinished ...&gt;
-   __gmpz_n_pow_ui@libgmp.so.10(0x7fff7bb2e810, 0x12b2010, 1, 41 &lt;unfinished ...&gt;
-      __gmpz_realloc@libgmp.so.10(0x7fff7bb2e810, 7, 42, 7 &lt;unfinished ...&gt;
-         __gmp_default_reallocate@libgmp.so.10(0x12b2010, 8, 56, 7)= 0x12b2010
-      &lt;... __gmpz_realloc resumed&gt; )= 0x12b2010
-      __gmpn_sqr@libgmp.so.10(0x12b2010, 0x7fff7bb2e720, 2, 48 &lt;unfinished ...&gt;
-         __gmpn_sqr_basecase@libgmp.so.10(0x12b2010, 0x7fff7bb2e720, 2, 48)= 0x3562f3ea0787ecff
-      &lt;... __gmpn_sqr resumed&gt; )= 0
-      __gmpn_mul_1@libgmp.so.10(0x12b2010, 0x12b2010, 3, 0x129c08be7ca69)= 0xca32f2e
-   &lt;... __gmpz_n_pow_ui resumed&gt; )= 0
-&lt;... __gmpz_pow_ui resumed&gt; )= 0
-__gmpz_clear@libgmp.so.10(0x7fff7bb2e810, 0x12b2020, 0, 0x129c08be7ca69 &lt;unfinished ...&gt;
-   __gmp_default_free@libgmp.so.10(0x12b2010, 56, 0, 0x129c08be7ca69)= 0
-&lt;... __gmpz_clear resumed&gt; )= 0
-_fini@libgmp.so.10(0x358cc761f0, 0, 0xffffffff, 0)= 0x358ca5edc4
-+++ exited (status 0) +++</code></pre>
-<p>If <code>ltrace</code> was compiled with <code>libunwind</code> support then you can also use the <code>-w</code> option to get a backtrace for a specific number of frames around each traced call. If not (like in our case) one can still use the <code>-i</code> way or the <code>-n</code>, depending on what he is interested in.</p>
-</section>
-<section id="conclusions" class="level3">
-<h3>Conclusions</h3>
-<p>Though very rarely used, <code>ltrace</code> is a nice program to have in your toolbox. It will greatly help you in those hard to debug cases caused by undocumented behaviors of third-party libraries.</p>
-<p>Notice that <code>ltrace</code> has most of the bugs of <code>strace</code>:</p>
-<ol type="1">
-<li>a program with <code>setuid</code> doesn’t have <code>euid</code> privileges while being traced</li>
-<li>a program is slow while being traced</li>
-<li>the <code>-i</code> support is weak</li>
-</ol>
-<p>Next article on this series will present tools for profiling applications and solving timing bugs.</p>
-</section>
+      <span class="more">
+        <a href="./ltrace.html">See more content and comments</a>
+      </span>
 
     </div>
   </div>
@@ -761,6 +282,10 @@ _fini@libgmp.so.10(0x358cc761f0, 0, 0xffffffff, 0)= 0x358ca5edc4
 <p>Speaking of Haskell classes and workshops, allow me to draw your attention to a project called <a href="http://lambda.rosedu.org/#english">lambda.rosedu.org</a>, which is an instructor-led, in-depth, hands-on workshop on functional programming centered around Haskell, Scala and Clojure. The workshop is free of charge, but the standards for admittance are fairly high (you will need to solve a few programming as well as logic problems). The workshop will be hosted by ROSEdu at the department for Computer Science of the POLITEHNICA University of Bucharest some time during the summer of 2014. The topics I glossed over – due to brevity concerns – in this blog post will be covered in depth during the workshop.</p>
 </section>
 
+      <span class="more">
+        <a href="./haskell-part1.html">See more content and comments</a>
+      </span>
+
     </div>
   </div>
 </div>
@@ -868,6 +393,10 @@ _fini@libgmp.so.10(0x358cc761f0, 0, 0xffffffff, 0)= 0x358ca5edc4
 <p>Finally he has participated in lockdowns each year. These are periods of time when teams gather in a room and stay there for several days (usually 30) and ship a big feature. Pretty hardcore, but that’s life at Facebook.</p>
 </section>
 
+      <span class="more">
+        <a href="./facebook-hackathon-live-blogging.html">See more content and comments</a>
+      </span>
+
     </div>
   </div>
 </div>
@@ -923,6 +452,10 @@ _fini@libgmp.so.10(0x358cc761f0, 0, 0xffffffff, 0)= 0x358ca5edc4
 <p>Now you have both real time printing of the messages and you have them saved for future use.</p>
 <p>Hope this helps!</p>
 </section>
+
+      <span class="more">
+        <a href="./shell-tips-and-tricks-for-file-editing.html">See more content and comments</a>
+      </span>
 
     </div>
   </div>
@@ -1189,6 +722,10 @@ fd23db9</code></pre>
 <p>In the end, remember that Git is a swiss army knife among VCSs and there are a lot of features which will make us masters of it should we learn and practice using them. Like Vim, above a certain threshold Git can only be learnt by using it on a day to day basis.</p>
 </section>
 
+      <span class="more">
+        <a href="./git-is-the-answer-3.html">See more content and comments</a>
+      </span>
+
     </div>
   </div>
 </div>
@@ -1354,6 +891,10 @@ Date:   Fri Mar 8 23:59:07 2013 +0200
 <p>As you can see, the commit hash is different meaning that there is a new commit, not the old one.</p>
 <p>Should a commit not apply cleanly, Git stops the cherry-picking process and asks for human intervention. After the problems are resolved, you can continue it with <code>git cherry-pick --continue</code>. Or, you can abort it via <code>--abort</code> if you change your mind after seeing the trouble.</p>
 </section>
+
+      <span class="more">
+        <a href="./git-is-the-answer-2.html">See more content and comments</a>
+      </span>
 
     </div>
   </div>
@@ -1561,6 +1102,10 @@ include base.mk</code></pre>
 <p>If you want to revert this option, use:</p>
 <pre><code>git update-index --no-assume-unchanged Makefile</code></pre>
 </section>
+
+      <span class="more">
+        <a href="./git-is-the-answer-1.html">See more content and comments</a>
+      </span>
 
     </div>
   </div>
@@ -1958,6 +1503,10 @@ ebx            0xb7fa5a5a	-1208329638
 <p>In the end, it boils down to have the right skill for using the right tools, it’s nothing fancy.</p>
 </section>
 
+      <span class="more">
+        <a href="./ctf-return-to-libc.html">See more content and comments</a>
+      </span>
+
     </div>
   </div>
 </div>
@@ -2018,6 +1567,10 @@ done</code></pre>
 <pre><code>chmod +x /etc/grub.d/42_iso
 update-grub2</code></pre>
 <p>Thanks to doraz for suggesting ISO booting with Grub.</p>
+
+      <span class="more">
+        <a href="./grub2-and-iso-boot.html">See more content and comments</a>
+      </span>
 
     </div>
   </div>
@@ -2509,6 +2062,10 @@ igstan</code></pre>
 <p>If you want to learn more SQL tips and tricks, I highly recommend <a href="http://sql.learncodethehardway.org/book/">Learn SQL The Hard Way</a></p>
 </section>
 
+      <span class="more">
+        <a href="./sql.html">See more content and comments</a>
+      </span>
+
     </div>
   </div>
 </div>
@@ -2969,6 +2526,10 @@ gpg: Good signature from &quot;Tiberiu (This is my GPG key) &lt;email@home.com&g
 <p><a href="http://www.youtube.com/watch?v=gBzJGckMYO4">That’s all folks</a>. Thank you and I hope you find this guide useful.</p>
 </section>
 
+      <span class="more">
+        <a href="./from-0-to-cryptography.html">See more content and comments</a>
+      </span>
+
     </div>
   </div>
 </div>
@@ -3121,6 +2682,10 @@ Host github
 <li>ssh-agent and ssh-reagent</li>
 </ul>
 </section>
+
+      <span class="more">
+        <a href="./intro-to-ssh.html">See more content and comments</a>
+      </span>
 
     </div>
   </div>
@@ -3321,6 +2886,10 @@ exit_group(0)                           = ?</code></pre>
 <p>However, using <code>strace</code> has some disadvantages as well. The traced process runs slower and each system call is done at least twice. You can also get a different behaviour while running a process under <code>strace</code>: either because some timing bugs will manifest, because some timeouts are reached or because someone has taken measures that the process cannot be properly traced.</p>
 <p>In the end, remember that debugging doesn’t stop at <a href="http://techblog.rosedu.org/gdb-a-basic-workflow.html" title="GDB - basic workflow">GDB</a> and/or <a href="http://techblog.rosedu.org/valgrind-introduction.html" title="Valgrind introduction">Valgrind</a>. Beside <code>strace</code>, there is also <code>ltrace</code> for library calls and <code>perf</code> for profiling. These two tools will be presented in further articles.</p>
 </section>
+
+      <span class="more">
+        <a href="./tracing-processes-for-fun-and-profit.html">See more content and comments</a>
+      </span>
 
     </div>
   </div>
@@ -3573,6 +3142,10 @@ $ gcc -Wall -Wextra 3.c -g -o 3-gcc
 <p>The possible outputs of this code and the reasoning behind are left as an exercise. Use the comments area to provide solutions for all exercises left in this article.</p>
 <p>As a rule of thumb, try to limit the use of side effects inside a function call. You don’t know when you’ll fall into this trap again.</p>
 
+      <span class="more">
+        <a href="./a-weird-behaviour-in-c.html">See more content and comments</a>
+      </span>
+
     </div>
   </div>
 </div>
@@ -3688,6 +3261,10 @@ Stage this hunk [y,n,q,a,d,/,K,g,e,?]? y</code></pre>
 <h3>Conclusions</h3>
 <p>The two aliases presented above help us be a little more proficient with <a href="http://git-scm.com/" title="Git">git</a> usage. I am using them for several months now and the results are good.</p>
 </section>
+
+      <span class="more">
+        <a href="./git-useful-aliases.html">See more content and comments</a>
+      </span>
 
     </div>
   </div>
@@ -3816,6 +3393,10 @@ main.o: main.c
 	rm -rf *.o exec</code></pre>
 </section>
 
+      <span class="more">
+        <a href="./gnu-make.html">See more content and comments</a>
+      </span>
+
     </div>
   </div>
 </div>
@@ -3876,6 +3457,10 @@ rosedu:/etc/apache2/sites-available#</code></pre>
 <p>Some people open different terminals to keep track of what they are doing or where they are (and not change the location inside that terminal). The shell is made for having its current directory changes and it helps you know where you are with the <code>prompt</code>. A normal prompt looks like <code>user@host:current_path$</code>. It’s important to know with what user and on what machine you are logged in. The <code>$</code> and <code>#</code> characters will show you what privileges you have (either limited or administrator). The <code>current\_path</code> is usually the name of the current directory (but it can sometimes be a full path). If that doesn’t provide you enough information, use the <code>pwd</code> command to print the working directory or setup the <code>PS1</code> variabile to include more information.</p>
 <p>Shells like <a href="http://www.gnu.org/software/bash/"><code>bash</code></a> have lots of not so well known tricks. But if you learn those tricks, they will make your life easier.</p>
 </section>
+
+      <span class="more">
+        <a href="./making-your-shell-life-easier.html">See more content and comments</a>
+      </span>
 
     </div>
   </div>
@@ -4151,6 +3736,10 @@ enough to receive the copy.</code></pre>
 <p>In a later article we will show how can you combine <a href="http://valgrind.org/">Valgrind</a> and <a href="http://sources.redhat.com/gdb/">GDB</a> to fix some nasty bugs. But until then, remember how to use <a href="http://valgrind.org/docs/manual/mc-manual.html">Memcheck</a> and keep in mind that <a href="http://valgrind.org/">Valgrind</a> has many useful tools and a programmer can create others if he needs them.</p>
 </section>
 
+      <span class="more">
+        <a href="./valgrind-introduction.html">See more content and comments</a>
+      </span>
+
     </div>
   </div>
 </div>
@@ -4245,6 +3834,10 @@ $ ./main
 <p>The Library Loader is smart enough to ignore the <code>LD_LIBRARY_PATH</code> when the executable is setuid-ed, because of exact such attacks. So even though you can exploit programs as a normal user, you can’t affect system. So low level is a little more secure than scripting level.</p>
 <p>Here is a related <a href="http://xahlee.org/UnixResource_dir/_/ldpath.html">article</a> that explains why <code>LD_LIBRARY_PATH</code> exists but also why it’s evil.</p>
 
+      <span class="more">
+        <a href="./exploiting-environment-variables-part-2.html">See more content and comments</a>
+      </span>
+
     </div>
   </div>
 </div>
@@ -4315,6 +3908,10 @@ $ git config --global user.email &quot;your_email@youremail.com&quot;</code></pr
 </ul>
 <p><img style="float:center" src="./images/git-alias-lg.png" alt="git lg" width="620" height="215" /></p>
 <p>Use the one you like best, and add speed to your workflow.</p>
+
+      <span class="more">
+        <a href="./git-speeding-workflow.html">See more content and comments</a>
+      </span>
 
     </div>
   </div>
@@ -4541,6 +4138,10 @@ Breakpoint 1, main () at random2.c:2
 <p>For more on GDB, check out this tutorial, <a href="https://blogs.oracle.com/ksplice/entry/8_gdb_tricks_you_should">8 gdb tricks you should know</a>.</p>
 </section>
 
+      <span class="more">
+        <a href="./gdb-a-basic-workflow.html">See more content and comments</a>
+      </span>
+
     </div>
   </div>
 </div>
@@ -4620,6 +4221,10 @@ root
 #</code></pre>
 <p>The <code>ls_root</code> process will run the <code>ls</code> command. The <code>ls</code> command will run an executable specified by the <code>PATH</code> variable (the executable is <code>/bin/ls</code>). But if the <code>PATH</code> variable is changed in the current bash process, the executable ran by the <code>ls</code> command will now become something else. If the <code>ls_root</code> command is ran by root (with the help of the <code>SUID</code> bit), any of its children will also be processes of root. So, if the <code>ls</code> command will now run a bash executable, it will run a root owned executable that leads to root access.</p>
 <p>The <code>SUID</code> is something that is used in Linux systems (<code>sudo</code> and even <code>ping</code> use it), but these executables are very carefully implemented so that normal users can’t exploit them.</p>
+
+      <span class="more">
+        <a href="./exploiting-environment-variables.html">See more content and comments</a>
+      </span>
 
     </div>
   </div>
@@ -4821,6 +4426,10 @@ bad.c has style problems, please review.</code></pre>
 <p>Other programing languages can have similar coding guidelines. For Python, there is <a href="http://www.python.org/dev/peps/pep-0008/">PEP</a>, as dictated by the creator of Python himself.</p>
 <p>But we should always keep in mind that there is no One True Coding Style. Like all great debates, everybody could argue that one is better than another. What is important and everybody (mostly) agrees is to have consistency within a project in regards to the code the community writes.</p>
 
+      <span class="more">
+        <a href="./tips-on-coding-style.html">See more content and comments</a>
+      </span>
+
     </div>
   </div>
 </div>
@@ -4875,6 +4484,10 @@ alexj@hathor /tmp $ nc ixmint.local 12345 | tar xzvf -</code></pre>
 Serving HTTP on 0.0.0.0 port 1234 ...</code></pre>
 <p>The current working directory where you ran the command will be the www root and any files in that directory will be published (as long as the process will have correct permissions to those files). You can then use a web browser (it can be Firefox or other GUI clients or a simple <code>wget</code>) to access the URL.</p>
 <p>Credits to Alex Morega for <code>tar | nc</code> idea and Vlad Dogaru for <code>python SimpleHTTPServer</code> idea.</p>
+
+      <span class="more">
+        <a href="./copying-files.html">See more content and comments</a>
+      </span>
 
     </div>
   </div>
@@ -4938,6 +4551,10 @@ ip a</code></pre>
 <p>When released, iproute2 had at least one advantage over ifconfig, and that was the feature of interacting with the IPv6 stack while ifconfig was only for IPv4. But since then, fans of ifconfig patched it so it could also be IPv6 ready.</p>
 <p>But other features were not replicated. In old Linux Kernels, an interface could have only one IP address, so in ifconfig you could configure only one IP address on an interfaces. In newer kernels, each interface has a list of addresses and iproute2 via the NetLink interface can manage them. Lastly, ifconfig versions still rely on the idea of subinterfaces to provide more than one address on an interfaces.</p>
 <p>So, given all these arguments, iproute2 should be declared the winner. But it’s not that easy. Just like in the case of IPv4 vs IPv6, where the latter one is the obvious choice, iproute2 will eventually replace ifconfig. Only it’s going to take a long time for that to happen, so net-tools will still be around for some time, but they will be eventually phased out.</p>
+
+      <span class="more">
+        <a href="./ifconfig-vs-iproute.html">See more content and comments</a>
+      </span>
 
     </div>
   </div>
@@ -5015,6 +4632,10 @@ ip a</code></pre>
 <p>The question remains why? It has to do with the cache alignment. The compiler will try to structure the memory usage so that the executed code can be easily fetched from memory and cached. A correct alignment will cause minimum cache misses for memory access.</p>
 <p>Credits to Sofia Neață for help with initial observations and tests.</p>
 
+      <span class="more">
+        <a href="./stack-allocation.html">See more content and comments</a>
+      </span>
+
     </div>
   </div>
 </div>
@@ -5054,6 +4675,10 @@ ip a</code></pre>
 <p>But some of the frustrations of the administrators and the users are caused by bugs or even lack of implementation in software. Since every hardware needs a software, IPv6 first of all needs support in the software written. Kernel, system and application programmers needed starting building in support for IPv6. For example, people started patching <strong>Linux</strong> 2.1 back in 1996, but real stable, built-in support for IPv6 only came out in 2.6. Support in kernel still didn’t mean that people could use it because it lacked the userspace tools. The wide used ifconfig wasn’t build for v6, and only with the development of <code>iproute2</code>, Linux users could configure IPv6 on their boxes. Although considered deprecated, newer versions of ifconfig do support IPv6 address assignments. In the Windows world, things are worse, since only Windows 7 really has full support (kernel and user space tools) for IPv6.</p>
 <p>Only after the IPv6 stack is built inside the kernel (the network stack being one of the hardest part of the kernel to program), the system programmers could start porting their programs to be IPv6 ready. IPv4 and IPv6 sockets are not compatible, because the second one needs to implement the address family AF_INET6. An IPv6 ready application also needs to be IPv4 working, so it needs to be smart and know when to create a v4 connection or a v6 connection. Because if only sometimes a v6 infrastructure is available, a v4 infrastructure is almost sure there. But if both are available, which one do you chose, because maybe one works better than the other in that situation?</p>
 <p>So as we can see, there is not one group affected by the migration to IPv6, but rather an entire ecosystem, with several groups affecting each other.</p>
+
+      <span class="more">
+        <a href="./the-challenges-of-ipv6.html">See more content and comments</a>
+      </span>
 
     </div>
   </div>
@@ -5165,6 +4790,10 @@ Message-ID to be used as In-Reply-To for the first email?
 <p>Even though this lasted a whole week, the feeling I got when it was finally accepted was awesome. You will feel it too after sending the first few patches.</p>
 <p>As a recommended link before the end of the article, make sure you listen the <a href="http://www.youtube.com/watch?v=LLBrBBImJt4">YouTube</a> video of Greg KH about contributing upstream.</p>
 
+      <span class="more">
+        <a href="./contributing-upstream.html">See more content and comments</a>
+      </span>
+
     </div>
   </div>
 </div>
@@ -5238,6 +4867,10 @@ alexj@hathor /proc/6487/fd $ md5sum /home/alexj/movie_rescued.ogv
 9f701e645fd55e1ae8d35b7671002881  /home/alexj/movie_rescued.ogv</code></pre>
 <p>These things are possible because the instances of the files are still kept and used by the kernel. The VFS (the Virtual File System) still has references to the inodes of the files. They won’t be released until the processes will be finished.</p>
 <p>Thanks to Răzvan Deaconescu and Vlad Dogaru for the idea of this article.</p>
+
+      <span class="more">
+        <a href="./rescuing-executable-code-from-a-process.html">See more content and comments</a>
+      </span>
 
     </div>
   </div>
@@ -5357,6 +4990,10 @@ Breakpoint 1, main () at main2.c:6
 $1 = 0x34333231 Address 0x34333231 out of bounds</code></pre>
 <p>One can notice that the value of the pointer <code>str</code> is the content of array <code>str</code>. This content is an invalid address dereferenced by the pointer, resulting in the delivery of the dreaded <code>SIGSEGV</code> signal.</p>
 
+      <span class="more">
+        <a href="./c-extern-internals.html">See more content and comments</a>
+      </span>
+
     </div>
   </div>
 </div>
@@ -5454,6 +5091,10 @@ razvan@einherjar:~/code$ /sbin/ldconfig -p | grep libtest
 <p>Proper knowledge of library management on a Linux based system relies on good understanding of the linking and loading processes and library types. Make sure you understand the advantages and disadvantages of each approach and choose the one most suitable to your specific needs.</p>
 </section>
 
+      <span class="more">
+        <a href="./library-management.html">See more content and comments</a>
+      </span>
+
     </div>
   </div>
 </div>
@@ -5530,6 +5171,10 @@ $ # back to the original shell environment</code></pre>
 <h3>Further reading</h3>
 <p>These wonderful tools are available on <a href="http://pypi.python.org/">PyPI</a>, the Python Package Index. Most of them have good documentation that explains more features that did not fit in this article. Also, remember <code>docs.python.org</code> (behold the <a href="http://docs.python.org/contents.html">table of contents</a>), where you can find documentation on the language, a nice tutorial, and excellent documentation for the standard library.</p>
 </section>
+
+      <span class="more">
+        <a href="./python-environment.html">See more content and comments</a>
+      </span>
 
     </div>
   </div>
@@ -5686,6 +5331,10 @@ export GIT_AUTHOR_EMAIL=&quot;mighty@mcwolf.org&quot;</code></pre>
 <p>As a funny link, I recommend you access <a href="http://whatthecommit.com/" title="Commit Message Generator">Commit Message Generator</a>.</p>
 </section>
 
+      <span class="more">
+        <a href="./git-good-practices.html">See more content and comments</a>
+      </span>
+
     </div>
   </div>
 </div>
@@ -5782,6 +5431,10 @@ p:
 <li>Is it possible for the following expression <code>(const char []){&quot;ROSEdu&quot;} ==    &quot;ROSEdu&quot;</code> to yield true?</li>
 </ul>
 
+      <span class="more">
+        <a href="./arrays-vs-pointers.html">See more content and comments</a>
+      </span>
+
     </div>
   </div>
 </div>
@@ -5821,6 +5474,10 @@ h='&#114;&#x6f;&#x73;&#x65;&#100;&#x75;&#46;&#x6f;&#114;&#x67;';a='&#64;';n='&#1
 document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
 // -->
 </script><noscript>techblog at rosedu dot org</noscript>.</p>
+
+      <span class="more">
+        <a href="./intro.html">See more content and comments</a>
+      </span>
 
     </div>
   </div>
