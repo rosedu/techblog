@@ -67,6 +67,7 @@ compileIndex = getResourceBody
   where
     ctx = recentPostCtx `mappend`
       listField "posts" postCtx loadTeaserSnapshots `mappend`
+      constField "index" "" `mappend`
       defaultContext
 
 compileArchive :: Compiler (Item String)
