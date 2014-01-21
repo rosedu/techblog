@@ -120,7 +120,7 @@ markdownCompiler = techblogCompiler
 loadTeaserSnapshots :: Compiler [Item String]
 loadTeaserSnapshots =
   loadAllSnapshots ("posts/**" .&&. hasNoVersion) "postTeaser"
-  >>= recentFirst
+  >>= fmap (take 25) . recentFirst
 
 loadSnapshots :: Compiler [Item String]
 loadSnapshots = loadAllSnapshots ("posts/**" .&&. hasNoVersion) "postContent"
