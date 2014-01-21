@@ -297,7 +297,7 @@ doDeploy _ = do
   ExitSuccess <- system "git pull --rebase"
   ExitSuccess <- system "cp -r _site/* ."
   ExitSuccess <- system "git add ."
-  ExitSuccess <- system "git commit -m \"`git log master --pretty=format:'%h %s%n' -n1`\""
+  _ <- system "git commit -m \"`git log master --pretty=format:'%h %s%n' -n1`\""
   ExitSuccess <- system "git push origin gh-pages"
   ExitSuccess <- system "git checkout master"
   system "git stash apply"
