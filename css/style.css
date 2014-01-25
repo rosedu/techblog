@@ -1498,3 +1498,6 @@ hr {
   *display: inline;
   float: right;
 }
+.more {
+  margin-bottom: 15px;
+}
