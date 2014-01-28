@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--[if lt IE 7]>
+<html class="no-js lt-ie9 lt-ie8 lt-ie7 ie" lang="en"> <![endif]-->
+<!--[if IE 7]>
+<html class="no-js lt-ie9 lt-ie8 ie" lang="en"> <![endif]-->
+<!--[if IE 8]>
+<html class="no-js lt-ie9 ie" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" class="no-js"><!--<![endif]-->
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>ROSEdu Techblog - Lambda Functions in C++</title>
+    <link rel="stylesheet" href="./css/style.css" type="text/css">
+    <link rel="stylesheet" href="./css/rosedu_links.css" type="text/css">
+    <link rel="stylesheet" href="./css/syntax.css" type="text/css">
+
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-7579199-6']);
+      _gaq.push(['_trackPageview']);
+
+      (function () {
+        var ga = document.createElement('script');
+        ga.type = 'text/javascript';
+        ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  </head>
+
+  <body>
+    <div id="page" class="hentry">
+      <header class="the-header">
+        <div class="unit-head">
+          <div class="unit-inner unit-head-inner">
+            <nav class="nav-global">
+              <ul>
+                <li class="logo"><a href="./" title="Home">ROSEdu Techblog</a></li>
+                <li class="about"><a href="./about.html">About</a></li>
+                <li class="people"><a href="./people.html">People</a></li>
+                <li class="archive"><a href="./archive.html">Archive</a></li>
+                <li class="category"><a href="./tags.html">Tags</a></li>
+              </ul>
+            </nav>
+
+            <hr />
+
+            <nav class="nav-global">
+              <ul>
+                <li class="logo"><a href="./archive.html" title="Archive">Latest Posts</a></li>
+                
+                  <li><a href="./lambda-cpp.html" title="Lambda Functions in C++">Lambda Function...</a></li>
+                
+                  <li><a href="./ltrace.html" title="Inspecting library calls for fun and profit">Inspecting libr...</a></li>
+                
+                  <li><a href="./haskell-part1.html" title="A superficial exploration of Haskell - part 1">A superficial e...</a></li>
+                
+              </ul>
+            </nav>
+          </div><!-- unit-inner -->
+        </div><!-- unit-head -->
+      </header>
+
+      <div class="body" role="main">
+        <div class="unit-body">
+          <div class="unit-inner unit-body-inner">
+            <div class="entry-content">
+              <article class="unit-article layout-post">
+                <div class="unit-inner unit-article-inner">
+  <div class="content">
+    <div class="bd">
+      <header>
+        <div class="unit-head">
+          <div class="unit-inner unit-head-inner">
+            <h1 class="h2 entry-title">
+              <a class="post_title" href="./lambda-cpp.html" title="Lambda Functions in C++">Lambda Functions in C++</a>
+            </h1>
+          </div><!-- unit-inner -->
+        </div><!-- unit-head -->
+      </header>
+
+      <span class="date">
+      <span class="published">Published on January 28, 2014</span>
+      by
+      <span class="author">Mădălina-Andreea Grosu, Matei Oprea</span>
+      </span>
+
+      <br />
+      <span class="meta">
+        Tagged:
+        <span class="tags"><a href="./tags/lambda.html">lambda</a>, <a href="./tags/higher-order%20functions.html">higher-order functions</a>, <a href="./tags/c%2B%2B.html">c++</a></span>
+      </span>
+
+      <p>The C++ 2011 standard introduced the lambda expression syntax element causing some people ask <a href="http://stackoverflow.com/questions/7627098/what-is-a-lambda-expression-in-c11" title="What is a lambda expression in C++?">why it was needed</a>. In reality, it was not a new use case, people have been using this under different names since C was created. You had functors (C++ terminology) and pointer to functions for example. A basic use case was in applying the same transform over all elements of a collection (the functor’s widely shared example) or sorting elements of a vector (via <code>qsort</code> in C). But, in reality, all of these cases can be reduced to using <em>higher-order functions</em>.</p>
+<!--more-->
+
+<section id="higher-order-functions" class="level3">
+<h3>1. Higher-order functions</h3>
+<p>A high-order function is a function that takes one or more functions as an input and outputs a function. For example, we can use this higher-order functions to map, filter, fold and sort lists.</p>
+<p>Let’s start with a simple example of a high-order function, in Haskell:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">zipWith1 ::</span> (a <span class="ot">-&gt;</span> b <span class="ot">-&gt;</span> c) <span class="ot">-&gt;</span> [a] <span class="ot">-&gt;</span> [b] <span class="ot">-&gt;</span> [c]
+zipWith1 _ [] _ <span class="fu">=</span> []
+zipWith1 _ _ [] <span class="fu">=</span> []
+zipWith1 f (x<span class="fu">:</span>xs) (y<span class="fu">:</span>ys) <span class="fu">=</span> f x y <span class="fu">:</span> zipWith1 f xs ys</code></pre>
+<p>This function will take a function and two lists as parameters and then joins them by applying the function between corresponding elements. Let’s see a little demonstration for the function written above:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell">ghci<span class="fu">&gt;</span> zipWith1 (<span class="fu">+</span>) [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>] [<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>]
+[<span class="dv">6</span>,<span class="dv">8</span>,<span class="dv">10</span>,<span class="dv">12</span>]</code></pre>
+<p>So we found out what a <a href="http://learnyouahaskell.com/higher-order-functions" title="Learn You A Haskell">higher-order function is</a>. Now, what is a lambda function? The term comes from the Lambda Calculus and refers to anonymous functions in programming. With a lambda function you can write quick functions without naming them.</p>
+<p>Let’s see the above function written using lambdas:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell">zipWith (\x y <span class="ot">-&gt;</span> x <span class="fu">+</span> y ) [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>] [<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>]</code></pre>
+<p>If we run this function in GHCi the result will be the same as above:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="dt">Prelude</span><span class="fu">&gt;</span> zipWith (\x y <span class="ot">-&gt;</span> x <span class="fu">+</span> y ) [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>] [<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>]
+[<span class="dv">6</span>,<span class="dv">8</span>,<span class="dv">10</span>,<span class="dv">12</span>]</code></pre>
+<p>Now, to see the equivalence, the following functions are one and the same:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell">f x y <span class="fu">=</span> x <span class="fu">+</span> y
+f x <span class="fu">=</span> \y <span class="ot">-&gt;</span> x <span class="fu">+</span> y
+f <span class="fu">=</span> \x y <span class="ot">-&gt;</span> x <span class="fu">+</span> y</code></pre>
+<p>Now, we know what is a lambda function and a higher-order function. Let’s see how can we use lambda functions in C++.</p>
+</section>
+<section id="lambdas-in-c" class="level2">
+<h2>2. Lambdas in C++</h2>
+<p>A lambda function, in C++, starts with <code>[</code> and it has a specific syntax:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp">[capture] (params) -&gt; return_type { function_body }</code></pre>
+<p>Let’s see a short example of a lambda function in C++:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp">[](<span class="dt">int</span> x, <span class="dt">int</span> y) -&gt; <span class="dt">int</span> { <span class="kw">return</span> x * y; }</code></pre>
+<p>This function simply multiplies two integers.</p>
+<p>Consider now the following Haskell example of applying a function to a list, using <code>map</code>:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell">map (\x <span class="ot">-&gt;</span> x <span class="fu">+</span> <span class="dv">1</span>) [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>]</code></pre>
+<p>In C++, we have the <a href="http://www.cplusplus.com/reference/algorithm/transform/" title="Function transform">function transform</a> which does the same thing as the <code>map</code> function from Haskell:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
+<span class="ot">#include &lt;algorithm&gt;</span>
+<span class="ot">#include &lt;vector&gt;</span>
+
+<span class="kw">using</span> <span class="kw">namespace</span> std;
+
+<span class="dt">int</span> main (){
+    <span class="co">/* declare 2 vectors */</span>
+    vector &lt;<span class="dt">int</span>&gt; vector1;
+    vector &lt;<span class="dt">int</span>&gt; vector2;
+
+    <span class="co">/* pseudo-pseudo-random values */</span>
+    <span class="kw">for</span> (<span class="dt">int</span> i=<span class="dv">1</span>;i&lt;<span class="dv">4</span>;i++)
+        vector1.push_back (i);
+
+    <span class="co">/* alocate memory in vector2 */</span>
+    vector2.resize(vector1.size());
+
+    <span class="co">/* applies our lambda function for each element</span>
+<span class="co">     * in vector1 and stores it in vector2</span>
+<span class="co">     */</span>
+    transform (vector1.begin(), vector1.end(), vector2.begin(),
+        [] (<span class="dt">int</span> i) { <span class="kw">return</span> ++i; });
+
+    <span class="co">/* output the result */</span>
+    cout &lt;&lt; “Vector2 contains: “;
+    <span class="kw">for</span> (std::vector&lt;<span class="dt">int</span>&gt;::iterator it=vector2.begin();
+        it!=vector2.end(); ++it)
+        std::cout &lt;&lt; ' ' &lt;&lt; *it;
+
+    <span class="kw">return</span> <span class="dv">0</span>;
+}</code></pre>
+<p>And the output is:</p>
+<pre><code>Vector2 contains: 2 3 4</code></pre>
+<p>You can see that our result is the same as in Haskell. We used a lambda function to increment the value for the each element from the first vector and then we printed it to standard output.</p>
+</section>
+<section id="conclusions" class="level2">
+<h2>3. Conclusions</h2>
+<p>So, why you should use lambda functions ?</p>
+<ul>
+<li>You can write fast functions and use them in your production code</li>
+<li>You can replace macros (because macros are evil – citation needed)</li>
+<li>Because <span class="math">\(\lambda\)</span> rocks</li>
+<li>Because you can use it when you want a short-term functionality that you do not want to have to name</li>
+</ul>
+</section>
+
+    </div>
+  </div>
+</div>
+
+<!-- Social Buttons here -->
+<div id="sociallinks">
+  <a href="https://twitter.com/home?status=/lambda-cpp.html" target="_blank">Tweet this</a> -
+  <a href="http://www.facebook.com/sharer/sharer.php?u=/lambda-cpp.html" target="_blank">Like this</a> -
+  <a href="https://plus.google.com/share?url=/lambda-cpp.html" target="_blank">Share on G+</a>
+</div>
+
+<script>
+  (function(){window.addEventListener("DOMContentLoaded",function(){
+    //get URL
+    var url=document.location;
+    var links=document.getElementById("sociallinks")
+                      .getElementsByTagName('a');
+    for (var i=0;i!=links.length;i++){
+      // Replacing /lambda-cpp.html with current URL
+      links[i].setAttribute("href",links[i].href.replace('/lambda-cpp.html',url));
+    }})})();
+</script>
+</br>
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+  /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+  var disqus_shortname = 'rosedutechblog';
+  var disqus_url = window.location.href.split('/').splice(0,3).join("/")+'/lambda-cpp.html';
+  var title = 'Lambda Functions in C++';
+  /* * * DON'T EDIT BELOW THIS LINE * * */
+  (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+              </article>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer class="the-footer">
+        <div class="unit-foot">
+          <div class="unit-inner unit-foot-inner">
+            <div class="misc vcard">
+              <h4>Social</h4>
+              <div class="rss">
+                <a href="http://techblog.rosedu.org/rss.xml" target="_blank">
+                  <img src="./images/rss.png" alt="Subscribe to RSS Feed" />
+                </a>
+                <a href="http://www.reddit.com/submit?url='+encodeURIComponent(window.location)" target="_blank" onclick="window.location='http://www.reddit.com/submit?url='+encodeURIComponent(window.location); return false">
+                  <img src="./images/reddit.png" alt="Submit to Reddit" />
+                </a>
+                <a href="http://twitter.com/share" class="twitter-share-button" data-count="none" target="_blank">
+                  <img src="./images/twitter.png" alt="Submit to Twitter" />
+                </a>
+              </div>
+
+              <h4>Powered by</h4>
+              <ul>
+                <li class="contact">
+                  <address>
+                    <a class="author fn n" href="http://www.rosedu.org">ROSEdu</a>
+                  </address>
+                </li>
+                <li class="contact">
+                  <address>
+                    <a class="author fn n" href="http://jaspervdj.be/hakyll">Hakyll</a>
+                  </address>
+                </li>
+              </ul>
+
+              <h4>License</h4>
+              <div class="bucket">
+                <span>
+                  <a rel="license" href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons Attribution 3.0 License">
+                    <img src="//i.creativecommons.org/l/by/3.0/88x31.png" alt="License">
+                  </a>
+                </span>
+                <span>
+                  This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/3.0/" class="subfoot">Creative Commons Attribution 3.0 License</a>.
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>

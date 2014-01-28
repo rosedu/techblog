@@ -6,8 +6,126 @@
         <description><![CDATA[ROSEdu Techblog]]></description>
         <atom:link href="http://techblog.rosedu.org/rss.xml" rel="self"
                    type="application/rss+xml" />
-        <lastBuildDate>Sat, 18 Jan 2014 00:00:00 UT</lastBuildDate>
+        <lastBuildDate>Tue, 28 Jan 2014 00:00:00 UT</lastBuildDate>
         <item>
+    <title>Lambda Functions in C++</title>
+    <link>http://techblog.rosedu.org/lambda-cpp.html</link>
+    <description><![CDATA[<div class="unit-inner unit-article-inner">
+  <div class="content">
+    <div class="bd">
+      <header>
+        <div class="unit-head">
+          <div class="unit-inner unit-head-inner">
+            <h1 class="h2 entry-title">
+              <a class="post_title" href="/lambda-cpp.html" title="Lambda Functions in C++">Lambda Functions in C++</a>
+            </h1>
+          </div><!-- unit-inner -->
+        </div><!-- unit-head -->
+      </header>
+
+      <span class="date">
+      <span class="published">Published on January 28, 2014</span>
+      by
+      <span class="author">Mădălina-Andreea Grosu, Matei Oprea</span>
+      </span>
+
+      <br/>
+      <span class="meta">
+        Tagged:
+        <span class="tags"><a href="/tags/lambda.html">lambda</a>, <a href="/tags/higher-order%20functions.html">higher-order functions</a>, <a href="/tags/c%2B%2B.html">c++</a></span>
+      </span>
+
+      <p>The C++ 2011 standard introduced the lambda expression syntax element causing some people ask <a href="http://stackoverflow.com/questions/7627098/what-is-a-lambda-expression-in-c11" title="What is a lambda expression in C++?">why it was needed</a>. In reality, it was not a new use case, people have been using this under different names since C was created. You had functors (C++ terminology) and pointer to functions for example. A basic use case was in applying the same transform over all elements of a collection (the functor’s widely shared example) or sorting elements of a vector (via <code>qsort</code> in C). But, in reality, all of these cases can be reduced to using <em>higher-order functions</em>.</p>
+<!--more-->
+
+<section id="higher-order-functions" class="level3">
+<h3>1. Higher-order functions</h3>
+<p>A high-order function is a function that takes one or more functions as an input and outputs a function. For example, we can use this higher-order functions to map, filter, fold and sort lists.</p>
+<p>Let’s start with a simple example of a high-order function, in Haskell:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">zipWith1 ::</span> (a <span class="ot">-&gt;</span> b <span class="ot">-&gt;</span> c) <span class="ot">-&gt;</span> [a] <span class="ot">-&gt;</span> [b] <span class="ot">-&gt;</span> [c]
+zipWith1 _ [] _ <span class="fu">=</span> []
+zipWith1 _ _ [] <span class="fu">=</span> []
+zipWith1 f (x<span class="fu">:</span>xs) (y<span class="fu">:</span>ys) <span class="fu">=</span> f x y <span class="fu">:</span> zipWith1 f xs ys</code></pre>
+<p>This function will take a function and two lists as parameters and then joins them by applying the function between corresponding elements. Let’s see a little demonstration for the function written above:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell">ghci<span class="fu">&gt;</span> zipWith1 (<span class="fu">+</span>) [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>] [<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>]
+[<span class="dv">6</span>,<span class="dv">8</span>,<span class="dv">10</span>,<span class="dv">12</span>]</code></pre>
+<p>So we found out what a <a href="http://learnyouahaskell.com/higher-order-functions" title="Learn You A Haskell">higher-order function is</a>. Now, what is a lambda function? The term comes from the Lambda Calculus and refers to anonymous functions in programming. With a lambda function you can write quick functions without naming them.</p>
+<p>Let’s see the above function written using lambdas:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell">zipWith (\x y <span class="ot">-&gt;</span> x <span class="fu">+</span> y ) [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>] [<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>]</code></pre>
+<p>If we run this function in GHCi the result will be the same as above:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="dt">Prelude</span><span class="fu">&gt;</span> zipWith (\x y <span class="ot">-&gt;</span> x <span class="fu">+</span> y ) [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>] [<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>]
+[<span class="dv">6</span>,<span class="dv">8</span>,<span class="dv">10</span>,<span class="dv">12</span>]</code></pre>
+<p>Now, to see the equivalence, the following functions are one and the same:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell">f x y <span class="fu">=</span> x <span class="fu">+</span> y
+f x <span class="fu">=</span> \y <span class="ot">-&gt;</span> x <span class="fu">+</span> y
+f <span class="fu">=</span> \x y <span class="ot">-&gt;</span> x <span class="fu">+</span> y</code></pre>
+<p>Now, we know what is a lambda function and a higher-order function. Let’s see how can we use lambda functions in C++.</p>
+</section>
+<section id="lambdas-in-c" class="level2">
+<h2>2. Lambdas in C++</h2>
+<p>A lambda function, in C++, starts with <code>[</code> and it has a specific syntax:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp">[capture] (params) -&gt; return_type { function_body }</code></pre>
+<p>Let’s see a short example of a lambda function in C++:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp">[](<span class="dt">int</span> x, <span class="dt">int</span> y) -&gt; <span class="dt">int</span> { <span class="kw">return</span> x * y; }</code></pre>
+<p>This function simply multiplies two integers.</p>
+<p>Consider now the following Haskell example of applying a function to a list, using <code>map</code>:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell">map (\x <span class="ot">-&gt;</span> x <span class="fu">+</span> <span class="dv">1</span>) [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>]</code></pre>
+<p>In C++, we have the <a href="http://www.cplusplus.com/reference/algorithm/transform/" title="Function transform">function transform</a> which does the same thing as the <code>map</code> function from Haskell:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
+<span class="ot">#include &lt;algorithm&gt;</span>
+<span class="ot">#include &lt;vector&gt;</span>
+
+<span class="kw">using</span> <span class="kw">namespace</span> std;
+
+<span class="dt">int</span> main (){
+    <span class="co">/* declare 2 vectors */</span>
+    vector &lt;<span class="dt">int</span>&gt; vector1;
+    vector &lt;<span class="dt">int</span>&gt; vector2;
+
+    <span class="co">/* pseudo-pseudo-random values */</span>
+    <span class="kw">for</span> (<span class="dt">int</span> i=<span class="dv">1</span>;i&lt;<span class="dv">4</span>;i++)
+        vector1.push_back (i);
+
+    <span class="co">/* alocate memory in vector2 */</span>
+    vector2.resize(vector1.size());
+
+    <span class="co">/* applies our lambda function for each element</span>
+<span class="co">     * in vector1 and stores it in vector2</span>
+<span class="co">     */</span>
+    transform (vector1.begin(), vector1.end(), vector2.begin(),
+        [] (<span class="dt">int</span> i) { <span class="kw">return</span> ++i; });
+
+    <span class="co">/* output the result */</span>
+    cout &lt;&lt; “Vector2 contains: “;
+    <span class="kw">for</span> (std::vector&lt;<span class="dt">int</span>&gt;::iterator it=vector2.begin();
+        it!=vector2.end(); ++it)
+        std::cout &lt;&lt; &#39; &#39; &lt;&lt; *it;
+
+    <span class="kw">return</span> <span class="dv">0</span>;
+}</code></pre>
+<p>And the output is:</p>
+<pre><code>Vector2 contains: 2 3 4</code></pre>
+<p>You can see that our result is the same as in Haskell. We used a lambda function to increment the value for the each element from the first vector and then we printed it to standard output.</p>
+</section>
+<section id="conclusions" class="level2">
+<h2>3. Conclusions</h2>
+<p>So, why you should use lambda functions ?</p>
+<ul>
+<li>You can write fast functions and use them in your production code</li>
+<li>You can replace macros (because macros are evil – citation needed)</li>
+<li>Because <span class="math">\(\lambda\)</span> rocks</li>
+<li>Because you can use it when you want a short-term functionality that you do not want to have to name</li>
+</ul>
+</section>
+
+    </div>
+  </div>
+</div>
+]]></description>
+    <pubDate>Tue, 28 Jan 2014 00:00:00 UT</pubDate>
+    <guid>http://techblog.rosedu.org/lambda-cpp.html</guid>
+</item>
+<item>
     <title>Inspecting library calls for fun and profit</title>
     <link>http://techblog.rosedu.org/ltrace.html</link>
     <description><![CDATA[<div class="unit-inner unit-article-inner">
@@ -2020,503 +2138,6 @@ update-grub2</code></pre>
 ]]></description>
     <pubDate>Thu, 25 Oct 2012 00:00:00 UT</pubDate>
     <guid>http://techblog.rosedu.org/grub2-and-iso-boot.html</guid>
-</item>
-<item>
-    <title>The fast-track, hands-on, no-nonsense introduction to SQL</title>
-    <link>http://techblog.rosedu.org/sql.html</link>
-    <description><![CDATA[<div class="unit-inner unit-article-inner">
-  <div class="content">
-    <div class="bd">
-      <header>
-        <div class="unit-head">
-          <div class="unit-inner unit-head-inner">
-            <h1 class="h2 entry-title">
-              <a class="post_title" href="/sql.html" title="The fast-track, hands-on, no-nonsense introduction to SQL">The fast-track, hands-on, no-nonsense introduction to SQL</a>
-            </h1>
-          </div><!-- unit-inner -->
-        </div><!-- unit-head -->
-      </header>
-
-      <span class="date">
-      <span class="published">Published on October  5, 2012</span>
-      by
-      <span class="author">Dan Șerban</span>
-      </span>
-
-      <br/>
-      <span class="meta">
-        Tagged:
-        <span class="tags"><a href="/tags/SQL.html">SQL</a>, <a href="/tags/RDBMS.html">RDBMS</a></span>
-      </span>
-
-      <p>Rather than relying on dry explanations of mathematical set theory, this tutorial is organized as a survey of SQL statements and techniques. It is designed to let you infer from examples what SQL is all about as well as the kinds of problems it can help you solve.</p>
-<!--more-->
-
-<p>The promise of this tutorial is that you invest 30 minutes of your time and it will enable you to “speak” SQL right here, right now.</p>
-<p>The uncompromising emphasis here is on raw speed of learning new things.</p>
-<section id="introduction" class="level3">
-<h3>Introduction</h3>
-<p>SQL is the universal language that allows relational database management systems (RDBMS) to communicate with the outside world.</p>
-<p>The easiest way for a developer to become familiar with SQL is by using SQLite, a file-based (serverless) RDBMS.</p>
-</section>
-<section id="lets-start-coding-already" class="level3">
-<h3>Let’s start coding already!</h3>
-<p>To check whether you already have SQLite on your GNU/Linux system, open up a terminal and run:</p>
-<pre><code>which sqlite3 &amp;&amp; echo &quot;OK - SQLite found&quot;</code></pre>
-<p>To install SQLite on Ubuntu, simply run:</p>
-<pre><code>sudo apt-get install sqlite3</code></pre>
-<p>The first few baby steps when learning SQL are:</p>
-<ul>
-<li>creating a new database;</li>
-<li>creating a new table inside that database;</li>
-<li>populating the table with some data.</li>
-</ul>
-<p>First, let’s create a new database. In a terminal, run:</p>
-<pre><code>sqlite3 /tmp/dev.db</code></pre>
-<p>You should see output similar to this:</p>
-<pre><code>SQLite version 3.7.13 2012-06-11 02:05:22
-Enter &quot;.help&quot; for instructions
-Enter SQL statements terminated with a &quot;;&quot;
-sqlite&gt;</code></pre>
-<p>At this point, SQLite has created and appropriately formatted a new file, <code>/tmp/dev.db</code>, and is now waiting for you to tell it what to do.</p>
-<p>You communicate your intent to SQLite by typing in SQL statements.</p>
-<p>As we already mentioned, when we start working on a new database, the first thing we do is create a table.</p>
-<p>At the <code>sqlite&gt;</code> prompt, type the following SQL statement:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">CREATE</span> <span class="kw">TABLE</span> presidencies (
-  <span class="kw">id</span> <span class="dt">INTEGER</span> <span class="kw">PRIMARY</span> <span class="kw">KEY</span> AUTOINCREMENT <span class="kw">NOT</span> <span class="kw">NULL</span>,
-  first_name <span class="dt">VARCHAR</span>(<span class="dv">255</span>),
-  other_names <span class="dt">VARCHAR</span>(<span class="dv">255</span>),
-  year_from <span class="dt">INTEGER</span>,
-  year_to <span class="dt">INTEGER</span>,
-  notes TEXT
-);</code></pre>
-<p>SQLite does not give any output in response, and that means it has successfully executed the statement.</p>
-<p>We now have an empty table called <code>presidencies</code>.</p>
-<p>Having an empty table in a database is like having an empty spreadsheet in front of you.</p>
-<p>The next step is therefore to populate the table with some data.</p>
-<p>We do this by using the <code>INSERT</code> statement. Try this:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (
-  <span class="kw">NULL</span>,
-  <span class="ot">&quot;Barack&quot;</span>,
-  <span class="ot">&quot;Obama&quot;</span>,
-  <span class="dv">2009</span>,
-  <span class="dv">2012</span>,
-  <span class="ot">&quot;Won against John McCain&quot;</span>
-);</code></pre>
-<p>Again, SQLite is not giving us any response, which means the <code>INSERT</code> statement was successfully executed.</p>
-<p>If we now query the contents of the table, we should see the newly inserted row. Try this:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> * <span class="kw">FROM</span> presidencies;</code></pre>
-<p>The output you should see is this:</p>
-<pre><code>1|Barack|Obama|2009|2012|Won against John McCain</code></pre>
-<p>As you can probably tell, the output is in the format:</p>
-<pre><code>id|first_name|other_names|year_from|year_to|notes</code></pre>
-<p>Since we set <code>id</code> to <code>NULL</code> in our <code>INSERT</code> statement and <code>id</code> has the <code>AUTOINCREMENT</code> attribute in the table definition, SQLite assigned the first available positive integer value and stored it as this record’s primary key.</p>
-<p>“Primary key” simply means two things:</p>
-<ul>
-<li>The developer has communicated his intention to use this field to uniquely identify each row of this table;</li>
-<li>The RDBMS will therefore enforce the uniqueness of this key and use this information to optimize its execution of SQL statements against this table.</li>
-</ul>
-<p>Let’s put this behavior to the test. Try the same <code>INSERT</code> statement as before, only replace <code>NULL</code> with <code>1</code> (an already existing <code>id</code>):</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (
-  <span class="dv">1</span>,
-  <span class="ot">&quot;Barack&quot;</span>,
-  <span class="ot">&quot;Obama&quot;</span>,
-  <span class="dv">2009</span>,
-  <span class="dv">2012</span>,
-  <span class="ot">&quot;Won against John McCain&quot;</span>
-);</code></pre>
-<p>The output you should see is:</p>
-<pre><code>Error: PRIMARY KEY must be unique</code></pre>
-<p>To change a record in the table, we are going to use an <code>UPDATE</code> statement with a precisely targeted <code>WHERE</code> clause:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">UPDATE</span> presidencies <span class="kw">SET</span> notes = <span class="ot">&quot;His campaign slogan was yes-we-can&quot;</span> <span class="kw">WHERE</span> <span class="kw">id</span> = <span class="dv">1</span>;</code></pre>
-<p>Query the whole table again to see the changes:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> * <span class="kw">FROM</span> presidencies;</code></pre>
-<p>The output you should see is this:</p>
-<pre><code>1|Barack|Obama|2009|2012|His campaign slogan was yes-we-can</code></pre>
-<p>To remove a record from the table, we are going to use a precisely targeted <code>DELETE</code> statement:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">DELETE</span> <span class="kw">FROM</span> presidencies <span class="kw">WHERE</span> <span class="kw">id</span> = <span class="dv">1</span>;</code></pre>
-<p>Query the whole table again to verify that it’s empty.</p>
-<p>To continue exploring the features of SQL we are going to need a lot more data.</p>
-<p>Paste the statements below at the <code>sqlite&gt;</code> prompt:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Theodore&quot;</span>, <span class="ot">&quot;Roosevelt&quot;</span>, <span class="dv">1905</span>, <span class="dv">1908</span>, <span class="ot">&quot;&quot;</span>);
-<span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;William&quot;</span>, <span class="ot">&quot;Taft&quot;</span>, <span class="dv">1909</span>, <span class="dv">1912</span>, <span class="ot">&quot;&quot;</span>);
-<span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Woodrow&quot;</span>, <span class="ot">&quot;Wilson&quot;</span>, <span class="dv">1913</span>, <span class="dv">1916</span>, <span class="ot">&quot;1st term; WW 1 begins&quot;</span>);
-<span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Woodrow&quot;</span>, <span class="ot">&quot;Wilson&quot;</span>, <span class="dv">1917</span>, <span class="dv">1920</span>, <span class="ot">&quot;2nd term; WW 1 ends&quot;</span>);
-<span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Warren&quot;</span>, <span class="ot">&quot;Harding&quot;</span>, <span class="dv">1921</span>, <span class="dv">1922</span>, <span class="ot">&quot;&quot;</span>);
-<span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Calvin&quot;</span>, <span class="ot">&quot;Coolidge&quot;</span>, <span class="dv">1923</span>, <span class="dv">1924</span>, <span class="ot">&quot;1st term&quot;</span>);
-<span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Calvin&quot;</span>, <span class="ot">&quot;Coolidge&quot;</span>, <span class="dv">1925</span>, <span class="dv">1928</span>, <span class="ot">&quot;2nd term&quot;</span>);
-<span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Herbert&quot;</span>, <span class="ot">&quot;Hoover&quot;</span>, <span class="dv">1929</span>, <span class="dv">1932</span>, <span class="ot">&quot;&quot;</span>);
-<span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Franklin&quot;</span>, <span class="ot">&quot;D. Roosevelt&quot;</span>, <span class="dv">1933</span>, <span class="dv">1936</span>, <span class="ot">&quot;1st term&quot;</span>);
-<span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Franklin&quot;</span>, <span class="ot">&quot;D. Roosevelt&quot;</span>, <span class="dv">1937</span>, <span class="dv">1940</span>, <span class="ot">&quot;2nd term; WW 2 begins&quot;</span>);
-<span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Franklin&quot;</span>, <span class="ot">&quot;D. Roosevelt&quot;</span>, <span class="dv">1941</span>, <span class="dv">1944</span>, <span class="ot">&quot;3rd term&quot;</span>);
-<span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Harry&quot;</span>, <span class="ot">&quot;Truman&quot;</span>, <span class="dv">1945</span>, <span class="dv">1948</span>, <span class="ot">&quot;1st term; WW 2 ends&quot;</span>);
-<span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Harry&quot;</span>, <span class="ot">&quot;Truman&quot;</span>, <span class="dv">1949</span>, <span class="dv">1952</span>, <span class="ot">&quot;2nd term&quot;</span>);
-<span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Dwight&quot;</span>, <span class="ot">&quot;Eisenhower&quot;</span>, <span class="dv">1953</span>, <span class="dv">1956</span>, <span class="ot">&quot;1st term&quot;</span>);
-<span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Dwight&quot;</span>, <span class="ot">&quot;Eisenhower&quot;</span>, <span class="dv">1957</span>, <span class="dv">1960</span>, <span class="ot">&quot;2nd term&quot;</span>);
-<span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;John&quot;</span>, <span class="ot">&quot;F. Kennedy&quot;</span>, <span class="dv">1961</span>, <span class="dv">1963</span>, <span class="ot">&quot;&quot;</span>);
-<span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Lyndon&quot;</span>, <span class="ot">&quot;Johnson&quot;</span>, <span class="dv">1964</span>, <span class="dv">1964</span>, <span class="ot">&quot;Took over when JFK was assassinated&quot;</span>);
-<span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Lyndon&quot;</span>, <span class="ot">&quot;Johnson&quot;</span>, <span class="dv">1965</span>, <span class="dv">1968</span>, <span class="ot">&quot;2nd term&quot;</span>);
-<span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Richard&quot;</span>, <span class="ot">&quot;Nixon&quot;</span>, <span class="dv">1969</span>, <span class="dv">1972</span>, <span class="ot">&quot;1st term&quot;</span>);
-<span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Richard&quot;</span>, <span class="ot">&quot;Nixon&quot;</span>, <span class="dv">1973</span>, <span class="dv">1974</span>, <span class="ot">&quot;2nd term&quot;</span>);
-<span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Gerald&quot;</span>, <span class="ot">&quot;Ford&quot;</span>, <span class="dv">1975</span>, <span class="dv">1976</span>, <span class="ot">&quot;&quot;</span>);
-<span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Jimmy&quot;</span>, <span class="ot">&quot;Carter&quot;</span>, <span class="dv">1977</span>, <span class="dv">1980</span>, <span class="ot">&quot;&quot;</span>);
-<span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Ronald&quot;</span>, <span class="ot">&quot;Reagan&quot;</span>, <span class="dv">1981</span>, <span class="dv">1984</span>, <span class="ot">&quot;1st term&quot;</span>);
-<span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Ronald&quot;</span>, <span class="ot">&quot;Reagan&quot;</span>, <span class="dv">1985</span>, <span class="dv">1988</span>, <span class="ot">&quot;2nd term&quot;</span>);
-<span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;George&quot;</span>, <span class="ot">&quot;H. W. Bush&quot;</span>, <span class="dv">1989</span>, <span class="dv">1992</span>, <span class="ot">&quot;&quot;</span>);
-<span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Bill&quot;</span>, <span class="ot">&quot;Clinton&quot;</span>, <span class="dv">1993</span>, <span class="dv">1996</span>, <span class="ot">&quot;1st term&quot;</span>);
-<span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Bill&quot;</span>, <span class="ot">&quot;Clinton&quot;</span>, <span class="dv">1997</span>, <span class="dv">2000</span>, <span class="ot">&quot;2nd term&quot;</span>);
-<span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;George&quot;</span>, <span class="ot">&quot;W. Bush&quot;</span>, <span class="dv">2001</span>, <span class="dv">2004</span>, <span class="ot">&quot;1st term&quot;</span>);
-<span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;George&quot;</span>, <span class="ot">&quot;W. Bush&quot;</span>, <span class="dv">2005</span>, <span class="dv">2008</span>, <span class="ot">&quot;2nd term&quot;</span>);
-<span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Barack&quot;</span>, <span class="ot">&quot;Obama&quot;</span>, <span class="dv">2009</span>, <span class="dv">2012</span>, <span class="ot">&quot;&quot;</span>);</code></pre>
-<p>Let’s see how many records our table contains now:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> <span class="fu">COUNT</span>(*) <span class="kw">FROM</span> presidencies;</code></pre>
-<p>The table has 30 rows.</p>
-<p>We want to generate a deduplicated list of all persons who held office.</p>
-<p>The SQL keyword <code>DISTINCT</code> performs the deduplication magic, and we are going to make use of the SQL text concatenation operator <code>||</code>:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> <span class="kw">DISTINCT</span> first_name || <span class="st">&#39; &#39;</span> || other_names <span class="kw">AS</span> full_name <span class="kw">FROM</span> presidencies;</code></pre>
-<p>We want to find out how many presidencies began in the second half of the 20th century.</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> <span class="fu">COUNT</span>(*) <span class="kw">FROM</span> presidencies <span class="kw">WHERE</span> year_from <span class="kw">BETWEEN</span> <span class="dv">1950</span> <span class="kw">AND</span> <span class="dv">1999</span>;</code></pre>
-<p>The answer to that question is 14 records.</p>
-<p>In 1941, the surprise attack at Pearl Harbor happened.</p>
-<p>We would like to know who was president of the United States at that time.</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> * <span class="kw">FROM</span> presidencies <span class="kw">WHERE</span> <span class="dv">1941</span> <span class="kw">BETWEEN</span> year_from <span class="kw">AND</span> year_to;</code></pre>
-<p>The expected output:</p>
-<pre><code>12|Franklin|D. Roosevelt|1941|1944|3rd term</code></pre>
-<p>We stored some notes on when both world wars began and ended. Let’s query that information by asking for all records that contain the string &quot; WW &quot; inside the <code>notes</code> column.</p>
-<p>To perform text matching we need to use the <code>LIKE</code> predicate.</p>
-<p>Note: The percent sign has wildcard semantics in SQL.</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> * <span class="kw">FROM</span> presidencies <span class="kw">WHERE</span> notes <span class="kw">LIKE</span> <span class="st">&#39;% WW %&#39;</span> <span class="kw">ORDER</span> <span class="kw">BY</span> year_from;</code></pre>
-<p>The expected output:</p>
-<pre><code>4|Woodrow|Wilson|1913|1916|1st term; WW 1 begins
-5|Woodrow|Wilson|1917|1920|2nd term; WW 1 ends
-11|Franklin|D. Roosevelt|1937|1940|2nd term; WW 2 begins
-13|Harry|Truman|1945|1948|1st term; WW 2 ends</code></pre>
-<p>We want a breakdown of how many presidencies were full-term (lasted the full 4 years) versus how many lasted 1 or 2 or 3 years.</p>
-<p>That can also be done in SQL, however the syntax is slightly more convoluted.</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span>
-  <span class="dv">1</span> + year_to - year_from <span class="kw">AS</span> duration, <span class="fu">COUNT</span>(*) <span class="kw">AS</span> cnt
-<span class="kw">FROM</span>
-  presidencies
-<span class="kw">GROUP</span> <span class="kw">BY</span>
-  duration
-<span class="kw">ORDER</span> <span class="kw">BY</span> cnt <span class="kw">DESC</span>;</code></pre>
-<p>The expected output:</p>
-<pre><code>4|24
-2|4
-1|1
-3|1</code></pre>
-<p>That means there were 24 presidencies which lasted the full 4 years, 4 which lasted 2 years etc.</p>
-<p><strong>Important side note</strong></p>
-<p>Being able to get predictable, consistent performance is an important part of software development, and there are some performance considerations to take into account when using <code>WHERE</code> clauses.</p>
-<p>The database engine performs these <code>WHERE</code> lookups significantly faster when it can rely on indexes.</p>
-<p>Let’s say we know ahead of time that the most frequent queries are going to filter by <code>year_from</code> and <code>year_to</code>.</p>
-<p>In that case we need to create indexes on both fields:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">CREATE</span> <span class="kw">INDEX</span> index_on_year_from <span class="kw">ON</span> presidencies (year_from);
-<span class="kw">CREATE</span> <span class="kw">INDEX</span> index_on_year_to   <span class="kw">ON</span> presidencies (year_to);</code></pre>
-<p>Indexes do not make a big difference on a table with 30 records, but it is recommended to get into the habit of thinking about indexes before SQL execution times start to grow out of control.</p>
-</section>
-<section id="foreign-key-relationships-the-one-to-many-case" class="level3">
-<h3>Foreign key relationships: the ONE-TO-MANY case</h3>
-<p>Let us now explore how we can build database models for information entities which are related to one another.</p>
-<p>We are going to use the geographical hierarchy of continents <code>-&gt;</code> countries <code>-&gt;</code> cities to illustrate this.</p>
-<ul>
-<li>A continent has many countries</li>
-<li>A country has many cities</li>
-</ul>
-<p>Conversely:</p>
-<ul>
-<li>A city belongs to only one country</li>
-<li>A country belongs to only one continent</li>
-</ul>
-<p>To create tables for each of the three information entities, run the following commands:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">CREATE</span> <span class="kw">TABLE</span> continents (
-  <span class="kw">id</span> <span class="dt">INTEGER</span> <span class="kw">PRIMARY</span> <span class="kw">KEY</span> AUTOINCREMENT <span class="kw">NOT</span> <span class="kw">NULL</span>,
-  continent_name <span class="dt">VARCHAR</span>(<span class="dv">255</span>)
-);
-<span class="kw">CREATE</span> <span class="kw">TABLE</span> countries (
-  <span class="kw">id</span> <span class="dt">INTEGER</span> <span class="kw">PRIMARY</span> <span class="kw">KEY</span> AUTOINCREMENT <span class="kw">NOT</span> <span class="kw">NULL</span>,
-  continent_id <span class="dt">INTEGER</span> <span class="kw">NOT</span> <span class="kw">NULL</span>,
-  country_name <span class="dt">VARCHAR</span>(<span class="dv">255</span>)
-);
-<span class="kw">CREATE</span> <span class="kw">TABLE</span> cities (
-  <span class="kw">id</span> <span class="dt">INTEGER</span> <span class="kw">PRIMARY</span> <span class="kw">KEY</span> AUTOINCREMENT <span class="kw">NOT</span> <span class="kw">NULL</span>,
-  country_id <span class="dt">INTEGER</span> <span class="kw">NOT</span> <span class="kw">NULL</span>,
-  city_name <span class="dt">VARCHAR</span>(<span class="dv">255</span>)
-);</code></pre>
-<p>Note: SQL experts will notice something is missing from the table definitions above. I have deliberately chosen not to cover foreign key constraints in this beginner-level tutorial in order not to place too much of a cognitive burden on the reader.</p>
-<p>Let’s populate these tables with some data I have prepared for you in a file.</p>
-<p>Quit SQLite with Ctrl-D, download and inspect the file as shown below:</p>
-<pre><code>wget -O /tmp/geography.sql http://dserban.github.com/introduction-to-sql/geography.sql
-less /tmp/geography.sql</code></pre>
-<p>Load the data into our database <code>dev.db</code> (this operation may take a while on slower computers):</p>
-<pre><code>sqlite3 /tmp/dev.db &lt; /tmp/geography.sql</code></pre>
-<p>Now open the database again and let’s write some queries.</p>
-<pre><code>sqlite3 /tmp/dev.db</code></pre>
-<p>The query:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> * <span class="kw">FROM</span> continents;</code></pre>
-<p>behaves the way you expect.</p>
-<p>Next, go ahead and run the query below, and see what happens:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> * <span class="kw">FROM</span> continents <span class="kw">AS</span> c1, continents <span class="kw">AS</span> c2;</code></pre>
-<p>The above is definitely a valid SQL statement, and I’m just showing it to you in order for you to get comfortable with the idea that SQL statements may reference more than one database table, and if you reference the same table twice, the output will be the cartesian product of the table’s row set with itself.</p>
-<p>Next, try this:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span>
-  country_name, continent_name
-<span class="kw">FROM</span>
-  countries, continents
-<span class="kw">WHERE</span>
-  countries.continent_id = continents.id
-<span class="kw">ORDER</span> <span class="kw">BY</span>
-  country_name;</code></pre>
-<p>What we just did is formally called “traversing a foreign key relationship”.</p>
-<p>We retrieved some records from the <code>countries</code> table, found some “pointers” in the <code>continent_id</code> column, went to the <code>continents</code> table, retrieved the continent descriptions pertaining to those pointers, and then brought back those results and associated them with each row in the <code>countries</code> table.</p>
-<p>Congratulations, you have just learned about the “R” in “RDBMS”, this is what we mean by “relational”.</p>
-<p>Notice one thing: the query above will start suffering from performance issues for tables beyond a certain size.</p>
-<p>Before we go on, we want to take care of performance-by-design.</p>
-<p>The lookups which happen during foreign key relationship traversal would be much more efficient when supported by the appropriate indexes.</p>
-<p>Let’s create indexes on those foreign key columns.</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">CREATE</span> <span class="kw">INDEX</span> index_on_country_id   <span class="kw">ON</span> cities    (country_id);
-<span class="kw">CREATE</span> <span class="kw">INDEX</span> index_on_continent_id <span class="kw">ON</span> countries (continent_id);</code></pre>
-<p>Moreover, <code>country_name</code> and <code>city_name</code> are also worth indexing, since in the future we are very likely to need to locate records based on them.</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">CREATE</span> <span class="kw">INDEX</span> index_on_city_name    <span class="kw">ON</span> cities    (city_name);
-<span class="kw">CREATE</span> <span class="kw">INDEX</span> index_on_country_name <span class="kw">ON</span> countries (country_name);</code></pre>
-<p>Let us now write a query that performs a three-way join:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span>
-  city_name, country_name, continent_name
-<span class="kw">FROM</span>
-  cities, countries, continents
-<span class="kw">WHERE</span>
-  cities.country_id = countries.id
-  <span class="kw">AND</span>
-  countries.continent_id = continents.id
-<span class="kw">ORDER</span> <span class="kw">BY</span>
-  city_name;</code></pre>
-<p>In order to avoid repeated typing of complex queries, SQL allows us to store a given <code>SELECT</code> statement under a specific name.</p>
-<p>The resulting database object is called a view.</p>
-<p>Let’s create a view for the previous <code>SELECT</code> statement:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">CREATE</span> <span class="kw">VIEW</span> augmented_cities <span class="kw">AS</span>
-<span class="kw">SELECT</span>
-  city_name, country_name, continent_name
-<span class="kw">FROM</span>
-  cities, countries, continents
-<span class="kw">WHERE</span>
-  cities.country_id = countries.id
-  <span class="kw">AND</span>
-  countries.continent_id = continents.id;</code></pre>
-<p>Using the newly created view, we can more comfortably find out all of the information about e.g. the city of London which our database has to offer:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> * <span class="kw">FROM</span> augmented_cities <span class="kw">WHERE</span> city_name = <span class="st">&#39;London&#39;</span>;</code></pre>
-<p>The output:</p>
-<pre><code>London|United Kingdom|Europe</code></pre>
-<p>Next, let’s look at an example of a subquery. Try this:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span>
-  continent_name, how_many_countries
-<span class="kw">FROM</span>
-  continents,
-  (<span class="kw">SELECT</span> continent_id, <span class="fu">COUNT</span>(*) <span class="kw">AS</span> how_many_countries <span class="kw">FROM</span> countries <span class="kw">GROUP</span> <span class="kw">BY</span> continent_id) <span class="kw">AS</span> breakdows
-<span class="kw">WHERE</span>
-  continents.id = breakdows.continent_id;</code></pre>
-<p>The output:</p>
-<pre><code>North America|4
-South America|9
-Europe|32
-Africa|15
-Asia|17
-Oceania|2</code></pre>
-<p>What we did here is we joined a real table (<code>continents</code>) with a virtual one called a subquery (the result of a <code>SELECT</code> statement).</p>
-<p>We can do this because SQL doesn’t really join tables, it joins rectangular result sets consisting of rows and columns.</p>
-<p>Let’s store this query in a view, we are going to make use of it in a future tutorial.</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">CREATE</span> <span class="kw">VIEW</span> continent_statistics <span class="kw">AS</span>
-<span class="kw">SELECT</span>
-  continent_name, how_many_countries
-<span class="kw">FROM</span>
-  continents,
-  (<span class="kw">SELECT</span> continent_id, <span class="fu">COUNT</span>(*) <span class="kw">AS</span> how_many_countries <span class="kw">FROM</span> countries <span class="kw">GROUP</span> <span class="kw">BY</span> continent_id) <span class="kw">AS</span> breakdows
-<span class="kw">WHERE</span>
-  continents.id = breakdows.continent_id;</code></pre>
-</section>
-<section id="foreign-key-relationships-the-many-to-many-case" class="level3">
-<h3>Foreign key relationships: the MANY-TO-MANY case</h3>
-<p>Up to this point, we have explored SQL statements on a single table, as well as one-to-many relationships.</p>
-<p>How do we model many-to-many relationships?</p>
-<p>How do we model people upvoting news stories on social networks?</p>
-<ul>
-<li>One person may upvote more than one story</li>
-</ul>
-<p>Conversely:</p>
-<ul>
-<li>One story may get upvoted by several people</li>
-</ul>
-<p>How do we model project communities which collaborate on Github?</p>
-<ul>
-<li>One person may contribute to more than one project</li>
-</ul>
-<p>Conversely:</p>
-<ul>
-<li>One project may get contributions from several people</li>
-</ul>
-<p>The answer is that we need to define a separate information entity which is going to track those complex relationships for us.</p>
-<p>In Github’s case, the core information entities are User and Project, and we are going to name the third one Contributorship.</p>
-<p>Therefore:</p>
-<ul>
-<li>A user has many contributorships</li>
-<li>A contributorship belongs to a user</li>
-<li>A project has many contributorships</li>
-<li>A contributorship belongs to a project</li>
-</ul>
-<p>Let’s go ahead and create tables for those three information entities:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">CREATE</span> <span class="kw">TABLE</span> users (
-  <span class="kw">id</span> <span class="dt">INTEGER</span> <span class="kw">PRIMARY</span> <span class="kw">KEY</span> AUTOINCREMENT <span class="kw">NOT</span> <span class="kw">NULL</span>,
-  user_name <span class="dt">VARCHAR</span>(<span class="dv">255</span>)
-);
-<span class="kw">CREATE</span> <span class="kw">TABLE</span> projects (
-  <span class="kw">id</span> <span class="dt">INTEGER</span> <span class="kw">PRIMARY</span> <span class="kw">KEY</span> AUTOINCREMENT <span class="kw">NOT</span> <span class="kw">NULL</span>,
-  project_name <span class="dt">VARCHAR</span>(<span class="dv">255</span>)
-);
-<span class="kw">CREATE</span> <span class="kw">TABLE</span> contributorships (
-  <span class="kw">id</span> <span class="dt">INTEGER</span> <span class="kw">PRIMARY</span> <span class="kw">KEY</span> AUTOINCREMENT <span class="kw">NOT</span> <span class="kw">NULL</span>,
-  user_id <span class="dt">INTEGER</span> <span class="kw">NOT</span> <span class="kw">NULL</span>,
-  project_id <span class="dt">INTEGER</span> <span class="kw">NOT</span> <span class="kw">NULL</span>
-);</code></pre>
-<p>And let’s populate the tables with some sample data (5 users, 9 projects):</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">INSERT</span> <span class="kw">INTO</span> users <span class="kw">VALUES</span> (<span class="dv">1</span>, <span class="ot">&quot;alex-morega&quot;</span>);
-<span class="kw">INSERT</span> <span class="kw">INTO</span> users <span class="kw">VALUES</span> (<span class="dv">2</span>, <span class="ot">&quot;gvoicu&quot;</span>);
-<span class="kw">INSERT</span> <span class="kw">INTO</span> users <span class="kw">VALUES</span> (<span class="dv">3</span>, <span class="ot">&quot;igstan&quot;</span>);
-<span class="kw">INSERT</span> <span class="kw">INTO</span> users <span class="kw">VALUES</span> (<span class="dv">4</span>, <span class="ot">&quot;dserban&quot;</span>);
-<span class="kw">INSERT</span> <span class="kw">INTO</span> users <span class="kw">VALUES</span> (<span class="dv">5</span>, <span class="ot">&quot;torvalds&quot;</span>);
-<span class="kw">INSERT</span> <span class="kw">INTO</span> projects <span class="kw">VALUES</span> (<span class="dv">1</span>, <span class="ot">&quot;torvalds/linux&quot;</span>);
-<span class="kw">INSERT</span> <span class="kw">INTO</span> projects <span class="kw">VALUES</span> (<span class="dv">2</span>, <span class="ot">&quot;rosedu/WebDev&quot;</span>);
-<span class="kw">INSERT</span> <span class="kw">INTO</span> projects <span class="kw">VALUES</span> (<span class="dv">3</span>, <span class="ot">&quot;rosedu/wouso&quot;</span>);
-<span class="kw">INSERT</span> <span class="kw">INTO</span> projects <span class="kw">VALUES</span> (<span class="dv">4</span>, <span class="ot">&quot;rosedu/techblog&quot;</span>);
-<span class="kw">INSERT</span> <span class="kw">INTO</span> projects <span class="kw">VALUES</span> (<span class="dv">5</span>, <span class="ot">&quot;rosedu/StartTheDark&quot;</span>);
-<span class="kw">INSERT</span> <span class="kw">INTO</span> projects <span class="kw">VALUES</span> (<span class="dv">6</span>, <span class="ot">&quot;gvoicu/miniflow&quot;</span>);
-<span class="kw">INSERT</span> <span class="kw">INTO</span> projects <span class="kw">VALUES</span> (<span class="dv">7</span>, <span class="ot">&quot;rails/rails&quot;</span>);
-<span class="kw">INSERT</span> <span class="kw">INTO</span> projects <span class="kw">VALUES</span> (<span class="dv">8</span>, <span class="ot">&quot;sinatra/sinatra&quot;</span>);
-<span class="kw">INSERT</span> <span class="kw">INTO</span> projects <span class="kw">VALUES</span> (<span class="dv">9</span>, <span class="ot">&quot;mitsuhiko/flask&quot;</span>);
-<span class="kw">INSERT</span> <span class="kw">INTO</span> contributorships <span class="kw">VALUES</span> ( <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">2</span>);
-<span class="kw">INSERT</span> <span class="kw">INTO</span> contributorships <span class="kw">VALUES</span> ( <span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">3</span>);
-<span class="kw">INSERT</span> <span class="kw">INTO</span> contributorships <span class="kw">VALUES</span> ( <span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">9</span>);
-<span class="kw">INSERT</span> <span class="kw">INTO</span> contributorships <span class="kw">VALUES</span> ( <span class="dv">4</span>, <span class="dv">2</span>, <span class="dv">2</span>);
-<span class="kw">INSERT</span> <span class="kw">INTO</span> contributorships <span class="kw">VALUES</span> ( <span class="dv">5</span>, <span class="dv">2</span>, <span class="dv">6</span>);
-<span class="kw">INSERT</span> <span class="kw">INTO</span> contributorships <span class="kw">VALUES</span> ( <span class="dv">6</span>, <span class="dv">2</span>, <span class="dv">7</span>);
-<span class="kw">INSERT</span> <span class="kw">INTO</span> contributorships <span class="kw">VALUES</span> ( <span class="dv">7</span>, <span class="dv">2</span>, <span class="dv">8</span>);
-<span class="kw">INSERT</span> <span class="kw">INTO</span> contributorships <span class="kw">VALUES</span> ( <span class="dv">8</span>, <span class="dv">3</span>, <span class="dv">2</span>);
-<span class="kw">INSERT</span> <span class="kw">INTO</span> contributorships <span class="kw">VALUES</span> ( <span class="dv">9</span>, <span class="dv">3</span>, <span class="dv">6</span>);
-<span class="kw">INSERT</span> <span class="kw">INTO</span> contributorships <span class="kw">VALUES</span> (<span class="dv">10</span>, <span class="dv">4</span>, <span class="dv">1</span>);
-<span class="kw">INSERT</span> <span class="kw">INTO</span> contributorships <span class="kw">VALUES</span> (<span class="dv">11</span>, <span class="dv">4</span>, <span class="dv">2</span>);
-<span class="kw">INSERT</span> <span class="kw">INTO</span> contributorships <span class="kw">VALUES</span> (<span class="dv">12</span>, <span class="dv">4</span>, <span class="dv">3</span>);
-<span class="kw">INSERT</span> <span class="kw">INTO</span> contributorships <span class="kw">VALUES</span> (<span class="dv">13</span>, <span class="dv">4</span>, <span class="dv">4</span>);
-<span class="kw">INSERT</span> <span class="kw">INTO</span> contributorships <span class="kw">VALUES</span> (<span class="dv">14</span>, <span class="dv">4</span>, <span class="dv">5</span>);
-<span class="kw">INSERT</span> <span class="kw">INTO</span> contributorships <span class="kw">VALUES</span> (<span class="dv">15</span>, <span class="dv">4</span>, <span class="dv">6</span>);
-<span class="kw">INSERT</span> <span class="kw">INTO</span> contributorships <span class="kw">VALUES</span> (<span class="dv">16</span>, <span class="dv">4</span>, <span class="dv">7</span>);
-<span class="kw">INSERT</span> <span class="kw">INTO</span> contributorships <span class="kw">VALUES</span> (<span class="dv">17</span>, <span class="dv">4</span>, <span class="dv">8</span>);
-<span class="kw">INSERT</span> <span class="kw">INTO</span> contributorships <span class="kw">VALUES</span> (<span class="dv">18</span>, <span class="dv">5</span>, <span class="dv">1</span>);</code></pre>
-<p>Now before we start issuing queries, let’s take care of the performance-by-design side of things.</p>
-<p>We anticipate that we’ll need to do heavy querying by <code>user_name</code> and by <code>project_name</code>.</p>
-<p>Therefore we need indexes on those columns:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">CREATE</span> <span class="kw">INDEX</span> index_on_user_name    <span class="kw">ON</span> users    (user_name);
-<span class="kw">CREATE</span> <span class="kw">INDEX</span> index_on_project_name <span class="kw">ON</span> projects (project_name);</code></pre>
-<p>It goes without saying that we need to index the foreign key columns:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">CREATE</span> <span class="kw">INDEX</span> index_on_user_id    <span class="kw">ON</span> contributorships (user_id);
-<span class="kw">CREATE</span> <span class="kw">INDEX</span> index_on_project_id <span class="kw">ON</span> contributorships (project_id);</code></pre>
-<p>We also need to make sure that duplicate contributorships cannot exist.</p>
-<p>We achieve this by creating a unique index on the combination of <code>user_id</code> and <code>project_id</code>:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">CREATE</span> <span class="kw">UNIQUE</span> <span class="kw">INDEX</span> unique_index_on_user_id_and_project_id <span class="kw">ON</span> contributorships (user_id,project_id);</code></pre>
-<p>First, let’s list all contributorships in human readable format:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span>
-  user_name || <span class="ot">&quot; contributes to &quot;</span> || project_name
-<span class="kw">FROM</span>
-  contributorships,
-  users,
-  projects
-<span class="kw">WHERE</span>
-  users.id = contributorships.user_id
-  <span class="kw">AND</span>
-  projects.id = contributorships.project_id
-<span class="kw">ORDER</span> <span class="kw">BY</span>
-  user_name, project_name;</code></pre>
-<p>The output you should get is:</p>
-<pre><code>alex-morega contributes to mitsuhiko/flask
-alex-morega contributes to rosedu/WebDev
-alex-morega contributes to rosedu/wouso
-dserban contributes to gvoicu/miniflow
-dserban contributes to rails/rails
-dserban contributes to rosedu/StartTheDark
-dserban contributes to rosedu/WebDev
-dserban contributes to rosedu/techblog
-dserban contributes to rosedu/wouso
-dserban contributes to sinatra/sinatra
-dserban contributes to torvalds/linux
-gvoicu contributes to gvoicu/miniflow
-gvoicu contributes to rails/rails
-gvoicu contributes to rosedu/WebDev
-gvoicu contributes to sinatra/sinatra
-igstan contributes to gvoicu/miniflow
-igstan contributes to rosedu/WebDev
-torvalds contributes to torvalds/linux</code></pre>
-<p>Now let’s determine all projects for a given user, as well as the list of all people who contribute to a given project.</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span>
-  project_name
-<span class="kw">FROM</span>
-  contributorships,
-  users,
-  projects
-<span class="kw">WHERE</span>
-  users.user_name = <span class="st">&#39;gvoicu&#39;</span>
-  <span class="kw">AND</span>
-  users.id = contributorships.user_id
-  <span class="kw">AND</span>
-  projects.id = contributorships.project_id
-<span class="kw">ORDER</span> <span class="kw">BY</span>
-  project_name;</code></pre>
-<p>The output you should get is:</p>
-<pre><code>gvoicu/miniflow
-rails/rails
-rosedu/WebDev
-sinatra/sinatra</code></pre>
-<p>To list a given project’s contributors:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span>
-  user_name
-<span class="kw">FROM</span>
-  contributorships,
-  users,
-  projects
-<span class="kw">WHERE</span>
-  projects.project_name = <span class="st">&#39;rosedu/WebDev&#39;</span>
-  <span class="kw">AND</span>
-  users.id = contributorships.user_id
-  <span class="kw">AND</span>
-  projects.id = contributorships.project_id
-<span class="kw">ORDER</span> <span class="kw">BY</span>
-  user_name;</code></pre>
-<p>The output you should get is:</p>
-<pre><code>alex-morega
-dserban
-gvoicu
-igstan</code></pre>
-<p>Finally, let’s create a view which will make it easier for us to go back and forth between users and projects:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">CREATE</span> <span class="kw">VIEW</span> augmented_contributorships <span class="kw">AS</span>
-<span class="kw">SELECT</span>
-  user_name, project_name
-<span class="kw">FROM</span>
-  contributorships,
-  users,
-  projects
-<span class="kw">WHERE</span>
-  users.id = contributorships.user_id
-  <span class="kw">AND</span>
-  projects.id = contributorships.project_id;</code></pre>
-</section>
-<section id="closing-words" class="level3">
-<h3>Closing words</h3>
-<p>This short overview of SQL ends here.</p>
-<p>If you want to learn more SQL tips and tricks, I highly recommend <a href="http://sql.learncodethehardway.org/book/">Learn SQL The Hard Way</a></p>
-</section>
-
-    </div>
-  </div>
-</div>
-]]></description>
-    <pubDate>Fri, 05 Oct 2012 00:00:00 UT</pubDate>
-    <guid>http://techblog.rosedu.org/sql.html</guid>
 </item>
 
     </channel> 
