@@ -61,8 +61,8 @@ f x <span class="fu">=</span> \y <span class="ot">-&gt;</span> x <span class="fu
 f <span class="fu">=</span> \x y <span class="ot">-&gt;</span> x <span class="fu">+</span> y</code></pre>
 <p>Now, we know what is a lambda function and a higher-order function. Let’s see how can we use lambda functions in C++.</p>
 </section>
-<section id="lambdas-in-c" class="level2">
-<h2>2. Lambdas in C++</h2>
+<section id="lambdas-in-c" class="level3">
+<h3>2. Lambdas in C++</h3>
 <p>A lambda function, in C++, starts with <code>[</code> and it has a specific syntax:</p>
 <pre class="sourceCode cpp"><code class="sourceCode cpp">[capture] (params) -&gt; return_type { function_body }</code></pre>
 <p>Let’s see a short example of a lambda function in C++:</p>
@@ -107,8 +107,8 @@ f <span class="fu">=</span> \x y <span class="ot">-&gt;</span> x <span class="fu
 <pre><code>Vector2 contains: 2 3 4</code></pre>
 <p>You can see that our result is the same as in Haskell. We used a lambda function to increment the value for the each element from the first vector and then we printed it to standard output.</p>
 </section>
-<section id="conclusions" class="level2">
-<h2>3. Conclusions</h2>
+<section id="conclusions" class="level3">
+<h3>3. Conclusions</h3>
 <p>So, why you should use lambda functions ?</p>
 <ul>
 <li>You can write fast functions and use them in your production code</li>
