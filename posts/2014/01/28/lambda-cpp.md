@@ -69,8 +69,7 @@ f = \x y -> x + y
 Now, we know what is a lambda function and a higher-order function. Let's see
 how can we use lambda functions in C++.
 
-2. Lambdas in C++
-----------------
+### 2. Lambdas in C++
 
 A lambda function, in C++, starts with `[` and it has a specific syntax:
 
@@ -139,8 +138,7 @@ You can see that our result is the same as in Haskell. We used a lambda
 function to increment the value for the each element from the first vector and
 then we printed it to standard output.
 
-3. Conclusions
---------------
+### 3. Conclusions
 
 So, why you should use lambda functions ?
 
