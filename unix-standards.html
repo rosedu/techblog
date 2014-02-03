@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--[if lt IE 7]>
+<html class="no-js lt-ie9 lt-ie8 lt-ie7 ie" lang="en"> <![endif]-->
+<!--[if IE 7]>
+<html class="no-js lt-ie9 lt-ie8 ie" lang="en"> <![endif]-->
+<!--[if IE 8]>
+<html class="no-js lt-ie9 ie" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" class="no-js"><!--<![endif]-->
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>ROSEdu Techblog - Unix standards and implementations. Unix portability</title>
+    <link rel="stylesheet" href="./css/style.css" type="text/css">
+    <link rel="stylesheet" href="./css/rosedu_links.css" type="text/css">
+    <link rel="stylesheet" href="./css/syntax.css" type="text/css">
+
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-7579199-6']);
+      _gaq.push(['_trackPageview']);
+
+      (function () {
+        var ga = document.createElement('script');
+        ga.type = 'text/javascript';
+        ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  </head>
+
+  <body>
+    <div id="page" class="hentry">
+      <header class="the-header">
+        <div class="unit-head">
+          <div class="unit-inner unit-head-inner">
+            <nav class="nav-global">
+              <ul>
+                <li class="logo"><a href="./" title="Home">ROSEdu Techblog</a></li>
+                <li class="about"><a href="./about.html">About</a></li>
+                <li class="people"><a href="./people.html">People</a></li>
+                <li class="archive"><a href="./archive.html">Archive</a></li>
+                <li class="category"><a href="./tags.html">Tags</a></li>
+              </ul>
+            </nav>
+
+            <hr />
+
+            <nav class="nav-global">
+              <ul>
+                <li class="logo"><a href="./archive.html" title="Archive">Latest Posts</a></li>
+                
+                  <li><a href="./unix-standards.html" title="Unix standards and implementations. Unix portability">Unix standards ...</a></li>
+                
+                  <li><a href="./lambda-cpp.html" title="Lambda Functions in C++">Lambda Function...</a></li>
+                
+                  <li><a href="./ltrace.html" title="Inspecting library calls for fun and profit">Inspecting libr...</a></li>
+                
+              </ul>
+            </nav>
+          </div><!-- unit-inner -->
+        </div><!-- unit-head -->
+      </header>
+
+      <div class="body" role="main">
+        <div class="unit-body">
+          <div class="unit-inner unit-body-inner">
+            <div class="entry-content">
+              <article class="unit-article layout-post">
+                <div class="unit-inner unit-article-inner">
+  <div class="content">
+    <div class="bd">
+      <header>
+        <div class="unit-head">
+          <div class="unit-inner unit-head-inner">
+            <h1 class="h2 entry-title">
+              <a class="post_title" href="./unix-standards.html" title="Unix standards and implementations. Unix portability">Unix standards and implementations. Unix portability</a>
+            </h1>
+          </div><!-- unit-inner -->
+        </div><!-- unit-head -->
+      </header>
+
+      <span class="date">
+      <span class="published">Published on February  2, 2014</span>
+      by
+      <span class="author">Alexandru Goia</span>
+      </span>
+
+      <br />
+      <span class="meta">
+        Tagged:
+        <span class="tags"><a href="./tags/Unix.html">Unix</a>, <a href="./tags/C.html">C</a>, <a href="./tags/portable%20code.html">portable code</a>, <a href="./tags/POSIX.html">POSIX</a>, <a href="./tags/SUS.html">SUS</a>, <a href="./tags/%60libc%60.html">`libc`</a></span>
+      </span>
+
+      <p>The purpose of this article is to present in a general way the Unix standards and how can we write portable code on Unix systems, not only on Linux ones.</p>
+<!--more-->
+
+<p>In the Unix world at present, there are three important standards:</p>
+<ul>
+<li>the C language (ISO C standard) and the standard C library (<code>libc</code>), which are included in the POSIX standard</li>
+<li>the POSIX standard (<em>P</em>ortable <em>O</em>perating <em>S</em>ystem <em>I</em>nterface for Uni<em>x</em>), which has the last version from 2008</li>
+<li>the SUS standard (<em>S</em>ingle <em>U</em>nix <em>S</em>pecification), which includes as a subset the POSIX standard, with the last version from 2010 (SUSv4).</li>
+</ul>
+<p>The POSIX standard consists of:</p>
+<ul>
+<li>POSIX.1: core services</li>
+<li>POSIX.1b: real-time extensions</li>
+<li>POSIX.1c: threads extensions</li>
+<li>POSIX.2: shell and utilities</li>
+</ul>
+<p>We will be interested in this article only by POSIX.1 (last version: POSIX.1-2008, or IEEE Std 1003.1-2008) from the whole POSIX standard.</p>
+<p>As implementations of the standard, we can name the GNU/Linux-based operating systems, the systems which descend from the BSD Unix version: FreeBSD, NetBSD, OpenBSD, DragonflyBSD, the certified and commercial UNIX-es, based on UNIX System V release 4 and, from case to case, with BSD elements: Oracle Solaris (known previously as Sun Solaris), HP-UX and Tru64 UNIX (HP), AIX (IBM), IRIX (SGI), Unixware and OpenServer (SCO), and also Mac OS X, which is also officially certified as a UNIX system, based on FreeBSD elements and not on UNIX System V.</p>
+<p>The most “popular” Unix systems are at present Linux, FreeBSD, Solaris and Mac OS X. With regards to the C language, all these operating systems (Linux 3.x, FreeBSD &gt;= 8.0, Mac OS X &gt;= 10.6.8, Solaris &gt;= 10) support the following LIB C headers:</p>
+<ul>
+<li><code>assert.h</code>: verify program assertion</li>
+<li><code>complex.h</code>: complex arithmetic support</li>
+<li><code>ctype.h</code>: character classification and mapping support</li>
+<li><code>errno.h</code>: error codes</li>
+<li><code>fenv.h</code>: floating-point environment</li>
+<li><code>float.h</code>: floating-point constants and characteristics</li>
+<li><code>inttypes.h</code>: integer type format conversion</li>
+<li><code>iso646.h</code>: macros for assignment, relational, and unary operators</li>
+<li><code>limits.h</code>: implementation constants</li>
+<li><code>locale.h</code>: locale categories and related definitions</li>
+<li><code>math.h</code>: mathematical functions and type declarations and constants</li>
+<li><code>setjmp.h</code>: nonlocal <code>goto</code></li>
+<li><code>signal.h</code>: signals</li>
+<li><code>stdarg.h</code>: variable argument lists</li>
+<li><code>stdbool.h</code>: boolean type and values</li>
+<li><code>stddef.h</code>: standard definitions</li>
+<li><code>stdint.h</code>: integer types</li>
+<li><code>stdio.h</code>: standard I/O library</li>
+<li><code>stdlib.h</code>: utility functions</li>
+<li><code>string.h</code>: string operations</li>
+<li><code>tgmath.h</code>: type-generic math macros</li>
+<li><code>time.h</code>: time and date</li>
+<li><code>wchar.h</code>: extended multibyte and wide character support</li>
+<li><code>wctype.h</code>: wide character classification and mapping support</li>
+</ul>
+<p>They also support the following POSIX headers (in the C language):</p>
+<ul>
+<li><code>aio.h</code>: asynchronous I/O</li>
+<li><code>cpio.h</code>: cpio archive values</li>
+<li><code>dirent.h</code>: directory entries</li>
+<li><code>dlfcn.h</code>: dynamic linking</li>
+<li><code>fcntl.h</code>: file control</li>
+<li><code>fnmatch.h</code>: filename-matching types</li>
+<li><code>glob.h</code>: pathname pattern-matching and generations</li>
+<li><code>grp.h</code>: group file</li>
+<li><code>iconv.h</code>: codeset conversion utility</li>
+<li><code>langinfo.h</code>: language information constants</li>
+<li><code>monetary.h</code>: monetary types and functions</li>
+<li><code>netdb.h</code>: network database operations</li>
+<li><code>nl_types.h</code>: message catalogs</li>
+<li><code>poll.h</code>: <code>poll()</code> function</li>
+<li><code>pthread.h</code>: threads</li>
+<li><code>pwd.h</code>: password file</li>
+<li><code>regex.h</code>: regular expressions</li>
+<li><code>sched.h</code>: execution scheduling</li>
+<li><code>semaphore.h</code>: semaphores</li>
+<li><code>strings.h</code>: string operations</li>
+<li><code>tar.h</code>: tar archive values</li>
+<li><code>termios.h</code>: terminal I/O</li>
+<li><code>unistd.h</code>: symbolic constants</li>
+<li><code>wordexp.h</code>: word-expansion definitions</li>
+<li><code>arpa/inet.h</code>: Internet definitions</li>
+<li><code>net/if.h</code>: socket local interfaces</li>
+<li><code>netinet/in.h</code>: Internet address family</li>
+<li><code>netinet/tcp.h</code>: TCP definitions</li>
+<li><code>sys/mman.h</code>: memory management declarations</li>
+<li><code>sys/select.h</code>: <code>select()</code> function</li>
+<li><code>sys/socket.h</code>: sockets interface</li>
+<li><code>sys/stat.h</code>: file status</li>
+<li><code>sys/statvfs.h</code>: file system information</li>
+<li><code>sys/times.h</code>: process times</li>
+<li><code>sys/types.h</code>: primitive system data types</li>
+<li><code>sys/un.h</code>: UNIX domain socket definitions</li>
+<li><code>sys/utsname.h</code>: system name</li>
+<li><code>sys/wait.h</code>: process control</li>
+<li><code>fmtmsg.h</code>: message display structures</li>
+<li><code>ftw.h</code>: file tree walking</li>
+<li><code>libgen.h</code>: pathname management functions</li>
+<li><code>ndbm.h</code>: database operations (<em>exception: Linux</em>)</li>
+<li><code>search.h</code>: search tables</li>
+<li><code>syslog.h</code>: system error logging</li>
+<li><code>utmpx.h</code>: user accounting database (<em>exception: FreeBSD</em>)</li>
+<li><code>sys/ipc.h</code>: inter-processes communication</li>
+<li><code>sys/msg.h</code>: XSI message queues</li>
+<li><code>sys/resource.h</code>: resource operations</li>
+<li><code>sys/sem.h</code>: XSI semaphores</li>
+<li><code>sys/shm.h</code>: XSI shared memory</li>
+<li><code>sys/time.h</code>: time types</li>
+<li><code>sys/uio.h</code>: vector I/O operations</li>
+<li><code>mqueue.h</code>: message queues (exception: Mac OS X)</li>
+<li><code>spawn.h</code>: real-time spawn interface.</li>
+</ul>
+<p>The SUS standard (the whole set of UNIX functions and constants) can be found online for <a href="http://www.unix.org/version2/" title="SUSv2">SUSv2</a> (year 1997, naming UNIX 98), <a href="http://www.unix.org/version3/" title="SUSv3">SUSv3</a> (year 2001-2002, naming UNIX 03) and <a href="http://www.unix.org/version4/" title="SUSv4">SUSv4</a> (year 2010):</p>
+<p>To write portable code which can be executed on any Unix systems we must know the C headers (defined by LIBC and by POSIX) which are recognized by the Unix systems. We can activate the operating system in order to use only POSIX.1 elements, or also SUSv1, SUSv2, SUSv3, or SUSv4 using the so-called “feature test macros”:</p>
+<ul>
+<li><code>_POSIX_SOURCE</code> and <code>_POSIX_C_SOURCE</code>, to activate POSIX functionality</li>
+<li><code>_XOPEN_SOURCE</code>, which activates SUSv1/2/3/4 functionality.</li>
+</ul>
+<p>For older POSIX functionality we have to declare the following in our source file:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#define _POSIX_SOURCE</span>
+<span class="ot">#define _POSIX_C_SOURCE 1 </span><span class="co">/* for POSIX 1990 */</span>
+<span class="co">/* use 2 for POSIX C bindings 1003.2-1992 */</span></code></pre>
+<p>For POSIX 2008 functionality, we define:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#define _POSIX_SOURCE</span>
+<span class="ot">#define _POSIX_C_SOURCE 200809L</span></code></pre>
+<p>Or, we can compile with:</p>
+<pre><code>cc -D_POSIX_SOURCE -D_POSIX_C_SOURCE=200809L filename.c</code></pre>
+<p>If our code is written, or it will run on UNIX certified systems (hence on systems who follow SUSv1, SUSv2, SUSv3, or SUSv4), we must define also <code>_XOPEN_SOURCE</code>:</p>
+<p>Thus, we would have to use</p>
+<ul>
+<li>for SUSv1:</li>
+</ul>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#define _POSIX_SOURCE</span>
+<span class="ot">#define _POSIX_C_SOURCE 2</span>
+<span class="ot">#define _XOPEN_SOURCE</span>
+<span class="ot">#define _XOPEN_SOURCE_EXTENDED 1</span></code></pre>
+<ul>
+<li>for SUSv2:</li>
+</ul>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#define _POSIX_SOURCE</span>
+<span class="ot">#define _POSIX_C_SOURCE 199506L</span>
+<span class="ot">#define _XOPEN_SOURCE 500</span></code></pre>
+<ul>
+<li>for SUSv3:</li>
+</ul>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#define _POSIX_SOURCE</span>
+<span class="ot">#define _POSIX_C_SOURCE 200112L</span>
+<span class="ot">#define _XOPEN_SOURCE 600</span></code></pre>
+<ul>
+<li>for SUSv4:</li>
+</ul>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#define _POSIX_SOURCE</span>
+<span class="ot">#define _POSIX_C_SOURCE 200809L</span>
+<span class="ot">#define _XOPEN_SOURCE 700</span></code></pre>
+<p>If we write code only for Linux platforms, we will use the feature test macro <code>_GNU_SOURCE</code>, which will activate GNU LIBC functionality, which sometimes isn’t POSIX compatible. There is also the feature test macro <code>_SVID_SOURCE</code> (to activate System V functionality) and <code>_BSD_SOURCE</code> (to activate BSD functionality). One important note is that a UNIX system (which follows SUSvX) can be activated to offer any SUSvX functionality.</p>
+<p>This is the way we can write Unix portable code. Other methods to find out more about the operating system on which we compile are:</p>
+<ul>
+<li>LIBC functions: <code>sysconf(3)</code>, <code>pathconf(3)</code>, <code>fpathconf(3)</code> – functions which determine system constants</li>
+<li><code>autoconf</code>, <code>automake</code> and <code>libtool</code>: utilities which determine at compile time, with scripts, what system and libc functions the operating system offers. (These will be part of the content of a following article.)</li>
+</ul>
+<p>Happy Unix programming!</p>
+
+    </div>
+  </div>
+</div>
+
+<!-- Social Buttons here -->
+<div id="sociallinks">
+  <a href="https://twitter.com/home?status=/unix-standards.html" target="_blank">Tweet this</a> -
+  <a href="http://www.facebook.com/sharer/sharer.php?u=/unix-standards.html" target="_blank">Like this</a> -
+  <a href="https://plus.google.com/share?url=/unix-standards.html" target="_blank">Share on G+</a>
+</div>
+
+<script>
+  (function(){window.addEventListener("DOMContentLoaded",function(){
+    //get URL
+    var url=document.location;
+    var links=document.getElementById("sociallinks")
+                      .getElementsByTagName('a');
+    for (var i=0;i!=links.length;i++){
+      // Replacing /unix-standards.html with current URL
+      links[i].setAttribute("href",links[i].href.replace('/unix-standards.html',url));
+    }})})();
+</script>
+</br>
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+  /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+  var disqus_shortname = 'rosedutechblog';
+  var disqus_url = window.location.href.split('/').splice(0,3).join("/")+'/unix-standards.html';
+  var title = 'Unix standards and implementations. Unix portability';
+  /* * * DON'T EDIT BELOW THIS LINE * * */
+  (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+              </article>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer class="the-footer">
+        <div class="unit-foot">
+          <div class="unit-inner unit-foot-inner">
+            <div class="misc vcard">
+              <h4>Social</h4>
+              <div class="rss">
+                <a href="http://techblog.rosedu.org/rss.xml" target="_blank">
+                  <img src="./images/rss.png" alt="Subscribe to RSS Feed" />
+                </a>
+                <a href="http://www.reddit.com/submit?url='+encodeURIComponent(window.location)" target="_blank" onclick="window.location='http://www.reddit.com/submit?url='+encodeURIComponent(window.location); return false">
+                  <img src="./images/reddit.png" alt="Submit to Reddit" />
+                </a>
+                <a href="http://twitter.com/share" class="twitter-share-button" data-count="none" target="_blank">
+                  <img src="./images/twitter.png" alt="Submit to Twitter" />
+                </a>
+              </div>
+
+              <h4>Powered by</h4>
+              <ul>
+                <li class="contact">
+                  <address>
+                    <a class="author fn n" href="http://www.rosedu.org">ROSEdu</a>
+                  </address>
+                </li>
+                <li class="contact">
+                  <address>
+                    <a class="author fn n" href="http://jaspervdj.be/hakyll">Hakyll</a>
+                  </address>
+                </li>
+              </ul>
+
+              <h4>License</h4>
+              <div class="bucket">
+                <span>
+                  <a rel="license" href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons Attribution 3.0 License">
+                    <img src="//i.creativecommons.org/l/by/3.0/88x31.png" alt="License">
+                  </a>
+                </span>
+                <span>
+                  This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/3.0/" class="subfoot">Creative Commons Attribution 3.0 License</a>.
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>
