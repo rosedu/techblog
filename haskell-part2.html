@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--[if lt IE 7]>
+<html class="no-js lt-ie9 lt-ie8 lt-ie7 ie" lang="en"> <![endif]-->
+<!--[if IE 7]>
+<html class="no-js lt-ie9 lt-ie8 ie" lang="en"> <![endif]-->
+<!--[if IE 8]>
+<html class="no-js lt-ie9 ie" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" class="no-js"><!--<![endif]-->
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>ROSEdu Techblog - A superficial exploration of Haskell, part 2: Lazy by default</title>
+    <link rel="stylesheet" href="./css/style.css" type="text/css">
+    <link rel="stylesheet" href="./css/rosedu_links.css" type="text/css">
+    <link rel="stylesheet" href="./css/syntax.css" type="text/css">
+
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-7579199-6']);
+      _gaq.push(['_trackPageview']);
+
+      (function () {
+        var ga = document.createElement('script');
+        ga.type = 'text/javascript';
+        ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  </head>
+
+  <body>
+    <div id="page" class="hentry">
+      <header class="the-header">
+        <div class="unit-head">
+          <div class="unit-inner unit-head-inner">
+            <nav class="nav-global">
+              <ul>
+                <li class="logo"><a href="./" title="Home">ROSEdu Techblog</a></li>
+                <li class="about"><a href="./about.html">About</a></li>
+                <li class="people"><a href="./people.html">People</a></li>
+                <li class="archive"><a href="./archive.html">Archive</a></li>
+                <li class="category"><a href="./tags.html">Tags</a></li>
+              </ul>
+            </nav>
+
+            <hr />
+
+            <nav class="nav-global">
+              <ul>
+                <li class="logo"><a href="./archive.html" title="Archive">Latest Posts</a></li>
+                
+                  <li><a href="./haskell-part2.html" title="A superficial exploration of Haskell, part 2: Lazy by default">A superficial e...</a></li>
+                
+                  <li><a href="./unix-standards.html" title="Unix standards and implementations. Unix portability">Unix standards ...</a></li>
+                
+                  <li><a href="./lambda-cpp.html" title="Lambda Functions in C++">Lambda Function...</a></li>
+                
+              </ul>
+            </nav>
+          </div><!-- unit-inner -->
+        </div><!-- unit-head -->
+      </header>
+
+      <div class="body" role="main">
+        <div class="unit-body">
+          <div class="unit-inner unit-body-inner">
+            <div class="entry-content">
+              <article class="unit-article layout-post">
+                <div class="unit-inner unit-article-inner">
+  <div class="content">
+    <div class="bd">
+      <header>
+        <div class="unit-head">
+          <div class="unit-inner unit-head-inner">
+            <h1 class="h2 entry-title">
+              <a class="post_title" href="./haskell-part2.html" title="A superficial exploration of Haskell, part 2: Lazy by default">A superficial exploration of Haskell, part 2: Lazy by default</a>
+            </h1>
+          </div><!-- unit-inner -->
+        </div><!-- unit-head -->
+      </header>
+
+      <span class="date">
+      <span class="published">Published on March  2, 2014</span>
+      by
+      <span class="author">Dan Șerban</span>
+      </span>
+
+      <br />
+      <span class="meta">
+        Tagged:
+        <span class="tags"><a href="./tags/haskell.html">haskell</a></span>
+      </span>
+
+      <p>Haskell uses lazy evaluation by default, but what does that mean exactly?</p>
+<p>We’re going to state the abstract definition of laziness, behold its nonsensical beauty for a few seconds, and then conclude that a concrete example is necessary in order to understand the concept:</p>
+<blockquote>
+<p>Laziness is the separation of equation from execution.</p>
+</blockquote>
+<!--more-->
+
+<p>Before we look at an example, let me remind you of a bit of syntactic sugar that Haskell provides in order to quickly define a list of successive integers:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell">λ: [<span class="dv">20</span><span class="fu">..</span><span class="dv">70</span>]
+[<span class="dv">20</span>,<span class="dv">21</span>,<span class="dv">22</span>,<span class="dv">23</span>,<span class="dv">24</span>,<span class="dv">25</span>,<span class="dv">26</span>,<span class="dv">27</span>,<span class="dv">28</span>,<span class="dv">29</span>,<span class="dv">30</span>,<span class="dv">31</span>,<span class="dv">32</span>,<span class="dv">33</span>,<span class="dv">34</span>,<span class="dv">35</span>,<span class="dv">36</span>,<span class="dv">37</span>,<span class="dv">38</span>,<span class="dv">39</span>,<span class="dv">40</span>,<span class="dv">41</span>,<span class="dv">42</span>,<span class="dv">43</span>,<span class="dv">44</span>,<span class="dv">45</span>,<span class="dv">46</span>,<span class="dv">47</span>,<span class="dv">48</span>,<span class="dv">49</span>,<span class="dv">50</span>,<span class="dv">51</span>,<span class="dv">52</span>,<span class="dv">53</span>,<span class="dv">54</span>,<span class="dv">55</span>,<span class="dv">56</span>,<span class="dv">57</span>,<span class="dv">58</span>,<span class="dv">59</span>,<span class="dv">60</span>,<span class="dv">61</span>,<span class="dv">62</span>,<span class="dv">63</span>,<span class="dv">64</span>,<span class="dv">65</span>,<span class="dv">66</span>,<span class="dv">67</span>,<span class="dv">68</span>,<span class="dv">69</span>,<span class="dv">70</span>]</code></pre>
+<p>As you might remember from <a href="http://techblog.rosedu.org/haskell-part1.html">part 1</a>, <code>λ:</code> is my custom GHCi prompt, so we’re effectively looking at the result of how GHCi interprets the notation <code>[20..70]</code>.</p>
+<p>OK then. To start, let’s define two lists:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell">λ: <span class="kw">let</span> list1 <span class="fu">=</span> [<span class="dv">20</span><span class="fu">..</span><span class="dv">70</span>]
+λ: <span class="kw">let</span> list2 <span class="fu">=</span> map (<span class="fu">+</span><span class="dv">1</span>) list1</code></pre>
+<p>At this point you might be thinking “Oh look, <code>list1</code> is the enumeration of all integers between 20 and 70, and <code>list2</code> is the enumeration of all integers between 21 and 71”.</p>
+<p><strong>Well, no.</strong> Not yet, at least.</p>
+<p>GHCi provides a command called <code>:sprint</code> that allows us to take a peek at how far along the evaluation of a given expression has progressed.</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell">λ: <span class="fu">:</span>sprint list1
+list1 <span class="fu">=</span> _
+λ: <span class="fu">:</span>sprint list2
+list2 <span class="fu">=</span> _</code></pre>
+<p>So what <code>:sprint</code> is telling us in the above snippet is that both <code>list1</code> and <code>list2</code> are unevaluated at this point. To establish some terminology, an underscore in the context of <code>:sprint</code> output represents a <strong>thunk</strong>. Formally defined, a thunk is an expression that hasn’t yet been evaluated. You may think of it as a value wrapped in a function of zero arguments. When the function is called, the value springs into existence.</p>
+<p>We are now going to ask increasingly “intrusive” questions about <code>list2</code> and then each step along the way examine what has been evaluated and what hasn’t.</p>
+<p>The simplest and least intrusive question we can ask about a list is whether or not it’s empty.</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell">λ: null list2
+<span class="dt">False</span>
+λ: <span class="fu">:</span>sprint list1
+list1 <span class="fu">=</span> <span class="dv">20</span> <span class="fu">:</span> _
+λ: <span class="fu">:</span>sprint list2
+list2 <span class="fu">=</span> _ <span class="fu">:</span> _</code></pre>
+<p>In order to answer that question, GHCi needs to know whether or not the first element exists, and as a result, <code>list2</code> is no longer unevaluated, it is now partially evaluated. GHCi now knows something about the structure of <code>list2</code> - it knows that it consists of something “consed onto” (prepended to) something else. In the next round, that “something” will turn out to be the value <code>21</code>, but for right now this fact is irrelevant to the process of answering the question “is <code>list2</code> empty”. However, we notice the value <code>20</code> is fully evaluated as the head of <code>list1</code> - this particular evaluation was necessary in order to construct the thunk <code>(+1) 20</code>.</p>
+<p>Next, we ask for the first element of <code>list2</code>:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell">λ: head list2
+<span class="dv">21</span>
+λ: <span class="fu">:</span>sprint list1
+list1 <span class="fu">=</span> <span class="dv">20</span> <span class="fu">:</span> _
+λ: <span class="fu">:</span>sprint list2
+list2 <span class="fu">=</span> <span class="dv">21</span> <span class="fu">:</span> _</code></pre>
+<p>We notice that the expression <code>(+1) 20</code> mentioned above is now fully evaluated and therefore no longer a thunk.</p>
+<p>Next, let’s ask for the first 5 elements of <code>list2</code>:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell">λ: take <span class="dv">5</span> list2
+[<span class="dv">21</span>,<span class="dv">22</span>,<span class="dv">23</span>,<span class="dv">24</span>,<span class="dv">25</span>]
+λ: <span class="fu">:</span>sprint list1
+list1 <span class="fu">=</span> <span class="dv">20</span> <span class="fu">:</span> <span class="dv">21</span> <span class="fu">:</span> <span class="dv">22</span> <span class="fu">:</span> <span class="dv">23</span> <span class="fu">:</span> <span class="dv">24</span> <span class="fu">:</span> _
+λ: <span class="fu">:</span>sprint list2
+list2 <span class="fu">=</span> <span class="dv">21</span> <span class="fu">:</span> <span class="dv">22</span> <span class="fu">:</span> <span class="dv">23</span> <span class="fu">:</span> <span class="dv">24</span> <span class="fu">:</span> <span class="dv">25</span> <span class="fu">:</span> _</code></pre>
+<p>Next, let’s ask for the 18th element of <code>list2</code>:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell">λ: list2 <span class="fu">!!</span> <span class="dv">17</span>
+<span class="dv">38</span>
+λ: <span class="fu">:</span>sprint list1
+list1 <span class="fu">=</span> <span class="dv">20</span> <span class="fu">:</span> <span class="dv">21</span> <span class="fu">:</span> <span class="dv">22</span> <span class="fu">:</span> <span class="dv">23</span> <span class="fu">:</span> <span class="dv">24</span> <span class="fu">:</span> <span class="dv">25</span> <span class="fu">:</span> <span class="dv">26</span> <span class="fu">:</span> <span class="dv">27</span> <span class="fu">:</span> <span class="dv">28</span> <span class="fu">:</span> <span class="dv">29</span> <span class="fu">:</span>
+        <span class="dv">30</span> <span class="fu">:</span> <span class="dv">31</span> <span class="fu">:</span> <span class="dv">32</span> <span class="fu">:</span> <span class="dv">33</span> <span class="fu">:</span> <span class="dv">34</span> <span class="fu">:</span> <span class="dv">35</span> <span class="fu">:</span> <span class="dv">36</span> <span class="fu">:</span> <span class="dv">37</span> <span class="fu">:</span> _
+λ: <span class="fu">:</span>sprint list2
+list2 <span class="fu">=</span> <span class="dv">21</span> <span class="fu">:</span> <span class="dv">22</span> <span class="fu">:</span> <span class="dv">23</span> <span class="fu">:</span> <span class="dv">24</span> <span class="fu">:</span> <span class="dv">25</span> <span class="fu">:</span> _ <span class="fu">:</span> _ <span class="fu">:</span> _ <span class="fu">:</span> _ <span class="fu">:</span> _ <span class="fu">:</span>
+        _ <span class="fu">:</span> _ <span class="fu">:</span> _ <span class="fu">:</span> _ <span class="fu">:</span> _ <span class="fu">:</span> _ <span class="fu">:</span> _ <span class="fu">:</span> <span class="dv">38</span> <span class="fu">:</span> _</code></pre>
+<p>Now this is interesting.</p>
+<p>Elements from the 6th to the 17th are fully evaluated in <code>list1</code> but unevaluated in <code>list2</code>. Because of how <code>list1</code> is defined, it is going to be evaluated in small, close-proximity increments from left to right. But all values in <code>list2</code> are evaluated by applying a transformation on elements in the corresponding positions in <code>list1</code>. That is why we are starting to see gaps in <code>list2</code>.</p>
+<p>This example really drives home the essence of lazy evaluation. By default, Haskell will evaluate as little as possible, as late as possible. This is in contrast to traditional, imperative programming languages which evaluate as much as possible, as soon as possible.</p>
+<p>Next, let’s ask for the length of <code>list2</code>:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell">λ: length list2
+<span class="dv">51</span>
+λ: <span class="fu">:</span>sprint list1
+list1 <span class="fu">=</span> [<span class="dv">20</span>,<span class="dv">21</span>,<span class="dv">22</span>,<span class="dv">23</span>,<span class="dv">24</span>,<span class="dv">25</span>,<span class="dv">26</span>,<span class="dv">27</span>,<span class="dv">28</span>,<span class="dv">29</span>,
+         <span class="dv">30</span>,<span class="dv">31</span>,<span class="dv">32</span>,<span class="dv">33</span>,<span class="dv">34</span>,<span class="dv">35</span>,<span class="dv">36</span>,<span class="dv">37</span>,<span class="dv">38</span>,<span class="dv">39</span>,
+         <span class="dv">40</span>,<span class="dv">41</span>,<span class="dv">42</span>,<span class="dv">43</span>,<span class="dv">44</span>,<span class="dv">45</span>,<span class="dv">46</span>,<span class="dv">47</span>,<span class="dv">48</span>,<span class="dv">49</span>,
+         <span class="dv">50</span>,<span class="dv">51</span>,<span class="dv">52</span>,<span class="dv">53</span>,<span class="dv">54</span>,<span class="dv">55</span>,<span class="dv">56</span>,<span class="dv">57</span>,<span class="dv">58</span>,<span class="dv">59</span>,
+         <span class="dv">60</span>,<span class="dv">61</span>,<span class="dv">62</span>,<span class="dv">63</span>,<span class="dv">64</span>,<span class="dv">65</span>,<span class="dv">66</span>,<span class="dv">67</span>,<span class="dv">68</span>,<span class="dv">69</span>,<span class="dv">70</span>]
+λ: <span class="fu">:</span>sprint list2
+list2 <span class="fu">=</span> [<span class="dv">21</span>,<span class="dv">22</span>,<span class="dv">23</span>,<span class="dv">24</span>,<span class="dv">25</span>,_,_,_,_,_,
+         _,_,_,_,_,_,_,<span class="dv">38</span>,_,_,
+         _,_,_,_,_,_,_,_,_,_,
+         _,_,_,_,_,_,_,_,_,_,
+         _,_,_,_,_,_,_,_,_,_,_]</code></pre>
+<p>At this point, <code>list1</code> is fully evaluated because there are no two ways around it - in order to compute the length of <code>list2</code>, GHCi needs to keep track of each and every one of its thunks, therefore it needs to generate the entire “spine” of the list. The process of generating the thunks <code>(+1) 25</code> through <code>(+1) 70</code> will require all elements of <code>list1</code> to be fully evaluated.</p>
+<p>Finally, there is only one thing left for us to do such that <code>list2</code> is fully evaluated too - compute the sum of its elements:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell">λ: sum list2
+<span class="dv">2346</span>
+λ: <span class="fu">:</span>sprint list2
+list2 <span class="fu">=</span> [<span class="dv">21</span>,<span class="dv">22</span>,<span class="dv">23</span>,<span class="dv">24</span>,<span class="dv">25</span>,<span class="dv">26</span>,<span class="dv">27</span>,<span class="dv">28</span>,<span class="dv">29</span>,<span class="dv">30</span>,
+         <span class="dv">31</span>,<span class="dv">32</span>,<span class="dv">33</span>,<span class="dv">34</span>,<span class="dv">35</span>,<span class="dv">36</span>,<span class="dv">37</span>,<span class="dv">38</span>,<span class="dv">39</span>,<span class="dv">40</span>,
+         <span class="dv">41</span>,<span class="dv">42</span>,<span class="dv">43</span>,<span class="dv">44</span>,<span class="dv">45</span>,<span class="dv">46</span>,<span class="dv">47</span>,<span class="dv">48</span>,<span class="dv">49</span>,<span class="dv">50</span>,
+         <span class="dv">51</span>,<span class="dv">52</span>,<span class="dv">53</span>,<span class="dv">54</span>,<span class="dv">55</span>,<span class="dv">56</span>,<span class="dv">57</span>,<span class="dv">58</span>,<span class="dv">59</span>,<span class="dv">60</span>,
+         <span class="dv">61</span>,<span class="dv">62</span>,<span class="dv">63</span>,<span class="dv">64</span>,<span class="dv">65</span>,<span class="dv">66</span>,<span class="dv">67</span>,<span class="dv">68</span>,<span class="dv">69</span>,<span class="dv">70</span>,<span class="dv">71</span>]</code></pre>
+<section id="conclusion" class="level3">
+<h3>Conclusion</h3>
+<p>Laziness can be a tremendously helpful device for designing Haskell programs that run in constant space and feature a clean separation of pure code vs. side-effecting code. However, care must be taken to avoid what is known as “space leaks”, which we are going to cover in the next instalment of this series.</p>
+</section>
+<section id="editorial-note" class="level3">
+<h3>Editorial note</h3>
+<p>This blog post was inspired by chapter 2 of Simon Marlow’s excellent book <a href="http://chimera.labs.oreilly.com/books/1230000000929">“Parallel and Concurrent Programming in Haskell”</a> which is available both in e-book format as well as free of charge online.</p>
+</section>
+
+    </div>
+  </div>
+</div>
+
+<!-- Social Buttons here -->
+<div id="sociallinks">
+  <a href="https://twitter.com/home?status=/haskell-part2.html" target="_blank">Tweet this</a> -
+  <a href="http://www.facebook.com/sharer/sharer.php?u=/haskell-part2.html" target="_blank">Like this</a> -
+  <a href="https://plus.google.com/share?url=/haskell-part2.html" target="_blank">Share on G+</a>
+</div>
+
+<script>
+  (function(){window.addEventListener("DOMContentLoaded",function(){
+    //get URL
+    var url=document.location;
+    var links=document.getElementById("sociallinks")
+                      .getElementsByTagName('a');
+    for (var i=0;i!=links.length;i++){
+      // Replacing /haskell-part2.html with current URL
+      links[i].setAttribute("href",links[i].href.replace('/haskell-part2.html',url));
+    }})})();
+</script>
+</br>
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+  /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+  var disqus_shortname = 'rosedutechblog';
+  var disqus_url = window.location.href.split('/').splice(0,3).join("/")+'/haskell-part2.html';
+  var title = 'A superficial exploration of Haskell, part 2: Lazy by default';
+  /* * * DON'T EDIT BELOW THIS LINE * * */
+  (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+              </article>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer class="the-footer">
+        <div class="unit-foot">
+          <div class="unit-inner unit-foot-inner">
+            <div class="misc vcard">
+              <h4>Social</h4>
+              <div class="rss">
+                <a href="http://techblog.rosedu.org/rss.xml" target="_blank">
+                  <img src="./images/rss.png" alt="Subscribe to RSS Feed" />
+                </a>
+                <a href="http://www.reddit.com/submit?url='+encodeURIComponent(window.location)" target="_blank" onclick="window.location='http://www.reddit.com/submit?url='+encodeURIComponent(window.location); return false">
+                  <img src="./images/reddit.png" alt="Submit to Reddit" />
+                </a>
+                <a href="http://twitter.com/share" class="twitter-share-button" data-count="none" target="_blank">
+                  <img src="./images/twitter.png" alt="Submit to Twitter" />
+                </a>
+              </div>
+
+              <h4>Powered by</h4>
+              <ul>
+                <li class="contact">
+                  <address>
+                    <a class="author fn n" href="http://www.rosedu.org">ROSEdu</a>
+                  </address>
+                </li>
+                <li class="contact">
+                  <address>
+                    <a class="author fn n" href="http://jaspervdj.be/hakyll">Hakyll</a>
+                  </address>
+                </li>
+              </ul>
+
+              <h4>License</h4>
+              <div class="bucket">
+                <span>
+                  <a rel="license" href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons Attribution 3.0 License">
+                    <img src="//i.creativecommons.org/l/by/3.0/88x31.png" alt="License">
+                  </a>
+                </span>
+                <span>
+                  This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/3.0/" class="subfoot">Creative Commons Attribution 3.0 License</a>.
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>

