@@ -189,3 +189,10 @@ This blog post was inspired by chapter 2 of Simon Marlow's excellent book
 ["Parallel and Concurrent Programming in
 Haskell"](http://chimera.labs.oreilly.com/books/1230000000929) which is
 available both in e-book format as well as free of charge online.
+
+### Update
+
+In recent versions of GHC, due to the `Monomorphism Restriction` being off by
+default (in contrast with the current ones) some of the examples might look a
+little different. See [the discussion on
+twitter](http://www.reddit.com/r/haskell/comments/1zfz5m/a_superficial_exploration_of_haskell_part_2_lazy/).
