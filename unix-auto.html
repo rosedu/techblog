@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--[if lt IE 7]>
+<html class="no-js lt-ie9 lt-ie8 lt-ie7 ie" lang="en"> <![endif]-->
+<!--[if IE 7]>
+<html class="no-js lt-ie9 lt-ie8 ie" lang="en"> <![endif]-->
+<!--[if IE 8]>
+<html class="no-js lt-ie9 ie" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" class="no-js"><!--<![endif]-->
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>ROSEdu Techblog - Unix portability. Autoconf, Automake, Libtool</title>
+    <link rel="stylesheet" href="./css/style.css" type="text/css">
+    <link rel="stylesheet" href="./css/rosedu_links.css" type="text/css">
+    <link rel="stylesheet" href="./css/syntax.css" type="text/css">
+
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-7579199-6']);
+      _gaq.push(['_trackPageview']);
+
+      (function () {
+        var ga = document.createElement('script');
+        ga.type = 'text/javascript';
+        ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  </head>
+
+  <body>
+    <div id="page" class="hentry">
+      <header class="the-header">
+        <div class="unit-head">
+          <div class="unit-inner unit-head-inner">
+            <nav class="nav-global">
+              <ul>
+                <li class="logo"><a href="./" title="Home">ROSEdu Techblog</a></li>
+                <li class="about"><a href="./about.html">About</a></li>
+                <li class="people"><a href="./people.html">People</a></li>
+                <li class="archive"><a href="./archive.html">Archive</a></li>
+                <li class="category"><a href="./tags.html">Tags</a></li>
+              </ul>
+            </nav>
+
+            <hr />
+
+            <nav class="nav-global">
+              <ul>
+                <li class="logo"><a href="./archive.html" title="Archive">Latest Posts</a></li>
+                
+                  <li><a href="./unix-auto.html" title="Unix portability. Autoconf, Automake, Libtool">Unix portabilit...</a></li>
+                
+                  <li><a href="./haskell-part2.html" title="A superficial exploration of Haskell, part 2: Lazy by default">A superficial e...</a></li>
+                
+                  <li><a href="./unix-standards.html" title="Unix standards and implementations. Unix portability">Unix standards ...</a></li>
+                
+              </ul>
+            </nav>
+          </div><!-- unit-inner -->
+        </div><!-- unit-head -->
+      </header>
+
+      <div class="body" role="main">
+        <div class="unit-body">
+          <div class="unit-inner unit-body-inner">
+            <div class="entry-content">
+              <article class="unit-article layout-post">
+                <div class="unit-inner unit-article-inner">
+  <div class="content">
+    <div class="bd">
+      <header>
+        <div class="unit-head">
+          <div class="unit-inner unit-head-inner">
+            <h1 class="h2 entry-title">
+              <a class="post_title" href="./unix-auto.html" title="Unix portability. Autoconf, Automake, Libtool">Unix portability. Autoconf, Automake, Libtool</a>
+            </h1>
+          </div><!-- unit-inner -->
+        </div><!-- unit-head -->
+      </header>
+
+      <span class="date">
+      <span class="published">Published on March  8, 2014</span>
+      by
+      <span class="author">Alexandru Goia</span>
+      </span>
+
+      <br />
+      <span class="meta">
+        Tagged:
+        <span class="tags"><a href="./tags/Unix.html">Unix</a>, <a href="./tags/C.html">C</a>, <a href="./tags/portable%20code.html">portable code</a>, <a href="./tags/autoconf.html">autoconf</a>, <a href="./tags/automake.html">automake</a>, <a href="./tags/libtool.html">libtool</a></span>
+      </span>
+
+      <p>The purpose of this article is to generally present the utilities <a href="http://www.gnu.org/software/autoconf/manual/index.html" title="autoconf">Autoconf</a>, <a href="http://www.gnu.org/software/automake/manual/index.html" title="automake">Automake</a> and <a href="http://www.gnu.org/software/libtool/manual/index.html" title="libtool">Libtool</a>, which ease very much the process of installation from sources of software packages or libraries, from the point of view of users. It is assumed that the user uses any Unix/Unix-like system, and the purpose of the developer, who chooses to use these GNU tools, is to make the installation, on the user’s system, as easy as possible.</p>
+<!--more-->
+
+<p>If you are a serious Unix/Linux user, for sure you have been in the situation of compiling a program or a library from sources. Then, you called <code>./configure; make; make install</code> and you got an executable or a library. In this article, we change the point of view, assuming that we are the software’s developers and not the users, and our purpose is to understand in principle how can we generate the <code>configure</code> script and the other additional files,</p>
+<p>This article aims to explain <em>le raison d’etre</em> of these very useful tools (<a href="http://www.gnu.org/software/autoconf/manual/index.html" title="autoconf">Autoconf</a>, <a href="http://www.gnu.org/software/automake/manual/index.html" title="automake">Automake</a>, <a href="http://www.gnu.org/software/libtool/manual/index.html" title="libtool">Libtool</a>) and to present generic configuration files, in the case of a simple program and the case of a simple library – thus, the base syntax for these GNU tools with the aim of creating an easy install experience for the users.</p>
+<section id="the-theory" class="level3">
+<h3>The Theory</h3>
+<p>Autoconf is a software tool useful in the process of compilation from sources of a software package. At running time, it generates shell scripts which will run on the user’s system, independently of Autoconf version installed there (thus there is no need that the user should install this on his system too). These shell scripts will be run without manual interventions on any Unix/Posix system. Thus, Autoconf makes easier the porting of source programs on various Unix/Posix systems by determining the characteristics of the user’s system on which the compilation will take place just before this.</p>
+<p>For each software package on which we run it, Autoconf generates a configuration script from a template file, named <code>configure.ac</code> or <code>configure.in</code>, which lists the options of the user’s system, options that the software package needs or uses.</p>
+<p>It is being said, like Unix, that those who do not understand Autoconf are destined to reinvent it; Autoconf doesn’t make easier the life of the developer – which is supposed to be a mature one –, but it makes easy the installation experience of the software, on the Unix/Unix-like systems of the users, which are – at least a priori – various.</p>
+<p>So, Autoconf solves the problem of determining the pieces of information about the system needed for compilation, right before it. It is only the first part of a larger problem which is the ‘perfect’ compilation on the user’s system, in other words, the development of portable software. Here enters the GNU Build System, which continues and completes what Autoconf started, by another two GNU tools: Automake and Libtool.</p>
+<p>The <code>make</code> tool (GNU make, gmake, etc.) is present on every Unix/Unix-like system. Automake allows developers to describe in a file named <code>Makefile.am</code> the build specifications, with a syntax simpler and richer than that of a regular <code>Makefile</code>. From the file <code>Makefile.am</code>, after running Automake (<code>automake</code>), a file named <code>Makefile.in</code> will be generated, which in turn will be used by the <code>configure</code> script to generate on the user’s system the classic file <code>Makefile</code>. Automake is very useful in the situation of software packages with multiple subdirectories or with multiple sources, but even for simple programs the reached portability is a gain.</p>
+<p>Sometimes, we don’t want to generate only executables, we want to also generate libraries, in order to let them be further used by other developers. We want to generate shared (dynamic) libraries, and do this in a portable way. This is the task of the Libtool tool. One of the most used features of Libtool is the coexistence of multiple versions of a library, so the user may install or upgrade the library, without destroying the binary compatibility. Libtool is used by default by Automake, when we want to generate dynamic libraries, and there is no need to know its syntax.</p>
+<p>These GNU tools are based on the macro-preprocessor GNU M4, but in this article we will not talk about it.</p>
+</section>
+<section id="the-practice" class="level3">
+<h3>The Practice</h3>
+<p>A <code>configure.ac</code> file has the following structure:</p>
+<pre class="configure"><code>autoconf requirements
+AC_INIT(package, version, [bug-report-email], [tarname], [url])
+information on the package
+checks for programs
+checks for libraries
+checks for header files
+checks for types
+checks for structures
+checks for compiler characteristics
+checks for library functions
+checks for system services
+AC_CONFIG_FILES([file...])
+AC_OUTPUT</code></pre>
+<p>For example, for a simple project, <code>configure.ac</code>/<code>configure.in</code> can look like this (comments inline for each directive):</p>
+<pre class="configure"><code>dnl Comments start with dnl
+dnl This file will be processed with autoconf command, in order to
+dnl generate the configure script
+
+AC_INIT([hello], [1.0])
+dnl Do not put spaces between AC_* / AM_* and the open paranthesis!
+dnl AC_* : declarations for Autoconf
+dnl AM_* : declarations for Automake
+
+AM_INIT_AUTOMAKE([-Wall -Werrror foreign])
+dnl for Automake, in order to create Makefile.in
+dnl -Wall -Werror request Automake to activate warnings
+dnl and to report them as errors (Automake warnings, not compiler
+dnl warnings).
+
+dnl If in a configure.in file there is an AM_* directive then
+dnl Autoconf will automatically call Automake.
+
+dnl foreign specifies the program does not adhere to
+dnl the GNU standard: there are not ChangeLog, AUTHORS, NEWS and
+dnl README files.
+
+dnl We determine the standardized name of the machine
+AC_CANONICAL_HOST
+dnl for Linux on Intel 32-bit this is i686-pc-linux-gnu
+
+AC_LANG_C
+dnl or AC_LANG([C])
+dnl specifies the C language as the programming language
+dnl or AC_LANG([C++]) or AC_LANG_CPLUSPLUS for C++ language
+
+AC_PROG_CC
+dnl verifies the existence of the C compiler
+AC_PROG_CXX
+dnl verifies the existence of the C++ compiler
+dnl insert it if the sources are written in the C++ language
+
+AC_PROG_MAKE_SET
+dnl verifies the existence of make program
+
+AC_HEADER_STDC
+dnl verifies the existence of standard C files
+
+AC_CHECK_HEADERS([stdio.h])
+dnl verifies the existence of header file stdio.h
+
+AC_CONFIG_HEADERS([config.h])
+dnl the configure script will generate at runtime the config.h file
+dnl which will contain useful #define directives for the program.
+
+dnl config.h can be big enough, because every feature tested on
+dnl the user's system is added as a #define in config.h
+
+AC_CONFIG_FILES([
+   Makefile
+   src/Makefile
+])
+dnl AC_CONFIG_FILES declares the list of files that will be
+dnl generated from their templates with .in extension
+
+AC_OUTPUT
+dnl the ending line, which produces a sequence of commands
+dnl in the configure script, a sequence that will generate
+dnl the registered files from AC_CONFIG_HEADERS and 
+dnl AC_CONFIG_FILES</code></pre>
+<p>Of course, the <code>configure.in</code> file can be much more complex, with many <code>AC_*</code> and <code>AM_*</code> lines. For this, we recommend the Autoconf manual.</p>
+<p>We should also have <code>Makefile.am</code> files in every subdirectory in the source tree. For example, for a tree with few source files (<code>hello</code> program with sources: <code>main.c</code> and <code>functions.c</code>):</p>
+<pre class="sourceCode makefile"><code class="sourceCode makefile"><span class="co"># src/Makefile.am</span>
+<span class="dt">bin_PROGRAMS </span><span class="ch">=</span><span class="st"> hello</span>
+<span class="dt">hello_SOURCES </span><span class="ch">=</span><span class="st"> main.c functions.c</span></code></pre>
+<p>If the sources of the program contain an <code>./include/</code> directory which has header files then <code>Makefile.am</code> file from that directory must also contain this line:</p>
+<pre class="sourceCode makefile"><code class="sourceCode makefile"><span class="co"># include/Makefile.am</span>
+<span class="dt">include_HEADERS</span><span class="ch">=</span><span class="st">header1.h header2.h header3.h ... headerN.h</span></code></pre>
+<p>In the <code>Makefile.am</code> from the root directory we must have the following line:</p>
+<pre class="sourceCode makefile"><code class="sourceCode makefile"><span class="dt">SUBDIRS </span><span class="ch">=</span><span class="st"> doc src</span></code></pre>
+<p>or</p>
+<pre class="sourceCode makefile"><code class="sourceCode makefile"><span class="dt">SUBDIRS </span><span class="ch">=</span><span class="st"> src</span></code></pre>
+<p><code>SUBDIRS</code> is a special variable which lists all directories in which <code>make</code> will enter, before processing the current directory.</p>
+<p>In the case of a simple library, the <code>Makefile.am</code> from the respective directory will look like this:</p>
+<pre class="sourceCode makefile"><code class="sourceCode makefile"><span class="co"># lib/Makefile.am</span>
+<span class="dt">lib_LTLIBRARIES </span><span class="ch">=</span><span class="st"> libaa.la</span>
+<span class="dt">libaa_la_SOURCES </span><span class="ch">=</span><span class="st"> library-aa.c</span></code></pre>
+<p>We will run the command <code>libtoolize</code>, after which two new files will be created: <code>ltconfig</code> and <code>ltmain.sh</code>.</p>
+<p>For <code>configure.in</code> and <code>Makefile.am</code>, we will run the commands <code>aclocal</code>, <code>autoconf</code>, and, then, <code>automake</code>.</p>
+<p>Also, the source code, which must be portable, must “fold” on these tools.</p>
+</section>
+<section id="examples" class="level3">
+<h3>Examples</h3>
+<ol type="1">
+<li>This examples checks if <code>ncurses</code> is installed and saves the name of the terminal inside the <code>s</code> variable (if <code>ncurses</code> is installed then the name can be obtained by running <code>termname</code>, otherwise a constant value of <code>TERM</code> is used):</li>
+</ol>
+<pre class="configure"><code>#include &quot;config.h&quot;
+...
+#ifdef HAVE_NCURSES
+strcpy(s, termname());
+#else
+strcpy(s, getenv(&quot;TERM&quot;));
+#endif // HAVE_NCURSES</code></pre>
+<ol start="2" type="1">
+<li>This example checks and includes the proper header for string functions, if there is one:</li>
+</ol>
+<pre class="configure"><code>#include &quot;config.h&quot;
+...
+#ifdef HAVE_STRING_H
+#include &lt;string.h&gt;
+#else
+#ifdef HAVE_STRINGS_H
+#include &lt;strings.h&gt;
+#endif
+#endif</code></pre>
+</section>
+<section id="bibliography.-conclusions" class="level3">
+<h3>Bibliography. Conclusions</h3>
+<p>For more informations, we recommend the free online book <a href="http://www.sourceware.org/autobook" title="GNU Autoconf, Automake and Libtool">GNU Autoconf, Automake and Libtool</a>, and also <a href="https://www.lrde.epita.fr/~adl/dl/autotools.pdf" title="Using GNU Autotools">Using GNU Autotools</a>, from <a href="https://www.lrde.epita.fr/~adl/autotools.html" title="Autotools">the page of Alexandre Duret-Lutz</a>.</p>
+<p>After this article, we wish that the young Unix/Unix-like/Linux programmers are aware of the existence of these tools, and have them is mind when they will have to develop open-source programs which are intended to be portable across all Unix systems.</p>
+</section>
+
+    </div>
+  </div>
+</div>
+
+<!-- Social Buttons here -->
+<div id="sociallinks">
+  <a href="https://twitter.com/home?status=/unix-auto.html" target="_blank">Tweet this</a> -
+  <a href="http://www.facebook.com/sharer/sharer.php?u=/unix-auto.html" target="_blank">Like this</a> -
+  <a href="https://plus.google.com/share?url=/unix-auto.html" target="_blank">Share on G+</a>
+</div>
+
+<script>
+  (function(){window.addEventListener("DOMContentLoaded",function(){
+    //get URL
+    var url=document.location;
+    var links=document.getElementById("sociallinks")
+                      .getElementsByTagName('a');
+    for (var i=0;i!=links.length;i++){
+      // Replacing /unix-auto.html with current URL
+      links[i].setAttribute("href",links[i].href.replace('/unix-auto.html',url));
+    }})})();
+</script>
+</br>
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+  /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+  var disqus_shortname = 'rosedutechblog';
+  var disqus_url = window.location.href.split('/').splice(0,3).join("/")+'/unix-auto.html';
+  var title = 'Unix portability. Autoconf, Automake, Libtool';
+  /* * * DON'T EDIT BELOW THIS LINE * * */
+  (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+              </article>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer class="the-footer">
+        <div class="unit-foot">
+          <div class="unit-inner unit-foot-inner">
+            <div class="misc vcard">
+              <h4>Social</h4>
+              <div class="rss">
+                <a href="http://techblog.rosedu.org/rss.xml" target="_blank">
+                  <img src="./images/rss.png" alt="Subscribe to RSS Feed" />
+                </a>
+                <a href="http://www.reddit.com/submit?url='+encodeURIComponent(window.location)" target="_blank" onclick="window.location='http://www.reddit.com/submit?url='+encodeURIComponent(window.location); return false">
+                  <img src="./images/reddit.png" alt="Submit to Reddit" />
+                </a>
+                <a href="http://twitter.com/share" class="twitter-share-button" data-count="none" target="_blank">
+                  <img src="./images/twitter.png" alt="Submit to Twitter" />
+                </a>
+              </div>
+
+              <h4>Powered by</h4>
+              <ul>
+                <li class="contact">
+                  <address>
+                    <a class="author fn n" href="http://www.rosedu.org">ROSEdu</a>
+                  </address>
+                </li>
+                <li class="contact">
+                  <address>
+                    <a class="author fn n" href="http://jaspervdj.be/hakyll">Hakyll</a>
+                  </address>
+                </li>
+              </ul>
+
+              <h4>License</h4>
+              <div class="bucket">
+                <span>
+                  <a rel="license" href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons Attribution 3.0 License">
+                    <img src="//i.creativecommons.org/l/by/3.0/88x31.png" alt="License">
+                  </a>
+                </span>
+                <span>
+                  This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/3.0/" class="subfoot">Creative Commons Attribution 3.0 License</a>.
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>

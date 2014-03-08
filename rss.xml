@@ -6,8 +6,192 @@
         <description><![CDATA[ROSEdu Techblog]]></description>
         <atom:link href="http://techblog.rosedu.org/rss.xml" rel="self"
                    type="application/rss+xml" />
-        <lastBuildDate>Sun, 02 Mar 2014 00:00:00 UT</lastBuildDate>
+        <lastBuildDate>Sat, 08 Mar 2014 00:00:00 UT</lastBuildDate>
         <item>
+    <title>Unix portability. Autoconf, Automake, Libtool</title>
+    <link>http://techblog.rosedu.org/unix-auto.html</link>
+    <description><![CDATA[<div class="unit-inner unit-article-inner">
+  <div class="content">
+    <div class="bd">
+      <header>
+        <div class="unit-head">
+          <div class="unit-inner unit-head-inner">
+            <h1 class="h2 entry-title">
+              <a class="post_title" href="/unix-auto.html" title="Unix portability. Autoconf, Automake, Libtool">Unix portability. Autoconf, Automake, Libtool</a>
+            </h1>
+          </div><!-- unit-inner -->
+        </div><!-- unit-head -->
+      </header>
+
+      <span class="date">
+      <span class="published">Published on March  8, 2014</span>
+      by
+      <span class="author">Alexandru Goia</span>
+      </span>
+
+      <br/>
+      <span class="meta">
+        Tagged:
+        <span class="tags"><a href="/tags/Unix.html">Unix</a>, <a href="/tags/C.html">C</a>, <a href="/tags/portable%20code.html">portable code</a>, <a href="/tags/autoconf.html">autoconf</a>, <a href="/tags/automake.html">automake</a>, <a href="/tags/libtool.html">libtool</a></span>
+      </span>
+
+      <p>The purpose of this article is to generally present the utilities <a href="http://www.gnu.org/software/autoconf/manual/index.html" title="autoconf">Autoconf</a>, <a href="http://www.gnu.org/software/automake/manual/index.html" title="automake">Automake</a> and <a href="http://www.gnu.org/software/libtool/manual/index.html" title="libtool">Libtool</a>, which ease very much the process of installation from sources of software packages or libraries, from the point of view of users. It is assumed that the user uses any Unix/Unix-like system, and the purpose of the developer, who chooses to use these GNU tools, is to make the installation, on the user’s system, as easy as possible.</p>
+<!--more-->
+
+<p>If you are a serious Unix/Linux user, for sure you have been in the situation of compiling a program or a library from sources. Then, you called <code>./configure; make; make install</code> and you got an executable or a library. In this article, we change the point of view, assuming that we are the software’s developers and not the users, and our purpose is to understand in principle how can we generate the <code>configure</code> script and the other additional files,</p>
+<p>This article aims to explain <em>le raison d’etre</em> of these very useful tools (<a href="http://www.gnu.org/software/autoconf/manual/index.html" title="autoconf">Autoconf</a>, <a href="http://www.gnu.org/software/automake/manual/index.html" title="automake">Automake</a>, <a href="http://www.gnu.org/software/libtool/manual/index.html" title="libtool">Libtool</a>) and to present generic configuration files, in the case of a simple program and the case of a simple library – thus, the base syntax for these GNU tools with the aim of creating an easy install experience for the users.</p>
+<section id="the-theory" class="level3">
+<h3>The Theory</h3>
+<p>Autoconf is a software tool useful in the process of compilation from sources of a software package. At running time, it generates shell scripts which will run on the user’s system, independently of Autoconf version installed there (thus there is no need that the user should install this on his system too). These shell scripts will be run without manual interventions on any Unix/Posix system. Thus, Autoconf makes easier the porting of source programs on various Unix/Posix systems by determining the characteristics of the user’s system on which the compilation will take place just before this.</p>
+<p>For each software package on which we run it, Autoconf generates a configuration script from a template file, named <code>configure.ac</code> or <code>configure.in</code>, which lists the options of the user’s system, options that the software package needs or uses.</p>
+<p>It is being said, like Unix, that those who do not understand Autoconf are destined to reinvent it; Autoconf doesn’t make easier the life of the developer – which is supposed to be a mature one –, but it makes easy the installation experience of the software, on the Unix/Unix-like systems of the users, which are – at least a priori – various.</p>
+<p>So, Autoconf solves the problem of determining the pieces of information about the system needed for compilation, right before it. It is only the first part of a larger problem which is the ‘perfect’ compilation on the user’s system, in other words, the development of portable software. Here enters the GNU Build System, which continues and completes what Autoconf started, by another two GNU tools: Automake and Libtool.</p>
+<p>The <code>make</code> tool (GNU make, gmake, etc.) is present on every Unix/Unix-like system. Automake allows developers to describe in a file named <code>Makefile.am</code> the build specifications, with a syntax simpler and richer than that of a regular <code>Makefile</code>. From the file <code>Makefile.am</code>, after running Automake (<code>automake</code>), a file named <code>Makefile.in</code> will be generated, which in turn will be used by the <code>configure</code> script to generate on the user’s system the classic file <code>Makefile</code>. Automake is very useful in the situation of software packages with multiple subdirectories or with multiple sources, but even for simple programs the reached portability is a gain.</p>
+<p>Sometimes, we don’t want to generate only executables, we want to also generate libraries, in order to let them be further used by other developers. We want to generate shared (dynamic) libraries, and do this in a portable way. This is the task of the Libtool tool. One of the most used features of Libtool is the coexistence of multiple versions of a library, so the user may install or upgrade the library, without destroying the binary compatibility. Libtool is used by default by Automake, when we want to generate dynamic libraries, and there is no need to know its syntax.</p>
+<p>These GNU tools are based on the macro-preprocessor GNU M4, but in this article we will not talk about it.</p>
+</section>
+<section id="the-practice" class="level3">
+<h3>The Practice</h3>
+<p>A <code>configure.ac</code> file has the following structure:</p>
+<pre class="configure"><code>autoconf requirements
+AC_INIT(package, version, [bug-report-email], [tarname], [url])
+information on the package
+checks for programs
+checks for libraries
+checks for header files
+checks for types
+checks for structures
+checks for compiler characteristics
+checks for library functions
+checks for system services
+AC_CONFIG_FILES([file...])
+AC_OUTPUT</code></pre>
+<p>For example, for a simple project, <code>configure.ac</code>/<code>configure.in</code> can look like this (comments inline for each directive):</p>
+<pre class="configure"><code>dnl Comments start with dnl
+dnl This file will be processed with autoconf command, in order to
+dnl generate the configure script
+
+AC_INIT([hello], [1.0])
+dnl Do not put spaces between AC_* / AM_* and the open paranthesis!
+dnl AC_* : declarations for Autoconf
+dnl AM_* : declarations for Automake
+
+AM_INIT_AUTOMAKE([-Wall -Werrror foreign])
+dnl for Automake, in order to create Makefile.in
+dnl -Wall -Werror request Automake to activate warnings
+dnl and to report them as errors (Automake warnings, not compiler
+dnl warnings).
+
+dnl If in a configure.in file there is an AM_* directive then
+dnl Autoconf will automatically call Automake.
+
+dnl foreign specifies the program does not adhere to
+dnl the GNU standard: there are not ChangeLog, AUTHORS, NEWS and
+dnl README files.
+
+dnl We determine the standardized name of the machine
+AC_CANONICAL_HOST
+dnl for Linux on Intel 32-bit this is i686-pc-linux-gnu
+
+AC_LANG_C
+dnl or AC_LANG([C])
+dnl specifies the C language as the programming language
+dnl or AC_LANG([C++]) or AC_LANG_CPLUSPLUS for C++ language
+
+AC_PROG_CC
+dnl verifies the existence of the C compiler
+AC_PROG_CXX
+dnl verifies the existence of the C++ compiler
+dnl insert it if the sources are written in the C++ language
+
+AC_PROG_MAKE_SET
+dnl verifies the existence of make program
+
+AC_HEADER_STDC
+dnl verifies the existence of standard C files
+
+AC_CHECK_HEADERS([stdio.h])
+dnl verifies the existence of header file stdio.h
+
+AC_CONFIG_HEADERS([config.h])
+dnl the configure script will generate at runtime the config.h file
+dnl which will contain useful #define directives for the program.
+
+dnl config.h can be big enough, because every feature tested on
+dnl the user&#39;s system is added as a #define in config.h
+
+AC_CONFIG_FILES([
+   Makefile
+   src/Makefile
+])
+dnl AC_CONFIG_FILES declares the list of files that will be
+dnl generated from their templates with .in extension
+
+AC_OUTPUT
+dnl the ending line, which produces a sequence of commands
+dnl in the configure script, a sequence that will generate
+dnl the registered files from AC_CONFIG_HEADERS and 
+dnl AC_CONFIG_FILES</code></pre>
+<p>Of course, the <code>configure.in</code> file can be much more complex, with many <code>AC_*</code> and <code>AM_*</code> lines. For this, we recommend the Autoconf manual.</p>
+<p>We should also have <code>Makefile.am</code> files in every subdirectory in the source tree. For example, for a tree with few source files (<code>hello</code> program with sources: <code>main.c</code> and <code>functions.c</code>):</p>
+<pre class="sourceCode makefile"><code class="sourceCode makefile"><span class="co"># src/Makefile.am</span>
+<span class="dt">bin_PROGRAMS </span><span class="ch">=</span><span class="st"> hello</span>
+<span class="dt">hello_SOURCES </span><span class="ch">=</span><span class="st"> main.c functions.c</span></code></pre>
+<p>If the sources of the program contain an <code>./include/</code> directory which has header files then <code>Makefile.am</code> file from that directory must also contain this line:</p>
+<pre class="sourceCode makefile"><code class="sourceCode makefile"><span class="co"># include/Makefile.am</span>
+<span class="dt">include_HEADERS</span><span class="ch">=</span><span class="st">header1.h header2.h header3.h ... headerN.h</span></code></pre>
+<p>In the <code>Makefile.am</code> from the root directory we must have the following line:</p>
+<pre class="sourceCode makefile"><code class="sourceCode makefile"><span class="dt">SUBDIRS </span><span class="ch">=</span><span class="st"> doc src</span></code></pre>
+<p>or</p>
+<pre class="sourceCode makefile"><code class="sourceCode makefile"><span class="dt">SUBDIRS </span><span class="ch">=</span><span class="st"> src</span></code></pre>
+<p><code>SUBDIRS</code> is a special variable which lists all directories in which <code>make</code> will enter, before processing the current directory.</p>
+<p>In the case of a simple library, the <code>Makefile.am</code> from the respective directory will look like this:</p>
+<pre class="sourceCode makefile"><code class="sourceCode makefile"><span class="co"># lib/Makefile.am</span>
+<span class="dt">lib_LTLIBRARIES </span><span class="ch">=</span><span class="st"> libaa.la</span>
+<span class="dt">libaa_la_SOURCES </span><span class="ch">=</span><span class="st"> library-aa.c</span></code></pre>
+<p>We will run the command <code>libtoolize</code>, after which two new files will be created: <code>ltconfig</code> and <code>ltmain.sh</code>.</p>
+<p>For <code>configure.in</code> and <code>Makefile.am</code>, we will run the commands <code>aclocal</code>, <code>autoconf</code>, and, then, <code>automake</code>.</p>
+<p>Also, the source code, which must be portable, must “fold” on these tools.</p>
+</section>
+<section id="examples" class="level3">
+<h3>Examples</h3>
+<ol type="1">
+<li>This examples checks if <code>ncurses</code> is installed and saves the name of the terminal inside the <code>s</code> variable (if <code>ncurses</code> is installed then the name can be obtained by running <code>termname</code>, otherwise a constant value of <code>TERM</code> is used):</li>
+</ol>
+<pre class="configure"><code>#include &quot;config.h&quot;
+...
+#ifdef HAVE_NCURSES
+strcpy(s, termname());
+#else
+strcpy(s, getenv(&quot;TERM&quot;));
+#endif // HAVE_NCURSES</code></pre>
+<ol start="2" type="1">
+<li>This example checks and includes the proper header for string functions, if there is one:</li>
+</ol>
+<pre class="configure"><code>#include &quot;config.h&quot;
+...
+#ifdef HAVE_STRING_H
+#include &lt;string.h&gt;
+#else
+#ifdef HAVE_STRINGS_H
+#include &lt;strings.h&gt;
+#endif
+#endif</code></pre>
+</section>
+<section id="bibliography.-conclusions" class="level3">
+<h3>Bibliography. Conclusions</h3>
+<p>For more informations, we recommend the free online book <a href="http://www.sourceware.org/autobook" title="GNU Autoconf, Automake and Libtool">GNU Autoconf, Automake and Libtool</a>, and also <a href="https://www.lrde.epita.fr/~adl/dl/autotools.pdf" title="Using GNU Autotools">Using GNU Autotools</a>, from <a href="https://www.lrde.epita.fr/~adl/autotools.html" title="Autotools">the page of Alexandre Duret-Lutz</a>.</p>
+<p>After this article, we wish that the young Unix/Unix-like/Linux programmers are aware of the existence of these tools, and have them is mind when they will have to develop open-source programs which are intended to be portable across all Unix systems.</p>
+</section>
+
+    </div>
+  </div>
+</div>
+]]></description>
+    <pubDate>Sat, 08 Mar 2014 00:00:00 UT</pubDate>
+    <guid>http://techblog.rosedu.org/unix-auto.html</guid>
+</item>
+<item>
     <title>A superficial exploration of Haskell, part 2: Lazy by default</title>
     <link>http://techblog.rosedu.org/haskell-part2.html</link>
     <description><![CDATA[<div class="unit-inner unit-article-inner">
@@ -1770,220 +1954,6 @@ Date:   Fri Mar 8 23:59:07 2013 +0200
 ]]></description>
     <pubDate>Fri, 22 Mar 2013 00:00:00 UT</pubDate>
     <guid>http://techblog.rosedu.org/git-is-the-answer-2.html</guid>
-</item>
-<item>
-    <title>Git Is The Answer 1/3</title>
-    <link>http://techblog.rosedu.org/git-is-the-answer-1.html</link>
-    <description><![CDATA[<div class="unit-inner unit-article-inner">
-  <div class="content">
-    <div class="bd">
-      <header>
-        <div class="unit-head">
-          <div class="unit-inner unit-head-inner">
-            <h1 class="h2 entry-title">
-              <a class="post_title" href="/git-is-the-answer-1.html" title="Git Is The Answer 1/3">Git Is The Answer 1/3</a>
-            </h1>
-          </div><!-- unit-inner -->
-        </div><!-- unit-head -->
-      </header>
-
-      <span class="date">
-      <span class="published">Published on March 18, 2013</span>
-      by
-      <span class="author">Răzvan Deaconescu and Mihai Maruseac</span>
-      </span>
-
-      <br/>
-      <span class="meta">
-        Tagged:
-        <span class="tags"><a href="/tags/git.html">git</a></span>
-      </span>
-
-      <p>We focus again on <a href="http://git-scm.com/" title="Git">git</a>. This time, we will present some real-world scenarios where knoweldge of advance git topics helps. In order to keep down the length of the article, our presentation is divided in 3 parts, this being the first one of these.</p>
-<!--more-->
-
-<section id="user-setup" class="level2">
-<h2>User Setup</h2>
-<p>After installing Git and before doing any commits into a repository, you must setup your user information and preferences. It is common to make a global configuration, using <code>git config</code>:</p>
-<pre><code>git config --global user.name &quot;Razvan Deaconescu&quot;
-git config --global user.email &quot;razvan.deaconescu@cs.pub.ro&quot;
-git config --global color.ui auto</code></pre>
-<p>You should make this setup for each account you are using. At the minimum, you are going to use it at least for your laptop or workstation.</p>
-<p>Global configuration is stored in <code>~/.gitconfig</code>.</p>
-<p>In case you want to use another username within a repository, use the <code>git config</code> command in that repository, but without the <code>--global</code> option:</p>
-<pre><code>cd /path/to/repository.git
-git config user.email &quot;razvan@rosedu.org&quot;</code></pre>
-<p>In the above setup, I have only updated the email address for the repository. The other options used are picked from the global configuration.</p>
-<p>Per repository configuration is stored in <code>/path/to/repository.git/.config</code>.</p>
-</section>
-<section id="handling-line-endings-like-a-pro" class="level2">
-<h2>Handling Line Endings Like a Pro</h2>
-<p>From time to time it is possible that you will have to work with people working on a different operating system. It is no problem if both of you are using systems with similar line-endings (<code>CRLF</code> for Windows, <code>LF</code> for Linux/OSX). In all other cases, it might be that the default Git options used for this don’t work for you.</p>
-<p>You can configure Git globally to handle line-endings if you set the <code>core.autocrlf</code> option in your <code>~/.gitconfig</code>. However, the best settings are different on different platforms.</p>
-<p>For Windows you would use</p>
-<pre><code>git config --global core.autocrlf true</code></pre>
-<p>While for Linux/OSX you would use</p>
-<pre><code>git config --global core.autocrlf input</code></pre>
-<p>You must remember that these changes are valid only for you, and for the operating systems which have these settings configured. To have the settings travel with the repository you have to go a different path: you have to create a <code>.gitattributes</code> file with a content similar to</p>
-<pre><code>* text=auto
-*.c text
-*.h text
-*.sln text eol=crlf
-*.png binary
-*.jpg binary</code></pre>
-<p>The first line tells git to handle the line endings of all <strong>text</strong> files automatically. The second two lines declare that <code>.c</code> and <code>.h</code> files are to be treated as text (thus their line endings are to be converted to the proper format). The <code>.sln</code> line uses a new parameter (<code>eol=crlf</code>) which tells Git to normalize files on commit but to always checkout them with <code>CRLF</code> endings. Use this for files which need to have <code>CRLF</code> endings, even on Linux. A similar settings exists for <code>LF</code> endings.</p>
-<p>Finally, there are cases when you need to commit binary files into the repository. In this cases, changing <code>LF</code> characters to <code>CRLF</code> or the reverse will break the binary. You have to tell Git not to handle them, thus you’ll specify <code>binary</code> in <code>.gitattributes</code> file.</p>
-<p>If the repository already contained some files commited, after creating the <code>.gitattributes</code> file each of you will have files show up as modified, even if they haven’t changed. This is because of the line endings changes which was not followed by repository renormalization. To solve this, you have to do the following steps (on a <strong>clean</strong> repository, otherwise changes will be lost).</p>
-<p>First, remove everything from the index and reset both the index and the working directory (the risky part):</p>
-<pre><code>git rm --cached -r .
-git reset --hard</code></pre>
-<p>Finally, stage all files which were normalized and create a normalizing commit</p>
-<pre><code>git add .
-git commit -m &quot;Normalized line endings&quot;</code></pre>
-<p>From now on, Git will properly do the job of handling line endings for you.</p>
-</section>
-<section id="how-to-create-and-setup-a-local-repo" class="level2">
-<h2>How to Create and Setup a Local Repo</h2>
-<p>One of the best features of Git is the ability to rapidly create and use local repositories. You don’t have to create a repository and then clone it locally as you do in Subversion. You just create or access a directory and then initialize it as a Git repository. Changes to files in the directory will be able to be handled as commits.</p>
-<p>Assuming I am working on a personal project, the first thing I would do is create a directory and initialize it as a Git repository. I recommend you append the <code>.git</code> extension:</p>
-<pre><code>mkdir ~/projects/troscot.git
-git init ~/projects/troscot.git</code></pre>
-<p>The first thing you add in a repository is a <code>.gitignore</code> file stating the files you wish to ignore. Such a sample file is <a href="https://github.com/razvand/snippets/blob/master/config/gitignore" title="gitignore file">here</a>.</p>
-<p>You just create the <code>.gitignore</code> file in the repository root and then add it to the repository:</p>
-<pre><code>vi .gitignore
-git add .gitignore
-git commit -m &#39;Initial commit. Add global .gitignore file&#39;</code></pre>
-<p>After this, one would create, add and commit any files required.</p>
-<p>Another use case is adding repository support for existing directories. This may happen when there is some pieces of code you already have in place and want to place in a repository or, my personal use case, adding repository support to configuration directories. For example, if one would want to use versioning for Apache2 configuration files, one would issue (as <code>root</code>):</p>
-<pre><code>cd /etc/apache2/
-git init .
-vi .gitignore
-git add .gitignore
-git commit -m &#39;Initial commit. Add global .gitignore file&#39;
-git add .
-git status
-git commit -m &#39;Initial commit. Add all config files to repository&#39;</code></pre>
-<p>The above commands add a <code>.gitignore</code> file in the repository and then add all Apache2 configuration files. The <code>git status</code> command is always necessary after a <code>git add</code> command to make sure you are committing the right stuff; you may need to update your <code>.gitignore</code> file in case you’ve missed ignoring certain types of files.</p>
-</section>
-<section id="i-want-to-tweak-a-commit" class="level2">
-<h2>I Want To Tweak A Commit</h2>
-<p>From time to time you realize that you have made something wrong with a commit. Either you forgot to add a good, descriptive <a href="http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html" title="A Note About Git Commit Messages">message</a> or you have really screwed up some parts of the committed code. Maybe you have some compile errors to fix or your commit does too many things at once.</p>
-<p>Anyway, for all of these cases, Git allows you to rewrite the commit at will. You can add changes of tweak metadata (author name, commit message, etc.) just by issuing the needed commands and ending with</p>
-<pre><code>git commit --amend</code></pre>
-<p>However, this works only for the tip of the current branch. If you want to change a commit which is not HEAD, you’ll need to do a rebase process. This will temporarily move HEAD to the commit you want to change, allowing you to use the above procedure. It is best to start the rebase interactively, so that you can have great control over what it does:</p>
-<pre><code>git rebase -i cf80a4ad6d64bff2</code></pre>
-<p>The above will open your editor (configurable via <code>git config</code>) with a content similar to the following one (you can see it on the disk if you really want to, it is in the repository, in <code>.git/rebase/git-rebase-todo</code>)</p>
-<pre><code>pick 899e7e6 Add Silviu&#39;s contributions.
-pick 02f1ef9 Add contribs to Cristian Mocanu.
-pick 98194cd Add contributions of Andru Gheorghiu.
-pick 2931f1d Add 2 contributions of spopescu.
-
-# Rebase cf80a4a..2931f1d onto cf80a4a
-#
-# Commands:
-#  p, pick = use commit
-#  r, reword = use commit, but edit the commit message
-#  e, edit = use commit, but stop for amending
-#  s, squash = use commit, but meld into previous commit
-#  f, fixup = like &quot;squash&quot;, but discard this commit&#39;s log message
-#  x, exec = run command (the rest of the line) using shell
-#
-# These lines can be re-ordered; they are executed from top to bottom.
-#
-# If you remove a line here THAT COMMIT WILL BE LOST.
-#
-# However, if you remove everything, the rebase will be aborted.
-#
-# Note that empty commits are commented out</code></pre>
-<p>As you can see, you can select an action to be applied for each one of the commits. If you only want to edit the commit message, you will change <code>pick</code> with <code>reword</code> (or <code>r</code>). If you want to edit the content of the commit you will select <code>edit</code>. You can even reorder commits, squash them one a bigger one, etc.</p>
-<p>For now, we will focus on editing the contents of one commit. We will change last line in <code>edit</code>.</p>
-<pre><code>e 2931f1d Add 2 contributions of spopescu.</code></pre>
-<p>The rebase process continues and tries to do what we’ve said it to do. In our case, it will stop at commit <code>2931f1d</code> to allow editing it:</p>
-<pre><code>Stopped at 2931f1d... Add 2 contributions of spopescu.
-You can amend the commit now, with
-
-    git commit --amend
-
-Once you are satisfied with your changes, run
-
-    git rebase --continue</code></pre>
-<p>Now, you can add or remove content, change the commit as you want, etc. Then, you continue the rebase process by running <code>git commit --amend</code> followed by <code>git rebase --continue</code>. Both of them are needed.</p>
-<p>If you decide that the commit is ok and that the rebase was not neeeded, you can always abort it with <code>git rebase --abort</code>.</p>
-<p>Finally, keep in mind that <strong>it is not recommended to change commits once they have been pushed to another repository.</strong></p>
-</section>
-<section id="but-my-commit-is-too-big" class="level2">
-<h2>But My Commit Is Too Big</h2>
-<p>From time to time, you will have some big changes to commit. However, the case when all of them are atomic and cannot be split into several shorter components is very rare. Let’s take for our example a LaTeX Beamer file. You can commit each section separately or even each slide, as you see fit. But how can you split the commit?</p>
-<p>Actually, you can use two commands for this. One is <code>git add -i</code> to allow interactive adding of parts of commits. The second one is to use <code>git add -p</code> which is more simpler.</p>
-<p>Running <code>git add -p</code> will present you with the first chunk of changes to be committed. It might be the case that this is chunk is atomic or not. Git offers this question after presenting the hunk:</p>
-<pre><code>Stage this hunk [y,n,q,a,d,/,e,?]?</code></pre>
-<p>Selecting <code>?</code> will print the help text and the chunk afterwards. The help text is</p>
-<pre><code>y - stage this hunk
-n - do not stage this hunk
-q - quit; do not stage this hunk nor any of the remaining ones
-a - stage this hunk and all later hunks in the file
-d - do not stage this hunk nor any of the later hunks in the file
-g - select a hunk to go to
-/ - search for a hunk matching the given regex
-j - leave this hunk undecided, see next undecided hunk
-J - leave this hunk undecided, see next hunk
-k - leave this hunk undecided, see previous undecided hunk
-K - leave this hunk undecided, see previous hunk
-s - split the current hunk into smaller hunks
-e - manually edit the current hunk
-? - print help</code></pre>
-<p>Now, you can use these options to split your commit or edit it. Editing is the most advanced feature of <code>git add -p</code>, the only one who needs more explaining. So let’s choose this.</p>
-<pre><code>Stage this hunk [y,n,q,a,d,/,e,?]? e</code></pre>
-<p>Again, we will be presented with an editor to edit the contents of <code>.git/addp-hunk-edit.diff</code>. The comment at the end of the file is self-explanatory:</p>
-<pre><code># To remove &#39;-&#39; lines, make them &#39; &#39; lines (context).
-# To remove &#39;+&#39; lines, delete them.
-# Lines starting with # will be removed.
-#
-# If the patch applies cleanly, the edited hunk will immediately be
-# marked for staging. If it does not apply cleanly, you will be given
-# an opportunity to edit again. If all lines of the hunk are removed,
-# then the edit is aborted and the hunk is left unchanged.</code></pre>
-<p>The <code>-</code> lines are lines which will be removed by the commit and the <code>+</code> ones will be added. Thus, if you remove a <code>+</code> line, the commit will not contain the addition and if you mark one <code>-</code> line as context it won’t be removed by the commit.</p>
-<p>Since <code>git add -p</code> is a powerful feature, it is advisable to have it added as an alias, via <code>git config</code>. For example, I have <code>git gap</code> do the same thing as <code>git alias -p</code>. Then, it is in my muscles’ memory to type <code>git gap</code> when adding changes for a new commit.</p>
-</section>
-<section id="i-dont-want-this-commit-anymore" class="level2">
-<h2>I Don’t Want This Commit Anymore</h2>
-<p>There is often the case that you want to rollback a change you’ve done. As long as everything is happening locally (i.e. you haven’t pushed to a remote repository), Git offers the proper tools to handle this.</p>
-<p>Assume you’ve updated a file but you want to discard those changes. You’ve just done some tests and feel those are not required and want to get back to the initial version. Then you would issue</p>
-<pre><code>git checkout file-name</code></pre>
-<p>This above command restores the file to the repository version. It’s very useful in case you make a mess in a local file.</p>
-<p>A quite often situation is preparing to make a commit. When you do that you use one or more <code>git add</code> commands to prepare the commit; sometimes you use a <code>git add .</code> command that gives you little control on what to add to the staging area. You find out that you’ve added too much content to the staging area. In order to remove that extra content from the staging area (and leave it in the working directory), one issues:</p>
-<pre><code>git reset HEAD file-name</code></pre>
-<p>If you want to start building your commit from the beginning and discard all information in the staging area, you would use:</p>
-<pre><code>git reset HEAD</code></pre>
-<p>When leaving out the file name, all content from the staging area is discarded.</p>
-<p>Consider that you’ve done some bad commits and you’ve just found out. The last two commits are really bad and need to be dropped. As long as you haven’t pushed anything, you can rework those commits: you can reset the repository HEAD and leave the commit changes in the working directory. If we want to redo the last two commits we would just issue:</p>
-<pre><code>git reset HEAD^^</code></pre>
-<p>Remember, this doesn’t remove the commit changes. The repository HEAD is simply moved back and the commit changes are left in the working directory; you will then use them to create proper new commits.</p>
-</section>
-<section id="i-want-to-change-this-file-silently" class="level2">
-<h2>I Want To Change This File Silently</h2>
-<p>GitHub has an excellent article on <a href="https://help.github.com/articles/ignoring-files" title="GitHub: Ignoring files">ignoring files</a>. A particular situation is ignoring updates to files that are already in the repository (i.e. they’ve been previously commited and can’t be ignored using .gitignore).</p>
-<p>This kind of situation is part of my repository with letters of recommendation. I’m using a Makefile for compiling out a letter and have isolated in it some variables:</p>
-<pre><code>$ cat Makefile
-PERSON = Alexandru_Juncu
-FOLDER = alexandru-juncu
-
-include base.mk</code></pre>
-<p>When I would create a new recommendation I update the <code>Makefile</code> to compile it. However this change needn’t make it to the repository. If I would do that then each time I’m only compiling out an old letter of recommendation I would change the Makefile file and push the new changes; or, if I don’t want to push those changes, I would need to use <code>git checkout</code>.</p>
-<p>The best solution would be for any updates to the Makefile to not be considered. The initial Makefile file would be stored in the repository (as a model) but subsequent changes should not be visible. This can be done by using:</p>
-<pre><code>git update-index --assume-unchanged Makefile</code></pre>
-<p>No changes on the <code>Makefile</code> file are going to be considered in the working directory.</p>
-<p>If you want to revert this option, use:</p>
-<pre><code>git update-index --no-assume-unchanged Makefile</code></pre>
-</section>
-
-    </div>
-  </div>
-</div>
-]]></description>
-    <pubDate>Mon, 18 Mar 2013 00:00:00 UT</pubDate>
-    <guid>http://techblog.rosedu.org/git-is-the-answer-1.html</guid>
 </item>
 
     </channel> 
