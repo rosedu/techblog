@@ -264,7 +264,7 @@ Automake and Libtool][l4], and also [Using GNU Autotools][l5], from [the page
 of Alexandre Duret-Lutz][l6].
 
 After this article, we wish that the young Unix/Unix-like/Linux programmers
-are aware of the existence of these tools, and have them is mind when they
+are aware of the existence of these tools, and have them in mind when they
 will have to develop open-source programs which are intended to be portable
 across all Unix systems.
 
