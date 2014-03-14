@@ -253,8 +253,12 @@ recentPostCtx = listField "recent" postCtx loadRecentPosts
 
 postTitleField :: Context a
 postTitleField = Context $ \k i -> if k /= "postTitle" then empty else do
-    value <- getMetadataField (itemIdentifier i) "title"
-    maybe empty (return . StringField . (++ "...") . take 15) value
+    val <- getMetadataField (itemIdentifier i) "postTitle"
+    case val of
+      Just x -> return . StringField $ x
+      _ -> do
+            value <- getMetadataField (itemIdentifier i) "title"
+            maybe empty (return . StringField . (++ "...") . take 15) value
 
 {-
  - Special Markdown compiler. Needed to ensure proper extensions are in place.
