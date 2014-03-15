@@ -1,7 +1,6 @@
 ---
 date: 2014-03-08
 title: Unix portability. Autoconf, Automake, Libtool
-postTitle: XYZ
 author: Alexandru Goia
 tags: Unix, C, portable code, autoconf, automake, libtool
 ---
