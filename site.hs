@@ -296,7 +296,6 @@ techblogConfiguration = defaultConfiguration { deploySite = doDeploy }
 doDeploy :: Configuration -> IO ExitCode
 doDeploy _ = do
   -- return a nasty user error/pattern match failure if any command fails
-  -- TODO: find a better way to do this
   ExitSuccess <- system "git stash"
   ExitSuccess <- system "git checkout gh-pages"
   ExitSuccess <- system "git pull --rebase"
