@@ -84,6 +84,7 @@ compileArchive = makeItem ""
 {-
  - Resource rules (images, CSS, fonts, special files).
  -}
+
 imageRules :: Rules ()
 imageRules = idRouteAndCopy
 
@@ -118,6 +119,7 @@ markdownCompiler = techblogCompiler
  - We need snapshots to implements post visibility on home page and we need
  - versions to implement recent posts.
  -}
+
 loadTeaserSnapshots :: Compiler [Item String]
 loadTeaserSnapshots =
   loadAllSnapshots ("posts/**" .&&. hasNoVersion) "postTeaser"
