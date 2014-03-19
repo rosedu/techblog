@@ -38,8 +38,10 @@ buildTechblog = do
 techblogRules :: Rules ()
 techblogRules = do
   tags <- extractTags
+  people <- extractPeople
   let tagCtx = tagsCtx tags
   tagsRules tags $ makeTagPage tagCtx
+  tagsRules people $ makePeoplePage postCtx
   match "images/**" imageRules
   match "font/**" fontRules
   match "css/*" cssRules
@@ -51,7 +53,7 @@ techblogRules = do
   create ["archive.html"] $ makeIndexArchive compileArchive
   create ["rss.xml"] rssFeed
   create ["tags.html"] $ makeTags tags
-  create ["people.html"] $ makePeople tags
+  create ["people.html"] $ makePeople people
 
 {-
  - Index and Archive pages.
@@ -240,6 +242,27 @@ tagCompiler tags = makeItem ""
 {-
  - People page creation and display in `people.html`.
  -}
+
+extractPeople :: Rules People
+extractPeople = do
+  people <- buildTags ("posts/**" .&&. hasNoVersion) $ fromCapture "people/*.html"
+  return $ sortTagsBy caseInsensitiveTags people
+
+makePeoplePage :: Context String -> String -> Pattern -> Rules ()
+makePeoplePage contribCtx contrib pattern = do
+  route idRoute
+  compile $ contribPageCompiler contribCtx contrib pattern
+
+contribPageCompiler :: Context String -> String -> Pattern -> Compiler (Item String)
+contribPageCompiler contribCtx contrib pattern = makeItem ""
+  >>= loadAndApplyTemplate "templates/post-list.html" ctx
+  >>= loadAndApplyTemplate "templates/default.html" ctx
+  >>= relativizeUrls
+  where
+    ctx = recentPostCtx `mappend`
+      constField "title" ("Posts by '" ++ contrib ++ "'") `mappend`
+      listField "posts" postCtx (loadAll pattern >>= recentFirst) `mappend`
+      contribCtx
 
 makePeople :: People -> Rules ()
 makePeople people = do
