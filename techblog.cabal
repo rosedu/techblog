@@ -35,6 +35,7 @@ executable techblog
   build-depends:
     base,
     cmdargs,
+    containers,
     hakyll,
     process,
     pandoc
