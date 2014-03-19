@@ -1,7 +1,7 @@
 ---
 date: 2013-10-19
 title: Facebook Hackathon Live Blogging
-author: Alex Palcuie and Marius Ungureanu
+author: Alex Palcuie, Marius Ungureanu
 tags: facebook, hackathon, live, blogging, coders
 ---
 

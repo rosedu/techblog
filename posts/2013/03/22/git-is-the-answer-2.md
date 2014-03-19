@@ -1,7 +1,7 @@
 ---
 date: 2013-03-22
 title: Git Is The Answer 2/3
-author: Răzvan Deaconescu and Mihai Maruseac
+author: Răzvan Deaconescu, Mihai Maruseac
 tags: git
 ---
 
