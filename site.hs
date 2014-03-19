@@ -16,6 +16,7 @@ import System.Exit (ExitCode(..))
 import System.Process (system)
 import Text.Pandoc (ReaderOptions(..), WriterOptions(..), HTMLMathMethod(..))
 
+import qualified Data.Map as M
 import qualified System.Console.CmdArgs.Explicit as CA
 
 type People = Tags
@@ -245,8 +246,13 @@ tagCompiler tags = makeItem ""
 
 extractPeople :: Rules People
 extractPeople = do
-  people <- buildTags ("posts/**" .&&. hasNoVersion) $ fromCapture "people/*.html"
+  people <- buildTagsWith getPeople ("posts/**" .&&. hasNoVersion) $ fromCapture "people/*.html"
   return $ sortTagsBy caseInsensitiveTags people
+
+getPeople :: Identifier -> Rules [String]
+getPeople identifier = do
+  metadata <- getMetadata identifier
+  return $ maybe [] (map trim . splitAll ",") $ M.lookup "author" metadata
 
 makePeoplePage :: Context String -> String -> Pattern -> Rules ()
 makePeoplePage contribCtx contrib pattern = do
