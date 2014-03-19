@@ -18,6 +18,8 @@ import Text.Pandoc (ReaderOptions(..), WriterOptions(..), HTMLMathMethod(..))
 
 import qualified System.Console.CmdArgs.Explicit as CA
 
+type People = Tags
+
 main :: IO ()
 main = do
   args' <- cmdArgs techblogArgs
@@ -45,10 +47,11 @@ techblogRules = do
   match "index.html" $ makeIndexArchive compileIndex
   match "posts/**" $ makePosts tagCtx
   match "posts/**" . version "raw" $ makeRawPosts
-  match (fromList ["about.md", "people.md", "404.md"]) markdownRules
+  match (fromList ["about.md", "404.md"]) markdownRules
   create ["archive.html"] $ makeIndexArchive compileArchive
   create ["rss.xml"] rssFeed
   create ["tags.html"] $ makeTags tags
+  create ["people.html"] $ makePeople tags
 
 {-
  - Index and Archive pages.
@@ -232,6 +235,27 @@ tagCompiler tags = makeItem ""
     ctx = recentPostCtx `mappend`
       constField "alltags" nicerTags `mappend`
       constField "title" "Techblog tags" `mappend`
+      defaultContext
+
+{-
+ - People page creation and display in `people.html`.
+ -}
+
+makePeople :: People -> Rules ()
+makePeople people = do
+  route idRoute
+  compile $ renderTagList people >>= peopleCompiler
+
+peopleCompiler :: String -> Compiler (Item String)
+peopleCompiler people = makeItem ""
+  >>= loadAndApplyTemplate "templates/people.html" ctx
+  >>= loadAndApplyTemplate "templates/default.html" ctx
+  >>= relativizeUrls
+  where
+    nicerPeople = replaceAll ", " (const "</li><li>") people
+    ctx = recentPostCtx `mappend`
+      constField "allcontribs" nicerPeople `mappend`
+      constField "title" "Techblog Authors" `mappend`
       defaultContext
 
 {-
