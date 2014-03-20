@@ -256,8 +256,15 @@ getPeople identifier = do
 
 makePeoplePage :: Context String -> String -> Pattern -> Rules ()
 makePeoplePage contribCtx contrib pattern = do
-  route idRoute
+  route $ removeDiacritics `composeRoutes` removeSpace `composeRoutes` idRoute
   compile $ contribPageCompiler contribCtx contrib pattern
+  where
+    removeSpace = rd " " "-"
+    removeDiacritics = rd "ă" "a" `composeRoutes` rd "â" "a" `composeRoutes`
+      rd "î" "i" `composeRoutes` rd "Î" "I" `composeRoutes`
+      rd "ș" "s" `composeRoutes` rd "Ș" "S" `composeRoutes`
+      rd "ț" "t" `composeRoutes` rd "Ț" "T"
+    rd src dst = gsubRoute src (const dst)
 
 contribPageCompiler :: Context String -> String -> Pattern -> Compiler (Item String)
 contribPageCompiler contribCtx contrib pattern = makeItem ""
