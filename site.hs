@@ -209,7 +209,7 @@ extractTags = do
 
 makeTagPage :: Context String -> String -> Pattern -> Rules ()
 makeTagPage tagCtx tag pattern = do
-  route idRoute
+  route $ gsubRoute " " (const "-") `composeRoutes` idRoute
   compile $ tagPageCompiler tagCtx tag pattern
 
 tagPageCompiler :: Context String -> String -> Pattern -> Compiler (Item String)
