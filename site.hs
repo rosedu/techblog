@@ -5,7 +5,8 @@ import Hakyll
 
 import Control.Applicative (empty)
 import Control.Monad (liftM)
-import Data.Char (toLower)
+import Data.Char (isAlphaNum, isAscii, toLower)
+import Data.Maybe (maybeToList)
 import Data.Monoid (mappend)
 import GHC.IO.Encoding (setLocaleEncoding, setForeignEncoding, utf8,
   setFileSystemEncoding)
@@ -209,7 +210,7 @@ extractTags = do
 
 makeTagPage :: Context String -> String -> Pattern -> Rules ()
 makeTagPage tagCtx tag pattern = do
-  route $ gsubRoute " " (const "-") `composeRoutes` idRoute
+  route sanitizeRoute
   compile $ tagPageCompiler tagCtx tag pattern
 
 tagPageCompiler :: Context String -> String -> Pattern -> Compiler (Item String)
@@ -256,15 +257,8 @@ getPeople identifier = do
 
 makePeoplePage :: Context String -> String -> Pattern -> Rules ()
 makePeoplePage contribCtx contrib pattern = do
-  route $ removeDiacritics `composeRoutes` removeSpace `composeRoutes` idRoute
+  route sanitizeRoute
   compile $ contribPageCompiler contribCtx contrib pattern
-  where
-    removeSpace = rd " " "-"
-    removeDiacritics = rd "ă" "a" `composeRoutes` rd "â" "a" `composeRoutes`
-      rd "î" "i" `composeRoutes` rd "Î" "I" `composeRoutes`
-      rd "ș" "s" `composeRoutes` rd "Ș" "S" `composeRoutes`
-      rd "ț" "t" `composeRoutes` rd "Ț" "T"
-    rd src dst = gsubRoute src (const dst)
 
 contribPageCompiler :: Context String -> String -> Pattern -> Compiler (Item String)
 contribPageCompiler contribCtx contrib pattern = makeItem ""
@@ -321,6 +315,25 @@ postTitleField = Context $ \k i -> if k /= "postTitle" then empty else do
       _ -> do
             value <- getMetadataField (itemIdentifier i) "title"
             maybe empty (return . StringField . (++ "...") . take 15) value
+
+{-
+ - Route sanitization.
+ -}
+
+replacements :: M.Map Char Char
+replacements = M.fromList [('ă', 'a'), ('â', 'a'), ('î', 'i'), ('Î', 'I'),
+  ('ș', 's'), ('Ș', 'S'), ('ț', 't'), ('Ț', 'ț'), ('.', '.'), ('/', '/'),
+  ('-', '-'), (' ', '-')]
+
+sanitizeRoute :: Routes
+sanitizeRoute = customRoute $ sanitizePath . toFilePath
+
+sanitizePath :: FilePath -> FilePath
+sanitizePath = map toLower . concatMap replaceChars
+  where
+    replaceChars x
+      | isAscii x && isAlphaNum x = [x]
+      | otherwise = maybeToList $ M.lookup x replacements
 
 {-
  - Special Markdown compiler. Needed to ensure proper extensions are in place.
