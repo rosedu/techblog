@@ -327,7 +327,7 @@ postTitleField = Context $ \k i -> if k /= "postTitle" then empty else do
 replacements :: M.Map Char Char
 replacements = M.fromList [('ă', 'a'), ('â', 'a'), ('î', 'i'), ('Î', 'I'),
   ('ș', 's'), ('Ș', 'S'), ('ț', 't'), ('Ț', 'ț'), ('.', '.'), ('/', '/'),
-  ('-', '-'), (' ', '-')]
+  ('-', '-'), (' ', '-'), ('+', '+')]
 
 sanitizeRoute :: Routes
 sanitizeRoute = customRoute $ sanitizePath . toFilePath
