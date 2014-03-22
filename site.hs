@@ -6,8 +6,9 @@ import Hakyll
 import Control.Applicative (empty)
 import Control.Monad (liftM)
 import Data.Char (isAlphaNum, isAscii, toLower)
+import Data.List (intersperse)
 import Data.Maybe (maybeToList)
-import Data.Monoid (mappend)
+import Data.Monoid (mappend, mconcat)
 import GHC.IO.Encoding (setLocaleEncoding, setForeignEncoding, utf8,
   setFileSystemEncoding)
 import System.Console.CmdArgs (cmdArgs, cmdArgsMode, help, program, ignore,
@@ -19,6 +20,8 @@ import Text.Pandoc (ReaderOptions(..), WriterOptions(..), HTMLMathMethod(..))
 
 import qualified Data.Map as M
 import qualified System.Console.CmdArgs.Explicit as CA
+import qualified Text.Blaze.Html5 as H
+import qualified Text.Blaze.Html5.Attributes as A
 
 type People = Tags
 
@@ -41,15 +44,19 @@ techblogRules :: Rules ()
 techblogRules = do
   tags <- extractTags
   people <- extractPeople
-  let tagCtx = tagsCtx tags
-  tagsRules tags $ makeTagPage tagCtx
+  let fullCtx = mconcat
+                  [ tagsField "tags" tags
+                  , tagsFieldWith getPeople simpleRenderLink
+                    (mconcat . intersperse ", ") "author" people
+                  , postCtx]
+  tagsRules tags $ makeTagPage postCtx
   tagsRules people $ makePeoplePage postCtx
   match "images/**" imageRules
   match "font/**" fontRules
   match "css/*" cssRules
   match "templates/*" $ compile templateCompiler
   match "index.html" $ makeIndexArchive compileIndex
-  match "posts/**" $ makePosts tagCtx
+  match "posts/**" $ makePosts fullCtx
   match "posts/**" . version "raw" $ makeRawPosts
   match (fromList ["about.md", "404.md"]) markdownRules
   create ["archive.html"] $ makeIndexArchive compileArchive
@@ -250,7 +257,7 @@ extractPeople = do
   people <- buildTagsWith getPeople ("posts/**" .&&. hasNoVersion) $ fromCapture "people/*.html"
   return $ sortTagsBy caseInsensitiveTags people
 
-getPeople :: Identifier -> Rules [String]
+getPeople :: MonadMetadata m => Identifier -> m [String]
 getPeople identifier = do
   metadata <- getMetadata identifier
   return $ maybe [] (map trim . splitAll ",") $ M.lookup "author" metadata
@@ -294,9 +301,6 @@ peopleCompiler people = makeItem ""
  - Only those contexts which are repeated in more than one rule.
  -}
 
-tagsCtx :: Tags -> Context String
-tagsCtx tags = tagsField "tags" tags `mappend` postCtx
-
 postCtx :: Context String
 postCtx =
   postTitleField `mappend`
@@ -334,6 +338,20 @@ sanitizePath = map toLower . concatMap replaceChars
     replaceChars x
       | isAscii x && isAlphaNum x = [x]
       | otherwise = maybeToList $ M.lookup x replacements
+
+{-
+ - Utility functions.
+ -}
+
+{-
+ - Copied from
+ - http://hackage.haskell.org/package/hakyll-4.4.3.2/docs/src/Hakyll-Web-Tags.html
+ - because it was not exported directly.
+ -}
+simpleRenderLink :: String -> (Maybe FilePath) -> Maybe H.Html
+simpleRenderLink _  Nothing         = Nothing
+simpleRenderLink tag (Just filePath) =
+  Just $ H.a H.! A.href (H.toValue $ toUrl filePath) $ H.toHtml tag
 
 {-
  - Special Markdown compiler. Needed to ensure proper extensions are in place.
