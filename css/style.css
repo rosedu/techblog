@@ -736,7 +736,8 @@ pre {
   padding: 2px 5px;
   border: 1px solid #ddd;
   border-radius: 2px;
-  white-space: nowrap;
+  word-wrap: break-word;
+  white-space: pre-wrap;
   background-color: #f8f8f8;
 }
 .unit-article li pre code {
@@ -746,6 +747,8 @@ pre {
 }
 .unit-article img {
   display: block;
+  width: 95%;
+  height: auto;
   margin-left: auto;
   margin-left: auto;
 }
