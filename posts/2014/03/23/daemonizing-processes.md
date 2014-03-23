@@ -10,7 +10,7 @@ processes.
 
 <!--more-->
 
-### What is a daemon ?
+### What is a daemon?
 
 A daemon is a program that runs as a background process, forever, without
 being directly affected by any user. Let's run a command to see examples of
