@@ -732,6 +732,10 @@ pre {
 }
 .unit-article p code,
 .unit-article li code {
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
   margin: 0px 2px;
   padding: 2px 5px;
   border: 1px solid #ddd;
@@ -1012,7 +1016,7 @@ pre {
   }
 }
 /*
-	Not that old computer layout 
+	Not that old computer layout
 */
 @media only screen and (min-width: 1280px) {
   .the-header .unit-head .nav-global .logo {
@@ -1047,7 +1051,7 @@ pre {
   }
 }
 /*
-	Huge-screen layout 
+	Huge-screen layout
 */
 @media only screen and (min-width: 1410px) {
   .the-header {
