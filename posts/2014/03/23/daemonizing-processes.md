@@ -275,7 +275,7 @@ $ ps -ef | grep gedit
 matei    23087 22921  8 18:38 pts/6    00:00:01 gedit
 ```
 
-To conclude :
+To conclude:
 
 - we need to use daemons for autonomous tasks
 - we have multiple ways for creating daemons
