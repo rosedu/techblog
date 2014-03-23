@@ -2,7 +2,7 @@
 date: 2014-02-02
 title: Unix standards and implementations. Unix portability
 author: Alexandru Goia
-tags: Unix, C, portable code, POSIX, SUS, `libc`
+tags: Unix, C, portable code, POSIX, SUS, libc
 ---
 
 The purpose of this article is to present in a general way the Unix standards
