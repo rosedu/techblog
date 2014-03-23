@@ -7,7 +7,7 @@ name:                techblog
 -- PVP summary:      +-+------- breaking API changes
 --                   | | +----- non-breaking API additions
 --                   | | | +--- code changes with no API change
-version:             2.0.0.9
+version:             2.0.0.10
 synopsis:            Techblog is a ROSEdu (http://www.rosedu.org) technical
                      blogging project.
 description:         Techblog is a ROSEdu (http://www.rosedu.org) technical
