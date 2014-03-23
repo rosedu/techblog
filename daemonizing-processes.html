@@ -101,7 +101,7 @@
 <!--more-->
 
 <section id="what-is-a-daemon" class="level3">
-<h3>What is a daemon ?</h3>
+<h3>What is a daemon?</h3>
 <p>A daemon is a program that runs as a background process, forever, without being directly affected by any user. Let’s run a command to see examples of some daemons.</p>
 <p>We need to run a command which will tell us what processes are started by the <code>init</code> process (they must have a <code>PPID</code> of 1):</p>
 <pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">ps</span> -ef <span class="kw">|</span> <span class="kw">awk</span> <span class="st">'$3 == 1'</span></code></pre>
