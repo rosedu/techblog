@@ -51,9 +51,9 @@ techblogRules = do
                   , postCtx]
   tagsRules tags $ makeTagPage postCtx
   tagsRules people $ makePeoplePage postCtx
-  match "res/**" resRules
-  match "images/**" imageRules
-  match "font/**" fontRules
+  match "res/**" idRouteAndCopy
+  match "images/**" idRouteAndCopy
+  match "font/**" idRouteAndCopy
   match "css/*" cssRules
   match "templates/*" $ compile templateCompiler
   match "index.html" $ makeIndexArchive compileIndex
@@ -99,15 +99,6 @@ compileArchive = makeItem ""
 {-
  - Resource rules (images, CSS, fonts, special files).
  -}
-
-resRules :: Rules ()
-resRules = idRouteAndCopy
-
-imageRules :: Rules ()
-imageRules = idRouteAndCopy
-
-fontRules :: Rules ()
-fontRules = idRouteAndCopy
 
 cssRules :: Rules ()
 cssRules = do
