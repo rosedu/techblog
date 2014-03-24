@@ -145,17 +145,17 @@ if (fd < 0) {
     exit(EXIT_FAILURE);
 }
 
-status = dup(fd, 0);
+status = dup2(fd, 0);
 if (status < 0) {
     perror("dup 0");
     exit(EXIT_FAILURE);
 }
-status = dup(fd, 1);
+status = dup2(fd, 1);
 if (status < 0) {
     perror("dup 1");
     exit(EXIT_FAILURE);
 }
-status = dup(fd, 2);
+status = dup2(fd, 2);
 if (status < 0) {
     perror("dup 2");
     exit(EXIT_FAILURE);
@@ -169,9 +169,9 @@ considerations must be taken:
    `umask` steps are useful. No `fork` and `setsid` should be called
    (otherwise `inetd` will get confused) and all other steps are already done
    by `inetd`.
-2. Second, all of the above code is already implemented in the `daemon` system
-   call with slightly less control over the end-result. It might be easier to
-   use it instead of all of the above steps.
+2. Second, all of the above code is already implemented in the `daemon`
+   function call with slightly less control over the end-result. It might be
+   easier to use it instead of all of the above steps.
 
 All is good and nice but what if we want to daemonize a normal process? Well,
 we can use `nohup`, `disown` or `start-stop-daemon`. Or we could resort to
@@ -220,6 +220,11 @@ if(isatty(fileno(stdout))) {
         perror("open");
         exit(EXIT_FAILURE);
     }
+    rc = dup2(rc, STDOUT_FILENO);
+    if (rc < 0) {
+        perror("dup2");
+        exit(EXIT_FAILURE);
+    }
 }
 ```
 
@@ -244,8 +249,8 @@ matei    22727     1  2 18:25 ?        00:00:01 gedit
 ### Disowning a process
 
 What if we already started the process and forgot to use `nohup`? We can use
-`disown` to make the process become inherited by `init`, thus acting as a
-partial daemon.
+`disown` to remove the process from the current session hierarchy, thus making
+it able to survive when the `tty` is closed.
 
 Our first job is to use `^Z` to stop/pause the program and to go back to
 terminal. Then we have to use `bg` to run it in the background.
@@ -263,16 +268,25 @@ Now, we use `disown` with the `-h` option, to mark the process so that
 is also removed from the current jobs table, which is something we like to do
 anyway:
 
-``` bash 
+``` bash
 $ disown
 ```
 
-If we go to another terminal, we'll see that the process has been adopted by
-`init`:
+If we go to another terminal, we should see that the process has been adopted
+by `init`:
 
-```bash
+``` bash
 $ ps -ef | grep gedit
 matei    23087 22921  8 18:38 pts/6    00:00:01 gedit
+```
+
+What happened? Our `gedit` process is not adopted by `init`. This is because
+we haven't yet closed the terminal in which we have launched it. After closing
+it we have
+
+``` bash
+$ ps -ef | grep gedit
+matei    12490     1  1 07:07 ?        00:00:00 gedit
 ```
 
 To conclude:
