@@ -176,17 +176,17 @@ umask(<span class="dv">0</span>);</code></pre>
     exit(EXIT_FAILURE);
 }
 
-status = dup(fd, <span class="dv">0</span>);
+status = dup2(fd, <span class="dv">0</span>);
 <span class="kw">if</span> (status &lt; <span class="dv">0</span>) {
     perror(<span class="st">&quot;dup 0&quot;</span>);
     exit(EXIT_FAILURE);
 }
-status = dup(fd, <span class="dv">1</span>);
+status = dup2(fd, <span class="dv">1</span>);
 <span class="kw">if</span> (status &lt; <span class="dv">0</span>) {
     perror(<span class="st">&quot;dup 1&quot;</span>);
     exit(EXIT_FAILURE);
 }
-status = dup(fd, <span class="dv">2</span>);
+status = dup2(fd, <span class="dv">2</span>);
 <span class="kw">if</span> (status &lt; <span class="dv">0</span>) {
     perror(<span class="st">&quot;dup 2&quot;</span>);
     exit(EXIT_FAILURE);
@@ -194,7 +194,7 @@ status = dup(fd, <span class="dv">2</span>);
 <p>We now, have a fully working daemon, created by us. However, certain considerations must be taken:</p>
 <ol type="1">
 <li>First, if our code is to be launched by <code>inetd</code> then only the <code>chdir</code> and <code>umask</code> steps are useful. No <code>fork</code> and <code>setsid</code> should be called (otherwise <code>inetd</code> will get confused) and all other steps are already done by <code>inetd</code>.</li>
-<li>Second, all of the above code is already implemented in the <code>daemon</code> system call with slightly less control over the end-result. It might be easier to use it instead of all of the above steps.</li>
+<li>Second, all of the above code is already implemented in the <code>daemon</code> function call with slightly less control over the end-result. It might be easier to use it instead of all of the above steps.</li>
 </ol>
 <p>All is good and nice but what if we want to daemonize a normal process? Well, we can use <code>nohup</code>, <code>disown</code> or <code>start-stop-daemon</code>. Or we could resort to special services to start our daemons like <code>inetd</code> and <code>upstart</code>.</p>
 </section>
@@ -222,6 +222,11 @@ $ <span class="kw">exit</span></code></pre>
         perror(<span class="st">&quot;open&quot;</span>);
         exit(EXIT_FAILURE);
     }
+    rc = dup2(rc, STDOUT_FILENO);
+    <span class="kw">if</span> (rc &lt; <span class="dv">0</span>) {
+        perror(<span class="st">&quot;dup2&quot;</span>);
+        exit(EXIT_FAILURE);
+    }
 }</code></pre>
 <p>Then we can <code>fork</code> and <code>exec</code> to get to our new process.</p>
 <p>Let’s test it now (<code>./a.out</code> is our test binary, it receives as arguments the command line to execute in <code>exec</code>):</p>
@@ -233,7 +238,7 @@ $ <span class="kw">exit</span></code></pre>
 </section>
 <section id="disowning-a-process" class="level3">
 <h3>Disowning a process</h3>
-<p>What if we already started the process and forgot to use <code>nohup</code>? We can use <code>disown</code> to make the process become inherited by <code>init</code>, thus acting as a partial daemon.</p>
+<p>What if we already started the process and forgot to use <code>nohup</code>? We can use <code>disown</code> to remove the process from the current session hierarchy, thus making it able to survive when the <code>tty</code> is closed.</p>
 <p>Our first job is to use <code>^Z</code> to stop/pause the program and to go back to terminal. Then we have to use <code>bg</code> to run it in the background.</p>
 <pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">gedit</span>
 ^<span class="kw">Z</span>
@@ -242,9 +247,12 @@ $ <span class="kw">bg</span>
 [<span class="kw">1</span>]+ gedit <span class="kw">&amp;</span></code></pre>
 <p>Now, we use <code>disown</code> with the <code>-h</code> option, to mark the process so that <code>SIGHUP</code> is not gonna be received. If we don’t use the <code>-h</code> option the process is also removed from the current jobs table, which is something we like to do anyway:</p>
 <pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">disown</span></code></pre>
-<p>If we go to another terminal, we’ll see that the process has been adopted by <code>init</code>:</p>
+<p>If we go to another terminal, we should see that the process has been adopted by <code>init</code>:</p>
 <pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">ps</span> -ef <span class="kw">|</span> <span class="kw">grep</span> gedit
 <span class="kw">matei</span>    23087 22921  8 18:38 pts/6    00:00:01 gedit</code></pre>
+<p>What happened? Our <code>gedit</code> process is not adopted by <code>init</code>. This is because we haven’t yet closed the terminal in which we have launched it. After closing it we have</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">ps</span> -ef <span class="kw">|</span> <span class="kw">grep</span> gedit
+<span class="kw">matei</span>    12490     1  1 07:07 ?        00:00:00 gedit</code></pre>
 <p>To conclude:</p>
 <ul>
 <li>we need to use daemons for autonomous tasks</li>
