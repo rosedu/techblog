@@ -118,7 +118,6 @@ markdownRules = do
 markdownCompiler :: Compiler (Item String)
 markdownCompiler = techblogCompiler
   >>= loadAndApplyTemplate "templates/default.html" ctx
-  >>= relativizeUrls
   where
     ctx = recentPostCtx `mappend` defaultContext
 
