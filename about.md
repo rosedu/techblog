@@ -26,3 +26,15 @@ syntax](http://daringfireball.net/projects/markdown/syntax) --, run
 make a pull request. Please send an email to `techblog` [_at_] `rosedu`
 [_dot_] `org` afterwards to ensure that your pull request is acted upon as
 soon as possible.
+
+### I have seen a bug
+
+If you have found something which needs to be changed in the layout of the
+site, please [leave an issue](https://github.com/rosedu/techblog/issues/new)
+and we will start working on it as soon as possible.
+
+If you have found something wrong inside one article leave a comment on that
+article or send an email to `techblog` [_at_] `rosedu` [_dot_] `org` or
+`rosedu-general` [_at_] `rosedu` [_dot_] `org`. We will try to fix things as
+soon as possible. If need be, we will write a follow-up article containing
+your remark and proper thanks and attributions.
