@@ -1,7 +1,7 @@
 ---
 title: About
 ---
-## About Techblog
+## About Techblog[^1]
 
 Techblog is a blog about various IT-related technical topics and it's written
 by people interested in technology and high-tech.
@@ -47,3 +47,5 @@ to `techblog` [_at_] `rosedu` [_dot_] `org` or `rosedu-general` [_at_]
 `rosedu` [_dot_] `org`. As soon as someone can write an article on that idea
 and he has some free time the article will be written and you'll get an
 attribution at the end of it.
+
+[^1]: Last updated 2014/03/25.
