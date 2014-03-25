@@ -76,6 +76,13 @@
                 <section id="about-techblog" class="level2">
 <h2>About Techblog</h2>
 <p>Techblog is a blog about various IT-related technical topics and it’s written by people interested in technology and high-tech.</p>
+<section id="how-to-write-an-article-on-techblog" class="level3">
+<h3>How to write an article on Techblog</h3>
+<p>The simplest way is just to send an e-mail to <code>techblog</code> [<em>at</em>] <code>rosedu</code> [<em>dot</em>] <code>org</code> to announce your desire to write something along with a draft in any format you want (text file, PDF, HTML). If the idea looks good we will work from there.</p>
+<p>If you want to be extremely formal and do the entire work yourself then you first clone the repository:</p>
+<pre><code>git clone https://github.com/rosedu/techblog.git</code></pre>
+<p>then you install Haskell Platform and run <code>./build-exec</code> to have <code>hakyll</code> and dependencies installed. After this you write your article in a <code>posts/year/month/day/name.md</code> file – using <a href="http://daringfireball.net/projects/markdown/syntax">markdown syntax</a> –, run <code>./techblog</code> to see the future aspect of the site on <code>0.0.0.0:8000</code> and then make a pull request. Please send an email to <code>techblog</code> [<em>at</em>] <code>rosedu</code> [<em>dot</em>] <code>org</code> afterwards to ensure that your pull request is acted upon as soon as possible.</p>
+</section>
 </section>
               </article>
               
