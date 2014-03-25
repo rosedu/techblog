@@ -38,3 +38,12 @@ article or send an email to `techblog` [_at_] `rosedu` [_dot_] `org` or
 `rosedu-general` [_at_] `rosedu` [_dot_] `org`. We will try to fix things as
 soon as possible. If need be, we will write a follow-up article containing
 your remark and proper thanks and attributions.
+
+### I want to propose an article.
+
+If you want to propose an article you can either edit the [proposal
+page](https://github.com/rosedu/techblog/wiki/FutureArticles) or send an email
+to `techblog` [_at_] `rosedu` [_dot_] `org` or `rosedu-general` [_at_]
+`rosedu` [_dot_] `org`. As soon as someone can write an article on that idea
+and he has some free time the article will be written and you'll get an
+attribution at the end of it.
