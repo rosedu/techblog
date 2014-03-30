@@ -210,8 +210,8 @@ The standard committee has come up with a clever idea of storing these numbers
 into binary format. For example, they don't store the exponent in 2's
 complement but modified via an offset. Thus, **the bit patterns of two nearby
 representable floats represent two consecutive integer values**. This allows
-us to do some interesting tricks TODO with the two representations of real
-numbers.
+us to do some interesting [tricks](#fun-trivia) with the two representations
+of real numbers.
 
 The standard also defines $\infty$ and $-\infty$, two values for `0` (`+0` and
 `-0` and how they should be tested equal but treated differently in
