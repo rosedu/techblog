@@ -17,7 +17,7 @@ happen, starting from results which don't show up nicely and bad equality
 testing and going towards subtler and subtler bugs.
 
 <img src="http://imgs.xkcd.com/comics/e_to_the_pi_minus_pi.png" alt="e to pi
-minus pi" title="e to pi minus pi">
+minus pi (xkcd)" title="e to pi minus pi (xkcd)">
 
 Even experts and common-sense is at fault in this realm. For example, did you
 know that *always* comparing two floating points like in the following code is
@@ -245,7 +245,9 @@ Looking through the analyzer, `0x3dcccccd` (the value for `a`) is
 However, looking at `xmm0` register we see that the last 32 bits have the same
 pattern as `-0xc($rbp)`. Thus, the SSE 128 bits registers **are not using**
 the `binary128` standard! If they were using it, the last value displayed
-there should have been `3FFD3333333333333333333333333333`.
+there should have been `3FFD3333333333333333333333333333`. As said on [reddit
+thread for this article][reddit], excess precision comes form the `x87`
+coprocessor which uses 80 bits of precision.
 
 Now it is time to see some other aspects of working with floating point
 numbers.
@@ -804,3 +806,4 @@ should it be treated carelessly.
 [taylor]: http://en.wikipedia.org/wiki/Taylor_series "Taylor series - Wikipedia"
 [knuth]: http://c2.com/cgi/wiki?PrematureOptimization "Premature Optimization"
 [choose3]: http://en.wikipedia.org/wiki/Project_management_triangle "Triple Constraint - Wikipedia"
+[reddit]: http://www.reddit.com/r/programming/comments/21qzz2/an_overview_of_floating_point_realm/ "This article on reddit"
