@@ -69,7 +69,8 @@ $ ./a.out
 ```
 
 *Note*: Your results on your machine might vary. [Later in the
-article](#focusing-on-determinism) we will discuss this aspect at length.
+article](#determinism-correctness-and-fastness) we will discuss this aspect at
+length.
 
 Of course, the problem in here is pretty simple: all floating point constants
 use double precision thus the code should *at least* read
@@ -666,7 +667,7 @@ sys 0m0.204s
 We seem to be getting some wrong results (`0.9%`). Indeed, around 0 both
 comparison methods fail. The relative error method fails because we are close
 to dividing by `0` and because of catastrophic cancellation. The ULP method
-because there are infinitely many numbers between 0 and `FLT_MIN` (the minimum
+because there are many numbers between 0 and `FLT_MIN` (the minimum
 properly representable float) -- these values are denormalized and using them
 might slow down your computation quite a lot. So, what should we use in this
 case? It turns out that if you want to compare with `0` the absolute error
@@ -687,7 +688,70 @@ To conclude this part:
 
 ### Determinism, Correctness and Fastness
 
-TODO
+Up to this point, this article focused on the correctness aspect of floating
+point operations where by correctness one means giving results as close as
+possible to the real truth. Not mentioned in here but on the same topic we
+have the field of [numerically stable algorithms][stable] and the entire
+mathematics/CS branch of [numerical analysis][mn].
+
+However, there is another aspect which needs to be considered. We have written
+even in this article *the results you get might differ* depending on the
+architecture you use. And indeed, neither IEEE nor C/C++ standards define what
+precision should be use for intermediate computations. Even though the
+IEEE-754-2008 standard says *Together with language controls it should be
+possible to write programs that produce identical results on all conforming
+systems*, this is just a possibility, not yet mandated across architectures.
+
+When is this important? Three domains come to mind: games (network games and
+game replays), research (reproducibility), cloud computing (migration of live
+virtual machines). All of them are important enough to make this problem an
+interesting one.
+
+There are settings which change the rounding mode, the handling of denormals
+or of exceptions. There are a lot of flags to control and you can find them
+all described in `fenv.h` header. These values are per-thread but they might
+change if you call a library function which has the side effect of modifying
+one of these flags and not changing it back to the previous value (another
+strong point of referential immutability).
+
+Finally, floating point results might also change depending on the compilation
+flags passed (`-ffast-math`) or even if you are running your code inside a
+debugger or in production mode. We'll leave this topic by giving [a link to a
+comprehensive article][randomascii] about it. If one really needs reproducible
+floating point results then he might use [Streflop][streflop] or even
+[MPFR][mpfr].
+
+Now, let's turn to the third topic: *fastness*. It turns out that all floating
+point operations are slow. To alleviate this problem several CPU extensions
+were introduced -- that's why we have SSE. But it turns out that we can do
+even better than that if we leave some room for some errors.
+
+Games and Artificial Intelligence use quite a lot of floating point operations
+with transcendental functions (`sin`, `log`, `exp`). These have been the
+subject of optimizations through time. We have [the fast-inverse-square-root
+trick][fisqrt] as a powerful example of that. We have [fast approximations of
+exponential][faexppdf] function which is commonly used in neural networks and
+radial basis functions. And we have even libraries ([[1][lib1]], [[2][lib2]])
+dedicated to optimizing the speed of these functions in detriment of
+precision. At first look, all of these look like clever algorithms with a lot
+of magical constants which arise from (seemingly) nowhere. However, most of
+them are just simply usages of numerical methods to compute roots of equations
+([Newton-Raphson method][newton] is used for the [Carmak's trick][fisqrt]) or
+some [series expansions][taylor] of the functions being used coupled with
+clever usages of the integer representation of the floating point. Describing
+these algorithms will cover an article twice as long as this one so we won't
+do it now. However, keep in mind that [Knuth saying][knuth]:
+
+> Premature optimization is the root of all evil
+
+Don't just go and replace all of your transcendental calls from `libm` to
+calls from one of the libraries bent on optimizing the speed of some floating
+point operations, check first if this is exactly what you want and if the
+errors stemming from the approximations have no impact on your code/results.
+
+To end this section, it seems that in the realm of floating point precision,
+reproducibility and speed are the vertices of an [Iron Triangle][choose3]: one
+cannot get all of them at once and must make compromises.
 
 ### Fun trivia
 
@@ -698,13 +762,13 @@ exponent -- which is stored in the middle of the representation -- increasing
 the value of the logarithm by 1 is just increasing the representation by
 `0x800000`.
 
-Another interesting fact is that since $sin(\pi-x) = sin(x)$ and for small
-values of `x` $sin(x) \approx x$ we get that $sin(\pi) \approx \pi$. Thus, a
-nice method to compute $\pi$ is to repeatedly compute `pi + sin(pi)` up to the
-highest precision available. Don't try this in production code, the
-[xkcd][xkcd] reference in the beginning of the article should be warning
-enough: `sin(pi)` is not a rational function thus this method can quickly lead
-to catastrophic errors.
+Another interesting fact is that since $\sin(\pi-x) = \sin(x)$ and for small
+values of `x` $\sin(x) \approx x$ we get that $\sin(\pi) \approx \epsilon(\pi)$
+(the error in representing $\pi$ as a float). Thus, a nice method to compute
+$\pi$ is to repeatedly compute `pi + sin(pi)` up to the highest precision
+available. Don't try this in production code, the [xkcd][xkcd] reference in
+the beginning of the article should be warning enough: `sin(pi)` is not a
+rational function thus this method can quickly lead to catastrophic errors.
 
 ### Conclusions
 
@@ -727,3 +791,16 @@ should it be treated carelessly.
 [ieee-754]: http://en.wikipedia.org/wiki/IEEE_754 "IEEE-754 - Wikipedia"
 [babbage]: http://babbage.cs.qc.cuny.edu/IEEE-754/ "IEEE-754 Analysis"
 [so]: http://stackoverflow.com/questions/6430448/why-doesnt-gcc-optimize-aaaaaa-to-aaaaaa "Why doesn't GCC optimize..."
+[stable]: http://en.wikipedia.org/wiki/Numerical_stability "Numerical stability - Wikipedia"
+[mn]: http://en.wikipedia.org/wiki/Numerical_analysis "Numerical Analysis - Wikipedia"
+[randomascii]: http://randomascii.wordpress.com/2013/07/16/floating-point-determinism/ "Random Ascii - Floating Point Determinism"
+[streflop]: http://nicolas.brodu.net/en/programmation/streflop/ "STand-alone REproducible FLoating point OPerations"
+[mpfr]: http://www.mpfr.org/mpfr-current/ "GNU MPFR"
+[fisqrt]: http://en.wikipedia.org/wiki/Fast_inverse_square_root "Fast inverse square root - Wikipedia"
+[faexppdf]: http://nic.schraudolph.org/pubs/Schraudolph99.pdf "Fast approximation of exponential function (PDF)"
+[lib1]: https://github.com/ekmett/approximate/blob/master/cbits/fast.c "approximate/cbits/fast.c - GitHub"
+[lib2]: https://code.google.com/p/fastapprox/ "fastapprox - GoogleCode"
+[newton]: http://en.wikipedia.org/wiki/Newton's_method "Newton-Raphson method - Wikipedia"
+[taylor]: http://en.wikipedia.org/wiki/Taylor_series "Taylor series - Wikipedia"
+[knuth]: http://c2.com/cgi/wiki?PrematureOptimization "Premature Optimization"
+[choose3]: http://en.wikipedia.org/wiki/Project_management_triangle "Triple Constraint - Wikipedia"
