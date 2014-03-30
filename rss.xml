@@ -38,7 +38,7 @@
       <p>In every programmer’s life there comes a time when he has to leave the realm of integers and tread into the dangerous land of rational numbers. He/she might do some scientific computation, or work on a financial application or a game rendering pipeline or even in some artificial intelligence or data-mining algorithm – in all of these cases and many others, restricting oneself to using only integers is no longer feasible.</p>
 <p>And, as soon as one starts using floating point a lot of interesting things happen, starting from results which don’t show up nicely and bad equality testing and going towards subtler and subtler bugs.</p>
 <p><img src="http://imgs.xkcd.com/comics/e_to_the_pi_minus_pi.png" alt="e to pi
-minus pi" title="e to pi minus pi"></p>
+minus pi (xkcd)" title="e to pi minus pi (xkcd)"></p>
 <p>Even experts and common-sense is at fault in this realm. For example, did you know that <em>always</em> comparing two floating points like in the following code is <em>bad</em>?</p>
 <pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="kw">if</span> (fabs(a - b) &lt; <span class="fl">0.0001</span>)
     do_something_with_equal_numbers(a);</code></pre>
@@ -150,7 +150,7 @@ $<span class="dv">4</span> = <span class="fl">0.300000012</span></code></pre>
 <span class="bn">0x7fffffffdfa4</span>: <span class="bn">0x3e99999a</span>
 (gdb) p/x $xmm0
 $<span class="dv">4</span> = {.... uint128 = <span class="bn">0x0000000000000000000000003e99999a</span>}</code></pre>
-<p>Looking through the analyzer, <code>0x3dcccccd</code> (the value for <code>a</code>) is <code>1.00000001490116119384765625E-1</code> which is both close to the original value of <code>0.1</code> and to the displayed value of <code>0.100000001</code>. Same for <code>b</code> and <code>c</code>. However, looking at <code>xmm0</code> register we see that the last 32 bits have the same pattern as <code>-0xc($rbp)</code>. Thus, the SSE 128 bits registers <strong>are not using</strong> the <code>binary128</code> standard! If they were using it, the last value displayed there should have been <code>3FFD3333333333333333333333333333</code>.</p>
+<p>Looking through the analyzer, <code>0x3dcccccd</code> (the value for <code>a</code>) is <code>1.00000001490116119384765625E-1</code> which is both close to the original value of <code>0.1</code> and to the displayed value of <code>0.100000001</code>. Same for <code>b</code> and <code>c</code>. However, looking at <code>xmm0</code> register we see that the last 32 bits have the same pattern as <code>-0xc($rbp)</code>. Thus, the SSE 128 bits registers <strong>are not using</strong> the <code>binary128</code> standard! If they were using it, the last value displayed there should have been <code>3FFD3333333333333333333333333333</code>. As said on <a href="http://www.reddit.com/r/programming/comments/21qzz2/an_overview_of_floating_point_realm/" title="This article on reddit">reddit thread for this article</a>, excess precision comes form the <code>x87</code> coprocessor which uses 80 bits of precision.</p>
 <p>Now it is time to see some other aspects of working with floating point numbers.</p>
 </section>
 <section id="testing-them-all" class="level3">
