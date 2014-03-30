@@ -55,11 +55,11 @@
               <ul>
                 <li class="logo"><a href="./archive.html" title="Archive">Latest Posts</a></li>
                 
+                  <li><a href="./fp-dragons.html" title="Here be Dragons - The Interesting Realm of Floating Point Operations">Here be Dragons...</a></li>
+                
                   <li><a href="./daemonizing-processes.html" title="Daemonizing Processes - Part 1">Daemonizing Pro...</a></li>
                 
                   <li><a href="./unix-auto.html" title="Unix portability. Autoconf, Automake, Libtool">Unix portabilit...</a></li>
-                
-                  <li><a href="./haskell-part2.html" title="A superficial exploration of Haskell, part 2: Lazy by default">A superficial e...</a></li>
                 
               </ul>
             </nav>
@@ -73,6 +73,49 @@
             <div class="entry-content">
               <article class="unit-article layout-post">
                 
+  <div class="unit-inner unit-article-inner">
+  <div class="content">
+    <div class="bd">
+      <header>
+        <div class="unit-head">
+          <div class="unit-inner unit-head-inner">
+            <h1 class="h2 entry-title">
+              <a class="post_title" href="./fp-dragons.html" title="Here be Dragons - The Interesting Realm of Floating Point Operations">Here be Dragons - The Interesting Realm of Floating Point Operations</a>
+            </h1>
+          </div><!-- unit-inner -->
+        </div><!-- unit-head -->
+      </header>
+
+      <span class="date">
+      <span class="published">Published on March 30, 2014</span>
+      by
+      <span class="author"><a href="./people/mihai-maruseac.html">Mihai Maruseac</a></span>
+      </span>
+
+      <br />
+      <span class="meta">
+        Tagged:
+        <span class="tags"><a href="./tags/floating-point.html">floating point</a>, <a href="./tags/numerical-methods.html">numerical methods</a>, <a href="./tags/approximate-algorithms.html">approximate algorithms</a>, <a href="./tags/fast-transcedental-functions.html">fast transcedental functions</a>, <a href="./tags/fast-inverse-square-root.html">fast inverse square root</a></span>
+      </span>
+
+      <p>In every programmer’s life there comes a time when he has to leave the realm of integers and tread into the dangerous land of rational numbers. He/she might do some scientific computation, or work on a financial application or a game rendering pipeline or even in some artificial intelligence or data-mining algorithm – in all of these cases and many others, restricting oneself to using only integers is no longer feasible.</p>
+<p>And, as soon as one starts using floating point a lot of interesting things happen, starting from results which don’t show up nicely and bad equality testing and going towards subtler and subtler bugs.</p>
+<p><img src="http://imgs.xkcd.com/comics/e_to_the_pi_minus_pi.png" alt="e to pi
+minus pi" title="e to pi minus pi"></p>
+<p>Even experts and common-sense is at fault in this realm. For example, did you know that <em>always</em> comparing two floating points like in the following code is <em>bad</em>?</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="kw">if</span> (fabs(a - b) &lt; <span class="fl">0.0001</span>)
+    do_something_with_equal_numbers(a);</code></pre>
+<p>Without being a complete guide, this article shows some of the beauties and dangers of the floating-point realm.</p>
+
+      <div class="more">
+        <a href="./fp-dragons.html">See more content and comments</a>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
   <div class="unit-inner unit-article-inner">
   <div class="content">
     <div class="bd">
@@ -953,43 +996,6 @@
 
       <div class="more">
         <a href="./exploiting-environment-variables-part-2.html">See more content and comments</a>
-      </div>
-
-    </div>
-  </div>
-</div>
-
-
-  <div class="unit-inner unit-article-inner">
-  <div class="content">
-    <div class="bd">
-      <header>
-        <div class="unit-head">
-          <div class="unit-inner unit-head-inner">
-            <h1 class="h2 entry-title">
-              <a class="post_title" href="./git-speeding-workflow.html" title="Git: speeding workflow">Git: speeding workflow</a>
-            </h1>
-          </div><!-- unit-inner -->
-        </div><!-- unit-head -->
-      </header>
-
-      <span class="date">
-      <span class="published">Published on April 21, 2012</span>
-      by
-      <span class="author"><a href="./people/andrei-petre.html">Andrei Petre</a></span>
-      </span>
-
-      <br />
-      <span class="meta">
-        Tagged:
-        <span class="tags"><a href="./tags/git.html">git</a>, <a href="./tags/.gitconfig.html">.gitconfig</a>, <a href="./tags/alias.html">alias</a>, <a href="./tags/speed.html">speed</a>, <a href="./tags/log.html">log</a>, <a href="./tags/config.html">config</a></span>
-      </span>
-
-      <p>If you didn’t read the <a href="http://techblog.rosedu.org/git-good-practices.html">techblog Git Tips and Good Practices</a> article yet, you should, as it offers tips every git user should know, together with some very useful references.</p>
-<p>When using <code>git</code> for the first time, one has to specify his <em>name</em> and <em>email</em>, so <code>git</code> can associate the commit with who committed it:</p>
-
-      <div class="more">
-        <a href="./git-speeding-workflow.html">See more content and comments</a>
       </div>
 
     </div>

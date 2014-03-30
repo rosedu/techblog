@@ -1,0 +1,610 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--[if lt IE 7]>
+<html class="no-js lt-ie9 lt-ie8 lt-ie7 ie" lang="en"> <![endif]-->
+<!--[if IE 7]>
+<html class="no-js lt-ie9 lt-ie8 ie" lang="en"> <![endif]-->
+<!--[if IE 8]>
+<html class="no-js lt-ie9 ie" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" class="no-js"><!--<![endif]-->
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>ROSEdu Techblog - Here be Dragons - The Interesting Realm of Floating Point Operations</title>
+    <link rel="stylesheet" href="./css/style.css" type="text/css">
+    <link rel="stylesheet" href="./css/rosedu_links.css" type="text/css">
+    <link rel="stylesheet" href="./css/syntax.css" type="text/css">
+
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-7579199-6']);
+      _gaq.push(['_trackPageview']);
+
+      (function () {
+        var ga = document.createElement('script');
+        ga.type = 'text/javascript';
+        ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  </head>
+
+  <body>
+    <div id="page" class="hentry">
+      <header class="the-header">
+        <div class="unit-head">
+          <div class="unit-inner unit-head-inner">
+            <nav class="nav-global">
+              <ul>
+                <li class="logo"><a href="./" title="Home">ROSEdu Techblog</a></li>
+                <li class="about"><a href="./about.html">About</a></li>
+                <li class="people"><a href="./people.html">People</a></li>
+                <li class="archive"><a href="./archive.html">Archive</a></li>
+                <li class="category"><a href="./tags.html">Tags</a></li>
+              </ul>
+            </nav>
+
+            <hr />
+
+            <nav class="nav-global">
+              <ul>
+                <li class="logo"><a href="./archive.html" title="Archive">Latest Posts</a></li>
+                
+                  <li><a href="./fp-dragons.html" title="Here be Dragons - The Interesting Realm of Floating Point Operations">Here be Dragons...</a></li>
+                
+                  <li><a href="./daemonizing-processes.html" title="Daemonizing Processes - Part 1">Daemonizing Pro...</a></li>
+                
+                  <li><a href="./unix-auto.html" title="Unix portability. Autoconf, Automake, Libtool">Unix portabilit...</a></li>
+                
+              </ul>
+            </nav>
+          </div><!-- unit-inner -->
+        </div><!-- unit-head -->
+      </header>
+
+      <div class="body" role="main">
+        <div class="unit-body">
+          <div class="unit-inner unit-body-inner">
+            <div class="entry-content">
+              <article class="unit-article layout-post">
+                <div class="unit-inner unit-article-inner">
+  <div class="content">
+    <div class="bd">
+      <header>
+        <div class="unit-head">
+          <div class="unit-inner unit-head-inner">
+            <h1 class="h2 entry-title">
+              <a class="post_title" href="./fp-dragons.html" title="Here be Dragons - The Interesting Realm of Floating Point Operations">Here be Dragons - The Interesting Realm of Floating Point Operations</a>
+            </h1>
+          </div><!-- unit-inner -->
+        </div><!-- unit-head -->
+      </header>
+
+      <span class="date">
+      <span class="published">Published on March 30, 2014</span>
+      by
+      <span class="author"><a href="./people/mihai-maruseac.html">Mihai Maruseac</a></span>
+      </span>
+
+      <br />
+      <span class="meta">
+        Tagged:
+        <span class="tags"><a href="./tags/floating-point.html">floating point</a>, <a href="./tags/numerical-methods.html">numerical methods</a>, <a href="./tags/approximate-algorithms.html">approximate algorithms</a>, <a href="./tags/fast-transcedental-functions.html">fast transcedental functions</a>, <a href="./tags/fast-inverse-square-root.html">fast inverse square root</a></span>
+      </span>
+
+      <p>In every programmer’s life there comes a time when he has to leave the realm of integers and tread into the dangerous land of rational numbers. He/she might do some scientific computation, or work on a financial application or a game rendering pipeline or even in some artificial intelligence or data-mining algorithm – in all of these cases and many others, restricting oneself to using only integers is no longer feasible.</p>
+<p>And, as soon as one starts using floating point a lot of interesting things happen, starting from results which don’t show up nicely and bad equality testing and going towards subtler and subtler bugs.</p>
+<p><img src="http://imgs.xkcd.com/comics/e_to_the_pi_minus_pi.png" alt="e to pi
+minus pi" title="e to pi minus pi"></p>
+<p>Even experts and common-sense is at fault in this realm. For example, did you know that <em>always</em> comparing two floating points like in the following code is <em>bad</em>?</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="kw">if</span> (fabs(a - b) &lt; <span class="fl">0.0001</span>)
+    do_something_with_equal_numbers(a);</code></pre>
+<p>Without being a complete guide, this article shows some of the beauties and dangers of the floating-point realm.</p>
+<!--more-->
+
+<section id="a-common-pitfall" class="level3">
+<h3>A common pitfall</h3>
+<p>Beginners programmers expect floating point number to act as the real fractional numbers: no errors involved. Slightly experienced programmers know that this is not the case, yet even the most careful and experienced ones make mistakes from time to time. We will focus more on the common pitfalls and not on the occasional mistreatments given by experts.</p>
+<p>For example, someone unprepared might write the following code</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;stdio.h&gt;</span>
+<span class="ot">#include &lt;stdlib.h&gt;</span>
+
+<span class="dt">int</span> main ()
+{
+    <span class="dt">float</span> a = <span class="fl">0.1</span>;
+    <span class="dt">float</span> b = <span class="fl">0.2</span>;
+    <span class="dt">float</span> c = a + b;
+    <span class="kw">if</span> (c != <span class="fl">0.3</span>)
+        printf(<span class="st">&quot;%f</span><span class="ch">\n</span><span class="st">%f</span><span class="ch">\n</span><span class="st">%f</span><span class="ch">\n</span><span class="st">%f</span><span class="ch">\n</span><span class="st">&quot;</span>, c, a + b, <span class="dv">3</span> * a, <span class="fl">1.5</span> * b);
+    <span class="kw">return</span> <span class="dv">0</span>;
+}</code></pre>
+<p>and be surprised to see that results are</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">./a.out</span>
+<span class="kw">0.300000</span>
+<span class="kw">0.300000</span>
+<span class="kw">0.300000</span>
+<span class="kw">0.300000</span></code></pre>
+<p><em>Note</em>: Your results on your machine might vary. <a href="#determinism-correctness-and-fastness">Later in the article</a> we will discuss this aspect at length.</p>
+<p>Of course, the problem in here is pretty simple: all floating point constants use double precision thus the code should <em>at least</em> read</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="kw">if</span> (c != <span class="fl">0.</span>3f)
+    printf(...)</code></pre>
+<p>I say <em>at least</em> because even if on my architecture I got the exact value of <code>0.3</code>, this is not the case on all of them. Why? Because none of the <code>0.1</code>, <code>0.2</code> and <code>0.3</code> values have an exact representation in base 2. One can see that by trying to convert the number into base 2. Let’s follow the example of <code>0.3</code>:</p>
+<ul>
+<li>the integral part of <code>0.3</code> is <code>0</code> so it is also in base 2</li>
+<li>double the number, we get <code>0.6</code>, its integral part is <code>0</code> thus the first binary digit after decimal point of <code>0.3</code> is still a <code>0</code>.</li>
+<li>double this result, we get <code>1.2</code> so the next digit is a <code>1</code> and we are left with <code>0.2</code></li>
+<li>double it, get <code>0.4</code>, next binary digit is <code>0</code></li>
+<li>double it, get <code>0.8</code>, next binary digit is <code>0</code></li>
+<li>double it, get <code>1.6</code>, next binary digit is <code>1</code> and we’re back to <code>0.6</code></li>
+</ul>
+<p>Thus, the binary representation of <code>0.3</code> would be <code>0.01001100110011001..</code>. Repeating the same algorithm with <code>0.1</code> and <code>0.2</code> will end in the same loop between <code>0.2</code>, <code>0.4</code>, <code>0.8</code> and <code>0.6</code>. So, none of <code>0.1</code>, <code>0.2</code> or <code>0.3</code> has an exact representation. Thus, no result of any operation with these numbers will be an exact answer.</p>
+<p>But, then, why did we get the exact answer in here? The two sensible answers are that either the compiler generates code which uses a higher level of precision than the space reserved for float or the printing routine does hard work to properly display the numbers. We can test these hypotheses using <code>gdb</code>:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp">$ gdb -q ./a.out 
+Reading symbols from /tmp/fps/a.out...done.
+(gdb) b main
+Breakpoint <span class="dv">1</span> at <span class="bn">0x400538</span>: file <span class="fl">1.</span>c, line <span class="dv">6</span>.
+(gdb) r
+Starting program: /tmp/fps/a.out 
+
+Breakpoint <span class="dv">1</span>, main () at <span class="fl">1.</span>c:<span class="dv">6</span>
+<span class="dv">6</span>       <span class="dt">float</span> a = <span class="fl">0.1</span>;
+(gdb) n
+<span class="dv">7</span>       <span class="dt">float</span> b = <span class="fl">0.2</span>;
+(gdb) p a
+$<span class="dv">1</span> = <span class="fl">0.100000001</span>
+(gdb) n
+<span class="dv">8</span>       <span class="dt">float</span> c = a + b;
+(gdb) p b
+$<span class="dv">2</span> = <span class="fl">0.200000003</span></code></pre>
+<p>As you can see, printing the values from memory shows that they are not <code>0.1</code> and <code>0.2</code> but values close to that.</p>
+<p>Let’s see now what the assembly code around <code>c = a + b</code> looks like:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp">(gdb) disass
+Dump of assembler code <span class="kw">for</span> function main:
+   <span class="bn">0x0000000000400530</span> &lt;+<span class="dv">0</span>&gt;:     push   %rbp
+   <span class="bn">0x0000000000400531</span> &lt;+<span class="dv">1</span>&gt;:     mov    %rsp,%rbp
+   <span class="bn">0x0000000000400534</span> &lt;+<span class="dv">4</span>&gt;:     sub    $<span class="bn">0x10</span>,%rsp
+   <span class="bn">0x0000000000400538</span> &lt;+<span class="dv">8</span>&gt;:     mov    <span class="bn">0x142</span>(%rip),%eax        # <span class="bn">0x400680</span>
+   <span class="bn">0x000000000040053e</span> &lt;+<span class="dv">14</span>&gt;:    mov    %eax,-<span class="bn">0x4</span>(%rbp)
+   <span class="bn">0x0000000000400541</span> &lt;+<span class="dv">17</span>&gt;:    mov    <span class="bn">0x13d</span>(%rip),%eax        # <span class="bn">0x400684</span>
+   <span class="bn">0x0000000000400547</span> &lt;+<span class="dv">23</span>&gt;:    mov    %eax,-<span class="bn">0x8</span>(%rbp)
+=&gt; <span class="bn">0x000000000040054a</span> &lt;+<span class="dv">26</span>&gt;:    movss  -<span class="bn">0x4</span>(%rbp),%xmm0
+   <span class="bn">0x000000000040054f</span> &lt;+<span class="dv">31</span>&gt;:    addss  -<span class="bn">0x8</span>(%rbp),%xmm0
+   <span class="bn">0x0000000000400554</span> &lt;+<span class="dv">36</span>&gt;:    movss  %xmm0,-<span class="bn">0xc</span>(%rbp)
+---Type &lt;<span class="kw">return</span>&gt; to <span class="kw">continue</span>, <span class="kw">or</span> q &lt;<span class="kw">return</span>&gt; to quit---q
+Quit</code></pre>
+<p>The last three lines are the assembly lines generated for <code>float c = a + b</code> (you can test that by running an <code>objdump -CDgS | less</code> and searching for <code>float c</code>). <code>-0x4(%rbp)</code> is where <code>a</code> is stored on the stack. <code>b</code> is stored at <code>-0x8(%rbp)</code>. The assembly instructions used – <code>addss</code> and <code>movss</code> – and the register involved – <code>xmm0</code> – show that we are working with <a href="http://en.wikipedia.org/wiki/Streaming_SIMD_Extensions" title="SSE - Wikipedia">Streaming SIMD Extensions (SSE)</a>. This register has a precision of 128 bits which is 4 times greater than the 32 bits used by the <code>float</code> datatype. We are tempted now to think that we are able to use the full width of the register – even if the SIMD part of the extension tells that this is not the case, we want a real proof based on the memory/register contents.</p>
+<p>Continuing the execution, we see:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp">(gdb) n
+<span class="dv">9</span>       <span class="kw">if</span> (c != <span class="fl">0.3</span>)
+(gdb) p $xmm0
+$<span class="dv">3</span> = {v4_float = {<span class="fl">0.300000012</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>}, v2_double = {<span class="fl">5.18894283457103e-315</span>,
+<span class="dv">0</span>}, v16_int8 = {-<span class="dv">102</span>, -<span class="dv">103</span>, -<span class="dv">103</span>, <span class="dv">62</span>, <span class="dv">0</span> &lt;repeats <span class="dv">12</span> times&gt;}, v8_int16 = {
+-<span class="dv">26214</span>, <span class="dv">16025</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>}, v4_int32 = {<span class="dv">1050253722</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>}, v2_int64 =
+{<span class="dv">1050253722</span>, <span class="dv">0</span>}, uint128 = <span class="dv">1050253722</span>}
+(gdb) p c
+$<span class="dv">4</span> = <span class="fl">0.300000012</span></code></pre>
+<p>Indeed, our <code>c</code> is not <code>0.3</code>. But it seems that not even the contents of <code>xmm0</code> are closer to the truth.</p>
+<p>So, the fact that we got <code>0.3</code> in the output is caused not by the fact that we use a 128-bits wide registers but by the fact that the <a href="http://kurtstephens.com/files/p372-steele.pdf" title="Printing Floating Point Numbers (PDF)">up-to-recent unsolved problem</a> of precisely printing floating point numbers is no longer so.</p>
+</section>
+<section id="the-floating-point-standard" class="level3">
+<h3>The floating point standard</h3>
+<p>Before we further investigate the realm of floating points, let’s have a look at the standard used for storing and working with these numbers: <a href="http://en.wikipedia.org/wiki/IEEE_754" title="IEEE-754 - Wikipedia">IEEE-754</a>. We would not go in full details since we are only interested in some minor aspects.</p>
+<p>First of all, the standard defines the way in which we can store a floating point number as three integer numbers: one for the sign (which is always <code>0</code> or <code>1</code>), one for an exponent which gives us access to a wider range than<code>[0..2^32]</code> and one for the mantissa. The final number is just the product of the mantissa, the base (2 in case of binary numbers, 10 in case of decimal numbers – the standard defines some way to store decimal numbers too) raised to the exponent power and <code>(-1)</code> raised to the sign value.</p>
+<p>Depending on the sizes of these numbers we have the basic <code>float</code> type (or <code>binary32</code>) in which the total size of the three numbers is 32 bits. In this case 1 bit is reserved for the sign, 8 for the exponent and the other 23 for the mantissa.</p>
+<p>The C <code>double</code> type is defined by the <code>binary64</code> format: 1 bit of sign, 11 bits for the exponent and 52 bits for the mantissa for a total of 64. There is also a <code>binary128</code> format and a C <code>long double</code> type. In this case 15 bits are reserved for the exponent and 112 for the mantissa.</p>
+<p>The standard committee has come up with a clever idea of storing these numbers into binary format. For example, they don’t store the exponent in 2’s complement but modified via an offset. Thus, <strong>the bit patterns of two nearby representable floats represent two consecutive integer values</strong>. This allows us to do some interesting tricks TODO with the two representations of real numbers.</p>
+<p>The standard also defines <span class="math">\(\infty\)</span> and <span class="math">\(-\infty\)</span>, two values for <code>0</code> (<code>+0</code> and <code>-0</code> and how they should be tested equal but treated differently in operations) and a full sequence of values which don’t represent a number but some exception – the sometimes dreaded <code>NaN</code> values.</p>
+<p>Knowing these details about the IEEE-754 standard we can go forward in our exploration. Because from now on we would use the binary representation and won’t rely on the base <code>10</code> view of numbers we will use <a href="http://babbage.cs.qc.cuny.edu/IEEE-754/" title="IEEE-754 Analysis">an online analyzer</a> to investigate interesting values.</p>
+</section>
+<section id="back-to-the-castle-and-a-final-conclusion" class="level3">
+<h3>Back to the castle and a final conclusion</h3>
+<p>Returning to our code, we want to see what values are stored in memory for <code>a</code>, <code>b</code> and <code>c</code> and also in register <code>xmm0</code>:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp">(gdb) x $rbp - <span class="bn">0x4</span>
+<span class="bn">0x7fffffffdfac</span>: <span class="bn">0x3dcccccd</span>
+(gdb) x $rbp - <span class="bn">0x8</span>
+<span class="bn">0x7fffffffdfa8</span>: <span class="bn">0x3e4ccccd</span>
+(gdb) x $rbp - <span class="bn">0xc</span>
+<span class="bn">0x7fffffffdfa4</span>: <span class="bn">0x3e99999a</span>
+(gdb) p/x $xmm0
+$<span class="dv">4</span> = {.... uint128 = <span class="bn">0x0000000000000000000000003e99999a</span>}</code></pre>
+<p>Looking through the analyzer, <code>0x3dcccccd</code> (the value for <code>a</code>) is <code>1.00000001490116119384765625E-1</code> which is both close to the original value of <code>0.1</code> and to the displayed value of <code>0.100000001</code>. Same for <code>b</code> and <code>c</code>. However, looking at <code>xmm0</code> register we see that the last 32 bits have the same pattern as <code>-0xc($rbp)</code>. Thus, the SSE 128 bits registers <strong>are not using</strong> the <code>binary128</code> standard! If they were using it, the last value displayed there should have been <code>3FFD3333333333333333333333333333</code>.</p>
+<p>Now it is time to see some other aspects of working with floating point numbers.</p>
+</section>
+<section id="testing-them-all" class="level3">
+<h3>Testing them all</h3>
+<p>Since there is a perfect isomorphism between <code>float</code> values and <code>int</code> ones and there are only <code>2^32</code> ints (on normal architectures), sometimes it is easy and desirable to test a new function on all of the possible values. Unfortunately, this doesn’t properly work for functions with more than one argument because one would have to spend ages for that. But for one single argument things are pretty nice: it only takes 16 seconds on my machine to run the following code which tests that changing the sign twice gives the same value:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;stdio.h&gt;</span>
+<span class="ot">#include &lt;stdlib.h&gt;</span>
+
+<span class="dt">int</span> main()
+{
+    <span class="dt">unsigned</span> <span class="dt">int</span> i = <span class="dv">0</span>;
+    <span class="dt">float</span> x;
+
+    <span class="kw">do</span> {
+        x = *((<span class="dt">float</span>*)&amp;i);
+        <span class="kw">if</span> (x != -(-x))
+            printf(<span class="st">&quot;%f %u</span><span class="ch">\n</span><span class="st">&quot;</span>, x, i);
+        i++;
+    } <span class="kw">while</span> (i != <span class="dv">0</span>);
+
+    <span class="kw">return</span> <span class="dv">0</span>;
+}</code></pre>
+<p>Running it we see:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">gcc</span> -Wall -Wextra -O0 -g 2.c 
+$ <span class="kw">./a.out</span>  <span class="kw">|</span> <span class="kw">head</span> -n 5
+<span class="kw">nan</span> 2139095041
+<span class="kw">nan</span> 2139095042
+<span class="kw">nan</span> 2139095043
+<span class="kw">nan</span> 2139095044
+<span class="kw">nan</span> 2139095045</code></pre>
+<p>It seems that our hypothesis fails when the initial number was a <code>NaN</code> value. For now, let us filter all of these values and test the hypothesis on the remaining domain.</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">time</span> ./a.out <span class="kw">|</span> <span class="kw">grep</span> -v nan
+
+<span class="kw">real</span>    0m15.895s
+<span class="kw">user</span>    0m17.977s
+<span class="kw">sys</span> 0m0.163s</code></pre>
+<p>Something which we would have expected.</p>
+<p><em>Note</em>: Compiling with optimisations on might make the compiler issue the following warning:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp">warning: dereferencing type-punned pointer will <span class="kw">break</span> strict-aliasing rules [-Wstrict-aliasing]
+    ^</code></pre>
+<p>This is because the C/C++ standard says that the compiler can assume that different types don’t overlap in memory so neither should pointers to those types. Knowing that a pointer to an array of integers and one array of doubles don’t overlap opens a way for some optimizations. Breaking them is at your own risk. See also the documentation for <code>-fstrict-aliasing</code> flag of <code>gcc</code>.</p>
+</section>
+<section id="the-nan-problem" class="level3">
+<h3>The NaN problem</h3>
+<p>You might be wondering why do we have so many <code>NaN</code> values (the 5 above are but a small sample of them all). Thing is, the standard allows some <code>NaN</code> values to carry an exception code within it such that the programmer debugging the code can know why he got this value. We would not enter into details regarding this aspect though.</p>
+<p>A more interesting question is how these <code>NaN</code> values arise. One example is doing <code>asin(1+smth)</code> or <code>sqrt(0-smth_else)</code>. You might say: “but I will never do that” to which I will reply that since every floating point operation has some rounding and errors tend to propagate you might find in some occasions doing exactly that.</p>
+<p>Now, the question is how to filter out these values from code. The standard states that the <code>NaN</code> values have form <code>s1111111 1axxxxxx xxxxxxxx xxxxxxxx</code> so one might just check the first few bits of the number (<code>s</code> is the sign and is ignored and <code>a</code> is used to differentiate between a quiet <code>NaN</code> and a signalling one while <code>x</code> represent payload bits showing why the signalling <code>NaN</code> was produced). So we change the code to read</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;stdio.h&gt;</span>
+<span class="ot">#include &lt;stdlib.h&gt;</span>
+
+<span class="dt">int</span> main()
+{
+    <span class="dt">unsigned</span> <span class="dt">int</span> i = <span class="dv">0</span>;
+    <span class="dt">float</span> x;
+
+    <span class="kw">do</span> {
+        x = *((<span class="dt">float</span>*)&amp;i);
+        <span class="kw">if</span> (x != -(-x))
+            printf(<span class="st">&quot;%f %u</span><span class="ch">\n</span><span class="st">&quot;</span>, x, i);
+        i++;
+        <span class="kw">if</span> (i &gt; <span class="bn">0x7f800000</span>)
+            <span class="kw">break</span>;
+    } <span class="kw">while</span> (i != <span class="dv">0</span>);
+
+    <span class="kw">return</span> <span class="dv">0</span>;
+}</code></pre>
+<p>If you don’t remember the bit pattern you can still filter out by knowing that all <code>NaN</code> values are required to compare unequal even themselves. Thus, a test <code>x == x</code> is always false for <code>NaN</code> values.</p>
+</section>
+<section id="the-associativity-problem" class="level3">
+<h3>The Associativity Problem</h3>
+<p>One of the ideas behind this post was <a href="http://stackoverflow.com/questions/6430448/why-doesnt-gcc-optimize-aaaaaa-to-aaaaaa" title="Why doesn't GCC optimize...">this StackOverflow question</a>. We can test this to see on how many floats the output is wrong:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;stdio.h&gt;</span>
+<span class="ot">#include &lt;stdlib.h&gt;</span>
+
+<span class="dt">int</span> main()
+{
+    <span class="dt">unsigned</span> <span class="dt">int</span> i = <span class="dv">0</span>;
+    <span class="dt">float</span> x, y, z;
+    <span class="dt">unsigned</span> <span class="dt">long</span> <span class="dt">long</span> s = <span class="dv">0</span>;
+
+    <span class="kw">do</span> {
+        x = *((<span class="dt">float</span>*)&amp;i);
+        y = x * x * x * x * x * x;
+        z = (x * x * x);
+        z = z * z;
+        <span class="kw">if</span> (y != z)
+            printf(<span class="st">&quot;%f %u</span><span class="ch">\n</span><span class="st">&quot;</span>, x, i);
+        s += i;
+        i++;
+        <span class="kw">if</span> (i &gt; <span class="bn">0x7f800000</span>)
+            <span class="kw">break</span>;
+    } <span class="kw">while</span> (i != <span class="dv">0</span>);
+
+    printf(<span class="st">&quot;%lld</span><span class="ch">\n</span><span class="st">&quot;</span>, s);
+
+    <span class="kw">return</span> <span class="dv">0</span>;
+}</code></pre>
+<p>Since we are compiling with <code>-O3</code> we don’t want the compiler to optimize our loop away. Thus we have a <code>s</code> variable in which we store the sum of all <code>i</code>s. Also, the code already removes the <code>NaN</code> values. Running it we get:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">time</span> ./a.out <span class="kw">|</span> <span class="kw">wc</span> -l
+<span class="kw">163049703</span>
+
+<span class="kw">real</span>    1m58.114s
+<span class="kw">user</span>    1m59.005s
+<span class="kw">sys</span> 0m3.148s</code></pre>
+<p>That is, there is a total of 3.79% values for which doing the optimization in question will give a different result on this machine.</p>
+</section>
+<section id="equality-testing-done-right" class="level3">
+<h3>Equality testing done right</h3>
+<p>Finally, we have arrived to an interesting aspect: how do we compare if two floats are almost the same? We already know that doing a comparison with <code>==</code> is bad. Let us pick now two numbers: <code>10000</code> and the next representable float and compare between them using the standard method:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;math.h&gt;</span>
+<span class="ot">#include &lt;stdio.h&gt;</span>
+<span class="ot">#include &lt;stdlib.h&gt;</span>
+
+<span class="dt">int</span> main ()
+{
+    <span class="dt">int</span> expectedAsInt = <span class="dv">1176256512</span>;
+    <span class="dt">int</span> resultAsInt = expectedAsInt + <span class="dv">1</span>;
+    <span class="dt">float</span> expectedResult = *((<span class="dt">float</span>*)&amp;expectedAsInt);
+    <span class="dt">float</span> result = *((<span class="dt">float</span>*)&amp;resultAsInt);
+
+    printf(<span class="st">&quot;%f %f</span><span class="ch">\n</span><span class="st">&quot;</span>, result, expectedResult);
+
+    <span class="kw">if</span> (fabs(result - expectedResult) &lt; <span class="fl">0.0001</span>)
+        printf(<span class="st">&quot;Numbers are close</span><span class="ch">\n</span><span class="st">&quot;</span>);
+
+    <span class="kw">return</span> <span class="dv">0</span>;
+}</code></pre>
+<p>The output</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">./a.out</span>
+<span class="kw">10000.000977</span> 10000.000000</code></pre>
+<p>So the above test fails to consider two floating points which are neighbors as being the same. If your algorithm produced a <code>result</code> which would be between these two floats and it would be rounded to the wrong one you would get the impression that your algorithm is wrong.</p>
+<p>Anyway, even if this method was correct, what value should one use for the bound in the test? <code>float.h</code> defines <code>FLT_EPSILON</code> so one might decide to test using that:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;float.h&gt;</span>
+<span class="ot">#include &lt;math.h&gt;</span>
+<span class="ot">#include &lt;stdio.h&gt;</span>
+<span class="ot">#include &lt;stdlib.h&gt;</span>
+
+<span class="dt">int</span> closeFloats(<span class="dt">float</span> number, <span class="dt">float</span> target)
+{
+    <span class="kw">return</span> fabs(number - target) &lt; FLT_EPSILON;
+}
+
+<span class="kw">inline</span> <span class="dt">float</span> getFloatFromInt(<span class="dt">int</span> value)
+{
+    <span class="kw">return</span> *((<span class="dt">float</span>*)&amp;value);
+}
+
+<span class="dt">void</span> testFloatTesting(<span class="dt">int</span> src)
+{
+    <span class="dt">float</span> target = getFloatFromInt(src);
+    <span class="dt">float</span> next = getFloatFromInt(src + <span class="dv">1</span>);
+
+    printf(<span class="st">&quot;src=%d target=%f next=%f compare=%d</span><span class="ch">\n</span><span class="st">&quot;</span>, src, target, next,
+            closeFloats(next, target));
+}
+
+<span class="dt">int</span> main ()
+{
+    <span class="co">/* 0.5 and next float */</span>
+    testFloatTesting(<span class="bn">0x3F000000</span>);
+
+    <span class="co">/* 1.5 and next float */</span>
+    testFloatTesting(<span class="bn">0x3FC00000</span>);
+
+    <span class="co">/* 100.5 and next float */</span>
+    testFloatTesting(<span class="bn">0x42C90000</span>);
+
+    <span class="co">/* 10000.5 and next float */</span>
+    testFloatTesting(<span class="bn">0x461C4200</span>);
+
+    <span class="kw">return</span> <span class="dv">0</span>;
+}</code></pre>
+<p>A proper <code>closeFloats</code> function is what we are looking for. We use <code>testFloatTesting</code> to test this on two floats which come from two neighboring integers (a more formal definition is floats which differ by 1ULP – <em>units in last place</em>). Running it, we get:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">./a.out</span>
+<span class="ot">src=</span>1056964608 <span class="ot">target=</span>0.500000 <span class="ot">next=</span>0.500000 <span class="ot">compare=</span>1
+<span class="ot">src=</span>1069547520 <span class="ot">target=</span>1.500000 <span class="ot">next=</span>1.500000 <span class="ot">compare=</span>0
+<span class="ot">src=</span>1120468992 <span class="ot">target=</span>100.500000 <span class="ot">next=</span>100.500008 <span class="ot">compare=</span>0
+<span class="ot">src=</span>1176257024 <span class="ot">target=</span>10000.500000 <span class="ot">next=</span>10000.500977 <span class="ot">compare=</span>0</code></pre>
+<p>All of the initial numbers were chosen to be exactly representable but this is not vital. What’s interesting is that only the numbers between 0 and 1 show as being close when using the <code>FLT_EPSILON</code> absolute method.</p>
+<p>Let’s try now to use a relative error and compare that with <code>FLT_EPSILON</code>:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">int</span> closeFloats(<span class="dt">float</span> number, <span class="dt">float</span> target)
+{
+    <span class="kw">return</span> fabs(number - target) / target &lt; FLT_EPSILON;
+}</code></pre>
+<p>Using the above gives the following results:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp">$ ./a.out 
+src=<span class="dv">1056964608</span> target=<span class="fl">0.500000</span> next=<span class="fl">0.500000</span> compare=<span class="dv">0</span>
+src=<span class="dv">1069547520</span> target=<span class="fl">1.500000</span> next=<span class="fl">1.500000</span> compare=<span class="dv">1</span>
+src=<span class="dv">1120468992</span> target=<span class="fl">100.500000</span> next=<span class="fl">100.500008</span> compare=<span class="dv">1</span>
+src=<span class="dv">1176257024</span> target=<span class="fl">10000.500000</span> next=<span class="fl">10000.500977</span> compare=<span class="dv">1</span></code></pre>
+<p>We get better results above 1 but worse below. This is because we are dividing to a smaller number closing to doing a division by <code>0</code>. So, don’t use the above method as well.</p>
+<p>Let’s try with a third option:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">int</span> closeFloats(<span class="dt">float</span> number, <span class="dt">float</span> target)
+{
+    <span class="dt">float</span> diff = fabs(number - target);
+    <span class="dt">float</span> largest;
+
+    number = fabs(number);
+    target = fabs(target);
+    largest = (target &gt; number) ? target : number;
+
+    <span class="kw">return</span> diff &lt;= largest * FLT_EPSILON;
+}</code></pre>
+<p>This time, instead of dividing we use multiplication. Also, to ensure some more safety, we pick the largest absolute value as being the mark around which we compute the relative error. Running this test we finally get:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp">$ ./a.out
+src=<span class="dv">1056964608</span> target=<span class="fl">0.500000</span> next=<span class="fl">0.500000</span> compare=<span class="dv">1</span>
+src=<span class="dv">1069547520</span> target=<span class="fl">1.500000</span> next=<span class="fl">1.500000</span> compare=<span class="dv">1</span>
+src=<span class="dv">1120468992</span> target=<span class="fl">100.500000</span> next=<span class="fl">100.500008</span> compare=<span class="dv">1</span>
+src=<span class="dv">1176257024</span> target=<span class="fl">10000.500000</span> next=<span class="fl">10000.500977</span> compare=<span class="dv">1</span></code></pre>
+<p>However, the story is not yet finished. What happens if the <code>FLT_EPSILON</code> is too large a gap in relative error? You might be tempted to say <em>just multiply <code>FLT_EPSILON</code> with <code>0.1</code> and be done</em>. Test it and you’ll see that all of the results turn to <code>0</code>: it is as if <strong>we didn’t use any bound at all and tested using <code>==</code></strong>. So we are thus restricted to having a relative gap no smaller than <code>FLT_EPSILON</code>.</p>
+<p>Now, let’s turn to the other side: what if the gap is too small? You can multiply <code>FLT_EPSILON</code> with a small value for this. However, finding out which value to use is hard because this way of computing the error is not linked at all with the representation of the floating point numbers. So, let’s try with using ULPs:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">int</span> closeFloats(<span class="dt">float</span> number, <span class="dt">float</span> target)
+{
+	<span class="dt">int</span> numberULP = *((<span class="dt">int</span> *) &amp;number);
+	<span class="dt">int</span> targetULP = *((<span class="dt">int</span> *) &amp;target);
+
+	<span class="kw">if</span> ((numberULP &gt;&gt; <span class="dv">31</span>) != (targetULP &gt;&gt; <span class="dv">31</span>))
+		<span class="kw">return</span> number == target;
+	<span class="kw">return</span> abs(numberULP - targetULP) &lt; <span class="dv">5</span>;
+}</code></pre>
+<p>In the above we consider numbers which differ by at most 5 ULPs as being close. Also, observe the first check which tests if the numbers have different signs. In the positive case we compare using <code>==</code> the <strong>floating point numbers</strong> to ensure that we catch the case <code>+0 == -0</code>.</p>
+<p>Running it we get:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp">$ ./a.out
+src=<span class="dv">1056964608</span> target=<span class="fl">0.500000</span> next=<span class="fl">0.500000</span> compare=<span class="dv">1</span>
+src=<span class="dv">1069547520</span> target=<span class="fl">1.500000</span> next=<span class="fl">1.500000</span> compare=<span class="dv">1</span>
+src=<span class="dv">1120468992</span> target=<span class="fl">100.500000</span> next=<span class="fl">100.500008</span> compare=<span class="dv">1</span>
+src=<span class="dv">1176257024</span> target=<span class="fl">10000.500000</span> next=<span class="fl">10000.500977</span> compare=<span class="dv">1</span></code></pre>
+<p>which was somehow obvious (since the number are already one ULP apart).</p>
+<p>Now you might raise one more question: which of the two methods is fastest? Let’s test:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">void</span> testFloatTesting(<span class="dt">int</span> src)
+{
+    <span class="dt">float</span> target = getFloatFromInt(src);
+    <span class="dt">float</span> next = getFloatFromInt(src + <span class="dv">1</span>);
+
+    <span class="kw">if</span> (closeFloats(next, target) != <span class="dv">1</span>)
+        printf(<span class="st">&quot;src=%d target=%f next=%f compare=%d</span><span class="ch">\n</span><span class="st">&quot;</span>, src, target,
+                next, closeFloats(next, target));
+}
+
+<span class="dt">int</span> main ()
+{
+    <span class="dt">unsigned</span> <span class="dt">int</span> i = <span class="dv">0</span>;
+
+    <span class="kw">do</span> {
+        testFloatTesting(i++);
+        <span class="kw">if</span> (i &gt; <span class="bn">0x7f800000</span>)
+            <span class="kw">break</span>;
+    } <span class="kw">while</span> (i != <span class="dv">0</span>);
+
+    <span class="kw">return</span> <span class="dv">0</span>;
+}</code></pre>
+<p>Using ULP we get these results:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp">$ time ./a.out
+
+real    0m32.343s
+user    0m32.290s
+sys 0m0.007s</code></pre>
+<p>Using the floating point - relative method we get:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp">$ time ./a.out | wc -l
+<span class="dv">4194305</span>
+
+real    1m4.161s
+user    1m4.137s
+sys 0m0.204s</code></pre>
+<p>We seem to be getting some wrong results (<code>0.9%</code>). Indeed, around 0 both comparison methods fail. The relative error method fails because we are close to dividing by <code>0</code> and because of catastrophic cancellation. The ULP method because there are many numbers between 0 and <code>FLT_MIN</code> (the minimum properly representable float) – these values are denormalized and using them might slow down your computation quite a lot. So, what should we use in this case? It turns out that if you want to compare with <code>0</code> the absolute error method is the best.</p>
+<p>Also note that on my machine the relative method is twice as slow as the ULP one.</p>
+<p>To conclude this part:</p>
+<ul>
+<li>when you compare two numbers which are far from 0 (properly representable) use either the relative error method (with multiplication) or the ULP one, depending on which is fastest (on machines with SSE this would most certainly by the ULP one).</li>
+<li>when comparing a number against 0 use the absolute error method</li>
+<li>in all other cases take care to split the comparison into the above two cases</li>
+</ul>
+</section>
+<section id="determinism-correctness-and-fastness" class="level3">
+<h3>Determinism, Correctness and Fastness</h3>
+<p>Up to this point, this article focused on the correctness aspect of floating point operations where by correctness one means giving results as close as possible to the real truth. Not mentioned in here but on the same topic we have the field of <a href="http://en.wikipedia.org/wiki/Numerical_stability" title="Numerical stability - Wikipedia">numerically stable algorithms</a> and the entire mathematics/CS branch of <a href="http://en.wikipedia.org/wiki/Numerical_analysis" title="Numerical Analysis - Wikipedia">numerical analysis</a>.</p>
+<p>However, there is another aspect which needs to be considered. We have written even in this article <em>the results you get might differ</em> depending on the architecture you use. And indeed, neither IEEE nor C/C++ standards define what precision should be use for intermediate computations. Even though the IEEE-754-2008 standard says <em>Together with language controls it should be possible to write programs that produce identical results on all conforming systems</em>, this is just a possibility, not yet mandated across architectures.</p>
+<p>When is this important? Three domains come to mind: games (network games and game replays), research (reproducibility), cloud computing (migration of live virtual machines). All of them are important enough to make this problem an interesting one.</p>
+<p>There are settings which change the rounding mode, the handling of denormals or of exceptions. There are a lot of flags to control and you can find them all described in <code>fenv.h</code> header. These values are per-thread but they might change if you call a library function which has the side effect of modifying one of these flags and not changing it back to the previous value (another strong point of referential immutability).</p>
+<p>Finally, floating point results might also change depending on the compilation flags passed (<code>-ffast-math</code>) or even if you are running your code inside a debugger or in production mode. We’ll leave this topic by giving <a href="http://randomascii.wordpress.com/2013/07/16/floating-point-determinism/" title="Random Ascii - Floating Point Determinism">a link to a comprehensive article</a> about it. If one really needs reproducible floating point results then he might use <a href="http://nicolas.brodu.net/en/programmation/streflop/" title="STand-alone REproducible FLoating point OPerations">Streflop</a> or even <a href="http://www.mpfr.org/mpfr-current/" title="GNU MPFR">MPFR</a>.</p>
+<p>Now, let’s turn to the third topic: <em>fastness</em>. It turns out that all floating point operations are slow. To alleviate this problem several CPU extensions were introduced – that’s why we have SSE. But it turns out that we can do even better than that if we leave some room for some errors.</p>
+<p>Games and Artificial Intelligence use quite a lot of floating point operations with transcendental functions (<code>sin</code>, <code>log</code>, <code>exp</code>). These have been the subject of optimizations through time. We have <a href="http://en.wikipedia.org/wiki/Fast_inverse_square_root" title="Fast inverse square root - Wikipedia">the fast-inverse-square-root trick</a> as a powerful example of that. We have <a href="http://nic.schraudolph.org/pubs/Schraudolph99.pdf" title="Fast approximation of exponential function (PDF)">fast approximations of exponential</a> function which is commonly used in neural networks and radial basis functions. And we have even libraries ([<a href="https://github.com/ekmett/approximate/blob/master/cbits/fast.c" title="approximate/cbits/fast.c - GitHub">1</a>], [<a href="https://code.google.com/p/fastapprox/" title="fastapprox - GoogleCode">2</a>]) dedicated to optimizing the speed of these functions in detriment of precision. At first look, all of these look like clever algorithms with a lot of magical constants which arise from (seemingly) nowhere. However, most of them are just simply usages of numerical methods to compute roots of equations (<a href="http://en.wikipedia.org/wiki/Newton's_method" title="Newton-Raphson method - Wikipedia">Newton-Raphson method</a> is used for the <a href="http://en.wikipedia.org/wiki/Fast_inverse_square_root" title="Fast inverse square root - Wikipedia">Carmak’s trick</a>) or some <a href="http://en.wikipedia.org/wiki/Taylor_series" title="Taylor series - Wikipedia">series expansions</a> of the functions being used coupled with clever usages of the integer representation of the floating point. Describing these algorithms will cover an article twice as long as this one so we won’t do it now. However, keep in mind that <a href="http://c2.com/cgi/wiki?PrematureOptimization" title="Premature Optimization">Knuth saying</a>:</p>
+<blockquote>
+<p>Premature optimization is the root of all evil</p>
+</blockquote>
+<p>Don’t just go and replace all of your transcendental calls from <code>libm</code> to calls from one of the libraries bent on optimizing the speed of some floating point operations, check first if this is exactly what you want and if the errors stemming from the approximations have no impact on your code/results.</p>
+<p>To end this section, it seems that in the realm of floating point precision, reproducibility and speed are the vertices of an <a href="http://en.wikipedia.org/wiki/Project_management_triangle" title="Triple Constraint - Wikipedia">Iron Triangle</a>: one cannot get all of them at once and must make compromises.</p>
+</section>
+<section id="fun-trivia" class="level3">
+<h3>Fun trivia</h3>
+<p>To conclude the article on a funny note note that one can compute the logarithm in base two of any float by just looking at it’s representation from the integer point of view: since multiplying a float by 2 increases the exponent – which is stored in the middle of the representation – increasing the value of the logarithm by 1 is just increasing the representation by <code>0x800000</code>.</p>
+<p>Another interesting fact is that since <span class="math">\(\sin(\pi-x) = \sin(x)\)</span> and for small values of <code>x</code> <span class="math">\(\sin(x) \approx x\)</span> we get that <span class="math">\(\sin(\pi) \approx \epsilon(\pi)\)</span> (the error in representing <span class="math">\(\pi\)</span> as a float). Thus, a nice method to compute <span class="math">\(\pi\)</span> is to repeatedly compute <code>pi + sin(pi)</code> up to the highest precision available. Don’t try this in production code, the <a href="http://www.xkcd.com/217/" title="e to pi minus pi">xkcd</a> reference in the beginning of the article should be warning enough: <code>sin(pi)</code> is not a rational function thus this method can quickly lead to catastrophic errors.</p>
+</section>
+<section id="conclusions" class="level3">
+<h3>Conclusions</h3>
+<p>This article is quite a long one and filled with seemingly disjoint pieces of information. They are but mere glimpses into the dangers of using floating point arithmetic without considering all of the aspects involved with it. For a more comprehensive reading the obligatory <a href="http://docs.oracle.com/cd/E19957-01/806-3568/ncg_goldberg.html" title="What Every Computer Scientist Should Know About Floating-Point Arithmetic">Oracle Appendix D</a> is essential but it is filled with mathematical formulas and equations which are daunting to the less brave readers. Some more details can be found in <a href="http://floating-point-gui.de/" title="The Floating Point Guide">The Floating Point Guide</a>.</p>
+<p>In the end, keep in mind that floating point math is not mystical but neither should it be treated carelessly.</p>
+</section>
+
+    </div>
+  </div>
+</div>
+
+<!-- Social Buttons here -->
+<div id="sociallinks">
+  <a href="https://twitter.com/home?status=/fp-dragons.html" target="_blank">Tweet this</a> -
+  <a href="http://www.facebook.com/sharer/sharer.php?u=/fp-dragons.html" target="_blank">Like this</a> -
+  <a href="https://plus.google.com/share?url=/fp-dragons.html" target="_blank">Share on G+</a>
+</div>
+
+<script>
+  (function(){window.addEventListener("DOMContentLoaded",function(){
+    //get URL
+    var url=document.location;
+    var links=document.getElementById("sociallinks")
+                      .getElementsByTagName('a');
+    for (var i=0;i!=links.length;i++){
+      // Replacing /fp-dragons.html with current URL
+      links[i].setAttribute("href",links[i].href.replace('/fp-dragons.html',url));
+    }})})();
+</script>
+</br>
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+  /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+  var disqus_shortname = 'rosedutechblog';
+  var disqus_url = window.location.href.split('/').splice(0,3).join("/")+'/fp-dragons.html';
+  var title = 'Here be Dragons - The Interesting Realm of Floating Point Operations';
+  /* * * DON'T EDIT BELOW THIS LINE * * */
+  (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+              </article>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer class="the-footer">
+        <div class="unit-foot">
+          <div class="unit-inner unit-foot-inner">
+            <div class="misc vcard">
+              <h4>Social</h4>
+              <div class="rss">
+                <a href="http://techblog.rosedu.org/rss.xml" target="_blank">
+                  <img src="./images/rss.png" alt="Subscribe to RSS Feed" />
+                </a>
+                <a href="http://www.reddit.com/submit?url='+encodeURIComponent(window.location)" target="_blank" onclick="window.location='http://www.reddit.com/submit?url='+encodeURIComponent(window.location); return false">
+                  <img src="./images/reddit.png" alt="Submit to Reddit" />
+                </a>
+                <a href="http://twitter.com/share" class="twitter-share-button" data-count="none" target="_blank">
+                  <img src="./images/twitter.png" alt="Submit to Twitter" />
+                </a>
+              </div>
+
+              <h4>Powered by</h4>
+              <ul>
+                <li class="contact">
+                  <address>
+                    <a class="author fn n" href="http://www.rosedu.org">ROSEdu</a>
+                  </address>
+                </li>
+                <li class="contact">
+                  <address>
+                    <a class="author fn n" href="http://jaspervdj.be/hakyll">Hakyll</a>
+                  </address>
+                </li>
+              </ul>
+
+              <h4>License</h4>
+              <div class="bucket">
+                <span>
+                  <a rel="license" href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons Attribution 3.0 License">
+                    <img src="//i.creativecommons.org/l/by/3.0/88x31.png" alt="License">
+                  </a>
+                </span>
+                <span>
+                  This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/3.0/" class="subfoot">Creative Commons Attribution 3.0 License</a>.
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>
