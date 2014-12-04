@@ -10,6 +10,7 @@ set -e
 # If it is not important to have the executable in the root (or not on Linux)
 # then run the following commands manually (since they should be platform
 # independent, assuming everything is installed).
+cabal install --only-dependencies
 cabal clean
 cabal configure
 cabal build
