@@ -306,7 +306,7 @@ recentPostCtx :: Context String
 recentPostCtx = listField "recent" postCtx loadRecentPosts
 
 postTitleField :: Context a
-postTitleField = Context $ \k i -> if k /= "postTitle" then empty else do
+postTitleField = Context $ \k _ i -> if k /= "postTitle" then empty else do
     val <- getMetadataField (itemIdentifier i) "postTitle"
     case val of
       Just x -> return . StringField $ x
