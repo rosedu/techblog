@@ -29,7 +29,7 @@ You are given a JSON file that contains a list of objects. Every object contains
 
 Example input:
 
-```
+```json
 [{
 "id": 1,
 "language": "Ruby",
@@ -55,7 +55,7 @@ Example input:
 
 Example output:
 
-```
+```csv
 id,language,usage,power,
 1,Ruby,Mainly by hipsters.,4,
 2,Python,Computer scientists and some wannabe hipsters.,2,
@@ -65,14 +65,14 @@ id,language,usage,power,
 
 However, since we want to simulate a real life problem better, the JSON file won't be beautifully formatted. But, we guarantee it will be correct.
 
-```
+```json
 [ { "name": "Ruby on Rails", "commits": 49507, "contributors": 429,
 "last commit" : "an hour ago" }, {"name": "jQuery", "commits":  5745,
 "contributors" : 213, "last commit":  "4 days ago" }, {"name": "React",
 "commits" : 3557,  "contributors": 288, "last commit": "5 hours ago"} ]
 ```
 
-```
+```csv
 name,commits,contributors,last commit,
 Ruby on Rails,49507,429,an hour ago,
 jQuery,5745,213,4 days ago,
@@ -112,7 +112,7 @@ From what I've observed, the shorter and cleaner the student's solution was, the
 
 After this warming questions, we would ask him the important one: what would happen if the keys of the objects were not in the same order. For example
 
-```
+```json
 [{
 "id": 1,
 "language": "Ruby",
