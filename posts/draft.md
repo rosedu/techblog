@@ -95,14 +95,25 @@ The problem gathered 2812 submissions from 158 students.
 
 ## Statistics about the online submissions
 
-TODO charts
+<iframe width="600" height="371" seamless frameborder="0" scrolling="no" src="https://docs.google.com/spreadsheets/d/1vo6uj3WJrGRgIV3lGFuwjpSw9BKSIY9Yjby8xWVJD64/pubchart?oid=2010820145&amp;format=interactive"></iframe>
+
+I was expecting more people to fail the problem, but over 50% of the scores are perfect.
+
+<iframe width="600" height="371" seamless frameborder="0" scrolling="no" src="https://docs.google.com/spreadsheets/d/1vo6uj3WJrGRgIV3lGFuwjpSw9BKSIY9Yjby8xWVJD64/pubchart?oid=116586824&amp;format=interactive"></iframe>
+
+The average number of submissions for a perfect problem was 11. We had a participant who submitted 124 times.
+
+<iframe width="600" height="371" seamless frameborder="0" scrolling="no" src="https://docs.google.com/spreadsheets/d/1i_n0RWZCyUWUhlI9eonmlL5Dhh_EZhO1Nm0QjF_f3Qs/pubchart?oid=436588329&amp;format=interactive"></iframe>
+
+The most failed test was [number 8](https://github.com/palcu/convertor/blob/master/teste/grader_test8.in). What's special about it is that it contains a single object, and most of the students assume that after the first object ending curly brace, they will have a comma.
+
+A reason why the last 3 tests have the most failing submissions is that they are really big and most of the students preferred to use `getchar` for I/O. Doing that, you overwhelm the operating system with lots of calls. A better approach is to use a buffer.
 
 ## Hands-on interviews
 
-TODO finish this section
+After we eliminated the students who didn't have 100 points at the problem and the students who didn't complete anything on the "What project are you most proud of?" in their application form, only 60 students remained. We sent a call-to-action to the ROSEdu community and the mentors, and 8 people replied that they could help us with the interviews.
 
-We were 8 interviewers...
-Categories...
+Each interview took 30 minutes. For the first part we asked them questions about the non-technical applications, then asked the applicant to talk about how he approached the problem and finally we asked him the dreaded technical questions.
 
 ## Technical questions
 
@@ -138,6 +149,8 @@ I must say that there were some smart students that knew what hashes were, how t
 
 All in all, I was surprised by the lack of how the students grasped the concept of a hash and applied it in the problem, but had some interesting discussions with the smart ones.
 
-## Final selection
+## Acknowledgements
 
-TODO: Acknowledgements
+* Ada Solcan, Calin Cruceru and Andrei Dinu for organising the whole CDL
+* Gabriel Ivănică, Alexandru Răzvan Căciulescu, Călin Cruceru, Mihai Brănescu, Nicu Bădescu, Vlad Fulgeanu, Dan Șerban, Iulian Radu and the Wyliodrin team for being mentors, teaching voluntarily the students accepted how to contribute to the open source world
+* [infoarena](http://infoarena.ro/) because they let us host the problem
