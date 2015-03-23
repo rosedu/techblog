@@ -55,11 +55,11 @@
               <ul>
                 <li class="logo"><a href="./archive.html" title="Archive">Latest Posts</a></li>
                 
+                  <li><a href="./cdl-2015.html" title="Application process for the Community Development Lab">Application pro...</a></li>
+                
                   <li><a href="./fp-dragons.html" title="Here be Dragons - The Interesting Realm of Floating Point Operations">Here be Dragons...</a></li>
                 
                   <li><a href="./daemonizing-processes.html" title="Daemonizing Processes - Part 1">Daemonizing Pro...</a></li>
-                
-                  <li><a href="./unix-auto.html" title="Unix portability. Autoconf, Automake, Libtool">Unix portabilit...</a></li>
                 
               </ul>
             </nav>
@@ -99,22 +99,21 @@
 
       <p>This post will shed some light on the differences between arrays and pointers specifically when it comes about referencing string literals. We will base our discussion on the following two programs:</p>
 <!--more-->
-
 <p><img style="float:right" src="./images/arrays-vs-pointers.png" alt="Array and pointer representation" width="376" height="192" /></p>
 <p><strong>array.c</strong></p>
 <pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">char</span> a[] = <span class="st">&quot;ROSEdu&quot;</span>;
 <span class="dt">int</span> main(<span class="dt">void</span>)
 {
-	a[<span class="dv">0</span>] = 'r';
-	printf(<span class="st">&quot;%s</span><span class="ch">\n</span><span class="st">&quot;</span>, a);
+	a[<span class="dv">0</span>] = <span class="st">'r'</span>;
+	printf(<span class="st">&quot;</span><span class="ch">%s\n</span><span class="st">&quot;</span>, a);
 	<span class="kw">return</span> <span class="dv">0</span>;
 }</code></pre>
 <p><strong>pointer.c</strong></p>
 <pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">char</span> *p = <span class="st">&quot;ROSEdu&quot;</span>;
 <span class="dt">int</span> main(<span class="dt">void</span>)
 {
-	*p = 'r';
-	printf(<span class="st">&quot;%s</span><span class="ch">\n</span><span class="st">&quot;</span>, p);
+	*p = <span class="st">'r'</span>;
+	printf(<span class="st">&quot;</span><span class="ch">%s\n</span><span class="st">&quot;</span>, p);
 	<span class="kw">return</span> <span class="dv">0</span>;
 }</code></pre>
 <p>Program <code>array.c</code> defines an array of char whose elements are initialized with character string literals, while <code>pointer.c</code> defines a pointer to char and initializes it with the address of a memory area holding a string literal.</p>
@@ -138,7 +137,6 @@ $ cat array.s
 a:
        .string &quot;ROSEdu&quot;</code></pre>
 <!-- -->
-
 <pre><code>$ gcc -S pointer.c -o pointer.s
 $ cat pointer.s
 globl p

@@ -55,11 +55,11 @@
               <ul>
                 <li class="logo"><a href="./archive.html" title="Archive">Latest Posts</a></li>
                 
+                  <li><a href="./cdl-2015.html" title="Application process for the Community Development Lab">Application pro...</a></li>
+                
                   <li><a href="./fp-dragons.html" title="Here be Dragons - The Interesting Realm of Floating Point Operations">Here be Dragons...</a></li>
                 
                   <li><a href="./daemonizing-processes.html" title="Daemonizing Processes - Part 1">Daemonizing Pro...</a></li>
-                
-                  <li><a href="./unix-auto.html" title="Unix portability. Autoconf, Automake, Libtool">Unix portabilit...</a></li>
                 
               </ul>
             </nav>
@@ -99,14 +99,13 @@
 
       <p>This article is a quick guide to setting up a Python work environment. It walks you through installing Python with some basic package management tools (<code>distribute</code>, <code>pip</code>, <code>virtualenv</code>), setting up projects, and installing packages.</p>
 <!--more-->
-
 <section id="bootstrapping" class="level3">
 <h3>Bootstrapping</h3>
 <p>First of all we need to have a working Python interpreter. You want to install the latest release of <code>2.7</code> for now (September 2011). Python 3 is gathering momentum but many libraries don’t support it yet.</p>
 <ul>
 <li>In most Linux distributions, and in Mac OS, some Python is already installed. You may, of course, install a different one from scratch. For Mac OS, the <a href="http://brew.sh/">homebrew</a> version is highly recommended.</li>
-<li>On Windows you can install a pre-compiled release from <a href="http://python.org/download/">http://python.org/download/</a>.</li>
-<li>To install from source, you need a C compiler, and a tarball from <a href="http://python.org/download/">http://python.org/download/</a>. The usual <code>./configure; make; make   install</code> should work just fine. Consider installing into a separate folder, e.g. <code>./configure --prefix=/usr/local/Python-2.7</code>, so you can easily remove it at some point in the future.</li>
+<li>On Windows you can install a pre-compiled release from <a href="http://python.org/download/" class="uri">http://python.org/download/</a>.</li>
+<li>To install from source, you need a C compiler, and a tarball from <a href="http://python.org/download/" class="uri">http://python.org/download/</a>. The usual <code>./configure; make; make   install</code> should work just fine. Consider installing into a separate folder, e.g. <code>./configure --prefix=/usr/local/Python-2.7</code>, so you can easily remove it at some point in the future.</li>
 </ul>
 <p>Now, the typical mistake is to declare victory, and use this Python installation for everything. In time, you want to use various libraries, so you install them on top of Python. Eventually you get a version conflict (some project requires a library which is too new for another project). Fortunately there is a better way: <code>virtualenv</code>.</p>
 <p>The command-line examples use <code>$MYPYTHON</code> as placeholder for the Python installation path. This can be <code>/usr</code> for a Linux distribution install, <code>/usr/local</code> for default manual installation, <code>/usr/local/Cellar/python/2.7.2</code> for mac Homebrew, or even <code>C:\Python27</code> on Windows.</p>

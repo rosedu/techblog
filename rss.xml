@@ -1,13 +1,169 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"
+    xmlns:dc="http://purl.org/dc/elements/1.1/">
     <channel>
         <title>ROSEdu Techblog</title>
         <link>http://techblog.rosedu.org</link>
         <description><![CDATA[ROSEdu Techblog]]></description>
         <atom:link href="http://techblog.rosedu.org/rss.xml" rel="self"
                    type="application/rss+xml" />
-        <lastBuildDate>Sun, 30 Mar 2014 00:00:00 UT</lastBuildDate>
+        <lastBuildDate>Mon, 23 Mar 2015 00:00:00 UT</lastBuildDate>
         <item>
+    <title>Application process for the Community Development Lab</title>
+    <link>http://techblog.rosedu.org/cdl-2015.html</link>
+    <description><![CDATA[<div class="unit-inner unit-article-inner">
+  <div class="content">
+    <div class="bd">
+      <header>
+        <div class="unit-head">
+          <div class="unit-inner unit-head-inner">
+            <h1 class="h2 entry-title">
+              <a class="post_title" href="/cdl-2015.html" title="Application process for the Community Development Lab">Application process for the Community Development Lab</a>
+            </h1>
+          </div><!-- unit-inner -->
+        </div><!-- unit-head -->
+      </header>
+
+      <span class="date">
+      <span class="published">Published on March 23, 2015</span>
+      by
+      <span class="author"><a href="/people/alex-palcuie.html">Alex Palcuie</a></span>
+      </span>
+
+      <br/>
+      <span class="meta">
+        Tagged:
+        <span class="tags"><a href="/tags/algorithms.html">algorithms</a>, <a href="/tags/rosedu.html">ROSEdu</a>, <a href="/tags/write-up.html">write-up</a>, <a href="/tags/json.html">JSON</a></span>
+      </span>
+
+      <p>The Community and Development Lab is a traditional yearly ROSEdu project where we teach students how to start contributing to open source software. This year we had 117 applicants and had to select only 19 of them. To do this, we gave them an algorithms problem to filter 60 potential candidates which were invited to an interview.</p>
+<!--more-->
+<p>In the Community and Development Lab students have the chance to participate on 9 weekly sessions during which they can learn real industry skills. Every week, there is a 2 hour presentation about different topics, like Linux, Git, Python, OOP, Raspberry Pi, and then for another 2 hours they stay with an assigned mentor and write patches for open source projects.</p>
+<p>To select the best students, we gave the students to solve an ACM style algorithms problem on the <a href="http://www.infoarena.ro/">Infoarena</a> judge. They had to code their solution in C, C++ or Java, submit it online and the judge would run it over 10 tests, checking the output and measuring the time and memory of their implementation. Most of the students who tried to solve this problem were in their 1st or 2nd undergraduate years at Computer Science or Computer Engineering in Bucharest.</p>
+<section id="problem-statement" class="level2">
+<h2>Problem Statement</h2>
+<p><em>You can read the Romanian version on <a href="http://www.infoarena.ro/problema/convertor">Infoarena</a></em></p>
+<p>Ada, Calin and Andrei got bored of learning algorithms at their University and want to learn more practical stuff. To do this, they have decided to apply at ROSEdu CDL. However, the organisers cannot separate the applicants, so they decided to give an algorithms problem for them to solve. Luckily, you don’t need lots of knowledge about time complexities.</p>
+<p>You are given a JSON file that contains a list of objects. Every object contains a list of entries of key-value type, where the value can be a string or an integer. You have to transform it into a CSV.</p>
+<section id="restrictions" class="level3">
+<h3>Restrictions</h3>
+<ul>
+<li>Every JSON line will contain maximum 1,024 characters.</li>
+<li>You have maximum 0.1s of time for every test on a dual core 2.93GHz</li>
+<li>You have maximum 4,906 KB of memory for each test</li>
+</ul>
+<p>Example input:</p>
+<pre class="sourceCode json"><code class="sourceCode json"><span class="ot">[</span><span class="fu">{</span>
+<span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span>
+<span class="dt">&quot;language&quot;</span><span class="fu">:</span> <span class="st">&quot;Ruby&quot;</span><span class="fu">,</span>
+<span class="dt">&quot;usage&quot;</span><span class="fu">:</span> <span class="st">&quot;Mainly by hipsters.&quot;</span><span class="fu">,</span>
+<span class="dt">&quot;power&quot;</span><span class="fu">:</span> <span class="dv">4</span>
+<span class="fu">}</span><span class="ot">,</span> <span class="fu">{</span>
+<span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="dv">2</span><span class="fu">,</span>
+<span class="dt">&quot;language&quot;</span><span class="fu">:</span> <span class="st">&quot;Python&quot;</span><span class="fu">,</span>
+<span class="dt">&quot;usage&quot;</span><span class="fu">:</span> <span class="st">&quot;Computer scientists and some wannabe hipsters.&quot;</span><span class="fu">,</span>
+<span class="dt">&quot;power&quot;</span><span class="fu">:</span> <span class="dv">2</span>
+<span class="fu">}</span><span class="ot">,</span> <span class="fu">{</span>
+<span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="dv">3</span><span class="fu">,</span>
+<span class="dt">&quot;language&quot;</span><span class="fu">:</span> <span class="st">&quot;C++&quot;</span><span class="fu">,</span>
+<span class="dt">&quot;usage&quot;</span><span class="fu">:</span> <span class="st">&quot;Hardcore people who love dangling pointers.&quot;</span><span class="fu">,</span>
+<span class="dt">&quot;power&quot;</span><span class="fu">:</span> <span class="dv">100</span>
+<span class="fu">}</span><span class="ot">,</span> <span class="fu">{</span>
+<span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="dv">4</span><span class="fu">,</span>
+<span class="dt">&quot;language&quot;</span><span class="fu">:</span> <span class="st">&quot;Haskell&quot;</span><span class="fu">,</span>
+<span class="dt">&quot;usage&quot;</span><span class="fu">:</span> <span class="st">&quot;A lonely dude in Massachussets.&quot;</span><span class="fu">,</span>
+<span class="dt">&quot;power&quot;</span><span class="fu">:</span> <span class="dv">999999</span>
+<span class="fu">}</span><span class="ot">]</span></code></pre>
+<p>Example output:</p>
+<pre class="csv"><code>id,language,usage,power,
+1,Ruby,Mainly by hipsters.,4,
+2,Python,Computer scientists and some wannabe hipsters.,2,
+3,C++,Hardcore people who love dangling pointers.,100,
+4,Haskell,A lonely dude in Massachusetts.,999999,</code></pre>
+<p>However, since we want to simulate a real life problem better, the JSON file won’t be formatted with the same whitespace. But, we guarantee it will be correct.</p>
+<pre class="sourceCode json"><code class="sourceCode json"><span class="ot">[</span> <span class="fu">{</span> <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Ruby on Rails&quot;</span><span class="fu">,</span> <span class="dt">&quot;commits&quot;</span><span class="fu">:</span> <span class="dv">49507</span><span class="fu">,</span> <span class="dt">&quot;contributors&quot;</span><span class="fu">:</span><span class="er"> </span><span class="dv">429</span><span class="fu">,</span>
+<span class="dt">&quot;last commit&quot;</span> <span class="fu">:</span> <span class="st">&quot;an hour ago&quot;</span> <span class="fu">}</span><span class="ot">,</span> <span class="fu">{</span><span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;jQuery&quot;</span><span class="fu">,</span> <span class="dt">&quot;commits&quot;</span><span class="fu">:</span><span class="er"> </span> <span class="dv">5745</span><span class="fu">,</span>
+<span class="dt">&quot;contributors&quot;</span><span class="er"> </span><span class="fu">:</span> <span class="dv">213</span><span class="fu">,</span> <span class="dt">&quot;last commit&quot;</span><span class="fu">:</span><span class="er"> </span> <span class="st">&quot;4 days ago&quot;</span> <span class="fu">}</span><span class="ot">,</span> <span class="fu">{</span><span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;React&quot;</span><span class="fu">,</span>
+<span class="dt">&quot;commits&quot;</span> <span class="fu">:</span> <span class="dv">3557</span><span class="fu">,</span><span class="er"> </span> <span class="dt">&quot;contributors&quot;</span><span class="fu">:</span><span class="er"> </span><span class="dv">288</span><span class="fu">,</span> <span class="dt">&quot;last commit&quot;</span><span class="fu">:</span> <span class="st">&quot;5 hours ago&quot;</span><span class="fu">}</span> <span class="ot">]</span></code></pre>
+<pre class="csv"><code>name,commits,contributors,last commit,
+Ruby on Rails,49507,429,an hour ago,
+jQuery,5745,213,4 days ago,
+React,3557,288,5 hours ago,</code></pre>
+<p>We also guarantee that:</p>
+<ul>
+<li>there are no nested objects</li>
+<li>a string surrounded by quotes will only contain alphanumeric characters</li>
+<li>every object has the same keys</li>
+<li>the keys will be in the same order</li>
+</ul>
+</section>
+</section>
+<section id="solutions" class="level2">
+<h2>Solutions</h2>
+<p>I originally thought the solution of this problem to be a <a href="https://en.wikipedia.org/wiki/Finite-state_machine">finite-state machine</a>. You have just a pointer, go through each character one by one, and you either decide to print it, print a comma or do nothing. You first do this to print the first row of the CSV with the columns, reset the pointer to the top of the file and traverse it again by printing the values. My solution is <a href="https://github.com/palcu/convertor/blob/master/imp.cpp">here</a> and Ada Solcan helped me with a more beautiful version <a href="https://github.com/palcu/convertor/blob/master/ada_c.cpp">here</a>.</p>
+<p>For generating the <a href="https://github.com/palcu/convertor/tree/master/teste">tests</a>, I hacked a <a href="https://github.com/palcu/convertor/blob/master/generator_teste.py">Python script</a> that generated a JSON. Three tests were special because they had random whitespace. One test was a corner case where there was only one object with lots of keys, and another one had lots of objects with a single key.</p>
+<p>The problem gathered 2812 submissions from 158 students.</p>
+</section>
+<section id="statistics-about-the-online-submissions" class="level2">
+<h2>Statistics about the online submissions</h2>
+<iframe width="600" height="371" seamless frameborder="0" scrolling="no" src="https://docs.google.com/spreadsheets/d/1vo6uj3WJrGRgIV3lGFuwjpSw9BKSIY9Yjby8xWVJD64/pubchart?oid=2010820145&amp;format=interactive">
+</iframe>
+<p>I was expecting more people to fail the problem, but over 50% of the scores are perfect.</p>
+<iframe width="600" height="371" seamless frameborder="0" scrolling="no" src="https://docs.google.com/spreadsheets/d/1vo6uj3WJrGRgIV3lGFuwjpSw9BKSIY9Yjby8xWVJD64/pubchart?oid=116586824&amp;format=interactive">
+</iframe>
+<p>The average number of submissions for a perfect problem was 11. We had a participant who submitted 124 times.</p>
+<iframe width="600" height="371" seamless frameborder="0" scrolling="no" src="https://docs.google.com/spreadsheets/d/1i_n0RWZCyUWUhlI9eonmlL5Dhh_EZhO1Nm0QjF_f3Qs/pubchart?oid=436588329&amp;format=interactive">
+</iframe>
+<p>The most failed test was <a href="https://github.com/palcu/convertor/blob/master/teste/grader_test8.in">number 8</a>. What’s special about it is that it contains a single object, and most of the students assume that after the first object ending curly brace, they will have a comma.</p>
+<p>A reason why the last 3 tests have the most failing submissions is that they are really big and most of the students preferred to use <code>getchar</code> for I/O. Doing that, you overwhelm the operating system with lots of calls. A better approach is to use a buffer.</p>
+<p>Also, I’ve counted the time students spent solving the problem. The average time for any student was 6 hours and 15 minutes, and the average time for a student who successfully passed all the tests was 3 hours and 45 minutes. To estimate the time spent on solving the problem, I added an hour to the solving time for the first submissions and if the difference between 2 submissions was more than 4 hours, I also added one hour for his next submission. In total, students spent 40 days of time trying to get all the tests passed.</p>
+</section>
+<section id="hands-on-interviews" class="level2">
+<h2>Hands-on interviews</h2>
+<p>After we eliminated the students who didn’t have 100 points at the problem and the students who didn’t complete anything on the “What project are you most proud of?” in their application form, only 60 students remained. We sent a call-to-action to the ROSEdu community and the mentors, and 8 people replied that they could help us with the interviews.</p>
+<p>Each interview took 30 minutes. For the first part we asked them questions about the non-technical applications, then asked the applicant to talk about how he approached the problem and finally we asked him the dreaded technical questions.</p>
+</section>
+<section id="technical-questions" class="level2">
+<h2>Technical questions</h2>
+<p>We would first ask the student to present his solution. Then, we would start asking him what would happen if we modified the problem statement and he would start to have special characters inside the keys, like parentheses or colons. Then we would ask him to tell us how easily it would have been to modify the source code and support those edge cases.</p>
+<p>From what I’ve observed, the shorter and cleaner the student’s solution was, the easier for him was to give us a version adapted to the new requirements.</p>
+<p>After these warming questions, we would ask him the important one: what would happen if the keys of the objects were not in the same order. For example</p>
+<pre class="sourceCode json"><code class="sourceCode json"><span class="ot">[</span><span class="fu">{</span>
+<span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span>
+<span class="dt">&quot;language&quot;</span><span class="fu">:</span> <span class="st">&quot;Ruby&quot;</span><span class="fu">,</span>
+<span class="dt">&quot;usage&quot;</span><span class="fu">:</span> <span class="st">&quot;Mainly by hipsters.&quot;</span><span class="fu">,</span>
+<span class="dt">&quot;power&quot;</span><span class="fu">:</span> <span class="dv">4</span>
+<span class="fu">}</span><span class="ot">,</span> <span class="fu">{</span>
+<span class="dt">&quot;usage&quot;</span><span class="fu">:</span> <span class="st">&quot;Computer scientists and some wannabe hipsters.&quot;</span><span class="fu">,</span>
+<span class="dt">&quot;language&quot;</span><span class="fu">:</span> <span class="st">&quot;Python&quot;</span><span class="fu">,</span>
+<span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="dv">2</span><span class="fu">,</span>
+<span class="dt">&quot;power&quot;</span><span class="fu">:</span> <span class="dv">2</span>
+<span class="fu">}</span><span class="ot">]</span></code></pre>
+<p><em>All the complexities are assuming a comparison of strings is done in O(1).</em></p>
+<p>I took about 20 interviews. Almost every student would find the O(N^2) algorithm. The solution would be to print the keys of the first object, read the second object, and for every key search it naively in the first object.</p>
+<p>From here, only half of the students would get a better solution alone. The first hint I gave was to try and see if having the keys in a certain order might help. Some of them caught the idea, sorted the keys and said that they would now use binary search to find the position of the keys in O(N*log(N)).</p>
+<p>Then I might ask them if they know a data structure where you could do lookups faster than O(log(n)). Most of them knew about hashes and gave the correct complexity solution. However, when I asked them how does a hash work, they raised their shoulders and had no idea. I then explained them that a simple implementation of a hash is a long array with a smart hash function.</p>
+<p>I must say that there were some smart students that knew what hashes were, how they worked behind the scenes and they applied them to this problem naturally without any help. For these students I asked them why would you sometimes prefer a binary search tree rather than a hash. The answer is that a BST uses lower memory. Another topic of discussion would be on how would you implement a hash function for this problem. Two students knew that using a base of 26 for the characters of the keys and then doing modulo of a big prime number would be a simple and elegant solution.</p>
+<p>All in all, I was surprised by the lack of how students grasped the concept of a hash and applied it in the problem, but had some interesting discussions with some.</p>
+</section>
+<section id="acknowledgements" class="level2">
+<h2>Acknowledgements</h2>
+<ul>
+<li>Ada Solcan, Calin Cruceru and Andrei Dinu for organising the whole CDL</li>
+<li>Gabriel Ivănică, Alexandru Răzvan Căciulescu, Călin Cruceru, Mihai Brănescu, Nicu Bădescu, Vlad Fulgeanu, Dan Șerban, Iulian Radu and the Wyliodrin team for being mentors, teaching voluntarily the students accepted how to contribute to the open source world</li>
+<li><a href="http://infoarena.ro/">infoarena</a> because they let us host the problem</li>
+</ul>
+</section>
+
+    </div>
+  </div>
+</div>
+]]></description>
+    <pubDate>Mon, 23 Mar 2015 00:00:00 UT</pubDate>
+    <guid>http://techblog.rosedu.org/cdl-2015.html</guid>
+    <dc:creator>ROSEdu</dc:creator>
+</item>
+<item>
     <title>Here be Dragons - The Interesting Realm of Floating Point Operations</title>
     <link>http://techblog.rosedu.org/fp-dragons.html</link>
     <description><![CDATA[<div class="unit-inner unit-article-inner">
@@ -40,11 +196,10 @@
 <p><img src="http://imgs.xkcd.com/comics/e_to_the_pi_minus_pi.png" alt="e to pi
 minus pi (xkcd)" title="e to pi minus pi (xkcd)"></p>
 <p>Even experts and common-sense is at fault in this realm. For example, did you know that <em>always</em> comparing two floating points like in the following code is <em>bad</em>?</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="kw">if</span> (fabs(a - b) &lt; <span class="fl">0.0001</span>)
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="kw">if</span> (fabs(a - b) &lt; <span class="fl">0.</span><span class="bn">0001</span>)
     do_something_with_equal_numbers(a);</code></pre>
 <p>Without being a complete guide, this article shows some of the beauties and dangers of the floating-point realm.</p>
 <!--more-->
-
 <section id="a-common-pitfall" class="level3">
 <h3>A common pitfall</h3>
 <p>Beginners programmers expect floating point number to act as the real fractional numbers: no errors involved. Slightly experienced programmers know that this is not the case, yet even the most careful and experienced ones make mistakes from time to time. We will focus more on the common pitfalls and not on the occasional mistreatments given by experts.</p>
@@ -54,11 +209,11 @@ minus pi (xkcd)" title="e to pi minus pi (xkcd)"></p>
 
 <span class="dt">int</span> main ()
 {
-    <span class="dt">float</span> a = <span class="fl">0.1</span>;
-    <span class="dt">float</span> b = <span class="fl">0.2</span>;
+    <span class="dt">float</span> a = <span class="fl">0.</span><span class="dv">1</span>;
+    <span class="dt">float</span> b = <span class="fl">0.</span><span class="dv">2</span>;
     <span class="dt">float</span> c = a + b;
-    <span class="kw">if</span> (c != <span class="fl">0.3</span>)
-        printf(<span class="st">&quot;%f</span><span class="ch">\n</span><span class="st">%f</span><span class="ch">\n</span><span class="st">%f</span><span class="ch">\n</span><span class="st">%f</span><span class="ch">\n</span><span class="st">&quot;</span>, c, a + b, <span class="dv">3</span> * a, <span class="fl">1.5</span> * b);
+    <span class="kw">if</span> (c != <span class="fl">0.</span><span class="dv">3</span>)
+        printf(<span class="st">&quot;</span><span class="ch">%f\n%f\n%f\n%f\n</span><span class="st">&quot;</span>, c, a + b, <span class="dv">3</span> * a, <span class="fl">1.</span><span class="dv">5</span> * b);
     <span class="kw">return</span> <span class="dv">0</span>;
 }</code></pre>
 <p>and be surprised to see that results are</p>
@@ -69,7 +224,7 @@ minus pi (xkcd)" title="e to pi minus pi (xkcd)"></p>
 <span class="kw">0.300000</span></code></pre>
 <p><em>Note</em>: Your results on your machine might vary. <a href="#determinism-correctness-and-fastness">Later in the article</a> we will discuss this aspect at length.</p>
 <p>Of course, the problem in here is pretty simple: all floating point constants use double precision thus the code should <em>at least</em> read</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="kw">if</span> (c != <span class="fl">0.</span>3f)
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="kw">if</span> (c != <span class="fl">0.</span><span class="er">3f</span>)
     printf(...)</code></pre>
 <p>I say <em>at least</em> because even if on my architecture I got the exact value of <code>0.3</code>, this is not the case on all of them. Why? Because none of the <code>0.1</code>, <code>0.2</code> and <code>0.3</code> values have an exact representation in base 2. One can see that by trying to convert the number into base 2. Let’s follow the example of <code>0.3</code>:</p>
 <ul>
@@ -82,50 +237,50 @@ minus pi (xkcd)" title="e to pi minus pi (xkcd)"></p>
 </ul>
 <p>Thus, the binary representation of <code>0.3</code> would be <code>0.01001100110011001..</code>. Repeating the same algorithm with <code>0.1</code> and <code>0.2</code> will end in the same loop between <code>0.2</code>, <code>0.4</code>, <code>0.8</code> and <code>0.6</code>. So, none of <code>0.1</code>, <code>0.2</code> or <code>0.3</code> has an exact representation. Thus, no result of any operation with these numbers will be an exact answer.</p>
 <p>But, then, why did we get the exact answer in here? The two sensible answers are that either the compiler generates code which uses a higher level of precision than the space reserved for float or the printing routine does hard work to properly display the numbers. We can test these hypotheses using <code>gdb</code>:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp">$ gdb -q ./a.out 
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="er">$</span> gdb -q ./a.out 
 Reading symbols from /tmp/fps/a.out...done.
 (gdb) b main
-Breakpoint <span class="dv">1</span> at <span class="bn">0x400538</span>: file <span class="fl">1.</span>c, line <span class="dv">6</span>.
+Breakpoint <span class="dv">1</span> at <span class="bn">0x400538</span>: file <span class="fl">1.</span>c, line <span class="fl">6.</span>
 (gdb) r
 Starting program: /tmp/fps/a.out 
 
 Breakpoint <span class="dv">1</span>, main () at <span class="fl">1.</span>c:<span class="dv">6</span>
-<span class="dv">6</span>       <span class="dt">float</span> a = <span class="fl">0.1</span>;
+<span class="dv">6</span>       <span class="dt">float</span> a = <span class="fl">0.</span><span class="dv">1</span>;
 (gdb) n
-<span class="dv">7</span>       <span class="dt">float</span> b = <span class="fl">0.2</span>;
+<span class="dv">7</span>       <span class="dt">float</span> b = <span class="fl">0.</span><span class="dv">2</span>;
 (gdb) p a
-$<span class="dv">1</span> = <span class="fl">0.100000001</span>
+<span class="er">$</span><span class="dv">1</span> = <span class="fl">0.</span><span class="dv">100000001</span>
 (gdb) n
 <span class="dv">8</span>       <span class="dt">float</span> c = a + b;
 (gdb) p b
-$<span class="dv">2</span> = <span class="fl">0.200000003</span></code></pre>
+<span class="er">$</span><span class="dv">2</span> = <span class="fl">0.</span><span class="dv">200000003</span></code></pre>
 <p>As you can see, printing the values from memory shows that they are not <code>0.1</code> and <code>0.2</code> but values close to that.</p>
 <p>Let’s see now what the assembly code around <code>c = a + b</code> looks like:</p>
 <pre class="sourceCode cpp"><code class="sourceCode cpp">(gdb) disass
 Dump of assembler code <span class="kw">for</span> function main:
-   <span class="bn">0x0000000000400530</span> &lt;+<span class="dv">0</span>&gt;:     push   %rbp
-   <span class="bn">0x0000000000400531</span> &lt;+<span class="dv">1</span>&gt;:     mov    %rsp,%rbp
-   <span class="bn">0x0000000000400534</span> &lt;+<span class="dv">4</span>&gt;:     sub    $<span class="bn">0x10</span>,%rsp
-   <span class="bn">0x0000000000400538</span> &lt;+<span class="dv">8</span>&gt;:     mov    <span class="bn">0x142</span>(%rip),%eax        # <span class="bn">0x400680</span>
-   <span class="bn">0x000000000040053e</span> &lt;+<span class="dv">14</span>&gt;:    mov    %eax,-<span class="bn">0x4</span>(%rbp)
-   <span class="bn">0x0000000000400541</span> &lt;+<span class="dv">17</span>&gt;:    mov    <span class="bn">0x13d</span>(%rip),%eax        # <span class="bn">0x400684</span>
-   <span class="bn">0x0000000000400547</span> &lt;+<span class="dv">23</span>&gt;:    mov    %eax,-<span class="bn">0x8</span>(%rbp)
-=&gt; <span class="bn">0x000000000040054a</span> &lt;+<span class="dv">26</span>&gt;:    movss  -<span class="bn">0x4</span>(%rbp),%xmm0
-   <span class="bn">0x000000000040054f</span> &lt;+<span class="dv">31</span>&gt;:    addss  -<span class="bn">0x8</span>(%rbp),%xmm0
-   <span class="bn">0x0000000000400554</span> &lt;+<span class="dv">36</span>&gt;:    movss  %xmm0,-<span class="bn">0xc</span>(%rbp)
+   <span class="bn">0x0000000000400530</span> &lt;<span class="dv">+0</span>&gt;:     push   %rbp
+   <span class="bn">0x0000000000400531</span> &lt;<span class="dv">+1</span>&gt;:     mov    %rsp,%rbp
+   <span class="bn">0x0000000000400534</span> &lt;<span class="dv">+4</span>&gt;:     sub    <span class="er">$</span><span class="bn">0x10</span>,%rsp
+   <span class="bn">0x0000000000400538</span> &lt;<span class="dv">+8</span>&gt;:     mov    <span class="bn">0x142</span>(%rip),%eax        <span class="er">#</span> <span class="bn">0x400680</span>
+   <span class="bn">0x000000000040053e</span> &lt;<span class="dv">+14</span>&gt;:    mov    %eax,<span class="bn">-0x4</span>(%rbp)
+   <span class="bn">0x0000000000400541</span> &lt;<span class="dv">+17</span>&gt;:    mov    <span class="bn">0x13d</span>(%rip),%eax        <span class="er">#</span> <span class="bn">0x400684</span>
+   <span class="bn">0x0000000000400547</span> &lt;<span class="dv">+23</span>&gt;:    mov    %eax,<span class="bn">-0x8</span>(%rbp)
+=&gt; <span class="bn">0x000000000040054a</span> &lt;<span class="dv">+26</span>&gt;:    movss  <span class="bn">-0x4</span>(%rbp),%xmm0
+   <span class="bn">0x000000000040054f</span> &lt;<span class="dv">+31</span>&gt;:    addss  <span class="bn">-0x8</span>(%rbp),%xmm0
+   <span class="bn">0x0000000000400554</span> &lt;<span class="dv">+36</span>&gt;:    movss  %xmm0,<span class="bn">-0xc</span>(%rbp)
 ---Type &lt;<span class="kw">return</span>&gt; to <span class="kw">continue</span>, <span class="kw">or</span> q &lt;<span class="kw">return</span>&gt; to quit---q
 Quit</code></pre>
 <p>The last three lines are the assembly lines generated for <code>float c = a + b</code> (you can test that by running an <code>objdump -CDgS | less</code> and searching for <code>float c</code>). <code>-0x4(%rbp)</code> is where <code>a</code> is stored on the stack. <code>b</code> is stored at <code>-0x8(%rbp)</code>. The assembly instructions used – <code>addss</code> and <code>movss</code> – and the register involved – <code>xmm0</code> – show that we are working with <a href="http://en.wikipedia.org/wiki/Streaming_SIMD_Extensions" title="SSE - Wikipedia">Streaming SIMD Extensions (SSE)</a>. This register has a precision of 128 bits which is 4 times greater than the 32 bits used by the <code>float</code> datatype. We are tempted now to think that we are able to use the full width of the register – even if the SIMD part of the extension tells that this is not the case, we want a real proof based on the memory/register contents.</p>
 <p>Continuing the execution, we see:</p>
 <pre class="sourceCode cpp"><code class="sourceCode cpp">(gdb) n
-<span class="dv">9</span>       <span class="kw">if</span> (c != <span class="fl">0.3</span>)
-(gdb) p $xmm0
-$<span class="dv">3</span> = {v4_float = {<span class="fl">0.300000012</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>}, v2_double = {<span class="fl">5.18894283457103e-315</span>,
-<span class="dv">0</span>}, v16_int8 = {-<span class="dv">102</span>, -<span class="dv">103</span>, -<span class="dv">103</span>, <span class="dv">62</span>, <span class="dv">0</span> &lt;repeats <span class="dv">12</span> times&gt;}, v8_int16 = {
--<span class="dv">26214</span>, <span class="dv">16025</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>}, v4_int32 = {<span class="dv">1050253722</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>}, v2_int64 =
+<span class="dv">9</span>       <span class="kw">if</span> (c != <span class="fl">0.</span><span class="dv">3</span>)
+(gdb) p <span class="er">$</span>xmm0
+<span class="er">$</span><span class="dv">3</span> = {v4_float = {<span class="fl">0.</span><span class="dv">300000012</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>}, v2_double = {<span class="fl">5.18894283457103e-315</span>,
+<span class="dv">0</span>}, v16_int8 = {<span class="dv">-102</span>, <span class="dv">-103</span>, <span class="dv">-103</span>, <span class="dv">62</span>, <span class="dv">0</span> &lt;repeats <span class="dv">12</span> times&gt;}, v8_int16 = {
+<span class="dv">-26214</span>, <span class="dv">16025</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>}, v4_int32 = {<span class="dv">1050253722</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>}, v2_int64 =
 {<span class="dv">1050253722</span>, <span class="dv">0</span>}, uint128 = <span class="dv">1050253722</span>}
 (gdb) p c
-$<span class="dv">4</span> = <span class="fl">0.300000012</span></code></pre>
+<span class="er">$</span><span class="dv">4</span> = <span class="fl">0.</span><span class="dv">300000012</span></code></pre>
 <p>Indeed, our <code>c</code> is not <code>0.3</code>. But it seems that not even the contents of <code>xmm0</code> are closer to the truth.</p>
 <p>So, the fact that we got <code>0.3</code> in the output is caused not by the fact that we use a 128-bits wide registers but by the fact that the <a href="http://kurtstephens.com/files/p372-steele.pdf" title="Printing Floating Point Numbers (PDF)">up-to-recent unsolved problem</a> of precisely printing floating point numbers is no longer so.</p>
 </section>
@@ -142,14 +297,14 @@ $<span class="dv">4</span> = <span class="fl">0.300000012</span></code></pre>
 <section id="back-to-the-castle-and-a-final-conclusion" class="level3">
 <h3>Back to the castle and a final conclusion</h3>
 <p>Returning to our code, we want to see what values are stored in memory for <code>a</code>, <code>b</code> and <code>c</code> and also in register <code>xmm0</code>:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp">(gdb) x $rbp - <span class="bn">0x4</span>
+<pre class="sourceCode cpp"><code class="sourceCode cpp">(gdb) x <span class="er">$</span>rbp - <span class="bn">0x4</span>
 <span class="bn">0x7fffffffdfac</span>: <span class="bn">0x3dcccccd</span>
-(gdb) x $rbp - <span class="bn">0x8</span>
+(gdb) x <span class="er">$</span>rbp - <span class="bn">0x8</span>
 <span class="bn">0x7fffffffdfa8</span>: <span class="bn">0x3e4ccccd</span>
-(gdb) x $rbp - <span class="bn">0xc</span>
+(gdb) x <span class="er">$</span>rbp - <span class="bn">0xc</span>
 <span class="bn">0x7fffffffdfa4</span>: <span class="bn">0x3e99999a</span>
-(gdb) p/x $xmm0
-$<span class="dv">4</span> = {.... uint128 = <span class="bn">0x0000000000000000000000003e99999a</span>}</code></pre>
+(gdb) p/x <span class="er">$</span>xmm0
+<span class="er">$</span><span class="dv">4</span> = {.... uint128 = <span class="bn">0x0000000000000000000000003e99999a</span>}</code></pre>
 <p>Looking through the analyzer, <code>0x3dcccccd</code> (the value for <code>a</code>) is <code>1.00000001490116119384765625E-1</code> which is both close to the original value of <code>0.1</code> and to the displayed value of <code>0.100000001</code>. Same for <code>b</code> and <code>c</code>. However, looking at <code>xmm0</code> register we see that the last 32 bits have the same pattern as <code>-0xc($rbp)</code>. Thus, the SSE 128 bits registers <strong>are not using</strong> the <code>binary128</code> standard! If they were using it, the last value displayed there should have been <code>3FFD3333333333333333333333333333</code>. As said on <a href="http://www.reddit.com/r/programming/comments/21qzz2/an_overview_of_floating_point_realm/" title="This article on reddit">reddit thread for this article</a>, excess precision comes form the <code>x87</code> coprocessor which uses 80 bits of precision.</p>
 <p>Now it is time to see some other aspects of working with floating point numbers.</p>
 </section>
@@ -167,7 +322,7 @@ $<span class="dv">4</span> = {.... uint128 = <span class="bn">0x0000000000000000
     <span class="kw">do</span> {
         x = *((<span class="dt">float</span>*)&amp;i);
         <span class="kw">if</span> (x != -(-x))
-            printf(<span class="st">&quot;%f %u</span><span class="ch">\n</span><span class="st">&quot;</span>, x, i);
+            printf(<span class="st">&quot;</span><span class="ch">%f</span><span class="st"> </span><span class="ch">%u\n</span><span class="st">&quot;</span>, x, i);
         i++;
     } <span class="kw">while</span> (i != <span class="dv">0</span>);
 
@@ -209,7 +364,7 @@ $ <span class="kw">./a.out</span>  <span class="kw">|</span> <span class="kw">he
     <span class="kw">do</span> {
         x = *((<span class="dt">float</span>*)&amp;i);
         <span class="kw">if</span> (x != -(-x))
-            printf(<span class="st">&quot;%f %u</span><span class="ch">\n</span><span class="st">&quot;</span>, x, i);
+            printf(<span class="st">&quot;</span><span class="ch">%f</span><span class="st"> </span><span class="ch">%u\n</span><span class="st">&quot;</span>, x, i);
         i++;
         <span class="kw">if</span> (i &gt; <span class="bn">0x7f800000</span>)
             <span class="kw">break</span>;
@@ -237,14 +392,14 @@ $ <span class="kw">./a.out</span>  <span class="kw">|</span> <span class="kw">he
         z = (x * x * x);
         z = z * z;
         <span class="kw">if</span> (y != z)
-            printf(<span class="st">&quot;%f %u</span><span class="ch">\n</span><span class="st">&quot;</span>, x, i);
+            printf(<span class="st">&quot;</span><span class="ch">%f</span><span class="st"> </span><span class="ch">%u\n</span><span class="st">&quot;</span>, x, i);
         s += i;
         i++;
         <span class="kw">if</span> (i &gt; <span class="bn">0x7f800000</span>)
             <span class="kw">break</span>;
     } <span class="kw">while</span> (i != <span class="dv">0</span>);
 
-    printf(<span class="st">&quot;%lld</span><span class="ch">\n</span><span class="st">&quot;</span>, s);
+    printf(<span class="st">&quot;</span><span class="ch">%lld\n</span><span class="st">&quot;</span>, s);
 
     <span class="kw">return</span> <span class="dv">0</span>;
 }</code></pre>
@@ -271,9 +426,9 @@ $ <span class="kw">./a.out</span>  <span class="kw">|</span> <span class="kw">he
     <span class="dt">float</span> expectedResult = *((<span class="dt">float</span>*)&amp;expectedAsInt);
     <span class="dt">float</span> result = *((<span class="dt">float</span>*)&amp;resultAsInt);
 
-    printf(<span class="st">&quot;%f %f</span><span class="ch">\n</span><span class="st">&quot;</span>, result, expectedResult);
+    printf(<span class="st">&quot;</span><span class="ch">%f</span><span class="st"> </span><span class="ch">%f\n</span><span class="st">&quot;</span>, result, expectedResult);
 
-    <span class="kw">if</span> (fabs(result - expectedResult) &lt; <span class="fl">0.0001</span>)
+    <span class="kw">if</span> (fabs(result - expectedResult) &lt; <span class="fl">0.</span><span class="bn">0001</span>)
         printf(<span class="st">&quot;Numbers are close</span><span class="ch">\n</span><span class="st">&quot;</span>);
 
     <span class="kw">return</span> <span class="dv">0</span>;
@@ -303,7 +458,7 @@ $ <span class="kw">./a.out</span>  <span class="kw">|</span> <span class="kw">he
     <span class="dt">float</span> target = getFloatFromInt(src);
     <span class="dt">float</span> next = getFloatFromInt(src + <span class="dv">1</span>);
 
-    printf(<span class="st">&quot;src=%d target=%f next=%f compare=%d</span><span class="ch">\n</span><span class="st">&quot;</span>, src, target, next,
+    printf(<span class="st">&quot;src=</span><span class="ch">%d</span><span class="st"> target=</span><span class="ch">%f</span><span class="st"> next=</span><span class="ch">%f</span><span class="st"> compare=</span><span class="ch">%d\n</span><span class="st">&quot;</span>, src, target, next,
             closeFloats(next, target));
 }
 
@@ -336,11 +491,11 @@ $ <span class="kw">./a.out</span>  <span class="kw">|</span> <span class="kw">he
     <span class="kw">return</span> fabs(number - target) / target &lt; FLT_EPSILON;
 }</code></pre>
 <p>Using the above gives the following results:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp">$ ./a.out 
-src=<span class="dv">1056964608</span> target=<span class="fl">0.500000</span> next=<span class="fl">0.500000</span> compare=<span class="dv">0</span>
-src=<span class="dv">1069547520</span> target=<span class="fl">1.500000</span> next=<span class="fl">1.500000</span> compare=<span class="dv">1</span>
-src=<span class="dv">1120468992</span> target=<span class="fl">100.500000</span> next=<span class="fl">100.500008</span> compare=<span class="dv">1</span>
-src=<span class="dv">1176257024</span> target=<span class="fl">10000.500000</span> next=<span class="fl">10000.500977</span> compare=<span class="dv">1</span></code></pre>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="er">$</span> ./a.out 
+src=<span class="dv">1056964608</span> target=<span class="fl">0.</span><span class="dv">500000</span> next=<span class="fl">0.</span><span class="dv">500000</span> compare=<span class="dv">0</span>
+src=<span class="dv">1069547520</span> target=<span class="fl">1.</span><span class="dv">500000</span> next=<span class="fl">1.</span><span class="dv">500000</span> compare=<span class="dv">1</span>
+src=<span class="dv">1120468992</span> target=<span class="fl">100.</span><span class="dv">500000</span> next=<span class="fl">100.</span><span class="dv">500008</span> compare=<span class="dv">1</span>
+src=<span class="dv">1176257024</span> target=<span class="fl">10000.</span><span class="dv">500000</span> next=<span class="fl">10000.</span><span class="dv">500977</span> compare=<span class="dv">1</span></code></pre>
 <p>We get better results above 1 but worse below. This is because we are dividing to a smaller number closing to doing a division by <code>0</code>. So, don’t use the above method as well.</p>
 <p>Let’s try with a third option:</p>
 <pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">int</span> closeFloats(<span class="dt">float</span> number, <span class="dt">float</span> target)
@@ -355,11 +510,11 @@ src=<span class="dv">1176257024</span> target=<span class="fl">10000.500000</spa
     <span class="kw">return</span> diff &lt;= largest * FLT_EPSILON;
 }</code></pre>
 <p>This time, instead of dividing we use multiplication. Also, to ensure some more safety, we pick the largest absolute value as being the mark around which we compute the relative error. Running this test we finally get:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp">$ ./a.out
-src=<span class="dv">1056964608</span> target=<span class="fl">0.500000</span> next=<span class="fl">0.500000</span> compare=<span class="dv">1</span>
-src=<span class="dv">1069547520</span> target=<span class="fl">1.500000</span> next=<span class="fl">1.500000</span> compare=<span class="dv">1</span>
-src=<span class="dv">1120468992</span> target=<span class="fl">100.500000</span> next=<span class="fl">100.500008</span> compare=<span class="dv">1</span>
-src=<span class="dv">1176257024</span> target=<span class="fl">10000.500000</span> next=<span class="fl">10000.500977</span> compare=<span class="dv">1</span></code></pre>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="er">$</span> ./a.out
+src=<span class="dv">1056964608</span> target=<span class="fl">0.</span><span class="dv">500000</span> next=<span class="fl">0.</span><span class="dv">500000</span> compare=<span class="dv">1</span>
+src=<span class="dv">1069547520</span> target=<span class="fl">1.</span><span class="dv">500000</span> next=<span class="fl">1.</span><span class="dv">500000</span> compare=<span class="dv">1</span>
+src=<span class="dv">1120468992</span> target=<span class="fl">100.</span><span class="dv">500000</span> next=<span class="fl">100.</span><span class="dv">500008</span> compare=<span class="dv">1</span>
+src=<span class="dv">1176257024</span> target=<span class="fl">10000.</span><span class="dv">500000</span> next=<span class="fl">10000.</span><span class="dv">500977</span> compare=<span class="dv">1</span></code></pre>
 <p>However, the story is not yet finished. What happens if the <code>FLT_EPSILON</code> is too large a gap in relative error? You might be tempted to say <em>just multiply <code>FLT_EPSILON</code> with <code>0.1</code> and be done</em>. Test it and you’ll see that all of the results turn to <code>0</code>: it is as if <strong>we didn’t use any bound at all and tested using <code>==</code></strong>. So we are thus restricted to having a relative gap no smaller than <code>FLT_EPSILON</code>.</p>
 <p>Now, let’s turn to the other side: what if the gap is too small? You can multiply <code>FLT_EPSILON</code> with a small value for this. However, finding out which value to use is hard because this way of computing the error is not linked at all with the representation of the floating point numbers. So, let’s try with using ULPs:</p>
 <pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">int</span> closeFloats(<span class="dt">float</span> number, <span class="dt">float</span> target)
@@ -373,11 +528,11 @@ src=<span class="dv">1176257024</span> target=<span class="fl">10000.500000</spa
 }</code></pre>
 <p>In the above we consider numbers which differ by at most 5 ULPs as being close. Also, observe the first check which tests if the numbers have different signs. In the positive case we compare using <code>==</code> the <strong>floating point numbers</strong> to ensure that we catch the case <code>+0 == -0</code>.</p>
 <p>Running it we get:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp">$ ./a.out
-src=<span class="dv">1056964608</span> target=<span class="fl">0.500000</span> next=<span class="fl">0.500000</span> compare=<span class="dv">1</span>
-src=<span class="dv">1069547520</span> target=<span class="fl">1.500000</span> next=<span class="fl">1.500000</span> compare=<span class="dv">1</span>
-src=<span class="dv">1120468992</span> target=<span class="fl">100.500000</span> next=<span class="fl">100.500008</span> compare=<span class="dv">1</span>
-src=<span class="dv">1176257024</span> target=<span class="fl">10000.500000</span> next=<span class="fl">10000.500977</span> compare=<span class="dv">1</span></code></pre>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="er">$</span> ./a.out
+src=<span class="dv">1056964608</span> target=<span class="fl">0.</span><span class="dv">500000</span> next=<span class="fl">0.</span><span class="dv">500000</span> compare=<span class="dv">1</span>
+src=<span class="dv">1069547520</span> target=<span class="fl">1.</span><span class="dv">500000</span> next=<span class="fl">1.</span><span class="dv">500000</span> compare=<span class="dv">1</span>
+src=<span class="dv">1120468992</span> target=<span class="fl">100.</span><span class="dv">500000</span> next=<span class="fl">100.</span><span class="dv">500008</span> compare=<span class="dv">1</span>
+src=<span class="dv">1176257024</span> target=<span class="fl">10000.</span><span class="dv">500000</span> next=<span class="fl">10000.</span><span class="dv">500977</span> compare=<span class="dv">1</span></code></pre>
 <p>which was somehow obvious (since the number are already one ULP apart).</p>
 <p>Now you might raise one more question: which of the two methods is fastest? Let’s test:</p>
 <pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">void</span> testFloatTesting(<span class="dt">int</span> src)
@@ -386,7 +541,7 @@ src=<span class="dv">1176257024</span> target=<span class="fl">10000.500000</spa
     <span class="dt">float</span> next = getFloatFromInt(src + <span class="dv">1</span>);
 
     <span class="kw">if</span> (closeFloats(next, target) != <span class="dv">1</span>)
-        printf(<span class="st">&quot;src=%d target=%f next=%f compare=%d</span><span class="ch">\n</span><span class="st">&quot;</span>, src, target,
+        printf(<span class="st">&quot;src=</span><span class="ch">%d</span><span class="st"> target=</span><span class="ch">%f</span><span class="st"> next=</span><span class="ch">%f</span><span class="st"> compare=</span><span class="ch">%d\n</span><span class="st">&quot;</span>, src, target,
                 next, closeFloats(next, target));
 }
 
@@ -403,18 +558,18 @@ src=<span class="dv">1176257024</span> target=<span class="fl">10000.500000</spa
     <span class="kw">return</span> <span class="dv">0</span>;
 }</code></pre>
 <p>Using ULP we get these results:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp">$ time ./a.out
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="er">$</span> time ./a.out
 
-real    0m32.343s
-user    0m32.290s
-sys 0m0.007s</code></pre>
+real    <span class="er">0m32</span><span class="fl">.343</span>s
+user    <span class="er">0m32</span><span class="fl">.290</span>s
+sys <span class="er">0m0</span><span class="fl">.007</span>s</code></pre>
 <p>Using the floating point - relative method we get:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp">$ time ./a.out | wc -l
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="er">$</span> time ./a.out | wc -l
 <span class="dv">4194305</span>
 
-real    1m4.161s
-user    1m4.137s
-sys 0m0.204s</code></pre>
+real    <span class="er">1m4</span><span class="fl">.161</span>s
+user    <span class="er">1m4</span><span class="fl">.137</span>s
+sys <span class="er">0m0</span><span class="fl">.204</span>s</code></pre>
 <p>We seem to be getting some wrong results (<code>0.9%</code>). Indeed, around 0 both comparison methods fail. The relative error method fails because we are close to dividing by <code>0</code> and because of catastrophic cancellation. The ULP method because there are many numbers between 0 and <code>FLT_MIN</code> (the minimum properly representable float) – these values are denormalized and using them might slow down your computation quite a lot. So, what should we use in this case? It turns out that if you want to compare with <code>0</code> the absolute error method is the best.</p>
 <p>Also note that on my machine the relative method is twice as slow as the ULP one.</p>
 <p>To conclude this part:</p>
@@ -456,6 +611,7 @@ sys 0m0.204s</code></pre>
 ]]></description>
     <pubDate>Sun, 30 Mar 2014 00:00:00 UT</pubDate>
     <guid>http://techblog.rosedu.org/fp-dragons.html</guid>
+    <dc:creator>ROSEdu</dc:creator>
 </item>
 <item>
     <title>Daemonizing Processes - Part 1</title>
@@ -487,7 +643,6 @@ sys 0m0.204s</code></pre>
 
       <p>A special category of processes in Linux is that formed by <strong>daemon</strong> processes.</p>
 <!--more-->
-
 <section id="what-is-a-daemon" class="level3">
 <h3>What is a daemon?</h3>
 <p>A daemon is a program that runs as a background process, forever, without being directly affected by any user. Let’s run a command to see examples of some daemons.</p>
@@ -656,6 +811,7 @@ $ <span class="kw">bg</span>
 ]]></description>
     <pubDate>Sun, 23 Mar 2014 00:00:00 UT</pubDate>
     <guid>http://techblog.rosedu.org/daemonizing-processes.html</guid>
+    <dc:creator>ROSEdu</dc:creator>
 </item>
 <item>
     <title>Unix portability. Autoconf, Automake, Libtool</title>
@@ -687,7 +843,6 @@ $ <span class="kw">bg</span>
 
       <p>The purpose of this article is to generally present the utilities <a href="http://www.gnu.org/software/autoconf/manual/index.html" title="autoconf">Autoconf</a>, <a href="http://www.gnu.org/software/automake/manual/index.html" title="automake">Automake</a> and <a href="http://www.gnu.org/software/libtool/manual/index.html" title="libtool">Libtool</a>, which ease very much the process of installation from sources of software packages or libraries, from the point of view of users. It is assumed that the user uses any Unix/Unix-like system, and the purpose of the developer, who chooses to use these GNU tools, is to make the installation, on the user’s system, as easy as possible.</p>
 <!--more-->
-
 <p>If you are a serious Unix/Linux user, for sure you have been in the situation of compiling a program or a library from sources. Then, you called <code>./configure; make; make install</code> and you got an executable or a library. In this article, we change the point of view, assuming that we are the software’s developers and not the users, and our purpose is to understand in principle how can we generate the <code>configure</code> script and the other additional files,</p>
 <p>This article aims to explain <em>le raison d’etre</em> of these very useful tools (<a href="http://www.gnu.org/software/autoconf/manual/index.html" title="autoconf">Autoconf</a>, <a href="http://www.gnu.org/software/automake/manual/index.html" title="automake">Automake</a>, <a href="http://www.gnu.org/software/libtool/manual/index.html" title="libtool">Libtool</a>) and to present generic configuration files, in the case of a simple program and the case of a simple library – thus, the base syntax for these GNU tools with the aim of creating an easy install experience for the users.</p>
 <section id="the-theory" class="level3">
@@ -840,6 +995,7 @@ strcpy(s, getenv(&quot;TERM&quot;));
 ]]></description>
     <pubDate>Sat, 08 Mar 2014 00:00:00 UT</pubDate>
     <guid>http://techblog.rosedu.org/unix-auto.html</guid>
+    <dc:creator>ROSEdu</dc:creator>
 </item>
 <item>
     <title>A superficial exploration of Haskell, part 2: Lazy by default</title>
@@ -875,68 +1031,67 @@ strcpy(s, getenv(&quot;TERM&quot;));
 <p>Laziness is the separation of equation from execution.</p>
 </blockquote>
 <!--more-->
-
 <p>Before we look at an example, let me remind you of a bit of syntactic sugar that Haskell provides in order to quickly define a list of successive integers:</p>
-<pre class="sourceCode haskell"><code class="sourceCode haskell">λ: [<span class="dv">20</span><span class="fu">..</span><span class="dv">70</span>]
+<pre class="sourceCode haskell"><code class="sourceCode haskell">λ<span class="fu">:</span> [<span class="dv">20</span><span class="fu">..</span><span class="dv">70</span>]
 [<span class="dv">20</span>,<span class="dv">21</span>,<span class="dv">22</span>,<span class="dv">23</span>,<span class="dv">24</span>,<span class="dv">25</span>,<span class="dv">26</span>,<span class="dv">27</span>,<span class="dv">28</span>,<span class="dv">29</span>,<span class="dv">30</span>,<span class="dv">31</span>,<span class="dv">32</span>,<span class="dv">33</span>,<span class="dv">34</span>,<span class="dv">35</span>,<span class="dv">36</span>,<span class="dv">37</span>,<span class="dv">38</span>,<span class="dv">39</span>,<span class="dv">40</span>,<span class="dv">41</span>,<span class="dv">42</span>,<span class="dv">43</span>,<span class="dv">44</span>,<span class="dv">45</span>,<span class="dv">46</span>,<span class="dv">47</span>,<span class="dv">48</span>,<span class="dv">49</span>,<span class="dv">50</span>,<span class="dv">51</span>,<span class="dv">52</span>,<span class="dv">53</span>,<span class="dv">54</span>,<span class="dv">55</span>,<span class="dv">56</span>,<span class="dv">57</span>,<span class="dv">58</span>,<span class="dv">59</span>,<span class="dv">60</span>,<span class="dv">61</span>,<span class="dv">62</span>,<span class="dv">63</span>,<span class="dv">64</span>,<span class="dv">65</span>,<span class="dv">66</span>,<span class="dv">67</span>,<span class="dv">68</span>,<span class="dv">69</span>,<span class="dv">70</span>]</code></pre>
 <p>As you might remember from <a href="http://techblog.rosedu.org/haskell-part1.html">part 1</a>, <code>λ:</code> is my custom GHCi prompt, so we’re effectively looking at the result of how GHCi interprets the notation <code>[20..70]</code>.</p>
 <p>OK then. To start, let’s define two lists:</p>
-<pre class="sourceCode haskell"><code class="sourceCode haskell">λ: <span class="kw">let</span> list1 <span class="fu">=</span> [<span class="dv">20</span><span class="fu">..</span><span class="dv">70</span>]
-λ: <span class="kw">let</span> list2 <span class="fu">=</span> map (<span class="fu">+</span><span class="dv">1</span>) list1</code></pre>
+<pre class="sourceCode haskell"><code class="sourceCode haskell">λ<span class="fu">:</span> <span class="kw">let</span> list1 <span class="fu">=</span> [<span class="dv">20</span><span class="fu">..</span><span class="dv">70</span>]
+λ<span class="fu">:</span> <span class="kw">let</span> list2 <span class="fu">=</span> map (<span class="fu">+</span><span class="dv">1</span>) list1</code></pre>
 <p>At this point you might be thinking “Oh look, <code>list1</code> is the enumeration of all integers between 20 and 70, and <code>list2</code> is the enumeration of all integers between 21 and 71”.</p>
 <p><strong>Well, no.</strong> Not yet, at least.</p>
 <p>GHCi provides a command called <code>:sprint</code> that allows us to take a peek at how far along the evaluation of a given expression has progressed.</p>
-<pre class="sourceCode haskell"><code class="sourceCode haskell">λ: <span class="fu">:</span>sprint list1
+<pre class="sourceCode haskell"><code class="sourceCode haskell">λ<span class="fu">:</span> <span class="fu">:</span>sprint list1
 list1 <span class="fu">=</span> _
-λ: <span class="fu">:</span>sprint list2
+λ<span class="fu">:</span> <span class="fu">:</span>sprint list2
 list2 <span class="fu">=</span> _</code></pre>
 <p>So what <code>:sprint</code> is telling us in the above snippet is that both <code>list1</code> and <code>list2</code> are unevaluated at this point. To establish some terminology, an underscore in the context of <code>:sprint</code> output represents a <strong>thunk</strong>. Formally defined, a thunk is an expression that hasn’t yet been evaluated. You may think of it as a value wrapped in a function of zero arguments. When the function is called, the value springs into existence.</p>
 <p>We are now going to ask increasingly “intrusive” questions about <code>list2</code> and then each step along the way examine what has been evaluated and what hasn’t.</p>
 <p>The simplest and least intrusive question we can ask about a list is whether or not it’s empty.</p>
-<pre class="sourceCode haskell"><code class="sourceCode haskell">λ: null list2
+<pre class="sourceCode haskell"><code class="sourceCode haskell">λ<span class="fu">:</span> null list2
 <span class="dt">False</span>
-λ: <span class="fu">:</span>sprint list1
+λ<span class="fu">:</span> <span class="fu">:</span>sprint list1
 list1 <span class="fu">=</span> <span class="dv">20</span> <span class="fu">:</span> _
-λ: <span class="fu">:</span>sprint list2
+λ<span class="fu">:</span> <span class="fu">:</span>sprint list2
 list2 <span class="fu">=</span> _ <span class="fu">:</span> _</code></pre>
 <p>In order to answer that question, GHCi needs to know whether or not the first element exists, and as a result, <code>list2</code> is no longer unevaluated, it is now partially evaluated. GHCi now knows something about the structure of <code>list2</code> - it knows that it consists of something “consed onto” (prepended to) something else. In the next round, that “something” will turn out to be the value <code>21</code>, but for right now this fact is irrelevant to the process of answering the question “is <code>list2</code> empty”. However, we notice the value <code>20</code> is fully evaluated as the head of <code>list1</code> - this particular evaluation was necessary in order to construct the thunk <code>(+1) 20</code>.</p>
 <p>Next, we ask for the first element of <code>list2</code>:</p>
-<pre class="sourceCode haskell"><code class="sourceCode haskell">λ: head list2
+<pre class="sourceCode haskell"><code class="sourceCode haskell">λ<span class="fu">:</span> head list2
 <span class="dv">21</span>
-λ: <span class="fu">:</span>sprint list1
+λ<span class="fu">:</span> <span class="fu">:</span>sprint list1
 list1 <span class="fu">=</span> <span class="dv">20</span> <span class="fu">:</span> _
-λ: <span class="fu">:</span>sprint list2
+λ<span class="fu">:</span> <span class="fu">:</span>sprint list2
 list2 <span class="fu">=</span> <span class="dv">21</span> <span class="fu">:</span> _</code></pre>
 <p>We notice that the expression <code>(+1) 20</code> mentioned above is now fully evaluated and therefore no longer a thunk.</p>
 <p>Next, let’s ask for the first 5 elements of <code>list2</code>:</p>
-<pre class="sourceCode haskell"><code class="sourceCode haskell">λ: take <span class="dv">5</span> list2
+<pre class="sourceCode haskell"><code class="sourceCode haskell">λ<span class="fu">:</span> take <span class="dv">5</span> list2
 [<span class="dv">21</span>,<span class="dv">22</span>,<span class="dv">23</span>,<span class="dv">24</span>,<span class="dv">25</span>]
-λ: <span class="fu">:</span>sprint list1
+λ<span class="fu">:</span> <span class="fu">:</span>sprint list1
 list1 <span class="fu">=</span> <span class="dv">20</span> <span class="fu">:</span> <span class="dv">21</span> <span class="fu">:</span> <span class="dv">22</span> <span class="fu">:</span> <span class="dv">23</span> <span class="fu">:</span> <span class="dv">24</span> <span class="fu">:</span> _
-λ: <span class="fu">:</span>sprint list2
+λ<span class="fu">:</span> <span class="fu">:</span>sprint list2
 list2 <span class="fu">=</span> <span class="dv">21</span> <span class="fu">:</span> <span class="dv">22</span> <span class="fu">:</span> <span class="dv">23</span> <span class="fu">:</span> <span class="dv">24</span> <span class="fu">:</span> <span class="dv">25</span> <span class="fu">:</span> _</code></pre>
 <p>Next, let’s ask for the 18th element of <code>list2</code>:</p>
-<pre class="sourceCode haskell"><code class="sourceCode haskell">λ: list2 <span class="fu">!!</span> <span class="dv">17</span>
+<pre class="sourceCode haskell"><code class="sourceCode haskell">λ<span class="fu">:</span> list2 <span class="fu">!!</span> <span class="dv">17</span>
 <span class="dv">38</span>
-λ: <span class="fu">:</span>sprint list1
+λ<span class="fu">:</span> <span class="fu">:</span>sprint list1
 list1 <span class="fu">=</span> <span class="dv">20</span> <span class="fu">:</span> <span class="dv">21</span> <span class="fu">:</span> <span class="dv">22</span> <span class="fu">:</span> <span class="dv">23</span> <span class="fu">:</span> <span class="dv">24</span> <span class="fu">:</span> <span class="dv">25</span> <span class="fu">:</span> <span class="dv">26</span> <span class="fu">:</span> <span class="dv">27</span> <span class="fu">:</span> <span class="dv">28</span> <span class="fu">:</span> <span class="dv">29</span> <span class="fu">:</span>
         <span class="dv">30</span> <span class="fu">:</span> <span class="dv">31</span> <span class="fu">:</span> <span class="dv">32</span> <span class="fu">:</span> <span class="dv">33</span> <span class="fu">:</span> <span class="dv">34</span> <span class="fu">:</span> <span class="dv">35</span> <span class="fu">:</span> <span class="dv">36</span> <span class="fu">:</span> <span class="dv">37</span> <span class="fu">:</span> _
-λ: <span class="fu">:</span>sprint list2
+λ<span class="fu">:</span> <span class="fu">:</span>sprint list2
 list2 <span class="fu">=</span> <span class="dv">21</span> <span class="fu">:</span> <span class="dv">22</span> <span class="fu">:</span> <span class="dv">23</span> <span class="fu">:</span> <span class="dv">24</span> <span class="fu">:</span> <span class="dv">25</span> <span class="fu">:</span> _ <span class="fu">:</span> _ <span class="fu">:</span> _ <span class="fu">:</span> _ <span class="fu">:</span> _ <span class="fu">:</span>
         _ <span class="fu">:</span> _ <span class="fu">:</span> _ <span class="fu">:</span> _ <span class="fu">:</span> _ <span class="fu">:</span> _ <span class="fu">:</span> _ <span class="fu">:</span> <span class="dv">38</span> <span class="fu">:</span> _</code></pre>
 <p>Now this is interesting.</p>
 <p>Elements from the 6th to the 17th are fully evaluated in <code>list1</code> but unevaluated in <code>list2</code>. Because of how <code>list1</code> is defined, it is going to be evaluated in small, close-proximity increments from left to right. But all values in <code>list2</code> are evaluated by applying a transformation on elements in the corresponding positions in <code>list1</code>. That is why we are starting to see gaps in <code>list2</code>.</p>
 <p>This example really drives home the essence of lazy evaluation. By default, Haskell will evaluate as little as possible, as late as possible. This is in contrast to traditional, imperative programming languages which evaluate as much as possible, as soon as possible.</p>
 <p>Next, let’s ask for the length of <code>list2</code>:</p>
-<pre class="sourceCode haskell"><code class="sourceCode haskell">λ: length list2
+<pre class="sourceCode haskell"><code class="sourceCode haskell">λ<span class="fu">:</span> length list2
 <span class="dv">51</span>
-λ: <span class="fu">:</span>sprint list1
+λ<span class="fu">:</span> <span class="fu">:</span>sprint list1
 list1 <span class="fu">=</span> [<span class="dv">20</span>,<span class="dv">21</span>,<span class="dv">22</span>,<span class="dv">23</span>,<span class="dv">24</span>,<span class="dv">25</span>,<span class="dv">26</span>,<span class="dv">27</span>,<span class="dv">28</span>,<span class="dv">29</span>,
          <span class="dv">30</span>,<span class="dv">31</span>,<span class="dv">32</span>,<span class="dv">33</span>,<span class="dv">34</span>,<span class="dv">35</span>,<span class="dv">36</span>,<span class="dv">37</span>,<span class="dv">38</span>,<span class="dv">39</span>,
          <span class="dv">40</span>,<span class="dv">41</span>,<span class="dv">42</span>,<span class="dv">43</span>,<span class="dv">44</span>,<span class="dv">45</span>,<span class="dv">46</span>,<span class="dv">47</span>,<span class="dv">48</span>,<span class="dv">49</span>,
          <span class="dv">50</span>,<span class="dv">51</span>,<span class="dv">52</span>,<span class="dv">53</span>,<span class="dv">54</span>,<span class="dv">55</span>,<span class="dv">56</span>,<span class="dv">57</span>,<span class="dv">58</span>,<span class="dv">59</span>,
          <span class="dv">60</span>,<span class="dv">61</span>,<span class="dv">62</span>,<span class="dv">63</span>,<span class="dv">64</span>,<span class="dv">65</span>,<span class="dv">66</span>,<span class="dv">67</span>,<span class="dv">68</span>,<span class="dv">69</span>,<span class="dv">70</span>]
-λ: <span class="fu">:</span>sprint list2
+λ<span class="fu">:</span> <span class="fu">:</span>sprint list2
 list2 <span class="fu">=</span> [<span class="dv">21</span>,<span class="dv">22</span>,<span class="dv">23</span>,<span class="dv">24</span>,<span class="dv">25</span>,_,_,_,_,_,
          _,_,_,_,_,_,_,<span class="dv">38</span>,_,_,
          _,_,_,_,_,_,_,_,_,_,
@@ -944,9 +1099,9 @@ list2 <span class="fu">=</span> [<span class="dv">21</span>,<span class="dv">22<
          _,_,_,_,_,_,_,_,_,_,_]</code></pre>
 <p>At this point, <code>list1</code> is fully evaluated because there are no two ways around it - in order to compute the length of <code>list2</code>, GHCi needs to keep track of each and every one of its thunks, therefore it needs to generate the entire “spine” of the list. The process of generating the thunks <code>(+1) 25</code> through <code>(+1) 70</code> will require all elements of <code>list1</code> to be fully evaluated.</p>
 <p>Finally, there is only one thing left for us to do such that <code>list2</code> is fully evaluated too - compute the sum of its elements:</p>
-<pre class="sourceCode haskell"><code class="sourceCode haskell">λ: sum list2
+<pre class="sourceCode haskell"><code class="sourceCode haskell">λ<span class="fu">:</span> sum list2
 <span class="dv">2346</span>
-λ: <span class="fu">:</span>sprint list2
+λ<span class="fu">:</span> <span class="fu">:</span>sprint list2
 list2 <span class="fu">=</span> [<span class="dv">21</span>,<span class="dv">22</span>,<span class="dv">23</span>,<span class="dv">24</span>,<span class="dv">25</span>,<span class="dv">26</span>,<span class="dv">27</span>,<span class="dv">28</span>,<span class="dv">29</span>,<span class="dv">30</span>,
          <span class="dv">31</span>,<span class="dv">32</span>,<span class="dv">33</span>,<span class="dv">34</span>,<span class="dv">35</span>,<span class="dv">36</span>,<span class="dv">37</span>,<span class="dv">38</span>,<span class="dv">39</span>,<span class="dv">40</span>,
          <span class="dv">41</span>,<span class="dv">42</span>,<span class="dv">43</span>,<span class="dv">44</span>,<span class="dv">45</span>,<span class="dv">46</span>,<span class="dv">47</span>,<span class="dv">48</span>,<span class="dv">49</span>,<span class="dv">50</span>,
@@ -971,6 +1126,7 @@ list2 <span class="fu">=</span> [<span class="dv">21</span>,<span class="dv">22<
 ]]></description>
     <pubDate>Sun, 02 Mar 2014 00:00:00 UT</pubDate>
     <guid>http://techblog.rosedu.org/haskell-part2.html</guid>
+    <dc:creator>ROSEdu</dc:creator>
 </item>
 <item>
     <title>Unix standards and implementations. Unix portability</title>
@@ -1002,7 +1158,6 @@ list2 <span class="fu">=</span> [<span class="dv">21</span>,<span class="dv">22<
 
       <p>The purpose of this article is to present in a general way the Unix standards and how can we write portable code on Unix systems, not only on Linux ones.</p>
 <!--more-->
-
 <p>In the Unix world at present, there are three important standards:</p>
 <ul>
 <li>the C language (ISO C standard) and the standard C library (<code>libc</code>), which are included in the POSIX standard</li>
@@ -1158,6 +1313,7 @@ list2 <span class="fu">=</span> [<span class="dv">21</span>,<span class="dv">22<
 ]]></description>
     <pubDate>Sun, 02 Feb 2014 00:00:00 UT</pubDate>
     <guid>http://techblog.rosedu.org/unix-standards.html</guid>
+    <dc:creator>ROSEdu</dc:creator>
 </item>
 <item>
     <title>Lambda Functions in C++</title>
@@ -1189,7 +1345,6 @@ list2 <span class="fu">=</span> [<span class="dv">21</span>,<span class="dv">22<
 
       <p>The C++ 2011 standard introduced the lambda expression syntax element causing some people ask <a href="http://stackoverflow.com/questions/7627098/what-is-a-lambda-expression-in-c11" title="What is a lambda expression in C++?">why it was needed</a>. In reality, it was not a new use case, people have been using this under different names since C was created. You had functors (C++ terminology) and pointer to functions for example. A basic use case was in applying the same transform over all elements of a collection (the functor’s widely shared example) or sorting elements of a vector (via <code>qsort</code> in C). But, in reality, all of these cases can be reduced to using <em>higher-order functions</em>.</p>
 <!--more-->
-
 <section id="higher-order-functions" class="level3">
 <h3>1. Higher-order functions</h3>
 <p>A high-order function is a function that takes one or more functions as an input and outputs a function. For example, we can use this higher-order functions to map, filter, fold and sort lists.</p>
@@ -1251,7 +1406,7 @@ f <span class="fu">=</span> \x y <span class="ot">-&gt;</span> x <span class="fu
     cout &lt;&lt; “Vector2 contains: “;
     <span class="kw">for</span> (std::vector&lt;<span class="dt">int</span>&gt;::iterator it=vector2.begin();
         it!=vector2.end(); ++it)
-        std::cout &lt;&lt; &#39; &#39; &lt;&lt; *it;
+        std::cout &lt;&lt; <span class="st">&#39; &#39;</span> &lt;&lt; *it;
 
     <span class="kw">return</span> <span class="dv">0</span>;
 }</code></pre>
@@ -1276,6 +1431,7 @@ f <span class="fu">=</span> \x y <span class="ot">-&gt;</span> x <span class="fu
 ]]></description>
     <pubDate>Tue, 28 Jan 2014 00:00:00 UT</pubDate>
     <guid>http://techblog.rosedu.org/lambda-cpp.html</guid>
+    <dc:creator>ROSEdu</dc:creator>
 </item>
 <item>
     <title>Inspecting library calls for fun and profit</title>
@@ -1307,7 +1463,6 @@ f <span class="fu">=</span> \x y <span class="ot">-&gt;</span> x <span class="fu
 
       <p>Two years ago this blog had a series of articles on debugging tools. We have presented tools like <a href="http://techblog.rosedu.org/valgrind-introduction.html" title="Valgrind introduction">Valgrind</a> and <a href="http://techblog.rosedu.org/gdb-a-basic-workflow.html" title="GDB - basic workflow">GDB</a> and we stopped with an introduction to <a href="http://techblog.rosedu.org/tracing-processes-for-fun-and-profit.html" title="Tracing Processes for Fun and Profit">strace</a>. At the end of that article we mentioned that there are other tools useful for debugging beyond these three already mentioned. After two years of silence, the debugging series is on with an article on <code>ltrace</code>.</p>
 <!--more-->
-
 <p>Ask around developers and you’ll see that the proportion of those knowing about <code>ltrace</code> compared to those knowing how to use <code>strace</code> is at most the same as the proportion of <code>strace</code> users among users knowing how to use <code>gdb</code> and <code>valgrind</code>.</p>
 <p>But how is <code>ltrace</code> different? Why is this an useful tool? This article will try to shine some light on this while also providing comparisons with the <code>strace</code> tool.</p>
 <section id="basic-example" class="level3">
@@ -1798,6 +1953,7 @@ _fini@libgmp.so.10(0x358cc761f0, 0, 0xffffffff, 0)= 0x358ca5edc4
 ]]></description>
     <pubDate>Sat, 18 Jan 2014 00:00:00 UT</pubDate>
     <guid>http://techblog.rosedu.org/ltrace.html</guid>
+    <dc:creator>ROSEdu</dc:creator>
 </item>
 <item>
     <title>A superficial exploration of Haskell - part 1</title>
@@ -1837,7 +1993,6 @@ _fini@libgmp.so.10(0x358cc761f0, 0, 0xffffffff, 0)= 0x358ca5edc4
 <li>Tokenizing Kernel Code</li>
 </ul>
 <!--more-->
-
 <p><strong>Before you ask:</strong> All the Haskell snippets I’m showing here consist of GHCi interactive console sessions. I have configured a custom prompt for myself, by placing the line <code>:set prompt &quot;λ: &quot;</code> in GHCi’s configuration file <code>~/.ghc/ghci.conf</code>. The prompt is going to <a href="http://www.haskell.org/ghc/docs/7.6.2/html/users_guide/interactive-evaluation.html">look different</a> if you’re just starting out with a freshly installed copy of Haskell.</p>
 <section id="mutability" class="level3">
 <h3>Mutability</h3>
@@ -1850,20 +2005,20 @@ _fini@libgmp.so.10(0x358cc761f0, 0, 0xffffffff, 0)= 0x358ca5edc4
 <p>Nothing could be simpler!</p>
 <p>OK then. Time to port this snippet of code over to Haskell. I’m just going to go with the flow and naively assume – just as many newcomers to Haskell would – that porting Python code is a direct 1-to-1 syntactic translation, in other words, an easy, straightforward thing to do.</p>
 <p>The following is what happens in the Haskell REPL (called GHCi). By the way, here we have to prepend the keyword <code>let</code> - it’s the law of the land in GHCi:</p>
-<pre class="sourceCode haskell"><code class="sourceCode haskell">λ: <span class="kw">let</span> x <span class="fu">=</span> <span class="dv">1</span>
-λ: <span class="kw">let</span> x <span class="fu">=</span> x <span class="fu">+</span> <span class="dv">1</span>
-λ: x
+<pre class="sourceCode haskell"><code class="sourceCode haskell">λ<span class="fu">:</span> <span class="kw">let</span> x <span class="fu">=</span> <span class="dv">1</span>
+λ<span class="fu">:</span> <span class="kw">let</span> x <span class="fu">=</span> x <span class="fu">+</span> <span class="dv">1</span>
+λ<span class="fu">:</span> x
 <span class="fu">^</span><span class="dt">CInterrupted</span><span class="fu">.</span>
-λ:</code></pre>
+λ<span class="fu">:</span></code></pre>
 <p>Huh? What just happened? I was expecting Haskell to compute the value 2. It took forever for the GHCi interactive console to evaluate <code>x</code>, so I got bored and pressed <code>Ctrl-C</code>. What’s happening? Explain this to me.</p>
 <p>Well, as one Reddit commenter once observed, this is just one of the many things Haskell does to haze you during your initiation.</p>
 <p>What you’re actually doing is giving Haskell a puzzle (<code>x = x + 1</code>) and saying “Go find me a solution”. Mathematically speaking, there are only 2 possible solutions to that puzzle: <span class="math">\(\infty\)</span> and <span class="math">\(- \infty\)</span>. So when you saw it hang, Haskell wasn’t merely taking its time – for no good reason – before giving you back the value 2. Instead, Haskell’s runtime was trying its hardest to give you a correct result by taking every integer value it could think of, one by one, and checking whether it was equal to its successor.</p>
 <p>Just to be clear, there is a way to emulate the behavior of the Python snippet we saw above, and the Haskell code for doing that looks like this:</p>
-<pre class="sourceCode haskell"><code class="sourceCode haskell">λ: <span class="kw">let</span> x <span class="fu">=</span> <span class="dv">1</span>
-λ: x <span class="ot">&lt;-</span> return <span class="fu">$</span> x <span class="fu">+</span> <span class="dv">1</span>
-λ: x
+<pre class="sourceCode haskell"><code class="sourceCode haskell">λ<span class="fu">:</span> <span class="kw">let</span> x <span class="fu">=</span> <span class="dv">1</span>
+λ<span class="fu">:</span> x <span class="ot">&lt;-</span> return <span class="fu">$</span> x <span class="fu">+</span> <span class="dv">1</span>
+λ<span class="fu">:</span> x
 <span class="dv">2</span>
-λ:</code></pre>
+λ<span class="fu">:</span></code></pre>
 <p>As you can see, the syntax is much more verbose (and uglier) than in Python, and for good reason – in Haskell, you are strongly discouraged from using variables and mutation as the primary means of expressing algorithms.</p>
 <p>Haskell is divided in two major parts: a crystal palace of unspeakable beauty and <em>mathematical purity</em>, and an imperative ghetto for doing <em>I/O</em> and dealing with <em>mutation</em>. The equal sign in <code>x = x + 1</code> lives in the beautiful palace and symbolizes mathematical unification, while the construct <code>&lt;- return $</code> lives in the ghetto and means “evaluate the right hand side and shove the result into the identifier on the left hand side, thus overwriting what was there beforehand, in true imperative style”.</p>
 </section>
@@ -1871,19 +2026,19 @@ _fini@libgmp.so.10(0x358cc761f0, 0, 0xffffffff, 0)= 0x358ca5edc4
 <h3>Reverse Map? Upside Down Map? You decide</h3>
 <p>OK, for the next segment I’m going to assume that your beloved programming language of choice has a construct called <code>map</code>, and that you know how to use it.</p>
 <p>We start again with some Python code. While Python does indeed offer a higher-order function called <code>map</code>, it’s much more common for experienced Python developers to prefer using a list comprehension, like this:</p>
-<pre class="sourceCode Python"><code class="sourceCode python">&gt;&gt;&gt; <span class="dt">list</span> = <span class="dt">range</span>(<span class="dv">20</span>,<span class="dv">31</span>)
+<pre class="sourceCode python"><code class="sourceCode python">&gt;&gt;&gt; <span class="dt">list</span> = <span class="dt">range</span>(<span class="dv">20</span>,<span class="dv">31</span>)
 &gt;&gt;&gt; <span class="dt">list</span>
 [<span class="dv">20</span>, <span class="dv">21</span>, <span class="dv">22</span>, <span class="dv">23</span>, <span class="dv">24</span>, <span class="dv">25</span>, <span class="dv">26</span>, <span class="dv">27</span>, <span class="dv">28</span>, <span class="dv">29</span>, <span class="dv">30</span>]
 &gt;&gt;&gt; [ x + <span class="dv">1</span> <span class="kw">for</span> x in <span class="dt">list</span> ]
 [<span class="dv">21</span>, <span class="dv">22</span>, <span class="dv">23</span>, <span class="dv">24</span>, <span class="dv">25</span>, <span class="dv">26</span>, <span class="dv">27</span>, <span class="dv">28</span>, <span class="dv">29</span>, <span class="dv">30</span>, <span class="dv">31</span>]
 &gt;&gt;&gt;</code></pre>
 <p>Nothing new or earth-shattering - I would hope - so here’s the Haskell equivalent before we jump into the interesting stuff:</p>
-<pre class="sourceCode haskell"><code class="sourceCode haskell">λ: <span class="kw">let</span> list <span class="fu">=</span> [<span class="dv">20</span><span class="fu">..</span><span class="dv">30</span>]
-λ: list
+<pre class="sourceCode haskell"><code class="sourceCode haskell">λ<span class="fu">:</span> <span class="kw">let</span> list <span class="fu">=</span> [<span class="dv">20</span><span class="fu">..</span><span class="dv">30</span>]
+λ<span class="fu">:</span> list
 [<span class="dv">20</span>,<span class="dv">21</span>,<span class="dv">22</span>,<span class="dv">23</span>,<span class="dv">24</span>,<span class="dv">25</span>,<span class="dv">26</span>,<span class="dv">27</span>,<span class="dv">28</span>,<span class="dv">29</span>,<span class="dv">30</span>]
-λ: map (<span class="fu">+</span><span class="dv">1</span>) list
+λ<span class="fu">:</span> map (<span class="fu">+</span><span class="dv">1</span>) list
 [<span class="dv">21</span>,<span class="dv">22</span>,<span class="dv">23</span>,<span class="dv">24</span>,<span class="dv">25</span>,<span class="dv">26</span>,<span class="dv">27</span>,<span class="dv">28</span>,<span class="dv">29</span>,<span class="dv">30</span>,<span class="dv">31</span>]
-λ:</code></pre>
+λ<span class="fu">:</span></code></pre>
 <p>So the basic idea I’m getting at here is that in the beginning we have:</p>
 <ul>
 <li>one single operation (compute an integer’s successor)</li>
@@ -1896,15 +2051,15 @@ _fini@libgmp.so.10(0x358cc761f0, 0, 0xffffffff, 0)= 0x358ca5edc4
 <li>a list of unary integer-to-integer operations</li>
 </ul>
 <p>Python can still deal with this situation fairly well, since Python’s functions are first-class values (you can place several of them inside of a list). But the Python code wouldn’t be as concise or expressive as the Haskell equivalent, shown here:</p>
-<pre class="sourceCode haskell"><code class="sourceCode haskell">λ: <span class="kw">let</span> function_list_1 <span class="fu">=</span> [(<span class="fu">+</span><span class="dv">2</span>),(<span class="fu">*</span><span class="dv">3</span>),(<span class="fu">^</span><span class="dv">2</span>)]
-λ: <span class="kw">let</span> function_list_2 <span class="fu">=</span> [(<span class="fu">*</span><span class="dv">5</span>),(<span class="fu">+</span><span class="dv">7</span>),(<span class="fu">*</span><span class="dv">4</span>),(subtract <span class="dv">10</span>)]
-λ: <span class="kw">let</span> i <span class="fu">=</span> <span class="dv">12</span>
-λ: <span class="kw">import </span><span class="dt">Control.Applicative</span>
-λ: function_list_1 <span class="fu">&lt;*&gt;</span> [i]
+<pre class="sourceCode haskell"><code class="sourceCode haskell">λ<span class="fu">:</span> <span class="kw">let</span> function_list_1 <span class="fu">=</span> [(<span class="fu">+</span><span class="dv">2</span>),(<span class="fu">*</span><span class="dv">3</span>),(<span class="fu">^</span><span class="dv">2</span>)]
+λ<span class="fu">:</span> <span class="kw">let</span> function_list_2 <span class="fu">=</span> [(<span class="fu">*</span><span class="dv">5</span>),(<span class="fu">+</span><span class="dv">7</span>),(<span class="fu">*</span><span class="dv">4</span>),(subtract <span class="dv">10</span>)]
+λ<span class="fu">:</span> <span class="kw">let</span> i <span class="fu">=</span> <span class="dv">12</span>
+λ<span class="fu">:</span> <span class="kw">import </span><span class="dt">Control.Applicative</span>
+λ<span class="fu">:</span> function_list_1 <span class="fu">&lt;*&gt;</span> [i]
 [<span class="dv">14</span>,<span class="dv">36</span>,<span class="dv">144</span>]
-λ: function_list_2 <span class="fu">&lt;*&gt;</span> [i]
+λ<span class="fu">:</span> function_list_2 <span class="fu">&lt;*&gt;</span> [i]
 [<span class="dv">60</span>,<span class="dv">19</span>,<span class="dv">48</span>,<span class="dv">2</span>]
-λ:</code></pre>
+λ<span class="fu">:</span></code></pre>
 <p><strong>Side note:</strong> Due to brevity concerns, it is not practical to go into a detailed explanation of the <code>&lt;*&gt;</code> operator in <code>Control.Applicative</code> (a module in Haskell’s standard library). That is a topic for another blog post. The point here was to show how concisely you can express non-trivial computations with Haskell.</p>
 <p><strong>Fun fact:</strong> implementing the “upside-down map” described above was recently a requirement for admittance into <a href="http://webdev.rosedu.org/">WebDev</a> (an extracurricular course organized by ROSEdu). Candidates sent us solutions they had written in various programming languages, with varying degrees of conciseness. We found that the most verbose implementations were predominantly Java-based.</p>
 </section>
@@ -1913,22 +2068,22 @@ _fini@libgmp.so.10(0x358cc761f0, 0, 0xffffffff, 0)= 0x358ca5edc4
 <p>For the next segment I’ll just grab a <a href="https://github.com/torvalds/linux/blob/master/kernel/sched/fair.c#L507">snippet of code from the Linux kernel</a> and demonstrate how concisely you can express a tokenizer for it in Haskell.</p>
 <p>The code for Linux’s completely fair scheduler is stored in a file called <code>fair.c</code>; I’ll just grab a small function from it (function <code>__enqueue_entity</code>, which starts at line 507) and store it locally in a file called <code>enqueue_entity.c</code>.</p>
 <p>Here’s what I do subsequently, step by step:</p>
-<pre class="sourceCode haskell"><code class="sourceCode haskell">λ: sample_cfs_code <span class="ot">&lt;-</span> readFile <span class="st">&quot;enqueue_entity.c&quot;</span>
-λ:</code></pre>
+<pre class="sourceCode haskell"><code class="sourceCode haskell">λ<span class="fu">:</span> sample_cfs_code <span class="ot">&lt;-</span> readFile <span class="st">&quot;enqueue_entity.c&quot;</span>
+λ<span class="fu">:</span></code></pre>
 <p>I just slurped the contents of the file into <code>sample_cfs_code</code>. This is our raw material, let’s look at it:</p>
-<pre class="sourceCode haskell"><code class="sourceCode haskell">λ: sample_cfs_code
+<pre class="sourceCode haskell"><code class="sourceCode haskell">λ<span class="fu">:</span> sample_cfs_code
 <span class="st">&quot;static void __enqueue_entity(struct cfs_rq *cfs_rq, struct sched_entity *se)\n{\n        struct rb_node **link = &amp;cfs_rq-&gt;tasks_timeline.rb_node;\n        struct rb_node *parent = NULL;\n        struct sched_entity *entry;\n        int leftmost = 1;\n        while (*link) {\n                parent = *link;\n                entry = rb_entry(parent, struct sched_entity, run_node);\n                if (entity_before(se, entry)) {\n                        link = &amp;parent-&gt;rb_left;\n                } else {\n                        link = &amp;parent-&gt;rb_right;\n                        leftmost = 0;\n                }\n        }\n        if (leftmost)\n                cfs_rq-&gt;rb_leftmost = &amp;se-&gt;run_node;\n\n        rb_link_node(&amp;se-&gt;run_node, parent, link);\n        rb_insert_color(&amp;se-&gt;run_node, &amp;cfs_rq-&gt;tasks_timeline);\n}\n\n&quot;</span>
-λ:</code></pre>
+λ<span class="fu">:</span></code></pre>
 <p>We now define our tokenizing function in Haskell (I trust you will appreciate how concise it is):</p>
-<pre class="sourceCode haskell"><code class="sourceCode haskell">λ: <span class="kw">import </span><span class="dt">Data.List</span>
-λ: <span class="kw">let</span> tokenize_this <span class="fu">=</span> unfoldr (\x <span class="ot">-&gt;</span> <span class="kw">case</span> lex x <span class="kw">of</span> [(<span class="st">&quot;&quot;</span>,<span class="st">&quot;&quot;</span>)] <span class="ot">-&gt;</span> <span class="dt">Nothing</span>; x<span class="fu">:</span>_ <span class="ot">-&gt;</span> <span class="dt">Just</span> x)
-λ:</code></pre>
+<pre class="sourceCode haskell"><code class="sourceCode haskell">λ<span class="fu">:</span> <span class="kw">import </span><span class="dt">Data.List</span>
+λ<span class="fu">:</span> <span class="kw">let</span> tokenize_this <span class="fu">=</span> unfoldr (\x <span class="ot">-&gt;</span> <span class="kw">case</span> lex x <span class="kw">of</span> [(<span class="st">&quot;&quot;</span>,<span class="st">&quot;&quot;</span>)] <span class="ot">-&gt;</span> <span class="dt">Nothing</span>; x<span class="fu">:</span>_ <span class="ot">-&gt;</span> <span class="dt">Just</span> x)
+λ<span class="fu">:</span></code></pre>
 <p>The most interesting keyword here is <code>lex</code>, which is a function that is defined in Haskell’s standard library as part of the <code>GHC.Read</code> module. The <code>unfoldr</code> function also deserves some explanation, but just as before, it wouldn’t be practical to go into much detail here.</p>
 <p>So far, so good. Let’s apply our tokenizing function to the C code:</p>
-<pre class="sourceCode haskell"><code class="sourceCode haskell">λ: <span class="kw">let</span> tokenized_cfs_code <span class="fu">=</span> tokenize_this sample_cfs_code
-λ:</code></pre>
+<pre class="sourceCode haskell"><code class="sourceCode haskell">λ<span class="fu">:</span> <span class="kw">let</span> tokenized_cfs_code <span class="fu">=</span> tokenize_this sample_cfs_code
+λ<span class="fu">:</span></code></pre>
 <p>Finally, let’s view the resulting stream of tokens:</p>
-<pre class="sourceCode haskell"><code class="sourceCode haskell">λ: mapM_ print tokenized_cfs_code
+<pre class="sourceCode haskell"><code class="sourceCode haskell">λ<span class="fu">:</span> mapM_ print tokenized_cfs_code
 <span class="st">&quot;static&quot;</span>
 <span class="st">&quot;void&quot;</span>
 <span class="st">&quot;__enqueue_entity&quot;</span>
@@ -1967,7 +2122,7 @@ _fini@libgmp.so.10(0x358cc761f0, 0, 0xffffffff, 0)= 0x358ca5edc4
 <span class="st">&quot;)&quot;</span>
 <span class="st">&quot;;&quot;</span>
 <span class="st">&quot;}&quot;</span>
-λ:</code></pre>
+λ<span class="fu">:</span></code></pre>
 <p>You can use this approach to help your language design efforts, if you plan on inventing your own DSL, or even your own general-purpose programming language. Once your source code is tokenized, you can now parse the stream of tokens into the target Haskell data structures using a technique called combinator parsing, which is where the Haskell programming language really shines.</p>
 </section>
 <section id="end-of-part-1" class="level3">
@@ -1983,6 +2138,7 @@ _fini@libgmp.so.10(0x358cc761f0, 0, 0xffffffff, 0)= 0x358ca5edc4
 ]]></description>
     <pubDate>Tue, 07 Jan 2014 00:00:00 UT</pubDate>
     <guid>http://techblog.rosedu.org/haskell-part1.html</guid>
+    <dc:creator>ROSEdu</dc:creator>
 </item>
 <item>
     <title>Facebook Hackathon Live Blogging</title>
@@ -2013,73 +2169,73 @@ _fini@libgmp.so.10(0x358cc761f0, 0, 0xffffffff, 0)= 0x358ca5edc4
       </span>
 
       <div class="right">
-<img style="float:right" width="300" height="300" src="http://distilleryimage10.ak.instagram.com/b88daa3e38a911e3893622000a1fcd0b_7.jpg">
+<p><img style="float:right" width="300" height="300" src="http://distilleryimage10.ak.instagram.com/b88daa3e38a911e3893622000a1fcd0b_7.jpg"></p>
 </div>
 <section id="pm" class="level4">
 <h4>3:30PM</h4>
 <p>Ladies and gentlemen, fast hackers and coder perfectionists, web developers and mobile app creators, we present you the first edition of the Facebook hackathon in Romania. Organized by your favorite open-source community ROSEdu, the volunteers have been busy all morning preparing the workspace for the 15 participating teams. We have pizza, beer and a mountain of bean bags for people who <em>move fast and break things</em>.</p>
 <!--more-->
+<div style="clear:both;">
 
-<div style="clear:both;"></div>
-
+</div>
 </section>
 <section id="pm-1" class="level4">
 <h4>3:30PM</h4>
 <p>People have started their IDEs (or text editors for more hardcore people) and started installing their gems (Ruby guy here sorry). After a quick intro from the organizers about the rules, the Facebook engineers presented their skills and their expectations: it’s fun to code, but it’s awesome <strong>to ship</strong>. So happy shipping hackers!</p>
 <div class="center">
-<img width="600" height="400" src="https://fbcdn-sphotos-g-a.akamaihd.net/hphotos-ak-ash3/1381306_602864479775589_1298026562_n.jpg">
+<p><img width="600" height="400" src="https://fbcdn-sphotos-g-a.akamaihd.net/hphotos-ak-ash3/1381306_602864479775589_1298026562_n.jpg"></p>
 </div>
 </section>
 <section id="pm-2" class="level4">
 <h4>5:30PM</h4>
 <p>A brief pause and all the keyboard presses have stopped. The Facebook representatives have given out a random prize! One Facebook T-shirt. Congratulations to Andrei Duma! People are now back to coding and making their ideas come to life: <strong>done is better than perfect</strong>.</p>
 <div class="center">
-<img width="600" height="400" src="/images/facebook-hackathon/premii_facebook.jpg">
+<p><img width="600" height="400" src="/images/facebook-hackathon/premii_facebook.jpg"></p>
 </div>
 </section>
 <section id="first-team" class="level4">
 <h4>First team</h4>
 <p>Only 4 hours in the event! We have interviewed some of the participants and they’re coding, designing and implementing their application basis! The first team we interviewed is <a href="https://github.com/rosedu/3_awesome_guyes_and_a_llama">3_awesome_guys_and_a_llama</a>. These students from the University “Politehnica” of Bucharest are writing an Event Planner. From what they told us, it’s an application which tries to help people organize events for them and their friends for their night out. It’s more focused on location, than being focused on time, so they can make it a planned drink-up or dance-off. They integrate it with the Facebook Places API and would like to have bars, clubs and restaurants use their app so people can make reservations. As technology stack, they have Python on top of Google App Engine. One of the devs said that he learned about it on a <a href="https://www.udacity.com/course/cs253">Udacity course</a> which I recommend it to you. They also plan to use Twitter’s Bootstrap library because they do not have enough frontend experience.</p>
 <div class="center">
-<img width="600" height="400" src="/images/facebook-hackathon/two_guys_llama.JPG">
+<p><img width="600" height="400" src="/images/facebook-hackathon/two_guys_llama.JPG"></p>
 </div>
 </section>
 <section id="be-green-recycle" class="level4">
 <h4>Be green, recycle</h4>
 <p>You are a human, walking down and you see a big pile of garbage. It’s a scenario common here in Romania. But what if you have an app for cleaning it? That’s what <a href="https://github.com/rosedu/sudoRecycle">sudoRecycle</a> is trying to do with their Android idea. You see the junk, take a photo, tag it with the GPS location and send it to their servers. Using their backend written in PHP, they will send teams of robots that will clean the area. Because we human beings are really lazy, they plan to use the Facebook API for gamification, so you could level up in cleaning the world.</p>
 <div class="center">
-<img width="600" height="400" src="/images/facebook-hackathon/sudo_recycle.JPG">
+<p><img width="600" height="400" src="/images/facebook-hackathon/sudo_recycle.JPG"></p>
 </div>
 </section>
 <section id="explore-the-underground" class="level4">
 <h4>Explore the underground</h4>
 <p>We’ve all endured the lack of knowledge of moving around Bucharest, if we haven’t lived here. But <a href="https://github.com/rosedu/Dark_side_of_the_moon">dark_side_of_the_moon</a> is going to remedy this with their offline mobile subway connection app. You want to get from X to Y using the shortest route. It also wants to tell you what ground-level public transportation is there and what you can visit. Furthermore they want it to tell your friends where you’ve been after you used its functionality to check-in at your destination. Under the hood, it’s using Android 4.0+ API and they want to integrate with the Facebook API to see the places your friends have visited. The coolest feature they want to code will tell you when the next tube will arrive.</p>
 <div class="center">
-<img width="600" height="400" src="/images/facebook-hackathon/pink_floyd.jpg">
+<p><img width="600" height="400" src="/images/facebook-hackathon/pink_floyd.jpg"></p>
 </div>
 </section>
 <section id="grails" class="level4">
 <h4>GRails</h4>
 <p>Did you know that in the year 2013, if you apply to MIT, you must send the papers by fax or postal mail? And after you send them, a person will manually go through them and tell you that the papers have arrived? Or if you get into a university you must write 6 papers with about 60% redundant information? That’s what <a href="https://github.com/rosedu/GRails">GRails</a>, the only team made entirely of girls, is trying to solve, fighting bureaucracy with Rails 4. Now with 100% less paper involved!</p>
 <div class="center">
-<img width="600" height="400" src="/images/facebook-hackathon/grails.jpg">
+<p><img width="600" height="400" src="/images/facebook-hackathon/grails.jpg"></p>
 </div>
 </section>
 <section id="hiking" class="level4">
 <h4>Hiking</h4>
 <p>Everybody knows that Romania has some of the best hiking routes, beautiful views and mysterious mountains. And who doesn’t want to know what trips you can make in the wild nature? Well, you can now check out a map and see what is available for adventurers! The map also shows you elevation, so you know if it’s a long road and also an abrupt road. A Django platform by <a href="https://github.com/rosedu/saltaretii">saltaretii</a> should be enough to support this paradise for nature’s explorers!</p>
 <div class="center">
-<img width="600" height="400" src="/images/facebook-hackathon/saltaretii.jpg">
+<p><img width="600" height="400" src="/images/facebook-hackathon/saltaretii.jpg"></p>
 </div>
 </section>
 <section id="i-want-to-ride-my-bicycle-i-want-to-ride-my-bike" class="level4">
 <h4>I want to ride my bicycle, I want to ride my bike</h4>
 <p>2 wheels, foot power and long distance travelling made easy! These two guys are achieving the awesome tool that brings bikers a dream app come true! Using complex algorithms, they want to give bikers many possible routes from one place to another. You can choose your own type of road, either abrupt and short or longer and less steep. The point? You can choose which kind of road you want and which is fit for you! If that is not enough, these 2 guys are doing this client side with ClojureScript… yeah, it’s the new functional kid in town which tries to solve the event driven callback hell. <a href="https://github.com/rosedu/flatride">FlatRide</a> on, people!</p>
 <div class="center">
-<img width="600" height="400" src="/images/facebook-hackathon/flatride.jpg">
+<p><img width="600" height="400" src="/images/facebook-hackathon/flatride.jpg"></p>
 </div>
 <div class="right">
-<img src="/images/facebook-hackathon/jackson.jpg">
+<p><img src="/images/facebook-hackathon/jackson.jpg"></p>
 </div>
 </section>
 <section id="jackson-gabbard" class="level4">
@@ -2096,70 +2252,8 @@ _fini@libgmp.so.10(0x358cc761f0, 0, 0xffffffff, 0)= 0x358ca5edc4
 ]]></description>
     <pubDate>Sat, 19 Oct 2013 00:00:00 UT</pubDate>
     <guid>http://techblog.rosedu.org/facebook-hackathon-live-blogging.html</guid>
-</item>
-<item>
-    <title>Shell tips and tricks for log files</title>
-    <link>http://techblog.rosedu.org/shell-tips-and-tricks-for-file-editing.html</link>
-    <description><![CDATA[<div class="unit-inner unit-article-inner">
-  <div class="content">
-    <div class="bd">
-      <header>
-        <div class="unit-head">
-          <div class="unit-inner unit-head-inner">
-            <h1 class="h2 entry-title">
-              <a class="post_title" href="/shell-tips-and-tricks-for-file-editing.html" title="Shell tips and tricks for log files">Shell tips and tricks for log files</a>
-            </h1>
-          </div><!-- unit-inner -->
-        </div><!-- unit-head -->
-      </header>
-
-      <span class="date">
-      <span class="published">Published on June 20, 2013</span>
-      by
-      <span class="author"><a href="/people/alexandru-juncu.html">Alexandru Juncu</a></span>
-      </span>
-
-      <br/>
-      <span class="meta">
-        Tagged:
-        <span class="tags"><a href="/tags/cli.html">CLI</a>, <a href="/tags/bash.html">bash</a>, <a href="/tags/shell.html">shell</a>, <a href="/tags/files.html">files</a>, <a href="/tags/text.html">text</a>, <a href="/tags/truncate.html">truncate</a>, <a href="/tags/tee.html">tee</a>, <a href="/tags/tail.html">tail</a>, <a href="/tags/follow.html">follow</a></span>
-      </span>
-
-      <p>Here are are some small things you might find useful when you need to deal with text files. In the Linux/Unix world, a lot of things are text files, so you need to know how to efficiently handle them. If you are a sysadmin, you need to look at <strong>log files</strong> for most of your work time and the following might come in handy.</p>
-<!--more-->
-
-<section id="following-a-log-file" class="level3">
-<h3>Following a log file</h3>
-<p>Take your <code>$GENERIC_SERVICE</code> on your server that generates a lot of logs. You could open a <strong>text editor</strong> like <code>vi</code> or <code>emacs</code> to view the logs or use <code>tail</code> to see the latest lines (or a combination of tail and <code>head</code>). But you sometimes you need to view contents of the log in real time (while the service writes the lines, you read them). This is where the best use for the tail command comes in: the <code>--follow</code> flag.</p>
-<pre><code>tail -f /var/log/mylog</code></pre>
-<p>Tail usually creates a process that prints a few lines (the lines that exist when you run it), but with the <code>-f</code> flag, the tail process keeps running and prints new lines as the file is being appended. The process will close when the uses issues the <code>Cltr-D</code> (end of file) command.</p>
-</section>
-<section id="truncating-a-file" class="level3">
-<h3>Truncating a file</h3>
-<p>Maybe you need to clear the contents of a log file that has gotten too big. You could do a <code>rm</code> on the file and let the service write the new logs in a new file. Some services are picky and need the file to already exist, so you could use the <code>touch</code> command (that “updates” an existing file) which has the interesting side effect when applied on a non existing file: to create an empty file (a new inode with no data blocks).</p>
-<p>But you just want to empty a file (same inode, just the contents cleared). You could use the <code>truncate</code> command with the size flag of 0 bytes (<code>-s 0</code>). Or make use of the redirect operator <code>&gt;</code>.</p>
-<pre><code>:&gt;file</code></pre>
-<p>or just</p>
-<pre><code>&gt;file</code></pre>
-<p>These will open the file, and redirect nothing into it. Since it is not appending anything, the contents will be erased. <code>:</code> is the no-op command so nothing will actually be done, but the shell with open and write (well … nothing) into the file because of the redirection operator <code>&gt;</code>.</p>
-</section>
-<section id="one-input-two-outputs" class="level3">
-<h3>One input, two outputs</h3>
-<p>Some programs do not have a logging system programmed into them and just print messages to standard output. Maybe you want to save that output into a file for future use. This is simple to do with a file redirection:</p>
-<pre><code>./myprogram &gt; my_log_file</code></pre>
-<p>But if you do this, you will lose the output to the (virtual) terminal. A very interesting command is <code>tee</code>, that takes an input and writes to standard output, but also writes into a specified file. You need to pipe the output of a process into tee like this:</p>
-<pre><code>./myprogram | tee my_log_file</code></pre>
-<p>Now you have both real time printing of the messages and you have them saved for future use.</p>
-<p>Hope this helps!</p>
-</section>
-
-    </div>
-  </div>
-</div>
-]]></description>
-    <pubDate>Thu, 20 Jun 2013 00:00:00 UT</pubDate>
-    <guid>http://techblog.rosedu.org/shell-tips-and-tricks-for-file-editing.html</guid>
+    <dc:creator>ROSEdu</dc:creator>
 </item>
 
-    </channel> 
+    </channel>
 </rss>

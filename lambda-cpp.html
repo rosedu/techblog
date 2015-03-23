@@ -55,11 +55,11 @@
               <ul>
                 <li class="logo"><a href="./archive.html" title="Archive">Latest Posts</a></li>
                 
+                  <li><a href="./cdl-2015.html" title="Application process for the Community Development Lab">Application pro...</a></li>
+                
                   <li><a href="./fp-dragons.html" title="Here be Dragons - The Interesting Realm of Floating Point Operations">Here be Dragons...</a></li>
                 
                   <li><a href="./daemonizing-processes.html" title="Daemonizing Processes - Part 1">Daemonizing Pro...</a></li>
-                
-                  <li><a href="./unix-auto.html" title="Unix portability. Autoconf, Automake, Libtool">Unix portabilit...</a></li>
                 
               </ul>
             </nav>
@@ -99,7 +99,6 @@
 
       <p>The C++ 2011 standard introduced the lambda expression syntax element causing some people ask <a href="http://stackoverflow.com/questions/7627098/what-is-a-lambda-expression-in-c11" title="What is a lambda expression in C++?">why it was needed</a>. In reality, it was not a new use case, people have been using this under different names since C was created. You had functors (C++ terminology) and pointer to functions for example. A basic use case was in applying the same transform over all elements of a collection (the functor’s widely shared example) or sorting elements of a vector (via <code>qsort</code> in C). But, in reality, all of these cases can be reduced to using <em>higher-order functions</em>.</p>
 <!--more-->
-
 <section id="higher-order-functions" class="level3">
 <h3>1. Higher-order functions</h3>
 <p>A high-order function is a function that takes one or more functions as an input and outputs a function. For example, we can use this higher-order functions to map, filter, fold and sort lists.</p>
@@ -161,7 +160,7 @@ f <span class="fu">=</span> \x y <span class="ot">-&gt;</span> x <span class="fu
     cout &lt;&lt; “Vector2 contains: “;
     <span class="kw">for</span> (std::vector&lt;<span class="dt">int</span>&gt;::iterator it=vector2.begin();
         it!=vector2.end(); ++it)
-        std::cout &lt;&lt; ' ' &lt;&lt; *it;
+        std::cout &lt;&lt; <span class="st">' '</span> &lt;&lt; *it;
 
     <span class="kw">return</span> <span class="dv">0</span>;
 }</code></pre>

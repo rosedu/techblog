@@ -55,11 +55,11 @@
               <ul>
                 <li class="logo"><a href="./archive.html" title="Archive">Latest Posts</a></li>
                 
+                  <li><a href="./cdl-2015.html" title="Application process for the Community Development Lab">Application pro...</a></li>
+                
                   <li><a href="./fp-dragons.html" title="Here be Dragons - The Interesting Realm of Floating Point Operations">Here be Dragons...</a></li>
                 
                   <li><a href="./daemonizing-processes.html" title="Daemonizing Processes - Part 1">Daemonizing Pro...</a></li>
-                
-                  <li><a href="./unix-auto.html" title="Unix portability. Autoconf, Automake, Libtool">Unix portabilit...</a></li>
                 
               </ul>
             </nav>
@@ -99,7 +99,6 @@
 
       <p>The purpose of this article is to generally present the utilities <a href="http://www.gnu.org/software/autoconf/manual/index.html" title="autoconf">Autoconf</a>, <a href="http://www.gnu.org/software/automake/manual/index.html" title="automake">Automake</a> and <a href="http://www.gnu.org/software/libtool/manual/index.html" title="libtool">Libtool</a>, which ease very much the process of installation from sources of software packages or libraries, from the point of view of users. It is assumed that the user uses any Unix/Unix-like system, and the purpose of the developer, who chooses to use these GNU tools, is to make the installation, on the user’s system, as easy as possible.</p>
 <!--more-->
-
 <p>If you are a serious Unix/Linux user, for sure you have been in the situation of compiling a program or a library from sources. Then, you called <code>./configure; make; make install</code> and you got an executable or a library. In this article, we change the point of view, assuming that we are the software’s developers and not the users, and our purpose is to understand in principle how can we generate the <code>configure</code> script and the other additional files,</p>
 <p>This article aims to explain <em>le raison d’etre</em> of these very useful tools (<a href="http://www.gnu.org/software/autoconf/manual/index.html" title="autoconf">Autoconf</a>, <a href="http://www.gnu.org/software/automake/manual/index.html" title="automake">Automake</a>, <a href="http://www.gnu.org/software/libtool/manual/index.html" title="libtool">Libtool</a>) and to present generic configuration files, in the case of a simple program and the case of a simple library – thus, the base syntax for these GNU tools with the aim of creating an easy install experience for the users.</p>
 <section id="the-theory" class="level3">

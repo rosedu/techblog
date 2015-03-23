@@ -55,11 +55,11 @@
               <ul>
                 <li class="logo"><a href="./archive.html" title="Archive">Latest Posts</a></li>
                 
+                  <li><a href="./cdl-2015.html" title="Application process for the Community Development Lab">Application pro...</a></li>
+                
                   <li><a href="./fp-dragons.html" title="Here be Dragons - The Interesting Realm of Floating Point Operations">Here be Dragons...</a></li>
                 
                   <li><a href="./daemonizing-processes.html" title="Daemonizing Processes - Part 1">Daemonizing Pro...</a></li>
-                
-                  <li><a href="./unix-auto.html" title="Unix portability. Autoconf, Automake, Libtool">Unix portabilit...</a></li>
                 
               </ul>
             </nav>
@@ -100,7 +100,6 @@
       <p>This article aims to shed some light on the topic of library management with insight on the linker and loader. The <code>ldconfig</code> command, for example, is heavily used in Linux, though unknown to some of users.</p>
 <p>A library is a collection of object files “meshed” together in another file. Its benefit is avoiding “reimplementing the wheel”. Once one has implemented a given set of functionalities, he/she may store those in a library file; this file is distributed to others and used in various software projects. Libraries are heavily used in all modern operating systems; the greater part of packages in Linux distributions are library packages. One can barely imagine being able to do any kind of development without the presence of the C Standard Library on the local system.</p>
 <!--more-->
-
 <section id="linking-and-loading" class="level3">
 <h3>Linking and Loading</h3>
 <p>A library is said to be “linked” together with other library files or object files into an executable. The executable integrates all required components from library files, avoiding the need of implementing these components from scratch.</p>
@@ -134,7 +133,7 @@ LD_LIBRARY_PATH=. ./myexec</code></pre>
 
     handle = dlopen (<span class="st">&quot;libm.so&quot;</span>, RTLD_LAZY);
     cosine = dlsym(handle, <span class="st">&quot;cos&quot;</span>);
-    printf (<span class="st">&quot;%f</span><span class="ch">\n</span><span class="st">&quot;</span>, (*cosine)(<span class="fl">2.0</span>));</code></pre>
+    printf (<span class="st">&quot;</span><span class="ch">%f\n</span><span class="st">&quot;</span>, (*cosine)(<span class="fl">2.</span><span class="dv">0</span>));</code></pre>
 <p>Unlike static and load-time dynamic linking, run-time dynamic linking doesn’t require the presence of a library argument to the link command (that is <code>-L. -ltest</code>).</p>
 <p>Advantages of a certain type of library (static or dynamic) are disadvantages for the other one and vice versa.</p>
 <p>Static library-generated executables have increased portability. All code is inserted into the executable such that, moving it on a different platform doesn’t require the presence of that library. These executables tend to be faster as no additional overhead is implied during load-time or run-time.</p>

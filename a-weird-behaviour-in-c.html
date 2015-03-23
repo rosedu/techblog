@@ -55,11 +55,11 @@
               <ul>
                 <li class="logo"><a href="./archive.html" title="Archive">Latest Posts</a></li>
                 
+                  <li><a href="./cdl-2015.html" title="Application process for the Community Development Lab">Application pro...</a></li>
+                
                   <li><a href="./fp-dragons.html" title="Here be Dragons - The Interesting Realm of Floating Point Operations">Here be Dragons...</a></li>
                 
                   <li><a href="./daemonizing-processes.html" title="Daemonizing Processes - Part 1">Daemonizing Pro...</a></li>
-                
-                  <li><a href="./unix-auto.html" title="Unix portability. Autoconf, Automake, Libtool">Unix portabilit...</a></li>
                 
               </ul>
             </nav>
@@ -99,7 +99,6 @@
 
       <p>Let us start from a common mistake made by programmers learning simple data structures in C. The following code is an implementation for simple linked lists of integers in C.</p>
 <!--more-->
-
 <pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;stdio.h&gt;</span>
 <span class="ot">#include &lt;stdlib.h&gt;</span>
 
@@ -152,7 +151,7 @@
 	<span class="kw">struct</span> queue *q = init();
 	add(q, <span class="dv">4</span>);
 	add(q, <span class="dv">2</span>);
-	printf(<span class="st">&quot;%d%d</span><span class="ch">\n</span><span class="st">&quot;</span>, pop(q), pop(q));
+	printf(<span class="st">&quot;</span><span class="ch">%d%d\n</span><span class="st">&quot;</span>, pop(q), pop(q));
 	free_q(q);
 	<span class="kw">return</span> <span class="dv">0</span>;
 }</code></pre>
@@ -186,7 +185,7 @@ $ ./1-clang
 {
 	inc();
 	inc();
-	printf(<span class="st">&quot;%d%d</span><span class="ch">\n</span><span class="st">&quot;</span>, dec(), dec());
+	printf(<span class="st">&quot;</span><span class="ch">%d%d\n</span><span class="st">&quot;</span>, dec(), dec());
 	<span class="kw">return</span> <span class="dv">0</span>;
 }</code></pre>
 <p>Basically, we have removed the queue and replaced it by it’s length, stored in the global <code>x</code> variable. The expected output is <code>10</code>.</p>
@@ -243,7 +242,7 @@ callq   printf</code></pre>
 	<span class="dt">int</span> x = <span class="dv">0</span>;
 	x++;
 	x++;
-	printf(<span class="st">&quot;%d%d</span><span class="ch">\n</span><span class="st">&quot;</span>, --x, --x);
+	printf(<span class="st">&quot;</span><span class="ch">%d%d\n</span><span class="st">&quot;</span>, --x, --x);
 	<span class="kw">return</span> <span class="dv">0</span>;
 }</code></pre>
 <p>Here, we have another suprise:</p>
@@ -312,7 +311,7 @@ $ gcc -Wall -Wextra 3.c -g -o 3-gcc
 	<span class="dt">int</span> x = INT_MAX;
 	<span class="dt">void</span> *p = &amp;x;
 
-	printf(<span class="st">&quot;%d %d</span><span class="ch">\n</span><span class="st">&quot;</span>, x, x + <span class="dv">1</span>);
+	printf(<span class="st">&quot;</span><span class="ch">%d</span><span class="st"> </span><span class="ch">%d\n</span><span class="st">&quot;</span>, x, x + <span class="dv">1</span>);
 	printf(<span class="st">&quot;%p %p</span><span class="ch">\n</span><span class="st">&quot;</span>, p, p + <span class="dv">1</span>);
 
 	<span class="kw">return</span> <span class="dv">0</span>;

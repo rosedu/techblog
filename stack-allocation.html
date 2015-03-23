@@ -55,11 +55,11 @@
               <ul>
                 <li class="logo"><a href="./archive.html" title="Archive">Latest Posts</a></li>
                 
+                  <li><a href="./cdl-2015.html" title="Application process for the Community Development Lab">Application pro...</a></li>
+                
                   <li><a href="./fp-dragons.html" title="Here be Dragons - The Interesting Realm of Floating Point Operations">Here be Dragons...</a></li>
                 
                   <li><a href="./daemonizing-processes.html" title="Daemonizing Processes - Part 1">Daemonizing Pro...</a></li>
-                
-                  <li><a href="./unix-auto.html" title="Unix portability. Autoconf, Automake, Libtool">Unix portabilit...</a></li>
                 
               </ul>
             </nav>
@@ -99,7 +99,6 @@
 
       <p><strong>Stack space</strong> is the part of each process’ virtual memory where function arguments and return addresses are stored, along with local variables declared within a function. Usually, the stack begins at the high address space of the virtual memory and grows down.</p>
 <!--more-->
-
 <p>At every function call, a new <strong>stack frame</strong> is created on the stack. It contains the parameters sent to the function, the return address (the address of a code in the caller function) and the locally declared variables.</p>
 <p>For each function call, the <code>SP/ESP</code> (Stack Pointer/Extended Stack Pointer) is set so the stack has a big enough size to accommodate local variables. For example, in theory, if you have a local <code>char</code> variable and an <code>int</code> variable, the SP should be set (moved) to 5 bytes.</p>
 <p>In practice, the compiler will allocate stack space a little different than expected. It will allocate local variables space in increments of a fixed size, so sometimes having two int variables or three int variables will be the same.</p>
