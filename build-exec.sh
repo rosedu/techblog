@@ -7,22 +7,14 @@
 
 set -e
 
+which stack || echo "Get stack from https://docs.haskellstack.org/en/stable/README/#the-haskell-tool-stack"
+
 # If it is not important to have the executable in the root (or not on Linux)
 # then run the following commands manually (since they should be platform
 # independent, assuming everything is installed).
-cabal install --only-dependencies
-cabal clean
-cabal configure
-cabal build
+stack build
 
 # Ensure that previous site is cleaned up
-dist/build/techblog/techblog clean
+stack exec techblog -- clean
 
-# This command moves the generated executable to the root of the techblog.
-# With it you can run techblog [options].
-# Without it you have to run dist/build/techblog/techblog [options].
-cp dist/build/techblog/techblog .
-
-# Free some space. Totally optional.
-strip techblog
-rm -rf dist/
+# From now, run stack exec techblog -- [options]
