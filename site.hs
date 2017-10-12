@@ -254,7 +254,7 @@ extractPeople = do
 getPeople :: MonadMetadata m => Identifier -> m [String]
 getPeople identifier = do
   metadata <- getMetadata identifier
-  return $ maybe [] (map trim . splitAll ",") $ M.lookup "author" metadata
+  return $ maybe [] (map trim . splitAll ",") $ lookupString "author" metadata
 
 makePeoplePage :: Context String -> String -> Pattern -> Rules ()
 makePeoplePage contribCtx contrib pattern = do
