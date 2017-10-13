@@ -139,8 +139,8 @@
 <p><img src="http://imgs.xkcd.com/comics/e_to_the_pi_minus_pi.png" alt="e to pi
 minus pi (xkcd)" title="e to pi minus pi (xkcd)"></p>
 <p>Even experts and common-sense is at fault in this realm. For example, did you know that <em>always</em> comparing two floating points like in the following code is <em>bad</em>?</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="kw">if</span> (fabs(a - b) &lt; <span class="fl">0.</span><span class="bn">0001</span>)
-    do_something_with_equal_numbers(a);</code></pre>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="cf">if</span> (fabs(a - b) &lt; <span class="fl">0.0001</span>)
+    do_something_with_equal_numbers(a);</code></pre></div>
 <p>Without being a complete guide, this article shows some of the beauties and dangers of the floating-point realm.</p>
 
       <div class="more">

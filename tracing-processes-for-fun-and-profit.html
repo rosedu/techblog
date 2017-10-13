@@ -139,18 +139,18 @@ read(3, </code></pre>
 <p>We see that the application stopped while trying to read data from the third file descriptor. Looking backwards we find:</p>
 <pre><code>open(&quot;/dev/random&quot;, O_RDONLY)           = 3</code></pre>
 <p>Using these clues, we can construct a new source file which will compile into an application which has the exact same bug and nothing more:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;stdio.h&gt;</span>
-<span class="ot">#include &lt;stdlib.h&gt;</span>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span>
+<span class="pp">#include </span><span class="im">&lt;stdlib.h&gt;</span>
 
-<span class="ot">#define SIZE 1000</span>
+<span class="pp">#define SIZE 1000</span>
 
 <span class="dt">int</span> main ()
 {
         <span class="dt">char</span> a[SIZE];
         FILE *f = fopen(<span class="st">&quot;/dev/random&quot;</span>, <span class="st">&quot;r&quot;</span>);
         fgets(a, SIZE, f);
-        <span class="kw">return</span> <span class="dv">0</span>;
-}</code></pre>
+        <span class="cf">return</span> <span class="dv">0</span>;
+}</code></pre></div>
 <p>Of course, the building of a new application is not always needed. In our case, we see that we are reading from <code>/dev/random</code>. Knowing that this requires entropy sources to generate the random stream, we understand why the process stopped. Changing the file to <code>/dev/urandom</code> solves the bug for our toy application, therefore it must solve it for the original one as well. Or, we could generate more entropy to increase the speed of the application.</p>
 <p>For the second example, let’s consider the problem of finding which configuration files are read when launching an application. This can be used to debug a faulty <code>vim</code> setting, to see what <code>*rc</code> files are read when launching <code>bash</code>, etc. In our case, we want to see the order in which <code>git</code> reads its configuration files to see what files are to be ignored from the repository (we have 4 options: global <code>.gitignore</code>, <code>.gitignore</code> in root folder or in a subdirectory and <code>.git/info/exclude</code>):</p>
 <pre><code>$strace git status

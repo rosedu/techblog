@@ -99,8 +99,8 @@
 
       <p>Let us start from a common mistake made by programmers learning simple data structures in C. The following code is an implementation for simple linked lists of integers in C.</p>
 <!--more-->
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;stdio.h&gt;</span>
-<span class="ot">#include &lt;stdlib.h&gt;</span>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span>
+<span class="pp">#include </span><span class="im">&lt;stdlib.h&gt;</span>
 
 <span class="kw">struct</span> queue {
 	<span class="dt">int</span> elm;
@@ -111,7 +111,7 @@
 {
 	<span class="kw">struct</span> queue *q = calloc(<span class="dv">1</span>, <span class="kw">sizeof</span>(*q));
 	q-&gt;next = q;
-	<span class="kw">return</span> q;
+	<span class="cf">return</span> q;
 }
 
 <span class="dt">void</span> add(<span class="kw">struct</span> queue *q, <span class="dt">int</span> x)
@@ -121,7 +121,7 @@
 
 	n-&gt;elm = x;
 	n-&gt;next = head;
-	<span class="kw">while</span> (q-&gt;next != head)
+	<span class="cf">while</span> (q-&gt;next != head)
 		q = q-&gt;next;
 	q-&gt;next = n;
 }
@@ -132,13 +132,13 @@
 	<span class="kw">struct</span> queue *tmp = q-&gt;next;
 	q-&gt;next = tmp-&gt;next;
 	free(tmp);
-	<span class="kw">return</span> x;
+	<span class="cf">return</span> x;
 }
 
 <span class="dt">void</span> free_q(<span class="kw">struct</span> queue *q)
 {
 	<span class="kw">struct</span> queue *tmp;
-	<span class="kw">while</span> (q-&gt;next != q) {
+	<span class="cf">while</span> (q-&gt;next != q) {
 		tmp = q-&gt;next;
 		free(q);
 		q = tmp;
@@ -151,10 +151,10 @@
 	<span class="kw">struct</span> queue *q = init();
 	add(q, <span class="dv">4</span>);
 	add(q, <span class="dv">2</span>);
-	printf(<span class="st">&quot;</span><span class="ch">%d%d\n</span><span class="st">&quot;</span>, pop(q), pop(q));
+	printf(<span class="st">&quot;</span><span class="sc">%d%d\n</span><span class="st">&quot;</span>, pop(q), pop(q));
 	free_q(q);
-	<span class="kw">return</span> <span class="dv">0</span>;
-}</code></pre>
+	<span class="cf">return</span> <span class="dv">0</span>;
+}</code></pre></div>
 <p>The idea is simple: we insert <code>4</code> and <code>2</code> into the queue and expect the output to be <code>42</code>, the digits being output in the order of their insertion into the queue.</p>
 <p>However, running the program, we have a big surprise:</p>
 <pre><code>$ gcc -Wall -Wextra 1.c -g -o 1-gcc
@@ -164,30 +164,30 @@ $ ./1-gcc
 $ ./1-clang 
 42</code></pre>
 <p>Let’s ignore for now the fact that <a href="http://clang.llvm.org/" title="clang">clang</a> gives the correct response and let’s answer this question: What went wrong? The queue implementation seems correct but let’s replace it by a dummy implementation:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;stdio.h&gt;</span>
-<span class="ot">#include &lt;stdlib.h&gt;</span>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span>
+<span class="pp">#include </span><span class="im">&lt;stdlib.h&gt;</span>
 
 <span class="dt">int</span> x;
 
 <span class="dt">int</span> inc()
 {
 	x++;
-	<span class="kw">return</span> x;
+	<span class="cf">return</span> x;
 }
 
 <span class="dt">int</span> dec()
 {
 	x--;
-	<span class="kw">return</span> x;
+	<span class="cf">return</span> x;
 }
 
 <span class="dt">int</span> main()
 {
 	inc();
 	inc();
-	printf(<span class="st">&quot;</span><span class="ch">%d%d\n</span><span class="st">&quot;</span>, dec(), dec());
-	<span class="kw">return</span> <span class="dv">0</span>;
-}</code></pre>
+	printf(<span class="st">&quot;</span><span class="sc">%d%d\n</span><span class="st">&quot;</span>, dec(), dec());
+	<span class="cf">return</span> <span class="dv">0</span>;
+}</code></pre></div>
 <p>Basically, we have removed the queue and replaced it by it’s length, stored in the global <code>x</code> variable. The expected output is <code>10</code>.</p>
 <pre><code>$ clang -Wall -Wextra 2.c -g -o 2-clang
 $ gcc -Wall -Wextra 2.c -g -o 2-gcc
@@ -234,17 +234,17 @@ callq   printf</code></pre>
 <p>The understanding of the assembly code is left as an exercise to the reader. It is easy to see that <code>clang</code> uses the stack to store the results.</p>
 <p>Both snippets were obtained using no optimization. As an exercise, try to observe the effect of each optimization level on the generated code and explain it.</p>
 <p>Let’s go on. In the above snippet we have used functions to increment and decrement the global value. Let us rewrite that code:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;stdio.h&gt;</span>
-<span class="ot">#include &lt;stdlib.h&gt;</span>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span>
+<span class="pp">#include </span><span class="im">&lt;stdlib.h&gt;</span>
 
 <span class="dt">int</span> main()
 {
 	<span class="dt">int</span> x = <span class="dv">0</span>;
 	x++;
 	x++;
-	printf(<span class="st">&quot;</span><span class="ch">%d%d\n</span><span class="st">&quot;</span>, --x, --x);
-	<span class="kw">return</span> <span class="dv">0</span>;
-}</code></pre>
+	printf(<span class="st">&quot;</span><span class="sc">%d%d\n</span><span class="st">&quot;</span>, --x, --x);
+	<span class="cf">return</span> <span class="dv">0</span>;
+}</code></pre></div>
 <p>Here, we have another suprise:</p>
 <pre><code>$ ./3-gcc 
 00
@@ -302,20 +302,20 @@ $ gcc -Wall -Wextra 3.c -g -o 3-gcc
 </ul>
 <p>Thus, our side effects in the <code>printf</code> function cause undefined behaviour and unspecified behaviour. Depending on the compiler, the results can be very different. This harms portability and should be avoided.</p>
 <p>Before finishing the article, let’s see another example, using different constructs:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;stdio.h&gt;</span>
-<span class="ot">#include &lt;stdlib.h&gt;</span>
-<span class="ot">#include &lt;limits.h&gt;</span>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span>
+<span class="pp">#include </span><span class="im">&lt;stdlib.h&gt;</span>
+<span class="pp">#include </span><span class="im">&lt;limits.h&gt;</span>
 
 <span class="dt">int</span> main()
 {
 	<span class="dt">int</span> x = INT_MAX;
 	<span class="dt">void</span> *p = &amp;x;
 
-	printf(<span class="st">&quot;</span><span class="ch">%d</span><span class="st"> </span><span class="ch">%d\n</span><span class="st">&quot;</span>, x, x + <span class="dv">1</span>);
-	printf(<span class="st">&quot;%p %p</span><span class="ch">\n</span><span class="st">&quot;</span>, p, p + <span class="dv">1</span>);
+	printf(<span class="st">&quot;</span><span class="sc">%d</span><span class="st"> </span><span class="sc">%d\n</span><span class="st">&quot;</span>, x, x + <span class="dv">1</span>);
+	printf(<span class="st">&quot;%p %p</span><span class="sc">\n</span><span class="st">&quot;</span>, p, p + <span class="dv">1</span>);
 
-	<span class="kw">return</span> <span class="dv">0</span>;
-}</code></pre>
+	<span class="cf">return</span> <span class="dv">0</span>;
+}</code></pre></div>
 <p>The possible outputs of this code and the reasoning behind are left as an exercise. Use the comments area to provide solutions for all exercises left in this article.</p>
 <p>As a rule of thumb, try to limit the use of side effects inside a function call. You don’t know when you’ll fall into this trap again.</p>
 

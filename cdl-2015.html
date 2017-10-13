@@ -114,7 +114,7 @@
 <li>You have maximum 4,906 KB of memory for each test</li>
 </ul>
 <p>Example input:</p>
-<pre class="sourceCode json"><code class="sourceCode json"><span class="ot">[</span><span class="fu">{</span>
+<div class="sourceCode"><pre class="sourceCode json"><code class="sourceCode json"><span class="ot">[</span><span class="fu">{</span>
 <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span>
 <span class="dt">&quot;language&quot;</span><span class="fu">:</span> <span class="st">&quot;Ruby&quot;</span><span class="fu">,</span>
 <span class="dt">&quot;usage&quot;</span><span class="fu">:</span> <span class="st">&quot;Mainly by hipsters.&quot;</span><span class="fu">,</span>
@@ -134,7 +134,7 @@
 <span class="dt">&quot;language&quot;</span><span class="fu">:</span> <span class="st">&quot;Haskell&quot;</span><span class="fu">,</span>
 <span class="dt">&quot;usage&quot;</span><span class="fu">:</span> <span class="st">&quot;A lonely dude in Massachussets.&quot;</span><span class="fu">,</span>
 <span class="dt">&quot;power&quot;</span><span class="fu">:</span> <span class="dv">999999</span>
-<span class="fu">}</span><span class="ot">]</span></code></pre>
+<span class="fu">}</span><span class="ot">]</span></code></pre></div>
 <p>Example output:</p>
 <pre class="csv"><code>id,language,usage,power,
 1,Ruby,Mainly by hipsters.,4,
@@ -142,10 +142,10 @@
 3,C++,Hardcore people who love dangling pointers.,100,
 4,Haskell,A lonely dude in Massachusetts.,999999,</code></pre>
 <p>However, since we want to simulate a real life problem better, the JSON file won’t be formatted with the same whitespace. But, we guarantee it will be correct.</p>
-<pre class="sourceCode json"><code class="sourceCode json"><span class="ot">[</span> <span class="fu">{</span> <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Ruby on Rails&quot;</span><span class="fu">,</span> <span class="dt">&quot;commits&quot;</span><span class="fu">:</span> <span class="dv">49507</span><span class="fu">,</span> <span class="dt">&quot;contributors&quot;</span><span class="fu">:</span><span class="er"> </span><span class="dv">429</span><span class="fu">,</span>
+<div class="sourceCode"><pre class="sourceCode json"><code class="sourceCode json"><span class="ot">[</span> <span class="fu">{</span> <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Ruby on Rails&quot;</span><span class="fu">,</span> <span class="dt">&quot;commits&quot;</span><span class="fu">:</span> <span class="dv">49507</span><span class="fu">,</span> <span class="dt">&quot;contributors&quot;</span><span class="fu">:</span><span class="er"> </span><span class="dv">429</span><span class="fu">,</span>
 <span class="dt">&quot;last commit&quot;</span> <span class="fu">:</span> <span class="st">&quot;an hour ago&quot;</span> <span class="fu">}</span><span class="ot">,</span> <span class="fu">{</span><span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;jQuery&quot;</span><span class="fu">,</span> <span class="dt">&quot;commits&quot;</span><span class="fu">:</span><span class="er"> </span> <span class="dv">5745</span><span class="fu">,</span>
 <span class="dt">&quot;contributors&quot;</span><span class="er"> </span><span class="fu">:</span> <span class="dv">213</span><span class="fu">,</span> <span class="dt">&quot;last commit&quot;</span><span class="fu">:</span><span class="er"> </span> <span class="st">&quot;4 days ago&quot;</span> <span class="fu">}</span><span class="ot">,</span> <span class="fu">{</span><span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;React&quot;</span><span class="fu">,</span>
-<span class="dt">&quot;commits&quot;</span> <span class="fu">:</span> <span class="dv">3557</span><span class="fu">,</span><span class="er"> </span> <span class="dt">&quot;contributors&quot;</span><span class="fu">:</span><span class="er"> </span><span class="dv">288</span><span class="fu">,</span> <span class="dt">&quot;last commit&quot;</span><span class="fu">:</span> <span class="st">&quot;5 hours ago&quot;</span><span class="fu">}</span> <span class="ot">]</span></code></pre>
+<span class="dt">&quot;commits&quot;</span> <span class="fu">:</span> <span class="dv">3557</span><span class="fu">,</span><span class="er"> </span> <span class="dt">&quot;contributors&quot;</span><span class="fu">:</span><span class="er"> </span><span class="dv">288</span><span class="fu">,</span> <span class="dt">&quot;last commit&quot;</span><span class="fu">:</span> <span class="st">&quot;5 hours ago&quot;</span><span class="fu">}</span> <span class="ot">]</span></code></pre></div>
 <pre class="csv"><code>name,commits,contributors,last commit,
 Ruby on Rails,49507,429,an hour ago,
 jQuery,5745,213,4 days ago,
@@ -189,7 +189,7 @@ React,3557,288,5 hours ago,</code></pre>
 <p>We would first ask the student to present his solution. Then, we would start asking him what would happen if we modified the problem statement and he would start to have special characters inside the keys, like parentheses or colons. Then we would ask him to tell us how easily it would have been to modify the source code and support those edge cases.</p>
 <p>From what I’ve observed, the shorter and cleaner the student’s solution was, the easier for him was to give us a version adapted to the new requirements.</p>
 <p>After these warming questions, we would ask him the important one: what would happen if the keys of the objects were not in the same order. For example</p>
-<pre class="sourceCode json"><code class="sourceCode json"><span class="ot">[</span><span class="fu">{</span>
+<div class="sourceCode"><pre class="sourceCode json"><code class="sourceCode json"><span class="ot">[</span><span class="fu">{</span>
 <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span>
 <span class="dt">&quot;language&quot;</span><span class="fu">:</span> <span class="st">&quot;Ruby&quot;</span><span class="fu">,</span>
 <span class="dt">&quot;usage&quot;</span><span class="fu">:</span> <span class="st">&quot;Mainly by hipsters.&quot;</span><span class="fu">,</span>
@@ -199,7 +199,7 @@ React,3557,288,5 hours ago,</code></pre>
 <span class="dt">&quot;language&quot;</span><span class="fu">:</span> <span class="st">&quot;Python&quot;</span><span class="fu">,</span>
 <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="dv">2</span><span class="fu">,</span>
 <span class="dt">&quot;power&quot;</span><span class="fu">:</span> <span class="dv">2</span>
-<span class="fu">}</span><span class="ot">]</span></code></pre>
+<span class="fu">}</span><span class="ot">]</span></code></pre></div>
 <p><em>All the complexities are assuming a comparison of strings is done in O(1).</em></p>
 <p>I took about 20 interviews. Almost every student would find the O(N^2) algorithm. The solution would be to print the keys of the first object, read the second object, and for every key search it naively in the first object.</p>
 <p>From here, only half of the students would get a better solution alone. The first hint I gave was to try and see if having the keys in a certain order might help. Some of them caught the idea, sorted the keys and said that they would now use binary search to find the position of the keys in O(N*log(N)).</p>

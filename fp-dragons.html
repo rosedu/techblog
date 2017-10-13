@@ -102,36 +102,36 @@
 <p><img src="http://imgs.xkcd.com/comics/e_to_the_pi_minus_pi.png" alt="e to pi
 minus pi (xkcd)" title="e to pi minus pi (xkcd)"></p>
 <p>Even experts and common-sense is at fault in this realm. For example, did you know that <em>always</em> comparing two floating points like in the following code is <em>bad</em>?</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="kw">if</span> (fabs(a - b) &lt; <span class="fl">0.</span><span class="bn">0001</span>)
-    do_something_with_equal_numbers(a);</code></pre>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="cf">if</span> (fabs(a - b) &lt; <span class="fl">0.0001</span>)
+    do_something_with_equal_numbers(a);</code></pre></div>
 <p>Without being a complete guide, this article shows some of the beauties and dangers of the floating-point realm.</p>
 <!--more-->
 <section id="a-common-pitfall" class="level3">
 <h3>A common pitfall</h3>
 <p>Beginners programmers expect floating point number to act as the real fractional numbers: no errors involved. Slightly experienced programmers know that this is not the case, yet even the most careful and experienced ones make mistakes from time to time. We will focus more on the common pitfalls and not on the occasional mistreatments given by experts.</p>
 <p>For example, someone unprepared might write the following code</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;stdio.h&gt;</span>
-<span class="ot">#include &lt;stdlib.h&gt;</span>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span>
+<span class="pp">#include </span><span class="im">&lt;stdlib.h&gt;</span>
 
 <span class="dt">int</span> main ()
 {
-    <span class="dt">float</span> a = <span class="fl">0.</span><span class="dv">1</span>;
-    <span class="dt">float</span> b = <span class="fl">0.</span><span class="dv">2</span>;
+    <span class="dt">float</span> a = <span class="fl">0.1</span>;
+    <span class="dt">float</span> b = <span class="fl">0.2</span>;
     <span class="dt">float</span> c = a + b;
-    <span class="kw">if</span> (c != <span class="fl">0.</span><span class="dv">3</span>)
-        printf(<span class="st">&quot;</span><span class="ch">%f\n%f\n%f\n%f\n</span><span class="st">&quot;</span>, c, a + b, <span class="dv">3</span> * a, <span class="fl">1.</span><span class="dv">5</span> * b);
-    <span class="kw">return</span> <span class="dv">0</span>;
-}</code></pre>
+    <span class="cf">if</span> (c != <span class="fl">0.3</span>)
+        printf(<span class="st">&quot;</span><span class="sc">%f\n%f\n%f\n%f\n</span><span class="st">&quot;</span>, c, a + b, <span class="dv">3</span> * a, <span class="fl">1.5</span> * b);
+    <span class="cf">return</span> <span class="dv">0</span>;
+}</code></pre></div>
 <p>and be surprised to see that results are</p>
-<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">./a.out</span>
-<span class="kw">0.300000</span>
-<span class="kw">0.300000</span>
-<span class="kw">0.300000</span>
-<span class="kw">0.300000</span></code></pre>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="ex">./a.out</span>
+<span class="ex">0.300000</span>
+<span class="ex">0.300000</span>
+<span class="ex">0.300000</span>
+<span class="ex">0.300000</span></code></pre></div>
 <p><em>Note</em>: Your results on your machine might vary. <a href="#determinism-correctness-and-fastness">Later in the article</a> we will discuss this aspect at length.</p>
 <p>Of course, the problem in here is pretty simple: all floating point constants use double precision thus the code should <em>at least</em> read</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="kw">if</span> (c != <span class="fl">0.</span><span class="er">3f</span>)
-    printf(...)</code></pre>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="cf">if</span> (c != <span class="fl">0.</span><span class="er">3f</span>)
+    printf(...)</code></pre></div>
 <p>I say <em>at least</em> because even if on my architecture I got the exact value of <code>0.3</code>, this is not the case on all of them. Why? Because none of the <code>0.1</code>, <code>0.2</code> and <code>0.3</code> values have an exact representation in base 2. One can see that by trying to convert the number into base 2. Let’s follow the example of <code>0.3</code>:</p>
 <ul>
 <li>the integral part of <code>0.3</code> is <code>0</code> so it is also in base 2</li>
@@ -143,27 +143,27 @@ minus pi (xkcd)" title="e to pi minus pi (xkcd)"></p>
 </ul>
 <p>Thus, the binary representation of <code>0.3</code> would be <code>0.01001100110011001..</code>. Repeating the same algorithm with <code>0.1</code> and <code>0.2</code> will end in the same loop between <code>0.2</code>, <code>0.4</code>, <code>0.8</code> and <code>0.6</code>. So, none of <code>0.1</code>, <code>0.2</code> or <code>0.3</code> has an exact representation. Thus, no result of any operation with these numbers will be an exact answer.</p>
 <p>But, then, why did we get the exact answer in here? The two sensible answers are that either the compiler generates code which uses a higher level of precision than the space reserved for float or the printing routine does hard work to properly display the numbers. We can test these hypotheses using <code>gdb</code>:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="er">$</span> gdb -q ./a.out 
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="er">$</span> gdb -q ./a.out 
 Reading symbols from /tmp/fps/a.out...done.
 (gdb) b main
-Breakpoint <span class="dv">1</span> at <span class="bn">0x400538</span>: file <span class="fl">1.</span>c, line <span class="fl">6.</span>
+Breakpoint <span class="dv">1</span> at <span class="bn">0x400538</span>: file <span class="fl">1.</span>c, line <span class="dv">6</span>.
 (gdb) r
 Starting program: /tmp/fps/a.out 
 
 Breakpoint <span class="dv">1</span>, main () at <span class="fl">1.</span>c:<span class="dv">6</span>
-<span class="dv">6</span>       <span class="dt">float</span> a = <span class="fl">0.</span><span class="dv">1</span>;
+<span class="dv">6</span>       <span class="dt">float</span> a = <span class="fl">0.1</span>;
 (gdb) n
-<span class="dv">7</span>       <span class="dt">float</span> b = <span class="fl">0.</span><span class="dv">2</span>;
+<span class="dv">7</span>       <span class="dt">float</span> b = <span class="fl">0.2</span>;
 (gdb) p a
-<span class="er">$</span><span class="dv">1</span> = <span class="fl">0.</span><span class="dv">100000001</span>
+<span class="er">$</span><span class="dv">1</span> = <span class="fl">0.100000001</span>
 (gdb) n
 <span class="dv">8</span>       <span class="dt">float</span> c = a + b;
 (gdb) p b
-<span class="er">$</span><span class="dv">2</span> = <span class="fl">0.</span><span class="dv">200000003</span></code></pre>
+<span class="er">$</span><span class="dv">2</span> = <span class="fl">0.200000003</span></code></pre></div>
 <p>As you can see, printing the values from memory shows that they are not <code>0.1</code> and <code>0.2</code> but values close to that.</p>
 <p>Let’s see now what the assembly code around <code>c = a + b</code> looks like:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp">(gdb) disass
-Dump of assembler code <span class="kw">for</span> function main:
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp">(gdb) disass
+Dump of assembler code <span class="cf">for</span> function main:
    <span class="bn">0x0000000000400530</span> &lt;<span class="dv">+0</span>&gt;:     push   %rbp
    <span class="bn">0x0000000000400531</span> &lt;<span class="dv">+1</span>&gt;:     mov    %rsp,%rbp
    <span class="bn">0x0000000000400534</span> &lt;<span class="dv">+4</span>&gt;:     sub    <span class="er">$</span><span class="bn">0x10</span>,%rsp
@@ -171,22 +171,22 @@ Dump of assembler code <span class="kw">for</span> function main:
    <span class="bn">0x000000000040053e</span> &lt;<span class="dv">+14</span>&gt;:    mov    %eax,<span class="bn">-0x4</span>(%rbp)
    <span class="bn">0x0000000000400541</span> &lt;<span class="dv">+17</span>&gt;:    mov    <span class="bn">0x13d</span>(%rip),%eax        <span class="er">#</span> <span class="bn">0x400684</span>
    <span class="bn">0x0000000000400547</span> &lt;<span class="dv">+23</span>&gt;:    mov    %eax,<span class="bn">-0x8</span>(%rbp)
-=&gt; <span class="bn">0x000000000040054a</span> &lt;<span class="dv">+26</span>&gt;:    movss  <span class="bn">-0x4</span>(%rbp),%xmm0
-   <span class="bn">0x000000000040054f</span> &lt;<span class="dv">+31</span>&gt;:    addss  <span class="bn">-0x8</span>(%rbp),%xmm0
+=&gt; <span class="bn">0x000000000040054a</span> &lt;<span class="dv">+26</span>&gt;:    movss  <span class="bn">-0x4</span>(%rbp),%xmm<span class="dv">0</span>
+   <span class="bn">0x000000000040054f</span> &lt;<span class="dv">+31</span>&gt;:    addss  <span class="bn">-0x8</span>(%rbp),%xmm<span class="dv">0</span>
    <span class="bn">0x0000000000400554</span> &lt;<span class="dv">+36</span>&gt;:    movss  %xmm0,<span class="bn">-0xc</span>(%rbp)
----Type &lt;<span class="kw">return</span>&gt; to <span class="kw">continue</span>, <span class="kw">or</span> q &lt;<span class="kw">return</span>&gt; to quit---q
-Quit</code></pre>
+---Type &lt;<span class="cf">return</span>&gt; to <span class="cf">continue</span>, <span class="kw">or</span> q &lt;<span class="cf">return</span>&gt; to quit---q
+Quit</code></pre></div>
 <p>The last three lines are the assembly lines generated for <code>float c = a + b</code> (you can test that by running an <code>objdump -CDgS | less</code> and searching for <code>float c</code>). <code>-0x4(%rbp)</code> is where <code>a</code> is stored on the stack. <code>b</code> is stored at <code>-0x8(%rbp)</code>. The assembly instructions used – <code>addss</code> and <code>movss</code> – and the register involved – <code>xmm0</code> – show that we are working with <a href="http://en.wikipedia.org/wiki/Streaming_SIMD_Extensions" title="SSE - Wikipedia">Streaming SIMD Extensions (SSE)</a>. This register has a precision of 128 bits which is 4 times greater than the 32 bits used by the <code>float</code> datatype. We are tempted now to think that we are able to use the full width of the register – even if the SIMD part of the extension tells that this is not the case, we want a real proof based on the memory/register contents.</p>
 <p>Continuing the execution, we see:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp">(gdb) n
-<span class="dv">9</span>       <span class="kw">if</span> (c != <span class="fl">0.</span><span class="dv">3</span>)
-(gdb) p <span class="er">$</span>xmm0
-<span class="er">$</span><span class="dv">3</span> = {v4_float = {<span class="fl">0.</span><span class="dv">300000012</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>}, v2_double = {<span class="fl">5.18894283457103e-315</span>,
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp">(gdb) n
+<span class="dv">9</span>       <span class="cf">if</span> (c != <span class="fl">0.3</span>)
+(gdb) p <span class="er">$</span>xmm<span class="dv">0</span>
+<span class="er">$</span><span class="dv">3</span> = {v4_float = {<span class="fl">0.300000012</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>}, v2_double = {<span class="fl">5.18894283457103e-315</span>,
 <span class="dv">0</span>}, v16_int8 = {<span class="dv">-102</span>, <span class="dv">-103</span>, <span class="dv">-103</span>, <span class="dv">62</span>, <span class="dv">0</span> &lt;repeats <span class="dv">12</span> times&gt;}, v8_int16 = {
 <span class="dv">-26214</span>, <span class="dv">16025</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>}, v4_int32 = {<span class="dv">1050253722</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>}, v2_int64 =
 {<span class="dv">1050253722</span>, <span class="dv">0</span>}, uint128 = <span class="dv">1050253722</span>}
 (gdb) p c
-<span class="er">$</span><span class="dv">4</span> = <span class="fl">0.</span><span class="dv">300000012</span></code></pre>
+<span class="er">$</span><span class="dv">4</span> = <span class="fl">0.300000012</span></code></pre></div>
 <p>Indeed, our <code>c</code> is not <code>0.3</code>. But it seems that not even the contents of <code>xmm0</code> are closer to the truth.</p>
 <p>So, the fact that we got <code>0.3</code> in the output is caused not by the fact that we use a 128-bits wide registers but by the fact that the <a href="http://kurtstephens.com/files/p372-steele.pdf" title="Printing Floating Point Numbers (PDF)">up-to-recent unsolved problem</a> of precisely printing floating point numbers is no longer so.</p>
 </section>
@@ -197,61 +197,61 @@ Quit</code></pre>
 <p>Depending on the sizes of these numbers we have the basic <code>float</code> type (or <code>binary32</code>) in which the total size of the three numbers is 32 bits. In this case 1 bit is reserved for the sign, 8 for the exponent and the other 23 for the mantissa.</p>
 <p>The C <code>double</code> type is defined by the <code>binary64</code> format: 1 bit of sign, 11 bits for the exponent and 52 bits for the mantissa for a total of 64. There is also a <code>binary128</code> format and a C <code>long double</code> type. In this case 15 bits are reserved for the exponent and 112 for the mantissa.</p>
 <p>The standard committee has come up with a clever idea of storing these numbers into binary format. For example, they don’t store the exponent in 2’s complement but modified via an offset. Thus, <strong>the bit patterns of two nearby representable floats represent two consecutive integer values</strong>. This allows us to do some interesting <a href="#fun-trivia">tricks</a> with the two representations of real numbers.</p>
-<p>The standard also defines <span class="math">\(\infty\)</span> and <span class="math">\(-\infty\)</span>, two values for <code>0</code> (<code>+0</code> and <code>-0</code> and how they should be tested equal but treated differently in operations) and a full sequence of values which don’t represent a number but some exception – the sometimes dreaded <code>NaN</code> values.</p>
+<p>The standard also defines <span class="math inline">\(\infty\)</span> and <span class="math inline">\(-\infty\)</span>, two values for <code>0</code> (<code>+0</code> and <code>-0</code> and how they should be tested equal but treated differently in operations) and a full sequence of values which don’t represent a number but some exception – the sometimes dreaded <code>NaN</code> values.</p>
 <p>Knowing these details about the IEEE-754 standard we can go forward in our exploration. Because from now on we would use the binary representation and won’t rely on the base <code>10</code> view of numbers we will use <a href="http://babbage.cs.qc.cuny.edu/IEEE-754/" title="IEEE-754 Analysis">an online analyzer</a> to investigate interesting values.</p>
 </section>
 <section id="back-to-the-castle-and-a-final-conclusion" class="level3">
 <h3>Back to the castle and a final conclusion</h3>
 <p>Returning to our code, we want to see what values are stored in memory for <code>a</code>, <code>b</code> and <code>c</code> and also in register <code>xmm0</code>:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp">(gdb) x <span class="er">$</span>rbp - <span class="bn">0x4</span>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp">(gdb) x <span class="er">$</span>rbp - <span class="bn">0x4</span>
 <span class="bn">0x7fffffffdfac</span>: <span class="bn">0x3dcccccd</span>
 (gdb) x <span class="er">$</span>rbp - <span class="bn">0x8</span>
 <span class="bn">0x7fffffffdfa8</span>: <span class="bn">0x3e4ccccd</span>
 (gdb) x <span class="er">$</span>rbp - <span class="bn">0xc</span>
 <span class="bn">0x7fffffffdfa4</span>: <span class="bn">0x3e99999a</span>
-(gdb) p/x <span class="er">$</span>xmm0
-<span class="er">$</span><span class="dv">4</span> = {.... uint128 = <span class="bn">0x0000000000000000000000003e99999a</span>}</code></pre>
+(gdb) p/x <span class="er">$</span>xmm<span class="dv">0</span>
+<span class="er">$</span><span class="dv">4</span> = {.... uint128 = <span class="bn">0x0000000000000000000000003e99999a</span>}</code></pre></div>
 <p>Looking through the analyzer, <code>0x3dcccccd</code> (the value for <code>a</code>) is <code>1.00000001490116119384765625E-1</code> which is both close to the original value of <code>0.1</code> and to the displayed value of <code>0.100000001</code>. Same for <code>b</code> and <code>c</code>. However, looking at <code>xmm0</code> register we see that the last 32 bits have the same pattern as <code>-0xc($rbp)</code>. Thus, the SSE 128 bits registers <strong>are not using</strong> the <code>binary128</code> standard! If they were using it, the last value displayed there should have been <code>3FFD3333333333333333333333333333</code>. As said on <a href="http://www.reddit.com/r/programming/comments/21qzz2/an_overview_of_floating_point_realm/" title="This article on reddit">reddit thread for this article</a>, excess precision comes form the <code>x87</code> coprocessor which uses 80 bits of precision.</p>
 <p>Now it is time to see some other aspects of working with floating point numbers.</p>
 </section>
 <section id="testing-them-all" class="level3">
 <h3>Testing them all</h3>
 <p>Since there is a perfect isomorphism between <code>float</code> values and <code>int</code> ones and there are only <code>2^32</code> ints (on normal architectures), sometimes it is easy and desirable to test a new function on all of the possible values. Unfortunately, this doesn’t properly work for functions with more than one argument because one would have to spend ages for that. But for one single argument things are pretty nice: it only takes 16 seconds on my machine to run the following code which tests that changing the sign twice gives the same value:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;stdio.h&gt;</span>
-<span class="ot">#include &lt;stdlib.h&gt;</span>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span>
+<span class="pp">#include </span><span class="im">&lt;stdlib.h&gt;</span>
 
 <span class="dt">int</span> main()
 {
     <span class="dt">unsigned</span> <span class="dt">int</span> i = <span class="dv">0</span>;
     <span class="dt">float</span> x;
 
-    <span class="kw">do</span> {
+    <span class="cf">do</span> {
         x = *((<span class="dt">float</span>*)&amp;i);
-        <span class="kw">if</span> (x != -(-x))
-            printf(<span class="st">&quot;</span><span class="ch">%f</span><span class="st"> </span><span class="ch">%u\n</span><span class="st">&quot;</span>, x, i);
+        <span class="cf">if</span> (x != -(-x))
+            printf(<span class="st">&quot;</span><span class="sc">%f</span><span class="st"> </span><span class="sc">%u\n</span><span class="st">&quot;</span>, x, i);
         i++;
-    } <span class="kw">while</span> (i != <span class="dv">0</span>);
+    } <span class="cf">while</span> (i != <span class="dv">0</span>);
 
-    <span class="kw">return</span> <span class="dv">0</span>;
-}</code></pre>
+    <span class="cf">return</span> <span class="dv">0</span>;
+}</code></pre></div>
 <p>Running it we see:</p>
-<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">gcc</span> -Wall -Wextra -O0 -g 2.c 
-$ <span class="kw">./a.out</span>  <span class="kw">|</span> <span class="kw">head</span> -n 5
-<span class="kw">nan</span> 2139095041
-<span class="kw">nan</span> 2139095042
-<span class="kw">nan</span> 2139095043
-<span class="kw">nan</span> 2139095044
-<span class="kw">nan</span> 2139095045</code></pre>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="fu">gcc</span> -Wall -Wextra -O0 -g 2.c 
+$ <span class="ex">./a.out</span>  <span class="kw">|</span> <span class="fu">head</span> -n 5
+<span class="ex">nan</span> 2139095041
+<span class="ex">nan</span> 2139095042
+<span class="ex">nan</span> 2139095043
+<span class="ex">nan</span> 2139095044
+<span class="ex">nan</span> 2139095045</code></pre></div>
 <p>It seems that our hypothesis fails when the initial number was a <code>NaN</code> value. For now, let us filter all of these values and test the hypothesis on the remaining domain.</p>
-<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">time</span> ./a.out <span class="kw">|</span> <span class="kw">grep</span> -v nan
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="bu">time</span> ./a.out <span class="kw">|</span> <span class="fu">grep</span> -v nan
 
-<span class="kw">real</span>    0m15.895s
-<span class="kw">user</span>    0m17.977s
-<span class="kw">sys</span> 0m0.163s</code></pre>
+<span class="ex">real</span>    0m15.895s
+<span class="ex">user</span>    0m17.977s
+<span class="ex">sys</span> 0m0.163s</code></pre></div>
 <p>Something which we would have expected.</p>
 <p><em>Note</em>: Compiling with optimisations on might make the compiler issue the following warning:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp">warning: dereferencing type-punned pointer will <span class="kw">break</span> strict-aliasing rules [-Wstrict-aliasing]
-    ^</code></pre>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp">warning: dereferencing type-punned pointer will <span class="cf">break</span> strict-aliasing rules [-Wstrict-aliasing]
+    ^</code></pre></div>
 <p>This is because the C/C++ standard says that the compiler can assume that different types don’t overlap in memory so neither should pointers to those types. Knowing that a pointer to an array of integers and one array of doubles don’t overlap opens a way for some optimizations. Breaking them is at your own risk. See also the documentation for <code>-fstrict-aliasing</code> flag of <code>gcc</code>.</p>
 </section>
 <section id="the-nan-problem" class="level3">
@@ -259,32 +259,32 @@ $ <span class="kw">./a.out</span>  <span class="kw">|</span> <span class="kw">he
 <p>You might be wondering why do we have so many <code>NaN</code> values (the 5 above are but a small sample of them all). Thing is, the standard allows some <code>NaN</code> values to carry an exception code within it such that the programmer debugging the code can know why he got this value. We would not enter into details regarding this aspect though.</p>
 <p>A more interesting question is how these <code>NaN</code> values arise. One example is doing <code>asin(1+smth)</code> or <code>sqrt(0-smth_else)</code>. You might say: “but I will never do that” to which I will reply that since every floating point operation has some rounding and errors tend to propagate you might find in some occasions doing exactly that.</p>
 <p>Now, the question is how to filter out these values from code. The standard states that the <code>NaN</code> values have form <code>s1111111 1axxxxxx xxxxxxxx xxxxxxxx</code> so one might just check the first few bits of the number (<code>s</code> is the sign and is ignored and <code>a</code> is used to differentiate between a quiet <code>NaN</code> and a signalling one while <code>x</code> represent payload bits showing why the signalling <code>NaN</code> was produced). So we change the code to read</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;stdio.h&gt;</span>
-<span class="ot">#include &lt;stdlib.h&gt;</span>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span>
+<span class="pp">#include </span><span class="im">&lt;stdlib.h&gt;</span>
 
 <span class="dt">int</span> main()
 {
     <span class="dt">unsigned</span> <span class="dt">int</span> i = <span class="dv">0</span>;
     <span class="dt">float</span> x;
 
-    <span class="kw">do</span> {
+    <span class="cf">do</span> {
         x = *((<span class="dt">float</span>*)&amp;i);
-        <span class="kw">if</span> (x != -(-x))
-            printf(<span class="st">&quot;</span><span class="ch">%f</span><span class="st"> </span><span class="ch">%u\n</span><span class="st">&quot;</span>, x, i);
+        <span class="cf">if</span> (x != -(-x))
+            printf(<span class="st">&quot;</span><span class="sc">%f</span><span class="st"> </span><span class="sc">%u\n</span><span class="st">&quot;</span>, x, i);
         i++;
-        <span class="kw">if</span> (i &gt; <span class="bn">0x7f800000</span>)
-            <span class="kw">break</span>;
-    } <span class="kw">while</span> (i != <span class="dv">0</span>);
+        <span class="cf">if</span> (i &gt; <span class="bn">0x7f800000</span>)
+            <span class="cf">break</span>;
+    } <span class="cf">while</span> (i != <span class="dv">0</span>);
 
-    <span class="kw">return</span> <span class="dv">0</span>;
-}</code></pre>
+    <span class="cf">return</span> <span class="dv">0</span>;
+}</code></pre></div>
 <p>If you don’t remember the bit pattern you can still filter out by knowing that all <code>NaN</code> values are required to compare unequal even themselves. Thus, a test <code>x == x</code> is always false for <code>NaN</code> values.</p>
 </section>
 <section id="the-associativity-problem" class="level3">
 <h3>The Associativity Problem</h3>
 <p>One of the ideas behind this post was <a href="http://stackoverflow.com/questions/6430448/why-doesnt-gcc-optimize-aaaaaa-to-aaaaaa" title="Why doesn't GCC optimize...">this StackOverflow question</a>. We can test this to see on how many floats the output is wrong:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;stdio.h&gt;</span>
-<span class="ot">#include &lt;stdlib.h&gt;</span>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span>
+<span class="pp">#include </span><span class="im">&lt;stdlib.h&gt;</span>
 
 <span class="dt">int</span> main()
 {
@@ -292,38 +292,38 @@ $ <span class="kw">./a.out</span>  <span class="kw">|</span> <span class="kw">he
     <span class="dt">float</span> x, y, z;
     <span class="dt">unsigned</span> <span class="dt">long</span> <span class="dt">long</span> s = <span class="dv">0</span>;
 
-    <span class="kw">do</span> {
+    <span class="cf">do</span> {
         x = *((<span class="dt">float</span>*)&amp;i);
         y = x * x * x * x * x * x;
         z = (x * x * x);
         z = z * z;
-        <span class="kw">if</span> (y != z)
-            printf(<span class="st">&quot;</span><span class="ch">%f</span><span class="st"> </span><span class="ch">%u\n</span><span class="st">&quot;</span>, x, i);
+        <span class="cf">if</span> (y != z)
+            printf(<span class="st">&quot;</span><span class="sc">%f</span><span class="st"> </span><span class="sc">%u\n</span><span class="st">&quot;</span>, x, i);
         s += i;
         i++;
-        <span class="kw">if</span> (i &gt; <span class="bn">0x7f800000</span>)
-            <span class="kw">break</span>;
-    } <span class="kw">while</span> (i != <span class="dv">0</span>);
+        <span class="cf">if</span> (i &gt; <span class="bn">0x7f800000</span>)
+            <span class="cf">break</span>;
+    } <span class="cf">while</span> (i != <span class="dv">0</span>);
 
-    printf(<span class="st">&quot;</span><span class="ch">%lld\n</span><span class="st">&quot;</span>, s);
+    printf(<span class="st">&quot;</span><span class="sc">%lld\n</span><span class="st">&quot;</span>, s);
 
-    <span class="kw">return</span> <span class="dv">0</span>;
-}</code></pre>
+    <span class="cf">return</span> <span class="dv">0</span>;
+}</code></pre></div>
 <p>Since we are compiling with <code>-O3</code> we don’t want the compiler to optimize our loop away. Thus we have a <code>s</code> variable in which we store the sum of all <code>i</code>s. Also, the code already removes the <code>NaN</code> values. Running it we get:</p>
-<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">time</span> ./a.out <span class="kw">|</span> <span class="kw">wc</span> -l
-<span class="kw">163049703</span>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="bu">time</span> ./a.out <span class="kw">|</span> <span class="fu">wc</span> -l
+<span class="ex">163049703</span>
 
-<span class="kw">real</span>    1m58.114s
-<span class="kw">user</span>    1m59.005s
-<span class="kw">sys</span> 0m3.148s</code></pre>
+<span class="ex">real</span>    1m58.114s
+<span class="ex">user</span>    1m59.005s
+<span class="ex">sys</span> 0m3.148s</code></pre></div>
 <p>That is, there is a total of 3.79% values for which doing the optimization in question will give a different result on this machine.</p>
 </section>
 <section id="equality-testing-done-right" class="level3">
 <h3>Equality testing done right</h3>
 <p>Finally, we have arrived to an interesting aspect: how do we compare if two floats are almost the same? We already know that doing a comparison with <code>==</code> is bad. Let us pick now two numbers: <code>10000</code> and the next representable float and compare between them using the standard method:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;math.h&gt;</span>
-<span class="ot">#include &lt;stdio.h&gt;</span>
-<span class="ot">#include &lt;stdlib.h&gt;</span>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="pp">#include </span><span class="im">&lt;math.h&gt;</span>
+<span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span>
+<span class="pp">#include </span><span class="im">&lt;stdlib.h&gt;</span>
 
 <span class="dt">int</span> main ()
 {
@@ -332,31 +332,31 @@ $ <span class="kw">./a.out</span>  <span class="kw">|</span> <span class="kw">he
     <span class="dt">float</span> expectedResult = *((<span class="dt">float</span>*)&amp;expectedAsInt);
     <span class="dt">float</span> result = *((<span class="dt">float</span>*)&amp;resultAsInt);
 
-    printf(<span class="st">&quot;</span><span class="ch">%f</span><span class="st"> </span><span class="ch">%f\n</span><span class="st">&quot;</span>, result, expectedResult);
+    printf(<span class="st">&quot;</span><span class="sc">%f</span><span class="st"> </span><span class="sc">%f\n</span><span class="st">&quot;</span>, result, expectedResult);
 
-    <span class="kw">if</span> (fabs(result - expectedResult) &lt; <span class="fl">0.</span><span class="bn">0001</span>)
-        printf(<span class="st">&quot;Numbers are close</span><span class="ch">\n</span><span class="st">&quot;</span>);
+    <span class="cf">if</span> (fabs(result - expectedResult) &lt; <span class="fl">0.0001</span>)
+        printf(<span class="st">&quot;Numbers are close</span><span class="sc">\n</span><span class="st">&quot;</span>);
 
-    <span class="kw">return</span> <span class="dv">0</span>;
-}</code></pre>
+    <span class="cf">return</span> <span class="dv">0</span>;
+}</code></pre></div>
 <p>The output</p>
-<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">./a.out</span>
-<span class="kw">10000.000977</span> 10000.000000</code></pre>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="ex">./a.out</span>
+<span class="ex">10000.000977</span> 10000.000000</code></pre></div>
 <p>So the above test fails to consider two floating points which are neighbors as being the same. If your algorithm produced a <code>result</code> which would be between these two floats and it would be rounded to the wrong one you would get the impression that your algorithm is wrong.</p>
 <p>Anyway, even if this method was correct, what value should one use for the bound in the test? <code>float.h</code> defines <code>FLT_EPSILON</code> so one might decide to test using that:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;float.h&gt;</span>
-<span class="ot">#include &lt;math.h&gt;</span>
-<span class="ot">#include &lt;stdio.h&gt;</span>
-<span class="ot">#include &lt;stdlib.h&gt;</span>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="pp">#include </span><span class="im">&lt;float.h&gt;</span>
+<span class="pp">#include </span><span class="im">&lt;math.h&gt;</span>
+<span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span>
+<span class="pp">#include </span><span class="im">&lt;stdlib.h&gt;</span>
 
 <span class="dt">int</span> closeFloats(<span class="dt">float</span> number, <span class="dt">float</span> target)
 {
-    <span class="kw">return</span> fabs(number - target) &lt; FLT_EPSILON;
+    <span class="cf">return</span> fabs(number - target) &lt; FLT_EPSILON;
 }
 
 <span class="kw">inline</span> <span class="dt">float</span> getFloatFromInt(<span class="dt">int</span> value)
 {
-    <span class="kw">return</span> *((<span class="dt">float</span>*)&amp;value);
+    <span class="cf">return</span> *((<span class="dt">float</span>*)&amp;value);
 }
 
 <span class="dt">void</span> testFloatTesting(<span class="dt">int</span> src)
@@ -364,7 +364,7 @@ $ <span class="kw">./a.out</span>  <span class="kw">|</span> <span class="kw">he
     <span class="dt">float</span> target = getFloatFromInt(src);
     <span class="dt">float</span> next = getFloatFromInt(src + <span class="dv">1</span>);
 
-    printf(<span class="st">&quot;src=</span><span class="ch">%d</span><span class="st"> target=</span><span class="ch">%f</span><span class="st"> next=</span><span class="ch">%f</span><span class="st"> compare=</span><span class="ch">%d\n</span><span class="st">&quot;</span>, src, target, next,
+    printf(<span class="st">&quot;src=</span><span class="sc">%d</span><span class="st"> target=</span><span class="sc">%f</span><span class="st"> next=</span><span class="sc">%f</span><span class="st"> compare=</span><span class="sc">%d\n</span><span class="st">&quot;</span>, src, target, next,
             closeFloats(next, target));
 }
 
@@ -382,29 +382,29 @@ $ <span class="kw">./a.out</span>  <span class="kw">|</span> <span class="kw">he
     <span class="co">/* 10000.5 and next float */</span>
     testFloatTesting(<span class="bn">0x461C4200</span>);
 
-    <span class="kw">return</span> <span class="dv">0</span>;
-}</code></pre>
+    <span class="cf">return</span> <span class="dv">0</span>;
+}</code></pre></div>
 <p>A proper <code>closeFloats</code> function is what we are looking for. We use <code>testFloatTesting</code> to test this on two floats which come from two neighboring integers (a more formal definition is floats which differ by 1ULP – <em>units in last place</em>). Running it, we get:</p>
-<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">./a.out</span>
-<span class="ot">src=</span>1056964608 <span class="ot">target=</span>0.500000 <span class="ot">next=</span>0.500000 <span class="ot">compare=</span>1
-<span class="ot">src=</span>1069547520 <span class="ot">target=</span>1.500000 <span class="ot">next=</span>1.500000 <span class="ot">compare=</span>0
-<span class="ot">src=</span>1120468992 <span class="ot">target=</span>100.500000 <span class="ot">next=</span>100.500008 <span class="ot">compare=</span>0
-<span class="ot">src=</span>1176257024 <span class="ot">target=</span>10000.500000 <span class="ot">next=</span>10000.500977 <span class="ot">compare=</span>0</code></pre>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="ex">./a.out</span>
+<span class="va">src=</span>1056964608 <span class="va">target=</span>0.500000 <span class="va">next=</span>0.500000 <span class="va">compare=</span>1
+<span class="va">src=</span>1069547520 <span class="va">target=</span>1.500000 <span class="va">next=</span>1.500000 <span class="va">compare=</span>0
+<span class="va">src=</span>1120468992 <span class="va">target=</span>100.500000 <span class="va">next=</span>100.500008 <span class="va">compare=</span>0
+<span class="va">src=</span>1176257024 <span class="va">target=</span>10000.500000 <span class="va">next=</span>10000.500977 <span class="va">compare=</span>0</code></pre></div>
 <p>All of the initial numbers were chosen to be exactly representable but this is not vital. What’s interesting is that only the numbers between 0 and 1 show as being close when using the <code>FLT_EPSILON</code> absolute method.</p>
 <p>Let’s try now to use a relative error and compare that with <code>FLT_EPSILON</code>:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">int</span> closeFloats(<span class="dt">float</span> number, <span class="dt">float</span> target)
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">int</span> closeFloats(<span class="dt">float</span> number, <span class="dt">float</span> target)
 {
-    <span class="kw">return</span> fabs(number - target) / target &lt; FLT_EPSILON;
-}</code></pre>
+    <span class="cf">return</span> fabs(number - target) / target &lt; FLT_EPSILON;
+}</code></pre></div>
 <p>Using the above gives the following results:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="er">$</span> ./a.out 
-src=<span class="dv">1056964608</span> target=<span class="fl">0.</span><span class="dv">500000</span> next=<span class="fl">0.</span><span class="dv">500000</span> compare=<span class="dv">0</span>
-src=<span class="dv">1069547520</span> target=<span class="fl">1.</span><span class="dv">500000</span> next=<span class="fl">1.</span><span class="dv">500000</span> compare=<span class="dv">1</span>
-src=<span class="dv">1120468992</span> target=<span class="fl">100.</span><span class="dv">500000</span> next=<span class="fl">100.</span><span class="dv">500008</span> compare=<span class="dv">1</span>
-src=<span class="dv">1176257024</span> target=<span class="fl">10000.</span><span class="dv">500000</span> next=<span class="fl">10000.</span><span class="dv">500977</span> compare=<span class="dv">1</span></code></pre>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="er">$</span> ./a.out 
+src=<span class="dv">1056964608</span> target=<span class="fl">0.500000</span> next=<span class="fl">0.500000</span> compare=<span class="dv">0</span>
+src=<span class="dv">1069547520</span> target=<span class="fl">1.500000</span> next=<span class="fl">1.500000</span> compare=<span class="dv">1</span>
+src=<span class="dv">1120468992</span> target=<span class="fl">100.500000</span> next=<span class="fl">100.500008</span> compare=<span class="dv">1</span>
+src=<span class="dv">1176257024</span> target=<span class="fl">10000.500000</span> next=<span class="fl">10000.500977</span> compare=<span class="dv">1</span></code></pre></div>
 <p>We get better results above 1 but worse below. This is because we are dividing to a smaller number closing to doing a division by <code>0</code>. So, don’t use the above method as well.</p>
 <p>Let’s try with a third option:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">int</span> closeFloats(<span class="dt">float</span> number, <span class="dt">float</span> target)
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">int</span> closeFloats(<span class="dt">float</span> number, <span class="dt">float</span> target)
 {
     <span class="dt">float</span> diff = fabs(number - target);
     <span class="dt">float</span> largest;
@@ -413,41 +413,41 @@ src=<span class="dv">1176257024</span> target=<span class="fl">10000.</span><spa
     target = fabs(target);
     largest = (target &gt; number) ? target : number;
 
-    <span class="kw">return</span> diff &lt;= largest * FLT_EPSILON;
-}</code></pre>
+    <span class="cf">return</span> diff &lt;= largest * FLT_EPSILON;
+}</code></pre></div>
 <p>This time, instead of dividing we use multiplication. Also, to ensure some more safety, we pick the largest absolute value as being the mark around which we compute the relative error. Running this test we finally get:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="er">$</span> ./a.out
-src=<span class="dv">1056964608</span> target=<span class="fl">0.</span><span class="dv">500000</span> next=<span class="fl">0.</span><span class="dv">500000</span> compare=<span class="dv">1</span>
-src=<span class="dv">1069547520</span> target=<span class="fl">1.</span><span class="dv">500000</span> next=<span class="fl">1.</span><span class="dv">500000</span> compare=<span class="dv">1</span>
-src=<span class="dv">1120468992</span> target=<span class="fl">100.</span><span class="dv">500000</span> next=<span class="fl">100.</span><span class="dv">500008</span> compare=<span class="dv">1</span>
-src=<span class="dv">1176257024</span> target=<span class="fl">10000.</span><span class="dv">500000</span> next=<span class="fl">10000.</span><span class="dv">500977</span> compare=<span class="dv">1</span></code></pre>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="er">$</span> ./a.out
+src=<span class="dv">1056964608</span> target=<span class="fl">0.500000</span> next=<span class="fl">0.500000</span> compare=<span class="dv">1</span>
+src=<span class="dv">1069547520</span> target=<span class="fl">1.500000</span> next=<span class="fl">1.500000</span> compare=<span class="dv">1</span>
+src=<span class="dv">1120468992</span> target=<span class="fl">100.500000</span> next=<span class="fl">100.500008</span> compare=<span class="dv">1</span>
+src=<span class="dv">1176257024</span> target=<span class="fl">10000.500000</span> next=<span class="fl">10000.500977</span> compare=<span class="dv">1</span></code></pre></div>
 <p>However, the story is not yet finished. What happens if the <code>FLT_EPSILON</code> is too large a gap in relative error? You might be tempted to say <em>just multiply <code>FLT_EPSILON</code> with <code>0.1</code> and be done</em>. Test it and you’ll see that all of the results turn to <code>0</code>: it is as if <strong>we didn’t use any bound at all and tested using <code>==</code></strong>. So we are thus restricted to having a relative gap no smaller than <code>FLT_EPSILON</code>.</p>
 <p>Now, let’s turn to the other side: what if the gap is too small? You can multiply <code>FLT_EPSILON</code> with a small value for this. However, finding out which value to use is hard because this way of computing the error is not linked at all with the representation of the floating point numbers. So, let’s try with using ULPs:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">int</span> closeFloats(<span class="dt">float</span> number, <span class="dt">float</span> target)
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">int</span> closeFloats(<span class="dt">float</span> number, <span class="dt">float</span> target)
 {
 	<span class="dt">int</span> numberULP = *((<span class="dt">int</span> *) &amp;number);
 	<span class="dt">int</span> targetULP = *((<span class="dt">int</span> *) &amp;target);
 
-	<span class="kw">if</span> ((numberULP &gt;&gt; <span class="dv">31</span>) != (targetULP &gt;&gt; <span class="dv">31</span>))
-		<span class="kw">return</span> number == target;
-	<span class="kw">return</span> abs(numberULP - targetULP) &lt; <span class="dv">5</span>;
-}</code></pre>
+	<span class="cf">if</span> ((numberULP &gt;&gt; <span class="dv">31</span>) != (targetULP &gt;&gt; <span class="dv">31</span>))
+		<span class="cf">return</span> number == target;
+	<span class="cf">return</span> abs(numberULP - targetULP) &lt; <span class="dv">5</span>;
+}</code></pre></div>
 <p>In the above we consider numbers which differ by at most 5 ULPs as being close. Also, observe the first check which tests if the numbers have different signs. In the positive case we compare using <code>==</code> the <strong>floating point numbers</strong> to ensure that we catch the case <code>+0 == -0</code>.</p>
 <p>Running it we get:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="er">$</span> ./a.out
-src=<span class="dv">1056964608</span> target=<span class="fl">0.</span><span class="dv">500000</span> next=<span class="fl">0.</span><span class="dv">500000</span> compare=<span class="dv">1</span>
-src=<span class="dv">1069547520</span> target=<span class="fl">1.</span><span class="dv">500000</span> next=<span class="fl">1.</span><span class="dv">500000</span> compare=<span class="dv">1</span>
-src=<span class="dv">1120468992</span> target=<span class="fl">100.</span><span class="dv">500000</span> next=<span class="fl">100.</span><span class="dv">500008</span> compare=<span class="dv">1</span>
-src=<span class="dv">1176257024</span> target=<span class="fl">10000.</span><span class="dv">500000</span> next=<span class="fl">10000.</span><span class="dv">500977</span> compare=<span class="dv">1</span></code></pre>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="er">$</span> ./a.out
+src=<span class="dv">1056964608</span> target=<span class="fl">0.500000</span> next=<span class="fl">0.500000</span> compare=<span class="dv">1</span>
+src=<span class="dv">1069547520</span> target=<span class="fl">1.500000</span> next=<span class="fl">1.500000</span> compare=<span class="dv">1</span>
+src=<span class="dv">1120468992</span> target=<span class="fl">100.500000</span> next=<span class="fl">100.500008</span> compare=<span class="dv">1</span>
+src=<span class="dv">1176257024</span> target=<span class="fl">10000.500000</span> next=<span class="fl">10000.500977</span> compare=<span class="dv">1</span></code></pre></div>
 <p>which was somehow obvious (since the number are already one ULP apart).</p>
 <p>Now you might raise one more question: which of the two methods is fastest? Let’s test:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">void</span> testFloatTesting(<span class="dt">int</span> src)
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">void</span> testFloatTesting(<span class="dt">int</span> src)
 {
     <span class="dt">float</span> target = getFloatFromInt(src);
     <span class="dt">float</span> next = getFloatFromInt(src + <span class="dv">1</span>);
 
-    <span class="kw">if</span> (closeFloats(next, target) != <span class="dv">1</span>)
-        printf(<span class="st">&quot;src=</span><span class="ch">%d</span><span class="st"> target=</span><span class="ch">%f</span><span class="st"> next=</span><span class="ch">%f</span><span class="st"> compare=</span><span class="ch">%d\n</span><span class="st">&quot;</span>, src, target,
+    <span class="cf">if</span> (closeFloats(next, target) != <span class="dv">1</span>)
+        printf(<span class="st">&quot;src=</span><span class="sc">%d</span><span class="st"> target=</span><span class="sc">%f</span><span class="st"> next=</span><span class="sc">%f</span><span class="st"> compare=</span><span class="sc">%d\n</span><span class="st">&quot;</span>, src, target,
                 next, closeFloats(next, target));
 }
 
@@ -455,27 +455,27 @@ src=<span class="dv">1176257024</span> target=<span class="fl">10000.</span><spa
 {
     <span class="dt">unsigned</span> <span class="dt">int</span> i = <span class="dv">0</span>;
 
-    <span class="kw">do</span> {
+    <span class="cf">do</span> {
         testFloatTesting(i++);
-        <span class="kw">if</span> (i &gt; <span class="bn">0x7f800000</span>)
-            <span class="kw">break</span>;
-    } <span class="kw">while</span> (i != <span class="dv">0</span>);
+        <span class="cf">if</span> (i &gt; <span class="bn">0x7f800000</span>)
+            <span class="cf">break</span>;
+    } <span class="cf">while</span> (i != <span class="dv">0</span>);
 
-    <span class="kw">return</span> <span class="dv">0</span>;
-}</code></pre>
+    <span class="cf">return</span> <span class="dv">0</span>;
+}</code></pre></div>
 <p>Using ULP we get these results:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="er">$</span> time ./a.out
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="er">$</span> time ./a.out
 
-real    <span class="er">0m32</span><span class="fl">.343</span>s
-user    <span class="er">0m32</span><span class="fl">.290</span>s
-sys <span class="er">0m0</span><span class="fl">.007</span>s</code></pre>
+real    <span class="er">0m32</span>.<span class="er">343s</span>
+user    <span class="er">0m32</span>.<span class="er">290s</span>
+sys <span class="er">0m0</span>.<span class="er">007s</span></code></pre></div>
 <p>Using the floating point - relative method we get:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="er">$</span> time ./a.out | wc -l
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="er">$</span> time ./a.out | wc -l
 <span class="dv">4194305</span>
 
-real    <span class="er">1m4</span><span class="fl">.161</span>s
-user    <span class="er">1m4</span><span class="fl">.137</span>s
-sys <span class="er">0m0</span><span class="fl">.204</span>s</code></pre>
+real    <span class="er">1m4</span>.<span class="er">161s</span>
+user    <span class="er">1m4</span>.<span class="er">137s</span>
+sys <span class="er">0m0</span>.<span class="er">204s</span></code></pre></div>
 <p>We seem to be getting some wrong results (<code>0.9%</code>). Indeed, around 0 both comparison methods fail. The relative error method fails because we are close to dividing by <code>0</code> and because of catastrophic cancellation. The ULP method because there are many numbers between 0 and <code>FLT_MIN</code> (the minimum properly representable float) – these values are denormalized and using them might slow down your computation quite a lot. So, what should we use in this case? It turns out that if you want to compare with <code>0</code> the absolute error method is the best.</p>
 <p>Also note that on my machine the relative method is twice as slow as the ULP one.</p>
 <p>To conclude this part:</p>
@@ -503,7 +503,7 @@ sys <span class="er">0m0</span><span class="fl">.204</span>s</code></pre>
 <section id="fun-trivia" class="level3">
 <h3>Fun trivia</h3>
 <p>To conclude the article on a funny note note that one can compute the logarithm in base two of any float by just looking at it’s representation from the integer point of view: since multiplying a float by 2 increases the exponent – which is stored in the middle of the representation – increasing the value of the logarithm by 1 is just increasing the representation by <code>0x800000</code>.</p>
-<p>Another interesting fact is that since <span class="math">\(\sin(\pi-x) = \sin(x)\)</span> and for small values of <code>x</code> <span class="math">\(\sin(x) \approx x\)</span> we get that <span class="math">\(\sin(\pi) \approx \epsilon(\pi)\)</span> (the error in representing <span class="math">\(\pi\)</span> as a float). Thus, a nice method to compute <span class="math">\(\pi\)</span> is to repeatedly compute <code>pi + sin(pi)</code> up to the highest precision available. Don’t try this in production code, the <a href="http://www.xkcd.com/217/" title="e to pi minus pi">xkcd</a> reference in the beginning of the article should be warning enough: <code>sin(pi)</code> is not a rational function thus this method can quickly lead to catastrophic errors.</p>
+<p>Another interesting fact is that since <span class="math inline">\(\sin(\pi-x) = \sin(x)\)</span> and for small values of <code>x</code> <span class="math inline">\(\sin(x) \approx x\)</span> we get that <span class="math inline">\(\sin(\pi) \approx \epsilon(\pi)\)</span> (the error in representing <span class="math inline">\(\pi\)</span> as a float). Thus, a nice method to compute <span class="math inline">\(\pi\)</span> is to repeatedly compute <code>pi + sin(pi)</code> up to the highest precision available. Don’t try this in production code, the <a href="http://www.xkcd.com/217/" title="e to pi minus pi">xkcd</a> reference in the beginning of the article should be warning enough: <code>sin(pi)</code> is not a rational function thus this method can quickly lead to catastrophic errors.</p>
 </section>
 <section id="conclusions" class="level3">
 <h3>Conclusions</h3>

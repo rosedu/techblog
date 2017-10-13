@@ -111,28 +111,28 @@
 <section id="mutability" class="level3">
 <h3>Mutability</h3>
 <p>To start with, here’s a Python code sample, cut and pasted from a Python 2.7 REPL (interactive console session):</p>
-<pre class="sourceCode python"><code class="sourceCode python">&gt;&gt;&gt; x = <span class="dv">1</span>
-&gt;&gt;&gt; x = x + <span class="dv">1</span>
-&gt;&gt;&gt; x
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> x <span class="op">=</span> <span class="dv">1</span>
+<span class="op">&gt;&gt;&gt;</span> x <span class="op">=</span> x <span class="op">+</span> <span class="dv">1</span>
+<span class="op">&gt;&gt;&gt;</span> x
 <span class="dv">2</span>
-&gt;&gt;&gt;</code></pre>
+<span class="op">&gt;&gt;&gt;</span></code></pre></div>
 <p>Nothing could be simpler!</p>
 <p>OK then. Time to port this snippet of code over to Haskell. I’m just going to go with the flow and naively assume – just as many newcomers to Haskell would – that porting Python code is a direct 1-to-1 syntactic translation, in other words, an easy, straightforward thing to do.</p>
 <p>The following is what happens in the Haskell REPL (called GHCi). By the way, here we have to prepend the keyword <code>let</code> - it’s the law of the land in GHCi:</p>
-<pre class="sourceCode haskell"><code class="sourceCode haskell">λ<span class="fu">:</span> <span class="kw">let</span> x <span class="fu">=</span> <span class="dv">1</span>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">λ<span class="fu">:</span> <span class="kw">let</span> x <span class="fu">=</span> <span class="dv">1</span>
 λ<span class="fu">:</span> <span class="kw">let</span> x <span class="fu">=</span> x <span class="fu">+</span> <span class="dv">1</span>
 λ<span class="fu">:</span> x
 <span class="fu">^</span><span class="dt">CInterrupted</span><span class="fu">.</span>
-λ<span class="fu">:</span></code></pre>
+λ<span class="fu">:</span></code></pre></div>
 <p>Huh? What just happened? I was expecting Haskell to compute the value 2. It took forever for the GHCi interactive console to evaluate <code>x</code>, so I got bored and pressed <code>Ctrl-C</code>. What’s happening? Explain this to me.</p>
 <p>Well, as one Reddit commenter once observed, this is just one of the many things Haskell does to haze you during your initiation.</p>
-<p>What you’re actually doing is giving Haskell a puzzle (<code>x = x + 1</code>) and saying “Go find me a solution”. Mathematically speaking, there are only 2 possible solutions to that puzzle: <span class="math">\(\infty\)</span> and <span class="math">\(- \infty\)</span>. So when you saw it hang, Haskell wasn’t merely taking its time – for no good reason – before giving you back the value 2. Instead, Haskell’s runtime was trying its hardest to give you a correct result by taking every integer value it could think of, one by one, and checking whether it was equal to its successor.</p>
+<p>What you’re actually doing is giving Haskell a puzzle (<code>x = x + 1</code>) and saying “Go find me a solution”. Mathematically speaking, there are only 2 possible solutions to that puzzle: <span class="math inline">\(\infty\)</span> and <span class="math inline">\(- \infty\)</span>. So when you saw it hang, Haskell wasn’t merely taking its time – for no good reason – before giving you back the value 2. Instead, Haskell’s runtime was trying its hardest to give you a correct result by taking every integer value it could think of, one by one, and checking whether it was equal to its successor.</p>
 <p>Just to be clear, there is a way to emulate the behavior of the Python snippet we saw above, and the Haskell code for doing that looks like this:</p>
-<pre class="sourceCode haskell"><code class="sourceCode haskell">λ<span class="fu">:</span> <span class="kw">let</span> x <span class="fu">=</span> <span class="dv">1</span>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">λ<span class="fu">:</span> <span class="kw">let</span> x <span class="fu">=</span> <span class="dv">1</span>
 λ<span class="fu">:</span> x <span class="ot">&lt;-</span> return <span class="fu">$</span> x <span class="fu">+</span> <span class="dv">1</span>
 λ<span class="fu">:</span> x
 <span class="dv">2</span>
-λ<span class="fu">:</span></code></pre>
+λ<span class="fu">:</span></code></pre></div>
 <p>As you can see, the syntax is much more verbose (and uglier) than in Python, and for good reason – in Haskell, you are strongly discouraged from using variables and mutation as the primary means of expressing algorithms.</p>
 <p>Haskell is divided in two major parts: a crystal palace of unspeakable beauty and <em>mathematical purity</em>, and an imperative ghetto for doing <em>I/O</em> and dealing with <em>mutation</em>. The equal sign in <code>x = x + 1</code> lives in the beautiful palace and symbolizes mathematical unification, while the construct <code>&lt;- return $</code> lives in the ghetto and means “evaluate the right hand side and shove the result into the identifier on the left hand side, thus overwriting what was there beforehand, in true imperative style”.</p>
 </section>
@@ -140,19 +140,19 @@
 <h3>Reverse Map? Upside Down Map? You decide</h3>
 <p>OK, for the next segment I’m going to assume that your beloved programming language of choice has a construct called <code>map</code>, and that you know how to use it.</p>
 <p>We start again with some Python code. While Python does indeed offer a higher-order function called <code>map</code>, it’s much more common for experienced Python developers to prefer using a list comprehension, like this:</p>
-<pre class="sourceCode python"><code class="sourceCode python">&gt;&gt;&gt; <span class="dt">list</span> = <span class="dt">range</span>(<span class="dv">20</span>,<span class="dv">31</span>)
-&gt;&gt;&gt; <span class="dt">list</span>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> <span class="bu">list</span> <span class="op">=</span> <span class="bu">range</span>(<span class="dv">20</span>,<span class="dv">31</span>)
+<span class="op">&gt;&gt;&gt;</span> <span class="bu">list</span>
 [<span class="dv">20</span>, <span class="dv">21</span>, <span class="dv">22</span>, <span class="dv">23</span>, <span class="dv">24</span>, <span class="dv">25</span>, <span class="dv">26</span>, <span class="dv">27</span>, <span class="dv">28</span>, <span class="dv">29</span>, <span class="dv">30</span>]
-&gt;&gt;&gt; [ x + <span class="dv">1</span> <span class="kw">for</span> x in <span class="dt">list</span> ]
+<span class="op">&gt;&gt;&gt;</span> [ x <span class="op">+</span> <span class="dv">1</span> <span class="cf">for</span> x <span class="kw">in</span> <span class="bu">list</span> ]
 [<span class="dv">21</span>, <span class="dv">22</span>, <span class="dv">23</span>, <span class="dv">24</span>, <span class="dv">25</span>, <span class="dv">26</span>, <span class="dv">27</span>, <span class="dv">28</span>, <span class="dv">29</span>, <span class="dv">30</span>, <span class="dv">31</span>]
-&gt;&gt;&gt;</code></pre>
+<span class="op">&gt;&gt;&gt;</span></code></pre></div>
 <p>Nothing new or earth-shattering - I would hope - so here’s the Haskell equivalent before we jump into the interesting stuff:</p>
-<pre class="sourceCode haskell"><code class="sourceCode haskell">λ<span class="fu">:</span> <span class="kw">let</span> list <span class="fu">=</span> [<span class="dv">20</span><span class="fu">..</span><span class="dv">30</span>]
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">λ<span class="fu">:</span> <span class="kw">let</span> list <span class="fu">=</span> [<span class="dv">20</span><span class="fu">..</span><span class="dv">30</span>]
 λ<span class="fu">:</span> list
 [<span class="dv">20</span>,<span class="dv">21</span>,<span class="dv">22</span>,<span class="dv">23</span>,<span class="dv">24</span>,<span class="dv">25</span>,<span class="dv">26</span>,<span class="dv">27</span>,<span class="dv">28</span>,<span class="dv">29</span>,<span class="dv">30</span>]
 λ<span class="fu">:</span> map (<span class="fu">+</span><span class="dv">1</span>) list
 [<span class="dv">21</span>,<span class="dv">22</span>,<span class="dv">23</span>,<span class="dv">24</span>,<span class="dv">25</span>,<span class="dv">26</span>,<span class="dv">27</span>,<span class="dv">28</span>,<span class="dv">29</span>,<span class="dv">30</span>,<span class="dv">31</span>]
-λ<span class="fu">:</span></code></pre>
+λ<span class="fu">:</span></code></pre></div>
 <p>So the basic idea I’m getting at here is that in the beginning we have:</p>
 <ul>
 <li>one single operation (compute an integer’s successor)</li>
@@ -165,7 +165,7 @@
 <li>a list of unary integer-to-integer operations</li>
 </ul>
 <p>Python can still deal with this situation fairly well, since Python’s functions are first-class values (you can place several of them inside of a list). But the Python code wouldn’t be as concise or expressive as the Haskell equivalent, shown here:</p>
-<pre class="sourceCode haskell"><code class="sourceCode haskell">λ<span class="fu">:</span> <span class="kw">let</span> function_list_1 <span class="fu">=</span> [(<span class="fu">+</span><span class="dv">2</span>),(<span class="fu">*</span><span class="dv">3</span>),(<span class="fu">^</span><span class="dv">2</span>)]
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">λ<span class="fu">:</span> <span class="kw">let</span> function_list_1 <span class="fu">=</span> [(<span class="fu">+</span><span class="dv">2</span>),(<span class="fu">*</span><span class="dv">3</span>),(<span class="fu">^</span><span class="dv">2</span>)]
 λ<span class="fu">:</span> <span class="kw">let</span> function_list_2 <span class="fu">=</span> [(<span class="fu">*</span><span class="dv">5</span>),(<span class="fu">+</span><span class="dv">7</span>),(<span class="fu">*</span><span class="dv">4</span>),(subtract <span class="dv">10</span>)]
 λ<span class="fu">:</span> <span class="kw">let</span> i <span class="fu">=</span> <span class="dv">12</span>
 λ<span class="fu">:</span> <span class="kw">import </span><span class="dt">Control.Applicative</span>
@@ -173,7 +173,7 @@
 [<span class="dv">14</span>,<span class="dv">36</span>,<span class="dv">144</span>]
 λ<span class="fu">:</span> function_list_2 <span class="fu">&lt;*&gt;</span> [i]
 [<span class="dv">60</span>,<span class="dv">19</span>,<span class="dv">48</span>,<span class="dv">2</span>]
-λ<span class="fu">:</span></code></pre>
+λ<span class="fu">:</span></code></pre></div>
 <p><strong>Side note:</strong> Due to brevity concerns, it is not practical to go into a detailed explanation of the <code>&lt;*&gt;</code> operator in <code>Control.Applicative</code> (a module in Haskell’s standard library). That is a topic for another blog post. The point here was to show how concisely you can express non-trivial computations with Haskell.</p>
 <p><strong>Fun fact:</strong> implementing the “upside-down map” described above was recently a requirement for admittance into <a href="http://webdev.rosedu.org/">WebDev</a> (an extracurricular course organized by ROSEdu). Candidates sent us solutions they had written in various programming languages, with varying degrees of conciseness. We found that the most verbose implementations were predominantly Java-based.</p>
 </section>
@@ -182,22 +182,22 @@
 <p>For the next segment I’ll just grab a <a href="https://github.com/torvalds/linux/blob/master/kernel/sched/fair.c#L507">snippet of code from the Linux kernel</a> and demonstrate how concisely you can express a tokenizer for it in Haskell.</p>
 <p>The code for Linux’s completely fair scheduler is stored in a file called <code>fair.c</code>; I’ll just grab a small function from it (function <code>__enqueue_entity</code>, which starts at line 507) and store it locally in a file called <code>enqueue_entity.c</code>.</p>
 <p>Here’s what I do subsequently, step by step:</p>
-<pre class="sourceCode haskell"><code class="sourceCode haskell">λ<span class="fu">:</span> sample_cfs_code <span class="ot">&lt;-</span> readFile <span class="st">&quot;enqueue_entity.c&quot;</span>
-λ<span class="fu">:</span></code></pre>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">λ<span class="fu">:</span> sample_cfs_code <span class="ot">&lt;-</span> readFile <span class="st">&quot;enqueue_entity.c&quot;</span>
+λ<span class="fu">:</span></code></pre></div>
 <p>I just slurped the contents of the file into <code>sample_cfs_code</code>. This is our raw material, let’s look at it:</p>
-<pre class="sourceCode haskell"><code class="sourceCode haskell">λ<span class="fu">:</span> sample_cfs_code
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">λ<span class="fu">:</span> sample_cfs_code
 <span class="st">&quot;static void __enqueue_entity(struct cfs_rq *cfs_rq, struct sched_entity *se)\n{\n        struct rb_node **link = &amp;cfs_rq-&gt;tasks_timeline.rb_node;\n        struct rb_node *parent = NULL;\n        struct sched_entity *entry;\n        int leftmost = 1;\n        while (*link) {\n                parent = *link;\n                entry = rb_entry(parent, struct sched_entity, run_node);\n                if (entity_before(se, entry)) {\n                        link = &amp;parent-&gt;rb_left;\n                } else {\n                        link = &amp;parent-&gt;rb_right;\n                        leftmost = 0;\n                }\n        }\n        if (leftmost)\n                cfs_rq-&gt;rb_leftmost = &amp;se-&gt;run_node;\n\n        rb_link_node(&amp;se-&gt;run_node, parent, link);\n        rb_insert_color(&amp;se-&gt;run_node, &amp;cfs_rq-&gt;tasks_timeline);\n}\n\n&quot;</span>
-λ<span class="fu">:</span></code></pre>
+λ<span class="fu">:</span></code></pre></div>
 <p>We now define our tokenizing function in Haskell (I trust you will appreciate how concise it is):</p>
-<pre class="sourceCode haskell"><code class="sourceCode haskell">λ<span class="fu">:</span> <span class="kw">import </span><span class="dt">Data.List</span>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">λ<span class="fu">:</span> <span class="kw">import </span><span class="dt">Data.List</span>
 λ<span class="fu">:</span> <span class="kw">let</span> tokenize_this <span class="fu">=</span> unfoldr (\x <span class="ot">-&gt;</span> <span class="kw">case</span> lex x <span class="kw">of</span> [(<span class="st">&quot;&quot;</span>,<span class="st">&quot;&quot;</span>)] <span class="ot">-&gt;</span> <span class="dt">Nothing</span>; x<span class="fu">:</span>_ <span class="ot">-&gt;</span> <span class="dt">Just</span> x)
-λ<span class="fu">:</span></code></pre>
+λ<span class="fu">:</span></code></pre></div>
 <p>The most interesting keyword here is <code>lex</code>, which is a function that is defined in Haskell’s standard library as part of the <code>GHC.Read</code> module. The <code>unfoldr</code> function also deserves some explanation, but just as before, it wouldn’t be practical to go into much detail here.</p>
 <p>So far, so good. Let’s apply our tokenizing function to the C code:</p>
-<pre class="sourceCode haskell"><code class="sourceCode haskell">λ<span class="fu">:</span> <span class="kw">let</span> tokenized_cfs_code <span class="fu">=</span> tokenize_this sample_cfs_code
-λ<span class="fu">:</span></code></pre>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">λ<span class="fu">:</span> <span class="kw">let</span> tokenized_cfs_code <span class="fu">=</span> tokenize_this sample_cfs_code
+λ<span class="fu">:</span></code></pre></div>
 <p>Finally, let’s view the resulting stream of tokens:</p>
-<pre class="sourceCode haskell"><code class="sourceCode haskell">λ<span class="fu">:</span> mapM_ print tokenized_cfs_code
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">λ<span class="fu">:</span> mapM_ print tokenized_cfs_code
 <span class="st">&quot;static&quot;</span>
 <span class="st">&quot;void&quot;</span>
 <span class="st">&quot;__enqueue_entity&quot;</span>
@@ -236,7 +236,7 @@
 <span class="st">&quot;)&quot;</span>
 <span class="st">&quot;;&quot;</span>
 <span class="st">&quot;}&quot;</span>
-λ<span class="fu">:</span></code></pre>
+λ<span class="fu">:</span></code></pre></div>
 <p>You can use this approach to help your language design efforts, if you plan on inventing your own DSL, or even your own general-purpose programming language. Once your source code is tokenized, you can now parse the stream of tokens into the target Haskell data structures using a technique called combinator parsing, which is where the Haskell programming language really shines.</p>
 </section>
 <section id="end-of-part-1" class="level3">

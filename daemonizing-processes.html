@@ -103,28 +103,28 @@
 <h3>What is a daemon?</h3>
 <p>A daemon is a program that runs as a background process, forever, without being directly affected by any user. Let’s run a command to see examples of some daemons.</p>
 <p>We need to run a command which will tell us what processes are started by the <code>init</code> process (they must have a <code>PPID</code> of 1):</p>
-<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">ps</span> -ef <span class="kw">|</span> <span class="kw">awk</span> <span class="st">'$3 == 1'</span></code></pre>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="fu">ps</span> -ef <span class="kw">|</span> <span class="fu">awk</span> <span class="st">'$3 == 1'</span></code></pre></div>
 <p>The trimmed result will be the following:</p>
-<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">ps</span> -ef <span class="kw">|</span> <span class="kw">awk</span> <span class="st">'$3 == 1'</span>
-<span class="kw">root</span>       367     1  0 Mar08 ?        00:00:00 upstart-udev-bridge --daemon
-<span class="kw">root</span>       398     1  0 Mar08 ?        00:00:00 /sbin/udevd --daemon
-<span class="kw">syslog</span>     521     1  0 Mar08 ?        00:00:03 rsyslogd -c5
-<span class="kw">102</span>        525     1  0 Mar08 ?        00:00:15 dbus-daemon --system --fork --activation=upstart
-<span class="kw">avahi</span>      816     1  0 Mar08 ?        00:00:00 avahi-daemon: running [matei-Satellite-C660.local]</code></pre>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="fu">ps</span> -ef <span class="kw">|</span> <span class="fu">awk</span> <span class="st">'$3 == 1'</span>
+<span class="ex">root</span>       367     1  0 Mar08 ?        00:00:00 upstart-udev-bridge --daemon
+<span class="ex">root</span>       398     1  0 Mar08 ?        00:00:00 /sbin/udevd --daemon
+<span class="ex">syslog</span>     521     1  0 Mar08 ?        00:00:03 rsyslogd -c5
+<span class="ex">102</span>        525     1  0 Mar08 ?        00:00:15 dbus-daemon --system --fork --activation=upstart
+<span class="ex">avahi</span>      816     1  0 Mar08 ?        00:00:00 avahi-daemon: running [matei-Satellite-C660.local]</code></pre></div>
 <p>In Linux, the parent process of a daemon is often the <code>init</code> process. To create a daemon, we need to <code>fork()</code> a child process and then exit (after that the process will be an <em>orphan process</em>), causing <code>init</code> to adopt the it as a child. A daemon is often started at boot time having the task of handling network requests or hardware activity.</p>
 </section>
 <section id="lets-code-a-daemon" class="level3">
 <h3>Let’s code a Daemon</h3>
 <p>In this article we will show how one can write a simple daemon process. First, we will show the long path of using <code>fork()</code> and <code>setsid()</code>.</p>
 <p>First step (see <a href="http://web.archive.org/web/20120914180018/http://www.steve.org.uk/Reference/Unix/faq_2.html#SEC16" title="How to code a daemon">this FAQ</a> for reference) is to <code>fork</code> and <code>exit</code> such that the process is no longer a process leader:</p>
-<pre class="sourceCode c"><code class="sourceCode c"><span class="co">/*</span>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="co">/*</span>
 <span class="co"> * Fork the parent process</span>
 <span class="co"> */</span>
 pid = fork();
 <span class="co">/* On failure, -1 is returned in the parent</span>
 <span class="co"> * No child process is created</span>
 <span class="co"> */</span>
-<span class="kw">if</span> (pid &lt; <span class="dv">0</span>) {
+<span class="cf">if</span> (pid &lt; <span class="dv">0</span>) {
     perror(<span class="st">&quot;fork&quot;</span>);
     exit(EXIT_FAILURE);
 }
@@ -132,64 +132,64 @@ pid = fork();
 <span class="co">/* We are now killing the parent process</span>
 <span class="co"> * parent exits -&gt; init &quot;takes the lead&quot;</span>
 <span class="co"> */</span>
-<span class="kw">if</span> (pid &gt; <span class="dv">0</span>)
-    exit(EXIT_SUCCESS);</code></pre>
+<span class="cf">if</span> (pid &gt; <span class="dv">0</span>)
+    exit(EXIT_SUCCESS);</code></pre></div>
 <p>Because we want to have a completely new controlling terminal we need to make our process be a session leader using <code>setsid()</code>. The above <code>fork</code> was needed just to allow this to succeed:</p>
-<pre class="sourceCode c"><code class="sourceCode c">sessionID=setsid();
-<span class="kw">if</span> (sessionID &lt; <span class="dv">0</span>) {
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">sessionID=setsid();
+<span class="cf">if</span> (sessionID &lt; <span class="dv">0</span>) {
     perror(<span class="st">&quot;setsid&quot;</span>);
     exit(EXIT_FAILURE);
-}</code></pre>
+}</code></pre></div>
 <p>Next step is to <code>fork()/exit()</code> again. Since the session leader is now dead our process can never get access to a controlling terminal:</p>
-<pre class="sourceCode c"><code class="sourceCode c">pid = fork();
-<span class="kw">if</span> (pid &lt; <span class="dv">0</span>) {
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">pid = fork();
+<span class="cf">if</span> (pid &lt; <span class="dv">0</span>) {
     perror(<span class="st">&quot;fork&quot;</span>);
     exit(EXIT_FAILURE);
 }
 
-<span class="kw">if</span> (pid &gt; <span class="dv">0</span>)
-    exit(EXIT_SUCCESS);</code></pre>
+<span class="cf">if</span> (pid &gt; <span class="dv">0</span>)
+    exit(EXIT_SUCCESS);</code></pre></div>
 <p>Now, we will switch to the directory which contains the files needed for this daemon to run (for example in case of <code>dovecot</code> we would switch to <code>/run/dovectot</code> which contains the sockets for different mail queues). Or, we could switch to <code>/</code> (like <code>apache2</code> and <code>sshd</code> do for example) if we don’t want to change to a specific directory. Anyway, it is essential to change the current running directory to prevent cases where if the program was started in a <code>cwd</code> from a different partition that partition could no longer be <code>umount</code>ed.</p>
-<pre class="sourceCode c"><code class="sourceCode c">change_dir = chdir(<span class="st">&quot;/&quot;</span>);
-<span class="kw">if</span> (change_dir &lt; <span class="dv">0</span> ) {
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">change_dir = chdir(<span class="st">&quot;/&quot;</span>);
+<span class="cf">if</span> (change_dir &lt; <span class="dv">0</span> ) {
     perror(<span class="st">&quot;chdir&quot;</span>);
     exit(EXIT_FAILURE);
-}</code></pre>
+}</code></pre></div>
 <p>Though the following steps are optional, it is better to do them too to ensure a reproducible behaviour of our executable, no matter what state the system was when we started it.</p>
 <p>Because a child process inherits file descriptors and file descriptors from his parent, we need to close them. We use <code>sysconf</code> to get the maximum number of opened file descriptors in order to close all of them and prevent leaks. Then, we will set <code>umask</code> to 0 to gain complete permissions over anything we write.</p>
-<pre class="sourceCode c"><code class="sourceCode c">maxfd = sysconf(_SC_OPEN_MAX);
-<span class="kw">if</span> (maxfd &lt; <span class="dv">0</span>) {
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">maxfd = sysconf(_SC_OPEN_MAX);
+<span class="cf">if</span> (maxfd &lt; <span class="dv">0</span>) {
     perror(<span class="st">&quot;sysconf _SC_OPEN_MAX&quot;</span>);
     exit(EXIT_FAILURE);
 }
 
-<span class="kw">for</span> (fd = <span class="dv">0</span>; fd &lt; maxfd; fd++)
+<span class="cf">for</span> (fd = <span class="dv">0</span>; fd &lt; maxfd; fd++)
     <span class="co">/* note that we ignore return code here */</span>
     close(fd);
 
-umask(<span class="dv">0</span>);</code></pre>
+umask(<span class="dv">0</span>);</code></pre></div>
 <p>Now we should reopen the 3 standard file descriptors. We can point them to <code>/dev/null</code> or to specific log files. Here we open all of them to <code>/dev/null</code>:</p>
-<pre class="sourceCode c"><code class="sourceCode c">fd = open(<span class="st">&quot;/dev/null&quot;</span>, <span class="dv">0</span>);
-<span class="kw">if</span> (fd &lt; <span class="dv">0</span>) {
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">fd = open(<span class="st">&quot;/dev/null&quot;</span>, <span class="dv">0</span>);
+<span class="cf">if</span> (fd &lt; <span class="dv">0</span>) {
     perror(<span class="st">&quot;open /dev/null&quot;</span>);
     exit(EXIT_FAILURE);
 }
 
 status = dup2(fd, <span class="dv">0</span>);
-<span class="kw">if</span> (status &lt; <span class="dv">0</span>) {
+<span class="cf">if</span> (status &lt; <span class="dv">0</span>) {
     perror(<span class="st">&quot;dup 0&quot;</span>);
     exit(EXIT_FAILURE);
 }
 status = dup2(fd, <span class="dv">1</span>);
-<span class="kw">if</span> (status &lt; <span class="dv">0</span>) {
+<span class="cf">if</span> (status &lt; <span class="dv">0</span>) {
     perror(<span class="st">&quot;dup 1&quot;</span>);
     exit(EXIT_FAILURE);
 }
 status = dup2(fd, <span class="dv">2</span>);
-<span class="kw">if</span> (status &lt; <span class="dv">0</span>) {
+<span class="cf">if</span> (status &lt; <span class="dv">0</span>) {
     perror(<span class="st">&quot;dup 2&quot;</span>);
     exit(EXIT_FAILURE);
-}</code></pre>
+}</code></pre></div>
 <p>We now, have a fully working daemon, created by us. However, certain considerations must be taken:</p>
 <ol type="1">
 <li>First, if our code is to be launched by <code>inetd</code> then only the <code>chdir</code> and <code>umask</code> steps are useful. No <code>fork</code> and <code>setsid</code> should be called (otherwise <code>inetd</code> will get confused) and all other steps are already done by <code>inetd</code>.</li>
@@ -200,58 +200,58 @@ status = dup2(fd, <span class="dv">2</span>);
 <section id="using-nohup-for-daemonizing-processes" class="level3">
 <h3>Using nohup for daemonizing processes</h3>
 <p><code>nohup</code> is a command which is used to run a command which ignores the HUP (hangup) signal. The HUP signal is used by a terminal to warn dependent processes of logout. Thus, processes started with <code>nohup</code> won’t be killed after the <code>tty</code> is destroyed.</p>
-<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">nohup</span> sleep 10000 <span class="kw">&amp;</span>
-[<span class="kw">1</span>] 5470
-<span class="kw">nohup</span>: ignoring input and appending output to ‘nohup.out’
-$ <span class="kw">exit</span></code></pre>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="fu">nohup</span> sleep 10000 <span class="kw">&amp;</span>
+[<span class="ex">1</span>] 5470
+<span class="ex">nohup</span>: ignoring input and appending output to ‘nohup.out’
+$ <span class="bu">exit</span></code></pre></div>
 <p>Now open a new terminal and</p>
-<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">pgrep</span> sleep
-<span class="kw">5470</span></code></pre>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="ex">pgrep</span> sleep
+<span class="ex">5470</span></code></pre></div>
 <p>We can simulate <code>nohup</code> inside our C code too. Let’s configure signal handlers:</p>
-<pre class="sourceCode c"><code class="sourceCode c">memset (&amp;sig_act, <span class="dv">0</span> , <span class="kw">sizeof</span>(sig_act));
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">memset (&amp;sig_act, <span class="dv">0</span> , <span class="kw">sizeof</span>(sig_act));
 <span class="co">/* Ignore SIGHUP signal */</span>
-<span class="kw">if</span> (signal(SIGHUP, SIG_IGN) == SIG_ERR){
+<span class="cf">if</span> (signal(SIGHUP, SIG_IGN) == SIG_ERR){
     perror(<span class="st">&quot;signal&quot;</span>);
     exit(EXIT_FAILURE);
-}</code></pre>
+}</code></pre></div>
 <p>Now, if <code>stdout</code> is a terminal we have to redirect output to a file, just like the original command does:</p>
-<pre class="sourceCode c"><code class="sourceCode c"><span class="kw">if</span>(isatty(fileno(stdout))) {
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="cf">if</span>(isatty(fileno(stdout))) {
     rc = open (<span class="st">&quot;nohup.out&quot;</span>, O_WRONLY | O_CREAT, <span class="dv">0644</span>);
-    <span class="kw">if</span> (rc &lt; <span class="dv">0</span>) {
+    <span class="cf">if</span> (rc &lt; <span class="dv">0</span>) {
         perror(<span class="st">&quot;open&quot;</span>);
         exit(EXIT_FAILURE);
     }
     rc = dup2(rc, STDOUT_FILENO);
-    <span class="kw">if</span> (rc &lt; <span class="dv">0</span>) {
+    <span class="cf">if</span> (rc &lt; <span class="dv">0</span>) {
         perror(<span class="st">&quot;dup2&quot;</span>);
         exit(EXIT_FAILURE);
     }
-}</code></pre>
+}</code></pre></div>
 <p>Then we can <code>fork</code> and <code>exec</code> to get to our new process.</p>
 <p>Let’s test it now (<code>./a.out</code> is our test binary, it receives as arguments the command line to execute in <code>exec</code>):</p>
-<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">./a.out</span> gedit <span class="kw">&amp;</span>
-[<span class="kw">1</span>] 22727</code></pre>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="ex">./a.out</span> gedit <span class="kw">&amp;</span>
+[<span class="ex">1</span>] 22727</code></pre></div>
 <p>After we close the terminal and open a new one, we clearly see that the process will be adopted by <code>init</code>:</p>
-<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">ps</span> -ef <span class="kw">|</span> <span class="kw">grep</span> gedit
-<span class="kw">matei</span>    22727     1  2 18:25 ?        00:00:01 gedit</code></pre>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="fu">ps</span> -ef <span class="kw">|</span> <span class="fu">grep</span> gedit
+<span class="ex">matei</span>    22727     1  2 18:25 ?        00:00:01 gedit</code></pre></div>
 </section>
 <section id="disowning-a-process" class="level3">
 <h3>Disowning a process</h3>
 <p>What if we already started the process and forgot to use <code>nohup</code>? We can use <code>disown</code> to remove the process from the current session hierarchy, thus making it able to survive when the <code>tty</code> is closed.</p>
 <p>Our first job is to use <code>^Z</code> to stop/pause the program and to go back to terminal. Then we have to use <code>bg</code> to run it in the background.</p>
-<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">gedit</span>
-^<span class="kw">Z</span>
-[<span class="kw">1</span>]+  Stopped                 gedit
-$ <span class="kw">bg</span>
-[<span class="kw">1</span>]+ gedit <span class="kw">&amp;</span></code></pre>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="ex">gedit</span>
+^<span class="ex">Z</span>
+[<span class="ex">1</span>]+  Stopped                 gedit
+$ <span class="bu">bg</span>
+[<span class="ex">1</span>]+ gedit <span class="kw">&amp;</span></code></pre></div>
 <p>Now, we use <code>disown</code> with the <code>-h</code> option, to mark the process so that <code>SIGHUP</code> is not gonna be received. If we don’t use the <code>-h</code> option the process is also removed from the current jobs table, which is something we like to do anyway:</p>
-<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">disown</span></code></pre>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="bu">disown</span></code></pre></div>
 <p>If we go to another terminal, we should see that the process has been adopted by <code>init</code>:</p>
-<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">ps</span> -ef <span class="kw">|</span> <span class="kw">grep</span> gedit
-<span class="kw">matei</span>    23087 22921  8 18:38 pts/6    00:00:01 gedit</code></pre>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="fu">ps</span> -ef <span class="kw">|</span> <span class="fu">grep</span> gedit
+<span class="ex">matei</span>    23087 22921  8 18:38 pts/6    00:00:01 gedit</code></pre></div>
 <p>What happened? Our <code>gedit</code> process is not adopted by <code>init</code>. This is because we haven’t yet closed the terminal in which we have launched it. After closing it we have</p>
-<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">ps</span> -ef <span class="kw">|</span> <span class="kw">grep</span> gedit
-<span class="kw">matei</span>    12490     1  1 07:07 ?        00:00:00 gedit</code></pre>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="fu">ps</span> -ef <span class="kw">|</span> <span class="fu">grep</span> gedit
+<span class="ex">matei</span>    12490     1  1 07:07 ?        00:00:00 gedit</code></pre></div>
 <p>To conclude:</p>
 <ul>
 <li>we need to use daemons for autonomous tasks</li>

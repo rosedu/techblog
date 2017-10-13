@@ -103,7 +103,7 @@
 <section id="detecting-memory-leaks" class="level3">
 <h3>Detecting memory leaks</h3>
 <p>Mainly, one would use <a href="http://valgrind.org/">Valgrind</a> to detect memory leaks in his application. By this, we mean memory which was allocated but wasn’t released back. For example, take this program:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">void</span> f()
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">void</span> f()
 {
     <span class="dt">int</span> *a = calloc(<span class="dv">1024</span>, <span class="kw">sizeof</span>(a[<span class="dv">0</span>]));
 }
@@ -112,11 +112,11 @@
 {
     <span class="dt">int</span> i;
 
-    <span class="kw">for</span> (i = <span class="dv">0</span>; i &lt; <span class="dv">1024</span>; i++)
+    <span class="cf">for</span> (i = <span class="dv">0</span>; i &lt; <span class="dv">1024</span>; i++)
         f();
 
-    <span class="kw">return</span> <span class="dv">0</span>;
-}</code></pre>
+    <span class="cf">return</span> <span class="dv">0</span>;
+}</code></pre></div>
 <p>This program allocates <code>sizeof(int)</code> MB of memory and doesn’t free them. Of course, at the end of the execution, the operating systems takes care of releasing this memory. However, suppose that the <code>f</code> function was instead called from a server executable which shouldn’t be stopped. In this case, each invocation of <code>f</code> will eat away <code>sizeof(int)</code> KB memory (depending on architecture, 4KB or 8KB).</p>
 <p>The example is simple, the problem could be observed with naked eyes. However, let’s see what <a href="http://valgrind.org/">Valgrind</a> tells us:</p>
 <pre><code>==11418== Memcheck, a memory error detector
@@ -172,19 +172,19 @@
 <section id="wrong-cases-of-memory-release" class="level3">
 <h3>Wrong cases of memory release</h3>
 <p>What happens when we free the same memory address twice? Let’s use this program:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">void</span> *f()
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">void</span> *f()
 {
 	<span class="dt">int</span> *a = calloc(<span class="dv">16</span>, <span class="kw">sizeof</span>(a[<span class="dv">0</span>]));
 	free(a);
-	<span class="kw">return</span> a;
+	<span class="cf">return</span> a;
 }
 
 <span class="dt">int</span> main()
 {
 	<span class="dt">int</span> *a = f();
 	free(a);
-	<span class="kw">return</span> <span class="dv">0</span>;
-}</code></pre>
+	<span class="cf">return</span> <span class="dv">0</span>;
+}</code></pre></div>
 <p>Running it with <a href="http://valgrind.org/">Valgrind</a> yields:</p>
 <pre><code>mihai@keldon:/tmp/mm/valgrind$ valgrind ./a.out
 ==11734== Memcheck, a memory error detector
@@ -211,18 +211,18 @@
 ==11734== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 3 from 3)</code></pre>
 <p>We can see both locations where the memory was released.</p>
 <p>Now, consider this C++ code, a tweaked version of the above:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">int</span> *f()
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">int</span> *f()
 {
 	<span class="dt">int</span> *a = (<span class="dt">int</span> *)calloc(<span class="dv">16</span>, <span class="kw">sizeof</span>(a[<span class="dv">0</span>]));
-	<span class="kw">return</span> a;
+	<span class="cf">return</span> a;
 }
 
 <span class="dt">int</span> main()
 {
 	<span class="dt">int</span> *a = f();
 	<span class="kw">delete</span> a;
-	<span class="kw">return</span> <span class="dv">0</span>;
-}</code></pre>
+	<span class="cf">return</span> <span class="dv">0</span>;
+}</code></pre></div>
 <p>Running under <a href="http://valgrind.org/">Valgrind</a>, we receive the following output (we will use <code>-q</code> to show only the errors reported by Valgrind – no header and no statistics at the end):</p>
 <pre><code>mihai@keldon:/tmp/mm/valgrind$ valgrind -q ./a.out
 ==11757== Mismatched free() / delete / delete []
@@ -233,18 +233,18 @@
 ==11757==    by 0x400632: f() (1.c:6)
 ==11757==    by 0x400649: main (1.c:12)</code></pre>
 <p>Before finishing this section, let’s consider the case of freeing from inside an allocated block. See this code:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">void</span> *f()
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">void</span> *f()
 {
 	<span class="dt">int</span> *a = calloc(<span class="dv">16</span>, <span class="kw">sizeof</span>(a[<span class="dv">0</span>]));
-	<span class="kw">return</span> a + <span class="dv">4</span>;
+	<span class="cf">return</span> a + <span class="dv">4</span>;
 }
 
 <span class="dt">int</span> main()
 {
 	<span class="dt">int</span> *a = f();
 	free(a);
-	<span class="kw">return</span> <span class="dv">0</span>;
-}</code></pre>
+	<span class="cf">return</span> <span class="dv">0</span>;
+}</code></pre></div>
 <p><a href="http://valgrind.org/">Valgrind</a> gives the following output:</p>
 <pre><code>mihai@keldon:/tmp/mm/valgrind$ valgrind -q ./a.out
 ==11765== Invalid free() / delete / delete[] / realloc()
@@ -259,7 +259,7 @@
 <section id="incorrect-usage-of-memory" class="level3">
 <h3>Incorrect usage of memory</h3>
 <p>Let’s see this simple code:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="kw">struct</span> s {
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="kw">struct</span> s {
 	<span class="dt">int</span> a, b;
 };
 
@@ -267,23 +267,23 @@
 {
 	<span class="kw">struct</span> s s;
 	s.a = <span class="dv">42</span>;
-	<span class="kw">if</span> (s.b)
-		printf(<span class="st">&quot;s.b</span><span class="ch">\n</span><span class="st">&quot;</span>);
-	<span class="kw">return</span> <span class="dv">0</span>;
-}</code></pre>
+	<span class="cf">if</span> (s.b)
+		printf(<span class="st">&quot;s.b</span><span class="sc">\n</span><span class="st">&quot;</span>);
+	<span class="cf">return</span> <span class="dv">0</span>;
+}</code></pre></div>
 <p>We didn’t initialize <code>s.b</code>. <a href="http://valgrind.org/">Valgrind</a> reports this:</p>
 <pre><code>mihai@keldon:/tmp/mm/valgrind$ valgrind -q ./a.out
 ==11868== Conditional jump or move depends on uninitialised value(s)
 ==11868==    at 0x4004F0: main (1.c:12)
 ==11868==</code></pre>
 <p>This was simple. Now, consider this common case:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">int</span> main()
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">int</span> main()
 {
 	<span class="dt">char</span> *s = strdup(<span class="st">&quot;Valgrind rocks&quot;</span>);
 	<span class="dt">char</span> *q = malloc(strlen(s));
 	strcpy(q, s);
-	<span class="kw">return</span> <span class="dv">0</span>;
-}</code></pre>
+	<span class="cf">return</span> <span class="dv">0</span>;
+}</code></pre></div>
 <p>This code looks perfectly valid. Does it? <a href="http://valgrind.org/">Valgrind</a> says otherwise:</p>
 <pre><code>mihai@keldon:/tmp/mm/valgrind$ valgrind -q ./a.out
 ==12038== Invalid write of size 1
@@ -294,12 +294,12 @@
 ==12038==    by 0x4005E5: main (1.c:8)</code></pre>
 <p>Indeed, we missed space for the <code>\0</code> terminating character. Suppose we do this fix: we change <code>strcpy(q, s)</code> with <code>strcpy(q, s + 1)</code>. This works.</p>
 <p>Now, let us assume that – by mistake – we also change <code>q</code>:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">int</span> main()
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">int</span> main()
 {
 	<span class="dt">char</span> *s = strdup(<span class="st">&quot;Valgrind rocks&quot;</span>);
 	strcpy(s, s + <span class="dv">1</span>);
-	<span class="kw">return</span> <span class="dv">0</span>;
-}</code></pre>
+	<span class="cf">return</span> <span class="dv">0</span>;
+}</code></pre></div>
 <p><a href="http://valgrind.org/">Valgrind</a> is prompt to show us that we use <code>strcpy</code> in a wrong way, possibly destroying content:</p>
 <pre><code>mihai@keldon:/tmp/mm/valgrind$ valgrind -q ./a.out
 ==12058== Source and destination overlap in strcpy(0x51d2040, 0x51d2041)

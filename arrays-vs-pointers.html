@@ -101,21 +101,21 @@
 <!--more-->
 <p><img style="float:right" src="./images/arrays-vs-pointers.png" alt="Array and pointer representation" width="376" height="192" /></p>
 <p><strong>array.c</strong></p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">char</span> a[] = <span class="st">&quot;ROSEdu&quot;</span>;
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">char</span> a[] = <span class="st">&quot;ROSEdu&quot;</span>;
 <span class="dt">int</span> main(<span class="dt">void</span>)
 {
 	a[<span class="dv">0</span>] = <span class="st">'r'</span>;
-	printf(<span class="st">&quot;</span><span class="ch">%s\n</span><span class="st">&quot;</span>, a);
-	<span class="kw">return</span> <span class="dv">0</span>;
-}</code></pre>
+	printf(<span class="st">&quot;</span><span class="sc">%s\n</span><span class="st">&quot;</span>, a);
+	<span class="cf">return</span> <span class="dv">0</span>;
+}</code></pre></div>
 <p><strong>pointer.c</strong></p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">char</span> *p = <span class="st">&quot;ROSEdu&quot;</span>;
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">char</span> *p = <span class="st">&quot;ROSEdu&quot;</span>;
 <span class="dt">int</span> main(<span class="dt">void</span>)
 {
 	*p = <span class="st">'r'</span>;
-	printf(<span class="st">&quot;</span><span class="ch">%s\n</span><span class="st">&quot;</span>, p);
-	<span class="kw">return</span> <span class="dv">0</span>;
-}</code></pre>
+	printf(<span class="st">&quot;</span><span class="sc">%s\n</span><span class="st">&quot;</span>, p);
+	<span class="cf">return</span> <span class="dv">0</span>;
+}</code></pre></div>
 <p>Program <code>array.c</code> defines an array of char whose elements are initialized with character string literals, while <code>pointer.c</code> defines a pointer to char and initializes it with the address of a memory area holding a string literal.</p>
 <p>Notice array <code>a</code> and pointer <code>p</code> allocations in the image above. Can you make a guess about size of <code>a</code> and size of <code>p</code>?</p>
 <p>Next, both programs modify the first character of the string literal <code>&quot;ROSEdu&quot;</code>.</p>

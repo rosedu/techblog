@@ -53,7 +53,7 @@
 <li>You have maximum 4,906 KB of memory for each test</li>
 </ul>
 <p>Example input:</p>
-<pre class="sourceCode json"><code class="sourceCode json"><span class="ot">[</span><span class="fu">{</span>
+<div class="sourceCode"><pre class="sourceCode json"><code class="sourceCode json"><span class="ot">[</span><span class="fu">{</span>
 <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span>
 <span class="dt">&quot;language&quot;</span><span class="fu">:</span> <span class="st">&quot;Ruby&quot;</span><span class="fu">,</span>
 <span class="dt">&quot;usage&quot;</span><span class="fu">:</span> <span class="st">&quot;Mainly by hipsters.&quot;</span><span class="fu">,</span>
@@ -73,7 +73,7 @@
 <span class="dt">&quot;language&quot;</span><span class="fu">:</span> <span class="st">&quot;Haskell&quot;</span><span class="fu">,</span>
 <span class="dt">&quot;usage&quot;</span><span class="fu">:</span> <span class="st">&quot;A lonely dude in Massachussets.&quot;</span><span class="fu">,</span>
 <span class="dt">&quot;power&quot;</span><span class="fu">:</span> <span class="dv">999999</span>
-<span class="fu">}</span><span class="ot">]</span></code></pre>
+<span class="fu">}</span><span class="ot">]</span></code></pre></div>
 <p>Example output:</p>
 <pre class="csv"><code>id,language,usage,power,
 1,Ruby,Mainly by hipsters.,4,
@@ -81,10 +81,10 @@
 3,C++,Hardcore people who love dangling pointers.,100,
 4,Haskell,A lonely dude in Massachusetts.,999999,</code></pre>
 <p>However, since we want to simulate a real life problem better, the JSON file won’t be formatted with the same whitespace. But, we guarantee it will be correct.</p>
-<pre class="sourceCode json"><code class="sourceCode json"><span class="ot">[</span> <span class="fu">{</span> <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Ruby on Rails&quot;</span><span class="fu">,</span> <span class="dt">&quot;commits&quot;</span><span class="fu">:</span> <span class="dv">49507</span><span class="fu">,</span> <span class="dt">&quot;contributors&quot;</span><span class="fu">:</span><span class="er"> </span><span class="dv">429</span><span class="fu">,</span>
+<div class="sourceCode"><pre class="sourceCode json"><code class="sourceCode json"><span class="ot">[</span> <span class="fu">{</span> <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Ruby on Rails&quot;</span><span class="fu">,</span> <span class="dt">&quot;commits&quot;</span><span class="fu">:</span> <span class="dv">49507</span><span class="fu">,</span> <span class="dt">&quot;contributors&quot;</span><span class="fu">:</span><span class="er"> </span><span class="dv">429</span><span class="fu">,</span>
 <span class="dt">&quot;last commit&quot;</span> <span class="fu">:</span> <span class="st">&quot;an hour ago&quot;</span> <span class="fu">}</span><span class="ot">,</span> <span class="fu">{</span><span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;jQuery&quot;</span><span class="fu">,</span> <span class="dt">&quot;commits&quot;</span><span class="fu">:</span><span class="er"> </span> <span class="dv">5745</span><span class="fu">,</span>
 <span class="dt">&quot;contributors&quot;</span><span class="er"> </span><span class="fu">:</span> <span class="dv">213</span><span class="fu">,</span> <span class="dt">&quot;last commit&quot;</span><span class="fu">:</span><span class="er"> </span> <span class="st">&quot;4 days ago&quot;</span> <span class="fu">}</span><span class="ot">,</span> <span class="fu">{</span><span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;React&quot;</span><span class="fu">,</span>
-<span class="dt">&quot;commits&quot;</span> <span class="fu">:</span> <span class="dv">3557</span><span class="fu">,</span><span class="er"> </span> <span class="dt">&quot;contributors&quot;</span><span class="fu">:</span><span class="er"> </span><span class="dv">288</span><span class="fu">,</span> <span class="dt">&quot;last commit&quot;</span><span class="fu">:</span> <span class="st">&quot;5 hours ago&quot;</span><span class="fu">}</span> <span class="ot">]</span></code></pre>
+<span class="dt">&quot;commits&quot;</span> <span class="fu">:</span> <span class="dv">3557</span><span class="fu">,</span><span class="er"> </span> <span class="dt">&quot;contributors&quot;</span><span class="fu">:</span><span class="er"> </span><span class="dv">288</span><span class="fu">,</span> <span class="dt">&quot;last commit&quot;</span><span class="fu">:</span> <span class="st">&quot;5 hours ago&quot;</span><span class="fu">}</span> <span class="ot">]</span></code></pre></div>
 <pre class="csv"><code>name,commits,contributors,last commit,
 Ruby on Rails,49507,429,an hour ago,
 jQuery,5745,213,4 days ago,
@@ -128,7 +128,7 @@ React,3557,288,5 hours ago,</code></pre>
 <p>We would first ask the student to present his solution. Then, we would start asking him what would happen if we modified the problem statement and he would start to have special characters inside the keys, like parentheses or colons. Then we would ask him to tell us how easily it would have been to modify the source code and support those edge cases.</p>
 <p>From what I’ve observed, the shorter and cleaner the student’s solution was, the easier for him was to give us a version adapted to the new requirements.</p>
 <p>After these warming questions, we would ask him the important one: what would happen if the keys of the objects were not in the same order. For example</p>
-<pre class="sourceCode json"><code class="sourceCode json"><span class="ot">[</span><span class="fu">{</span>
+<div class="sourceCode"><pre class="sourceCode json"><code class="sourceCode json"><span class="ot">[</span><span class="fu">{</span>
 <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span>
 <span class="dt">&quot;language&quot;</span><span class="fu">:</span> <span class="st">&quot;Ruby&quot;</span><span class="fu">,</span>
 <span class="dt">&quot;usage&quot;</span><span class="fu">:</span> <span class="st">&quot;Mainly by hipsters.&quot;</span><span class="fu">,</span>
@@ -138,7 +138,7 @@ React,3557,288,5 hours ago,</code></pre>
 <span class="dt">&quot;language&quot;</span><span class="fu">:</span> <span class="st">&quot;Python&quot;</span><span class="fu">,</span>
 <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="dv">2</span><span class="fu">,</span>
 <span class="dt">&quot;power&quot;</span><span class="fu">:</span> <span class="dv">2</span>
-<span class="fu">}</span><span class="ot">]</span></code></pre>
+<span class="fu">}</span><span class="ot">]</span></code></pre></div>
 <p><em>All the complexities are assuming a comparison of strings is done in O(1).</em></p>
 <p>I took about 20 interviews. Almost every student would find the O(N^2) algorithm. The solution would be to print the keys of the first object, read the second object, and for every key search it naively in the first object.</p>
 <p>From here, only half of the students would get a better solution alone. The first hint I gave was to try and see if having the keys in a certain order might help. Some of them caught the idea, sorted the keys and said that they would now use binary search to find the position of the keys in O(N*log(N)).</p>
@@ -196,36 +196,36 @@ React,3557,288,5 hours ago,</code></pre>
 <p><img src="http://imgs.xkcd.com/comics/e_to_the_pi_minus_pi.png" alt="e to pi
 minus pi (xkcd)" title="e to pi minus pi (xkcd)"></p>
 <p>Even experts and common-sense is at fault in this realm. For example, did you know that <em>always</em> comparing two floating points like in the following code is <em>bad</em>?</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="kw">if</span> (fabs(a - b) &lt; <span class="fl">0.</span><span class="bn">0001</span>)
-    do_something_with_equal_numbers(a);</code></pre>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="cf">if</span> (fabs(a - b) &lt; <span class="fl">0.0001</span>)
+    do_something_with_equal_numbers(a);</code></pre></div>
 <p>Without being a complete guide, this article shows some of the beauties and dangers of the floating-point realm.</p>
 <!--more-->
 <section id="a-common-pitfall" class="level3">
 <h3>A common pitfall</h3>
 <p>Beginners programmers expect floating point number to act as the real fractional numbers: no errors involved. Slightly experienced programmers know that this is not the case, yet even the most careful and experienced ones make mistakes from time to time. We will focus more on the common pitfalls and not on the occasional mistreatments given by experts.</p>
 <p>For example, someone unprepared might write the following code</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;stdio.h&gt;</span>
-<span class="ot">#include &lt;stdlib.h&gt;</span>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span>
+<span class="pp">#include </span><span class="im">&lt;stdlib.h&gt;</span>
 
 <span class="dt">int</span> main ()
 {
-    <span class="dt">float</span> a = <span class="fl">0.</span><span class="dv">1</span>;
-    <span class="dt">float</span> b = <span class="fl">0.</span><span class="dv">2</span>;
+    <span class="dt">float</span> a = <span class="fl">0.1</span>;
+    <span class="dt">float</span> b = <span class="fl">0.2</span>;
     <span class="dt">float</span> c = a + b;
-    <span class="kw">if</span> (c != <span class="fl">0.</span><span class="dv">3</span>)
-        printf(<span class="st">&quot;</span><span class="ch">%f\n%f\n%f\n%f\n</span><span class="st">&quot;</span>, c, a + b, <span class="dv">3</span> * a, <span class="fl">1.</span><span class="dv">5</span> * b);
-    <span class="kw">return</span> <span class="dv">0</span>;
-}</code></pre>
+    <span class="cf">if</span> (c != <span class="fl">0.3</span>)
+        printf(<span class="st">&quot;</span><span class="sc">%f\n%f\n%f\n%f\n</span><span class="st">&quot;</span>, c, a + b, <span class="dv">3</span> * a, <span class="fl">1.5</span> * b);
+    <span class="cf">return</span> <span class="dv">0</span>;
+}</code></pre></div>
 <p>and be surprised to see that results are</p>
-<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">./a.out</span>
-<span class="kw">0.300000</span>
-<span class="kw">0.300000</span>
-<span class="kw">0.300000</span>
-<span class="kw">0.300000</span></code></pre>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="ex">./a.out</span>
+<span class="ex">0.300000</span>
+<span class="ex">0.300000</span>
+<span class="ex">0.300000</span>
+<span class="ex">0.300000</span></code></pre></div>
 <p><em>Note</em>: Your results on your machine might vary. <a href="#determinism-correctness-and-fastness">Later in the article</a> we will discuss this aspect at length.</p>
 <p>Of course, the problem in here is pretty simple: all floating point constants use double precision thus the code should <em>at least</em> read</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="kw">if</span> (c != <span class="fl">0.</span><span class="er">3f</span>)
-    printf(...)</code></pre>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="cf">if</span> (c != <span class="fl">0.</span><span class="er">3f</span>)
+    printf(...)</code></pre></div>
 <p>I say <em>at least</em> because even if on my architecture I got the exact value of <code>0.3</code>, this is not the case on all of them. Why? Because none of the <code>0.1</code>, <code>0.2</code> and <code>0.3</code> values have an exact representation in base 2. One can see that by trying to convert the number into base 2. Let’s follow the example of <code>0.3</code>:</p>
 <ul>
 <li>the integral part of <code>0.3</code> is <code>0</code> so it is also in base 2</li>
@@ -237,27 +237,27 @@ minus pi (xkcd)" title="e to pi minus pi (xkcd)"></p>
 </ul>
 <p>Thus, the binary representation of <code>0.3</code> would be <code>0.01001100110011001..</code>. Repeating the same algorithm with <code>0.1</code> and <code>0.2</code> will end in the same loop between <code>0.2</code>, <code>0.4</code>, <code>0.8</code> and <code>0.6</code>. So, none of <code>0.1</code>, <code>0.2</code> or <code>0.3</code> has an exact representation. Thus, no result of any operation with these numbers will be an exact answer.</p>
 <p>But, then, why did we get the exact answer in here? The two sensible answers are that either the compiler generates code which uses a higher level of precision than the space reserved for float or the printing routine does hard work to properly display the numbers. We can test these hypotheses using <code>gdb</code>:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="er">$</span> gdb -q ./a.out 
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="er">$</span> gdb -q ./a.out 
 Reading symbols from /tmp/fps/a.out...done.
 (gdb) b main
-Breakpoint <span class="dv">1</span> at <span class="bn">0x400538</span>: file <span class="fl">1.</span>c, line <span class="fl">6.</span>
+Breakpoint <span class="dv">1</span> at <span class="bn">0x400538</span>: file <span class="fl">1.</span>c, line <span class="dv">6</span>.
 (gdb) r
 Starting program: /tmp/fps/a.out 
 
 Breakpoint <span class="dv">1</span>, main () at <span class="fl">1.</span>c:<span class="dv">6</span>
-<span class="dv">6</span>       <span class="dt">float</span> a = <span class="fl">0.</span><span class="dv">1</span>;
+<span class="dv">6</span>       <span class="dt">float</span> a = <span class="fl">0.1</span>;
 (gdb) n
-<span class="dv">7</span>       <span class="dt">float</span> b = <span class="fl">0.</span><span class="dv">2</span>;
+<span class="dv">7</span>       <span class="dt">float</span> b = <span class="fl">0.2</span>;
 (gdb) p a
-<span class="er">$</span><span class="dv">1</span> = <span class="fl">0.</span><span class="dv">100000001</span>
+<span class="er">$</span><span class="dv">1</span> = <span class="fl">0.100000001</span>
 (gdb) n
 <span class="dv">8</span>       <span class="dt">float</span> c = a + b;
 (gdb) p b
-<span class="er">$</span><span class="dv">2</span> = <span class="fl">0.</span><span class="dv">200000003</span></code></pre>
+<span class="er">$</span><span class="dv">2</span> = <span class="fl">0.200000003</span></code></pre></div>
 <p>As you can see, printing the values from memory shows that they are not <code>0.1</code> and <code>0.2</code> but values close to that.</p>
 <p>Let’s see now what the assembly code around <code>c = a + b</code> looks like:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp">(gdb) disass
-Dump of assembler code <span class="kw">for</span> function main:
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp">(gdb) disass
+Dump of assembler code <span class="cf">for</span> function main:
    <span class="bn">0x0000000000400530</span> &lt;<span class="dv">+0</span>&gt;:     push   %rbp
    <span class="bn">0x0000000000400531</span> &lt;<span class="dv">+1</span>&gt;:     mov    %rsp,%rbp
    <span class="bn">0x0000000000400534</span> &lt;<span class="dv">+4</span>&gt;:     sub    <span class="er">$</span><span class="bn">0x10</span>,%rsp
@@ -265,22 +265,22 @@ Dump of assembler code <span class="kw">for</span> function main:
    <span class="bn">0x000000000040053e</span> &lt;<span class="dv">+14</span>&gt;:    mov    %eax,<span class="bn">-0x4</span>(%rbp)
    <span class="bn">0x0000000000400541</span> &lt;<span class="dv">+17</span>&gt;:    mov    <span class="bn">0x13d</span>(%rip),%eax        <span class="er">#</span> <span class="bn">0x400684</span>
    <span class="bn">0x0000000000400547</span> &lt;<span class="dv">+23</span>&gt;:    mov    %eax,<span class="bn">-0x8</span>(%rbp)
-=&gt; <span class="bn">0x000000000040054a</span> &lt;<span class="dv">+26</span>&gt;:    movss  <span class="bn">-0x4</span>(%rbp),%xmm0
-   <span class="bn">0x000000000040054f</span> &lt;<span class="dv">+31</span>&gt;:    addss  <span class="bn">-0x8</span>(%rbp),%xmm0
+=&gt; <span class="bn">0x000000000040054a</span> &lt;<span class="dv">+26</span>&gt;:    movss  <span class="bn">-0x4</span>(%rbp),%xmm<span class="dv">0</span>
+   <span class="bn">0x000000000040054f</span> &lt;<span class="dv">+31</span>&gt;:    addss  <span class="bn">-0x8</span>(%rbp),%xmm<span class="dv">0</span>
    <span class="bn">0x0000000000400554</span> &lt;<span class="dv">+36</span>&gt;:    movss  %xmm0,<span class="bn">-0xc</span>(%rbp)
----Type &lt;<span class="kw">return</span>&gt; to <span class="kw">continue</span>, <span class="kw">or</span> q &lt;<span class="kw">return</span>&gt; to quit---q
-Quit</code></pre>
+---Type &lt;<span class="cf">return</span>&gt; to <span class="cf">continue</span>, <span class="kw">or</span> q &lt;<span class="cf">return</span>&gt; to quit---q
+Quit</code></pre></div>
 <p>The last three lines are the assembly lines generated for <code>float c = a + b</code> (you can test that by running an <code>objdump -CDgS | less</code> and searching for <code>float c</code>). <code>-0x4(%rbp)</code> is where <code>a</code> is stored on the stack. <code>b</code> is stored at <code>-0x8(%rbp)</code>. The assembly instructions used – <code>addss</code> and <code>movss</code> – and the register involved – <code>xmm0</code> – show that we are working with <a href="http://en.wikipedia.org/wiki/Streaming_SIMD_Extensions" title="SSE - Wikipedia">Streaming SIMD Extensions (SSE)</a>. This register has a precision of 128 bits which is 4 times greater than the 32 bits used by the <code>float</code> datatype. We are tempted now to think that we are able to use the full width of the register – even if the SIMD part of the extension tells that this is not the case, we want a real proof based on the memory/register contents.</p>
 <p>Continuing the execution, we see:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp">(gdb) n
-<span class="dv">9</span>       <span class="kw">if</span> (c != <span class="fl">0.</span><span class="dv">3</span>)
-(gdb) p <span class="er">$</span>xmm0
-<span class="er">$</span><span class="dv">3</span> = {v4_float = {<span class="fl">0.</span><span class="dv">300000012</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>}, v2_double = {<span class="fl">5.18894283457103e-315</span>,
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp">(gdb) n
+<span class="dv">9</span>       <span class="cf">if</span> (c != <span class="fl">0.3</span>)
+(gdb) p <span class="er">$</span>xmm<span class="dv">0</span>
+<span class="er">$</span><span class="dv">3</span> = {v4_float = {<span class="fl">0.300000012</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>}, v2_double = {<span class="fl">5.18894283457103e-315</span>,
 <span class="dv">0</span>}, v16_int8 = {<span class="dv">-102</span>, <span class="dv">-103</span>, <span class="dv">-103</span>, <span class="dv">62</span>, <span class="dv">0</span> &lt;repeats <span class="dv">12</span> times&gt;}, v8_int16 = {
 <span class="dv">-26214</span>, <span class="dv">16025</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>}, v4_int32 = {<span class="dv">1050253722</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>}, v2_int64 =
 {<span class="dv">1050253722</span>, <span class="dv">0</span>}, uint128 = <span class="dv">1050253722</span>}
 (gdb) p c
-<span class="er">$</span><span class="dv">4</span> = <span class="fl">0.</span><span class="dv">300000012</span></code></pre>
+<span class="er">$</span><span class="dv">4</span> = <span class="fl">0.300000012</span></code></pre></div>
 <p>Indeed, our <code>c</code> is not <code>0.3</code>. But it seems that not even the contents of <code>xmm0</code> are closer to the truth.</p>
 <p>So, the fact that we got <code>0.3</code> in the output is caused not by the fact that we use a 128-bits wide registers but by the fact that the <a href="http://kurtstephens.com/files/p372-steele.pdf" title="Printing Floating Point Numbers (PDF)">up-to-recent unsolved problem</a> of precisely printing floating point numbers is no longer so.</p>
 </section>
@@ -291,61 +291,61 @@ Quit</code></pre>
 <p>Depending on the sizes of these numbers we have the basic <code>float</code> type (or <code>binary32</code>) in which the total size of the three numbers is 32 bits. In this case 1 bit is reserved for the sign, 8 for the exponent and the other 23 for the mantissa.</p>
 <p>The C <code>double</code> type is defined by the <code>binary64</code> format: 1 bit of sign, 11 bits for the exponent and 52 bits for the mantissa for a total of 64. There is also a <code>binary128</code> format and a C <code>long double</code> type. In this case 15 bits are reserved for the exponent and 112 for the mantissa.</p>
 <p>The standard committee has come up with a clever idea of storing these numbers into binary format. For example, they don’t store the exponent in 2’s complement but modified via an offset. Thus, <strong>the bit patterns of two nearby representable floats represent two consecutive integer values</strong>. This allows us to do some interesting <a href="#fun-trivia">tricks</a> with the two representations of real numbers.</p>
-<p>The standard also defines <span class="math">\(\infty\)</span> and <span class="math">\(-\infty\)</span>, two values for <code>0</code> (<code>+0</code> and <code>-0</code> and how they should be tested equal but treated differently in operations) and a full sequence of values which don’t represent a number but some exception – the sometimes dreaded <code>NaN</code> values.</p>
+<p>The standard also defines <span class="math inline">\(\infty\)</span> and <span class="math inline">\(-\infty\)</span>, two values for <code>0</code> (<code>+0</code> and <code>-0</code> and how they should be tested equal but treated differently in operations) and a full sequence of values which don’t represent a number but some exception – the sometimes dreaded <code>NaN</code> values.</p>
 <p>Knowing these details about the IEEE-754 standard we can go forward in our exploration. Because from now on we would use the binary representation and won’t rely on the base <code>10</code> view of numbers we will use <a href="http://babbage.cs.qc.cuny.edu/IEEE-754/" title="IEEE-754 Analysis">an online analyzer</a> to investigate interesting values.</p>
 </section>
 <section id="back-to-the-castle-and-a-final-conclusion" class="level3">
 <h3>Back to the castle and a final conclusion</h3>
 <p>Returning to our code, we want to see what values are stored in memory for <code>a</code>, <code>b</code> and <code>c</code> and also in register <code>xmm0</code>:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp">(gdb) x <span class="er">$</span>rbp - <span class="bn">0x4</span>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp">(gdb) x <span class="er">$</span>rbp - <span class="bn">0x4</span>
 <span class="bn">0x7fffffffdfac</span>: <span class="bn">0x3dcccccd</span>
 (gdb) x <span class="er">$</span>rbp - <span class="bn">0x8</span>
 <span class="bn">0x7fffffffdfa8</span>: <span class="bn">0x3e4ccccd</span>
 (gdb) x <span class="er">$</span>rbp - <span class="bn">0xc</span>
 <span class="bn">0x7fffffffdfa4</span>: <span class="bn">0x3e99999a</span>
-(gdb) p/x <span class="er">$</span>xmm0
-<span class="er">$</span><span class="dv">4</span> = {.... uint128 = <span class="bn">0x0000000000000000000000003e99999a</span>}</code></pre>
+(gdb) p/x <span class="er">$</span>xmm<span class="dv">0</span>
+<span class="er">$</span><span class="dv">4</span> = {.... uint128 = <span class="bn">0x0000000000000000000000003e99999a</span>}</code></pre></div>
 <p>Looking through the analyzer, <code>0x3dcccccd</code> (the value for <code>a</code>) is <code>1.00000001490116119384765625E-1</code> which is both close to the original value of <code>0.1</code> and to the displayed value of <code>0.100000001</code>. Same for <code>b</code> and <code>c</code>. However, looking at <code>xmm0</code> register we see that the last 32 bits have the same pattern as <code>-0xc($rbp)</code>. Thus, the SSE 128 bits registers <strong>are not using</strong> the <code>binary128</code> standard! If they were using it, the last value displayed there should have been <code>3FFD3333333333333333333333333333</code>. As said on <a href="http://www.reddit.com/r/programming/comments/21qzz2/an_overview_of_floating_point_realm/" title="This article on reddit">reddit thread for this article</a>, excess precision comes form the <code>x87</code> coprocessor which uses 80 bits of precision.</p>
 <p>Now it is time to see some other aspects of working with floating point numbers.</p>
 </section>
 <section id="testing-them-all" class="level3">
 <h3>Testing them all</h3>
 <p>Since there is a perfect isomorphism between <code>float</code> values and <code>int</code> ones and there are only <code>2^32</code> ints (on normal architectures), sometimes it is easy and desirable to test a new function on all of the possible values. Unfortunately, this doesn’t properly work for functions with more than one argument because one would have to spend ages for that. But for one single argument things are pretty nice: it only takes 16 seconds on my machine to run the following code which tests that changing the sign twice gives the same value:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;stdio.h&gt;</span>
-<span class="ot">#include &lt;stdlib.h&gt;</span>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span>
+<span class="pp">#include </span><span class="im">&lt;stdlib.h&gt;</span>
 
 <span class="dt">int</span> main()
 {
     <span class="dt">unsigned</span> <span class="dt">int</span> i = <span class="dv">0</span>;
     <span class="dt">float</span> x;
 
-    <span class="kw">do</span> {
+    <span class="cf">do</span> {
         x = *((<span class="dt">float</span>*)&amp;i);
-        <span class="kw">if</span> (x != -(-x))
-            printf(<span class="st">&quot;</span><span class="ch">%f</span><span class="st"> </span><span class="ch">%u\n</span><span class="st">&quot;</span>, x, i);
+        <span class="cf">if</span> (x != -(-x))
+            printf(<span class="st">&quot;</span><span class="sc">%f</span><span class="st"> </span><span class="sc">%u\n</span><span class="st">&quot;</span>, x, i);
         i++;
-    } <span class="kw">while</span> (i != <span class="dv">0</span>);
+    } <span class="cf">while</span> (i != <span class="dv">0</span>);
 
-    <span class="kw">return</span> <span class="dv">0</span>;
-}</code></pre>
+    <span class="cf">return</span> <span class="dv">0</span>;
+}</code></pre></div>
 <p>Running it we see:</p>
-<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">gcc</span> -Wall -Wextra -O0 -g 2.c 
-$ <span class="kw">./a.out</span>  <span class="kw">|</span> <span class="kw">head</span> -n 5
-<span class="kw">nan</span> 2139095041
-<span class="kw">nan</span> 2139095042
-<span class="kw">nan</span> 2139095043
-<span class="kw">nan</span> 2139095044
-<span class="kw">nan</span> 2139095045</code></pre>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="fu">gcc</span> -Wall -Wextra -O0 -g 2.c 
+$ <span class="ex">./a.out</span>  <span class="kw">|</span> <span class="fu">head</span> -n 5
+<span class="ex">nan</span> 2139095041
+<span class="ex">nan</span> 2139095042
+<span class="ex">nan</span> 2139095043
+<span class="ex">nan</span> 2139095044
+<span class="ex">nan</span> 2139095045</code></pre></div>
 <p>It seems that our hypothesis fails when the initial number was a <code>NaN</code> value. For now, let us filter all of these values and test the hypothesis on the remaining domain.</p>
-<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">time</span> ./a.out <span class="kw">|</span> <span class="kw">grep</span> -v nan
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="bu">time</span> ./a.out <span class="kw">|</span> <span class="fu">grep</span> -v nan
 
-<span class="kw">real</span>    0m15.895s
-<span class="kw">user</span>    0m17.977s
-<span class="kw">sys</span> 0m0.163s</code></pre>
+<span class="ex">real</span>    0m15.895s
+<span class="ex">user</span>    0m17.977s
+<span class="ex">sys</span> 0m0.163s</code></pre></div>
 <p>Something which we would have expected.</p>
 <p><em>Note</em>: Compiling with optimisations on might make the compiler issue the following warning:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp">warning: dereferencing type-punned pointer will <span class="kw">break</span> strict-aliasing rules [-Wstrict-aliasing]
-    ^</code></pre>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp">warning: dereferencing type-punned pointer will <span class="cf">break</span> strict-aliasing rules [-Wstrict-aliasing]
+    ^</code></pre></div>
 <p>This is because the C/C++ standard says that the compiler can assume that different types don’t overlap in memory so neither should pointers to those types. Knowing that a pointer to an array of integers and one array of doubles don’t overlap opens a way for some optimizations. Breaking them is at your own risk. See also the documentation for <code>-fstrict-aliasing</code> flag of <code>gcc</code>.</p>
 </section>
 <section id="the-nan-problem" class="level3">
@@ -353,32 +353,32 @@ $ <span class="kw">./a.out</span>  <span class="kw">|</span> <span class="kw">he
 <p>You might be wondering why do we have so many <code>NaN</code> values (the 5 above are but a small sample of them all). Thing is, the standard allows some <code>NaN</code> values to carry an exception code within it such that the programmer debugging the code can know why he got this value. We would not enter into details regarding this aspect though.</p>
 <p>A more interesting question is how these <code>NaN</code> values arise. One example is doing <code>asin(1+smth)</code> or <code>sqrt(0-smth_else)</code>. You might say: “but I will never do that” to which I will reply that since every floating point operation has some rounding and errors tend to propagate you might find in some occasions doing exactly that.</p>
 <p>Now, the question is how to filter out these values from code. The standard states that the <code>NaN</code> values have form <code>s1111111 1axxxxxx xxxxxxxx xxxxxxxx</code> so one might just check the first few bits of the number (<code>s</code> is the sign and is ignored and <code>a</code> is used to differentiate between a quiet <code>NaN</code> and a signalling one while <code>x</code> represent payload bits showing why the signalling <code>NaN</code> was produced). So we change the code to read</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;stdio.h&gt;</span>
-<span class="ot">#include &lt;stdlib.h&gt;</span>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span>
+<span class="pp">#include </span><span class="im">&lt;stdlib.h&gt;</span>
 
 <span class="dt">int</span> main()
 {
     <span class="dt">unsigned</span> <span class="dt">int</span> i = <span class="dv">0</span>;
     <span class="dt">float</span> x;
 
-    <span class="kw">do</span> {
+    <span class="cf">do</span> {
         x = *((<span class="dt">float</span>*)&amp;i);
-        <span class="kw">if</span> (x != -(-x))
-            printf(<span class="st">&quot;</span><span class="ch">%f</span><span class="st"> </span><span class="ch">%u\n</span><span class="st">&quot;</span>, x, i);
+        <span class="cf">if</span> (x != -(-x))
+            printf(<span class="st">&quot;</span><span class="sc">%f</span><span class="st"> </span><span class="sc">%u\n</span><span class="st">&quot;</span>, x, i);
         i++;
-        <span class="kw">if</span> (i &gt; <span class="bn">0x7f800000</span>)
-            <span class="kw">break</span>;
-    } <span class="kw">while</span> (i != <span class="dv">0</span>);
+        <span class="cf">if</span> (i &gt; <span class="bn">0x7f800000</span>)
+            <span class="cf">break</span>;
+    } <span class="cf">while</span> (i != <span class="dv">0</span>);
 
-    <span class="kw">return</span> <span class="dv">0</span>;
-}</code></pre>
+    <span class="cf">return</span> <span class="dv">0</span>;
+}</code></pre></div>
 <p>If you don’t remember the bit pattern you can still filter out by knowing that all <code>NaN</code> values are required to compare unequal even themselves. Thus, a test <code>x == x</code> is always false for <code>NaN</code> values.</p>
 </section>
 <section id="the-associativity-problem" class="level3">
 <h3>The Associativity Problem</h3>
 <p>One of the ideas behind this post was <a href="http://stackoverflow.com/questions/6430448/why-doesnt-gcc-optimize-aaaaaa-to-aaaaaa" title="Why doesn&#39;t GCC optimize...">this StackOverflow question</a>. We can test this to see on how many floats the output is wrong:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;stdio.h&gt;</span>
-<span class="ot">#include &lt;stdlib.h&gt;</span>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span>
+<span class="pp">#include </span><span class="im">&lt;stdlib.h&gt;</span>
 
 <span class="dt">int</span> main()
 {
@@ -386,38 +386,38 @@ $ <span class="kw">./a.out</span>  <span class="kw">|</span> <span class="kw">he
     <span class="dt">float</span> x, y, z;
     <span class="dt">unsigned</span> <span class="dt">long</span> <span class="dt">long</span> s = <span class="dv">0</span>;
 
-    <span class="kw">do</span> {
+    <span class="cf">do</span> {
         x = *((<span class="dt">float</span>*)&amp;i);
         y = x * x * x * x * x * x;
         z = (x * x * x);
         z = z * z;
-        <span class="kw">if</span> (y != z)
-            printf(<span class="st">&quot;</span><span class="ch">%f</span><span class="st"> </span><span class="ch">%u\n</span><span class="st">&quot;</span>, x, i);
+        <span class="cf">if</span> (y != z)
+            printf(<span class="st">&quot;</span><span class="sc">%f</span><span class="st"> </span><span class="sc">%u\n</span><span class="st">&quot;</span>, x, i);
         s += i;
         i++;
-        <span class="kw">if</span> (i &gt; <span class="bn">0x7f800000</span>)
-            <span class="kw">break</span>;
-    } <span class="kw">while</span> (i != <span class="dv">0</span>);
+        <span class="cf">if</span> (i &gt; <span class="bn">0x7f800000</span>)
+            <span class="cf">break</span>;
+    } <span class="cf">while</span> (i != <span class="dv">0</span>);
 
-    printf(<span class="st">&quot;</span><span class="ch">%lld\n</span><span class="st">&quot;</span>, s);
+    printf(<span class="st">&quot;</span><span class="sc">%lld\n</span><span class="st">&quot;</span>, s);
 
-    <span class="kw">return</span> <span class="dv">0</span>;
-}</code></pre>
+    <span class="cf">return</span> <span class="dv">0</span>;
+}</code></pre></div>
 <p>Since we are compiling with <code>-O3</code> we don’t want the compiler to optimize our loop away. Thus we have a <code>s</code> variable in which we store the sum of all <code>i</code>s. Also, the code already removes the <code>NaN</code> values. Running it we get:</p>
-<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">time</span> ./a.out <span class="kw">|</span> <span class="kw">wc</span> -l
-<span class="kw">163049703</span>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="bu">time</span> ./a.out <span class="kw">|</span> <span class="fu">wc</span> -l
+<span class="ex">163049703</span>
 
-<span class="kw">real</span>    1m58.114s
-<span class="kw">user</span>    1m59.005s
-<span class="kw">sys</span> 0m3.148s</code></pre>
+<span class="ex">real</span>    1m58.114s
+<span class="ex">user</span>    1m59.005s
+<span class="ex">sys</span> 0m3.148s</code></pre></div>
 <p>That is, there is a total of 3.79% values for which doing the optimization in question will give a different result on this machine.</p>
 </section>
 <section id="equality-testing-done-right" class="level3">
 <h3>Equality testing done right</h3>
 <p>Finally, we have arrived to an interesting aspect: how do we compare if two floats are almost the same? We already know that doing a comparison with <code>==</code> is bad. Let us pick now two numbers: <code>10000</code> and the next representable float and compare between them using the standard method:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;math.h&gt;</span>
-<span class="ot">#include &lt;stdio.h&gt;</span>
-<span class="ot">#include &lt;stdlib.h&gt;</span>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="pp">#include </span><span class="im">&lt;math.h&gt;</span>
+<span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span>
+<span class="pp">#include </span><span class="im">&lt;stdlib.h&gt;</span>
 
 <span class="dt">int</span> main ()
 {
@@ -426,31 +426,31 @@ $ <span class="kw">./a.out</span>  <span class="kw">|</span> <span class="kw">he
     <span class="dt">float</span> expectedResult = *((<span class="dt">float</span>*)&amp;expectedAsInt);
     <span class="dt">float</span> result = *((<span class="dt">float</span>*)&amp;resultAsInt);
 
-    printf(<span class="st">&quot;</span><span class="ch">%f</span><span class="st"> </span><span class="ch">%f\n</span><span class="st">&quot;</span>, result, expectedResult);
+    printf(<span class="st">&quot;</span><span class="sc">%f</span><span class="st"> </span><span class="sc">%f\n</span><span class="st">&quot;</span>, result, expectedResult);
 
-    <span class="kw">if</span> (fabs(result - expectedResult) &lt; <span class="fl">0.</span><span class="bn">0001</span>)
-        printf(<span class="st">&quot;Numbers are close</span><span class="ch">\n</span><span class="st">&quot;</span>);
+    <span class="cf">if</span> (fabs(result - expectedResult) &lt; <span class="fl">0.0001</span>)
+        printf(<span class="st">&quot;Numbers are close</span><span class="sc">\n</span><span class="st">&quot;</span>);
 
-    <span class="kw">return</span> <span class="dv">0</span>;
-}</code></pre>
+    <span class="cf">return</span> <span class="dv">0</span>;
+}</code></pre></div>
 <p>The output</p>
-<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">./a.out</span>
-<span class="kw">10000.000977</span> 10000.000000</code></pre>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="ex">./a.out</span>
+<span class="ex">10000.000977</span> 10000.000000</code></pre></div>
 <p>So the above test fails to consider two floating points which are neighbors as being the same. If your algorithm produced a <code>result</code> which would be between these two floats and it would be rounded to the wrong one you would get the impression that your algorithm is wrong.</p>
 <p>Anyway, even if this method was correct, what value should one use for the bound in the test? <code>float.h</code> defines <code>FLT_EPSILON</code> so one might decide to test using that:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;float.h&gt;</span>
-<span class="ot">#include &lt;math.h&gt;</span>
-<span class="ot">#include &lt;stdio.h&gt;</span>
-<span class="ot">#include &lt;stdlib.h&gt;</span>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="pp">#include </span><span class="im">&lt;float.h&gt;</span>
+<span class="pp">#include </span><span class="im">&lt;math.h&gt;</span>
+<span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span>
+<span class="pp">#include </span><span class="im">&lt;stdlib.h&gt;</span>
 
 <span class="dt">int</span> closeFloats(<span class="dt">float</span> number, <span class="dt">float</span> target)
 {
-    <span class="kw">return</span> fabs(number - target) &lt; FLT_EPSILON;
+    <span class="cf">return</span> fabs(number - target) &lt; FLT_EPSILON;
 }
 
 <span class="kw">inline</span> <span class="dt">float</span> getFloatFromInt(<span class="dt">int</span> value)
 {
-    <span class="kw">return</span> *((<span class="dt">float</span>*)&amp;value);
+    <span class="cf">return</span> *((<span class="dt">float</span>*)&amp;value);
 }
 
 <span class="dt">void</span> testFloatTesting(<span class="dt">int</span> src)
@@ -458,7 +458,7 @@ $ <span class="kw">./a.out</span>  <span class="kw">|</span> <span class="kw">he
     <span class="dt">float</span> target = getFloatFromInt(src);
     <span class="dt">float</span> next = getFloatFromInt(src + <span class="dv">1</span>);
 
-    printf(<span class="st">&quot;src=</span><span class="ch">%d</span><span class="st"> target=</span><span class="ch">%f</span><span class="st"> next=</span><span class="ch">%f</span><span class="st"> compare=</span><span class="ch">%d\n</span><span class="st">&quot;</span>, src, target, next,
+    printf(<span class="st">&quot;src=</span><span class="sc">%d</span><span class="st"> target=</span><span class="sc">%f</span><span class="st"> next=</span><span class="sc">%f</span><span class="st"> compare=</span><span class="sc">%d\n</span><span class="st">&quot;</span>, src, target, next,
             closeFloats(next, target));
 }
 
@@ -476,29 +476,29 @@ $ <span class="kw">./a.out</span>  <span class="kw">|</span> <span class="kw">he
     <span class="co">/* 10000.5 and next float */</span>
     testFloatTesting(<span class="bn">0x461C4200</span>);
 
-    <span class="kw">return</span> <span class="dv">0</span>;
-}</code></pre>
+    <span class="cf">return</span> <span class="dv">0</span>;
+}</code></pre></div>
 <p>A proper <code>closeFloats</code> function is what we are looking for. We use <code>testFloatTesting</code> to test this on two floats which come from two neighboring integers (a more formal definition is floats which differ by 1ULP – <em>units in last place</em>). Running it, we get:</p>
-<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">./a.out</span>
-<span class="ot">src=</span>1056964608 <span class="ot">target=</span>0.500000 <span class="ot">next=</span>0.500000 <span class="ot">compare=</span>1
-<span class="ot">src=</span>1069547520 <span class="ot">target=</span>1.500000 <span class="ot">next=</span>1.500000 <span class="ot">compare=</span>0
-<span class="ot">src=</span>1120468992 <span class="ot">target=</span>100.500000 <span class="ot">next=</span>100.500008 <span class="ot">compare=</span>0
-<span class="ot">src=</span>1176257024 <span class="ot">target=</span>10000.500000 <span class="ot">next=</span>10000.500977 <span class="ot">compare=</span>0</code></pre>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="ex">./a.out</span>
+<span class="va">src=</span>1056964608 <span class="va">target=</span>0.500000 <span class="va">next=</span>0.500000 <span class="va">compare=</span>1
+<span class="va">src=</span>1069547520 <span class="va">target=</span>1.500000 <span class="va">next=</span>1.500000 <span class="va">compare=</span>0
+<span class="va">src=</span>1120468992 <span class="va">target=</span>100.500000 <span class="va">next=</span>100.500008 <span class="va">compare=</span>0
+<span class="va">src=</span>1176257024 <span class="va">target=</span>10000.500000 <span class="va">next=</span>10000.500977 <span class="va">compare=</span>0</code></pre></div>
 <p>All of the initial numbers were chosen to be exactly representable but this is not vital. What’s interesting is that only the numbers between 0 and 1 show as being close when using the <code>FLT_EPSILON</code> absolute method.</p>
 <p>Let’s try now to use a relative error and compare that with <code>FLT_EPSILON</code>:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">int</span> closeFloats(<span class="dt">float</span> number, <span class="dt">float</span> target)
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">int</span> closeFloats(<span class="dt">float</span> number, <span class="dt">float</span> target)
 {
-    <span class="kw">return</span> fabs(number - target) / target &lt; FLT_EPSILON;
-}</code></pre>
+    <span class="cf">return</span> fabs(number - target) / target &lt; FLT_EPSILON;
+}</code></pre></div>
 <p>Using the above gives the following results:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="er">$</span> ./a.out 
-src=<span class="dv">1056964608</span> target=<span class="fl">0.</span><span class="dv">500000</span> next=<span class="fl">0.</span><span class="dv">500000</span> compare=<span class="dv">0</span>
-src=<span class="dv">1069547520</span> target=<span class="fl">1.</span><span class="dv">500000</span> next=<span class="fl">1.</span><span class="dv">500000</span> compare=<span class="dv">1</span>
-src=<span class="dv">1120468992</span> target=<span class="fl">100.</span><span class="dv">500000</span> next=<span class="fl">100.</span><span class="dv">500008</span> compare=<span class="dv">1</span>
-src=<span class="dv">1176257024</span> target=<span class="fl">10000.</span><span class="dv">500000</span> next=<span class="fl">10000.</span><span class="dv">500977</span> compare=<span class="dv">1</span></code></pre>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="er">$</span> ./a.out 
+src=<span class="dv">1056964608</span> target=<span class="fl">0.500000</span> next=<span class="fl">0.500000</span> compare=<span class="dv">0</span>
+src=<span class="dv">1069547520</span> target=<span class="fl">1.500000</span> next=<span class="fl">1.500000</span> compare=<span class="dv">1</span>
+src=<span class="dv">1120468992</span> target=<span class="fl">100.500000</span> next=<span class="fl">100.500008</span> compare=<span class="dv">1</span>
+src=<span class="dv">1176257024</span> target=<span class="fl">10000.500000</span> next=<span class="fl">10000.500977</span> compare=<span class="dv">1</span></code></pre></div>
 <p>We get better results above 1 but worse below. This is because we are dividing to a smaller number closing to doing a division by <code>0</code>. So, don’t use the above method as well.</p>
 <p>Let’s try with a third option:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">int</span> closeFloats(<span class="dt">float</span> number, <span class="dt">float</span> target)
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">int</span> closeFloats(<span class="dt">float</span> number, <span class="dt">float</span> target)
 {
     <span class="dt">float</span> diff = fabs(number - target);
     <span class="dt">float</span> largest;
@@ -507,41 +507,41 @@ src=<span class="dv">1176257024</span> target=<span class="fl">10000.</span><spa
     target = fabs(target);
     largest = (target &gt; number) ? target : number;
 
-    <span class="kw">return</span> diff &lt;= largest * FLT_EPSILON;
-}</code></pre>
+    <span class="cf">return</span> diff &lt;= largest * FLT_EPSILON;
+}</code></pre></div>
 <p>This time, instead of dividing we use multiplication. Also, to ensure some more safety, we pick the largest absolute value as being the mark around which we compute the relative error. Running this test we finally get:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="er">$</span> ./a.out
-src=<span class="dv">1056964608</span> target=<span class="fl">0.</span><span class="dv">500000</span> next=<span class="fl">0.</span><span class="dv">500000</span> compare=<span class="dv">1</span>
-src=<span class="dv">1069547520</span> target=<span class="fl">1.</span><span class="dv">500000</span> next=<span class="fl">1.</span><span class="dv">500000</span> compare=<span class="dv">1</span>
-src=<span class="dv">1120468992</span> target=<span class="fl">100.</span><span class="dv">500000</span> next=<span class="fl">100.</span><span class="dv">500008</span> compare=<span class="dv">1</span>
-src=<span class="dv">1176257024</span> target=<span class="fl">10000.</span><span class="dv">500000</span> next=<span class="fl">10000.</span><span class="dv">500977</span> compare=<span class="dv">1</span></code></pre>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="er">$</span> ./a.out
+src=<span class="dv">1056964608</span> target=<span class="fl">0.500000</span> next=<span class="fl">0.500000</span> compare=<span class="dv">1</span>
+src=<span class="dv">1069547520</span> target=<span class="fl">1.500000</span> next=<span class="fl">1.500000</span> compare=<span class="dv">1</span>
+src=<span class="dv">1120468992</span> target=<span class="fl">100.500000</span> next=<span class="fl">100.500008</span> compare=<span class="dv">1</span>
+src=<span class="dv">1176257024</span> target=<span class="fl">10000.500000</span> next=<span class="fl">10000.500977</span> compare=<span class="dv">1</span></code></pre></div>
 <p>However, the story is not yet finished. What happens if the <code>FLT_EPSILON</code> is too large a gap in relative error? You might be tempted to say <em>just multiply <code>FLT_EPSILON</code> with <code>0.1</code> and be done</em>. Test it and you’ll see that all of the results turn to <code>0</code>: it is as if <strong>we didn’t use any bound at all and tested using <code>==</code></strong>. So we are thus restricted to having a relative gap no smaller than <code>FLT_EPSILON</code>.</p>
 <p>Now, let’s turn to the other side: what if the gap is too small? You can multiply <code>FLT_EPSILON</code> with a small value for this. However, finding out which value to use is hard because this way of computing the error is not linked at all with the representation of the floating point numbers. So, let’s try with using ULPs:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">int</span> closeFloats(<span class="dt">float</span> number, <span class="dt">float</span> target)
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">int</span> closeFloats(<span class="dt">float</span> number, <span class="dt">float</span> target)
 {
 	<span class="dt">int</span> numberULP = *((<span class="dt">int</span> *) &amp;number);
 	<span class="dt">int</span> targetULP = *((<span class="dt">int</span> *) &amp;target);
 
-	<span class="kw">if</span> ((numberULP &gt;&gt; <span class="dv">31</span>) != (targetULP &gt;&gt; <span class="dv">31</span>))
-		<span class="kw">return</span> number == target;
-	<span class="kw">return</span> abs(numberULP - targetULP) &lt; <span class="dv">5</span>;
-}</code></pre>
+	<span class="cf">if</span> ((numberULP &gt;&gt; <span class="dv">31</span>) != (targetULP &gt;&gt; <span class="dv">31</span>))
+		<span class="cf">return</span> number == target;
+	<span class="cf">return</span> abs(numberULP - targetULP) &lt; <span class="dv">5</span>;
+}</code></pre></div>
 <p>In the above we consider numbers which differ by at most 5 ULPs as being close. Also, observe the first check which tests if the numbers have different signs. In the positive case we compare using <code>==</code> the <strong>floating point numbers</strong> to ensure that we catch the case <code>+0 == -0</code>.</p>
 <p>Running it we get:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="er">$</span> ./a.out
-src=<span class="dv">1056964608</span> target=<span class="fl">0.</span><span class="dv">500000</span> next=<span class="fl">0.</span><span class="dv">500000</span> compare=<span class="dv">1</span>
-src=<span class="dv">1069547520</span> target=<span class="fl">1.</span><span class="dv">500000</span> next=<span class="fl">1.</span><span class="dv">500000</span> compare=<span class="dv">1</span>
-src=<span class="dv">1120468992</span> target=<span class="fl">100.</span><span class="dv">500000</span> next=<span class="fl">100.</span><span class="dv">500008</span> compare=<span class="dv">1</span>
-src=<span class="dv">1176257024</span> target=<span class="fl">10000.</span><span class="dv">500000</span> next=<span class="fl">10000.</span><span class="dv">500977</span> compare=<span class="dv">1</span></code></pre>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="er">$</span> ./a.out
+src=<span class="dv">1056964608</span> target=<span class="fl">0.500000</span> next=<span class="fl">0.500000</span> compare=<span class="dv">1</span>
+src=<span class="dv">1069547520</span> target=<span class="fl">1.500000</span> next=<span class="fl">1.500000</span> compare=<span class="dv">1</span>
+src=<span class="dv">1120468992</span> target=<span class="fl">100.500000</span> next=<span class="fl">100.500008</span> compare=<span class="dv">1</span>
+src=<span class="dv">1176257024</span> target=<span class="fl">10000.500000</span> next=<span class="fl">10000.500977</span> compare=<span class="dv">1</span></code></pre></div>
 <p>which was somehow obvious (since the number are already one ULP apart).</p>
 <p>Now you might raise one more question: which of the two methods is fastest? Let’s test:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">void</span> testFloatTesting(<span class="dt">int</span> src)
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">void</span> testFloatTesting(<span class="dt">int</span> src)
 {
     <span class="dt">float</span> target = getFloatFromInt(src);
     <span class="dt">float</span> next = getFloatFromInt(src + <span class="dv">1</span>);
 
-    <span class="kw">if</span> (closeFloats(next, target) != <span class="dv">1</span>)
-        printf(<span class="st">&quot;src=</span><span class="ch">%d</span><span class="st"> target=</span><span class="ch">%f</span><span class="st"> next=</span><span class="ch">%f</span><span class="st"> compare=</span><span class="ch">%d\n</span><span class="st">&quot;</span>, src, target,
+    <span class="cf">if</span> (closeFloats(next, target) != <span class="dv">1</span>)
+        printf(<span class="st">&quot;src=</span><span class="sc">%d</span><span class="st"> target=</span><span class="sc">%f</span><span class="st"> next=</span><span class="sc">%f</span><span class="st"> compare=</span><span class="sc">%d\n</span><span class="st">&quot;</span>, src, target,
                 next, closeFloats(next, target));
 }
 
@@ -549,27 +549,27 @@ src=<span class="dv">1176257024</span> target=<span class="fl">10000.</span><spa
 {
     <span class="dt">unsigned</span> <span class="dt">int</span> i = <span class="dv">0</span>;
 
-    <span class="kw">do</span> {
+    <span class="cf">do</span> {
         testFloatTesting(i++);
-        <span class="kw">if</span> (i &gt; <span class="bn">0x7f800000</span>)
-            <span class="kw">break</span>;
-    } <span class="kw">while</span> (i != <span class="dv">0</span>);
+        <span class="cf">if</span> (i &gt; <span class="bn">0x7f800000</span>)
+            <span class="cf">break</span>;
+    } <span class="cf">while</span> (i != <span class="dv">0</span>);
 
-    <span class="kw">return</span> <span class="dv">0</span>;
-}</code></pre>
+    <span class="cf">return</span> <span class="dv">0</span>;
+}</code></pre></div>
 <p>Using ULP we get these results:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="er">$</span> time ./a.out
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="er">$</span> time ./a.out
 
-real    <span class="er">0m32</span><span class="fl">.343</span>s
-user    <span class="er">0m32</span><span class="fl">.290</span>s
-sys <span class="er">0m0</span><span class="fl">.007</span>s</code></pre>
+real    <span class="er">0m32</span>.<span class="er">343s</span>
+user    <span class="er">0m32</span>.<span class="er">290s</span>
+sys <span class="er">0m0</span>.<span class="er">007s</span></code></pre></div>
 <p>Using the floating point - relative method we get:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="er">$</span> time ./a.out | wc -l
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="er">$</span> time ./a.out | wc -l
 <span class="dv">4194305</span>
 
-real    <span class="er">1m4</span><span class="fl">.161</span>s
-user    <span class="er">1m4</span><span class="fl">.137</span>s
-sys <span class="er">0m0</span><span class="fl">.204</span>s</code></pre>
+real    <span class="er">1m4</span>.<span class="er">161s</span>
+user    <span class="er">1m4</span>.<span class="er">137s</span>
+sys <span class="er">0m0</span>.<span class="er">204s</span></code></pre></div>
 <p>We seem to be getting some wrong results (<code>0.9%</code>). Indeed, around 0 both comparison methods fail. The relative error method fails because we are close to dividing by <code>0</code> and because of catastrophic cancellation. The ULP method because there are many numbers between 0 and <code>FLT_MIN</code> (the minimum properly representable float) – these values are denormalized and using them might slow down your computation quite a lot. So, what should we use in this case? It turns out that if you want to compare with <code>0</code> the absolute error method is the best.</p>
 <p>Also note that on my machine the relative method is twice as slow as the ULP one.</p>
 <p>To conclude this part:</p>
@@ -597,7 +597,7 @@ sys <span class="er">0m0</span><span class="fl">.204</span>s</code></pre>
 <section id="fun-trivia" class="level3">
 <h3>Fun trivia</h3>
 <p>To conclude the article on a funny note note that one can compute the logarithm in base two of any float by just looking at it’s representation from the integer point of view: since multiplying a float by 2 increases the exponent – which is stored in the middle of the representation – increasing the value of the logarithm by 1 is just increasing the representation by <code>0x800000</code>.</p>
-<p>Another interesting fact is that since <span class="math">\(\sin(\pi-x) = \sin(x)\)</span> and for small values of <code>x</code> <span class="math">\(\sin(x) \approx x\)</span> we get that <span class="math">\(\sin(\pi) \approx \epsilon(\pi)\)</span> (the error in representing <span class="math">\(\pi\)</span> as a float). Thus, a nice method to compute <span class="math">\(\pi\)</span> is to repeatedly compute <code>pi + sin(pi)</code> up to the highest precision available. Don’t try this in production code, the <a href="http://www.xkcd.com/217/" title="e to pi minus pi">xkcd</a> reference in the beginning of the article should be warning enough: <code>sin(pi)</code> is not a rational function thus this method can quickly lead to catastrophic errors.</p>
+<p>Another interesting fact is that since <span class="math inline">\(\sin(\pi-x) = \sin(x)\)</span> and for small values of <code>x</code> <span class="math inline">\(\sin(x) \approx x\)</span> we get that <span class="math inline">\(\sin(\pi) \approx \epsilon(\pi)\)</span> (the error in representing <span class="math inline">\(\pi\)</span> as a float). Thus, a nice method to compute <span class="math inline">\(\pi\)</span> is to repeatedly compute <code>pi + sin(pi)</code> up to the highest precision available. Don’t try this in production code, the <a href="http://www.xkcd.com/217/" title="e to pi minus pi">xkcd</a> reference in the beginning of the article should be warning enough: <code>sin(pi)</code> is not a rational function thus this method can quickly lead to catastrophic errors.</p>
 </section>
 <section id="conclusions" class="level3">
 <h3>Conclusions</h3>
@@ -647,28 +647,28 @@ sys <span class="er">0m0</span><span class="fl">.204</span>s</code></pre>
 <h3>What is a daemon?</h3>
 <p>A daemon is a program that runs as a background process, forever, without being directly affected by any user. Let’s run a command to see examples of some daemons.</p>
 <p>We need to run a command which will tell us what processes are started by the <code>init</code> process (they must have a <code>PPID</code> of 1):</p>
-<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">ps</span> -ef <span class="kw">|</span> <span class="kw">awk</span> <span class="st">&#39;$3 == 1&#39;</span></code></pre>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="fu">ps</span> -ef <span class="kw">|</span> <span class="fu">awk</span> <span class="st">&#39;$3 == 1&#39;</span></code></pre></div>
 <p>The trimmed result will be the following:</p>
-<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">ps</span> -ef <span class="kw">|</span> <span class="kw">awk</span> <span class="st">&#39;$3 == 1&#39;</span>
-<span class="kw">root</span>       367     1  0 Mar08 ?        00:00:00 upstart-udev-bridge --daemon
-<span class="kw">root</span>       398     1  0 Mar08 ?        00:00:00 /sbin/udevd --daemon
-<span class="kw">syslog</span>     521     1  0 Mar08 ?        00:00:03 rsyslogd -c5
-<span class="kw">102</span>        525     1  0 Mar08 ?        00:00:15 dbus-daemon --system --fork --activation=upstart
-<span class="kw">avahi</span>      816     1  0 Mar08 ?        00:00:00 avahi-daemon: running [matei-Satellite-C660.local]</code></pre>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="fu">ps</span> -ef <span class="kw">|</span> <span class="fu">awk</span> <span class="st">&#39;$3 == 1&#39;</span>
+<span class="ex">root</span>       367     1  0 Mar08 ?        00:00:00 upstart-udev-bridge --daemon
+<span class="ex">root</span>       398     1  0 Mar08 ?        00:00:00 /sbin/udevd --daemon
+<span class="ex">syslog</span>     521     1  0 Mar08 ?        00:00:03 rsyslogd -c5
+<span class="ex">102</span>        525     1  0 Mar08 ?        00:00:15 dbus-daemon --system --fork --activation=upstart
+<span class="ex">avahi</span>      816     1  0 Mar08 ?        00:00:00 avahi-daemon: running [matei-Satellite-C660.local]</code></pre></div>
 <p>In Linux, the parent process of a daemon is often the <code>init</code> process. To create a daemon, we need to <code>fork()</code> a child process and then exit (after that the process will be an <em>orphan process</em>), causing <code>init</code> to adopt the it as a child. A daemon is often started at boot time having the task of handling network requests or hardware activity.</p>
 </section>
 <section id="lets-code-a-daemon" class="level3">
 <h3>Let’s code a Daemon</h3>
 <p>In this article we will show how one can write a simple daemon process. First, we will show the long path of using <code>fork()</code> and <code>setsid()</code>.</p>
 <p>First step (see <a href="http://web.archive.org/web/20120914180018/http://www.steve.org.uk/Reference/Unix/faq_2.html#SEC16" title="How to code a daemon">this FAQ</a> for reference) is to <code>fork</code> and <code>exit</code> such that the process is no longer a process leader:</p>
-<pre class="sourceCode c"><code class="sourceCode c"><span class="co">/*</span>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="co">/*</span>
 <span class="co"> * Fork the parent process</span>
 <span class="co"> */</span>
 pid = fork();
 <span class="co">/* On failure, -1 is returned in the parent</span>
 <span class="co"> * No child process is created</span>
 <span class="co"> */</span>
-<span class="kw">if</span> (pid &lt; <span class="dv">0</span>) {
+<span class="cf">if</span> (pid &lt; <span class="dv">0</span>) {
     perror(<span class="st">&quot;fork&quot;</span>);
     exit(EXIT_FAILURE);
 }
@@ -676,64 +676,64 @@ pid = fork();
 <span class="co">/* We are now killing the parent process</span>
 <span class="co"> * parent exits -&gt; init &quot;takes the lead&quot;</span>
 <span class="co"> */</span>
-<span class="kw">if</span> (pid &gt; <span class="dv">0</span>)
-    exit(EXIT_SUCCESS);</code></pre>
+<span class="cf">if</span> (pid &gt; <span class="dv">0</span>)
+    exit(EXIT_SUCCESS);</code></pre></div>
 <p>Because we want to have a completely new controlling terminal we need to make our process be a session leader using <code>setsid()</code>. The above <code>fork</code> was needed just to allow this to succeed:</p>
-<pre class="sourceCode c"><code class="sourceCode c">sessionID=setsid();
-<span class="kw">if</span> (sessionID &lt; <span class="dv">0</span>) {
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">sessionID=setsid();
+<span class="cf">if</span> (sessionID &lt; <span class="dv">0</span>) {
     perror(<span class="st">&quot;setsid&quot;</span>);
     exit(EXIT_FAILURE);
-}</code></pre>
+}</code></pre></div>
 <p>Next step is to <code>fork()/exit()</code> again. Since the session leader is now dead our process can never get access to a controlling terminal:</p>
-<pre class="sourceCode c"><code class="sourceCode c">pid = fork();
-<span class="kw">if</span> (pid &lt; <span class="dv">0</span>) {
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">pid = fork();
+<span class="cf">if</span> (pid &lt; <span class="dv">0</span>) {
     perror(<span class="st">&quot;fork&quot;</span>);
     exit(EXIT_FAILURE);
 }
 
-<span class="kw">if</span> (pid &gt; <span class="dv">0</span>)
-    exit(EXIT_SUCCESS);</code></pre>
+<span class="cf">if</span> (pid &gt; <span class="dv">0</span>)
+    exit(EXIT_SUCCESS);</code></pre></div>
 <p>Now, we will switch to the directory which contains the files needed for this daemon to run (for example in case of <code>dovecot</code> we would switch to <code>/run/dovectot</code> which contains the sockets for different mail queues). Or, we could switch to <code>/</code> (like <code>apache2</code> and <code>sshd</code> do for example) if we don’t want to change to a specific directory. Anyway, it is essential to change the current running directory to prevent cases where if the program was started in a <code>cwd</code> from a different partition that partition could no longer be <code>umount</code>ed.</p>
-<pre class="sourceCode c"><code class="sourceCode c">change_dir = chdir(<span class="st">&quot;/&quot;</span>);
-<span class="kw">if</span> (change_dir &lt; <span class="dv">0</span> ) {
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">change_dir = chdir(<span class="st">&quot;/&quot;</span>);
+<span class="cf">if</span> (change_dir &lt; <span class="dv">0</span> ) {
     perror(<span class="st">&quot;chdir&quot;</span>);
     exit(EXIT_FAILURE);
-}</code></pre>
+}</code></pre></div>
 <p>Though the following steps are optional, it is better to do them too to ensure a reproducible behaviour of our executable, no matter what state the system was when we started it.</p>
 <p>Because a child process inherits file descriptors and file descriptors from his parent, we need to close them. We use <code>sysconf</code> to get the maximum number of opened file descriptors in order to close all of them and prevent leaks. Then, we will set <code>umask</code> to 0 to gain complete permissions over anything we write.</p>
-<pre class="sourceCode c"><code class="sourceCode c">maxfd = sysconf(_SC_OPEN_MAX);
-<span class="kw">if</span> (maxfd &lt; <span class="dv">0</span>) {
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">maxfd = sysconf(_SC_OPEN_MAX);
+<span class="cf">if</span> (maxfd &lt; <span class="dv">0</span>) {
     perror(<span class="st">&quot;sysconf _SC_OPEN_MAX&quot;</span>);
     exit(EXIT_FAILURE);
 }
 
-<span class="kw">for</span> (fd = <span class="dv">0</span>; fd &lt; maxfd; fd++)
+<span class="cf">for</span> (fd = <span class="dv">0</span>; fd &lt; maxfd; fd++)
     <span class="co">/* note that we ignore return code here */</span>
     close(fd);
 
-umask(<span class="dv">0</span>);</code></pre>
+umask(<span class="dv">0</span>);</code></pre></div>
 <p>Now we should reopen the 3 standard file descriptors. We can point them to <code>/dev/null</code> or to specific log files. Here we open all of them to <code>/dev/null</code>:</p>
-<pre class="sourceCode c"><code class="sourceCode c">fd = open(<span class="st">&quot;/dev/null&quot;</span>, <span class="dv">0</span>);
-<span class="kw">if</span> (fd &lt; <span class="dv">0</span>) {
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">fd = open(<span class="st">&quot;/dev/null&quot;</span>, <span class="dv">0</span>);
+<span class="cf">if</span> (fd &lt; <span class="dv">0</span>) {
     perror(<span class="st">&quot;open /dev/null&quot;</span>);
     exit(EXIT_FAILURE);
 }
 
 status = dup2(fd, <span class="dv">0</span>);
-<span class="kw">if</span> (status &lt; <span class="dv">0</span>) {
+<span class="cf">if</span> (status &lt; <span class="dv">0</span>) {
     perror(<span class="st">&quot;dup 0&quot;</span>);
     exit(EXIT_FAILURE);
 }
 status = dup2(fd, <span class="dv">1</span>);
-<span class="kw">if</span> (status &lt; <span class="dv">0</span>) {
+<span class="cf">if</span> (status &lt; <span class="dv">0</span>) {
     perror(<span class="st">&quot;dup 1&quot;</span>);
     exit(EXIT_FAILURE);
 }
 status = dup2(fd, <span class="dv">2</span>);
-<span class="kw">if</span> (status &lt; <span class="dv">0</span>) {
+<span class="cf">if</span> (status &lt; <span class="dv">0</span>) {
     perror(<span class="st">&quot;dup 2&quot;</span>);
     exit(EXIT_FAILURE);
-}</code></pre>
+}</code></pre></div>
 <p>We now, have a fully working daemon, created by us. However, certain considerations must be taken:</p>
 <ol type="1">
 <li>First, if our code is to be launched by <code>inetd</code> then only the <code>chdir</code> and <code>umask</code> steps are useful. No <code>fork</code> and <code>setsid</code> should be called (otherwise <code>inetd</code> will get confused) and all other steps are already done by <code>inetd</code>.</li>
@@ -744,58 +744,58 @@ status = dup2(fd, <span class="dv">2</span>);
 <section id="using-nohup-for-daemonizing-processes" class="level3">
 <h3>Using nohup for daemonizing processes</h3>
 <p><code>nohup</code> is a command which is used to run a command which ignores the HUP (hangup) signal. The HUP signal is used by a terminal to warn dependent processes of logout. Thus, processes started with <code>nohup</code> won’t be killed after the <code>tty</code> is destroyed.</p>
-<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">nohup</span> sleep 10000 <span class="kw">&amp;</span>
-[<span class="kw">1</span>] 5470
-<span class="kw">nohup</span>: ignoring input and appending output to ‘nohup.out’
-$ <span class="kw">exit</span></code></pre>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="fu">nohup</span> sleep 10000 <span class="kw">&amp;</span>
+[<span class="ex">1</span>] 5470
+<span class="ex">nohup</span>: ignoring input and appending output to ‘nohup.out’
+$ <span class="bu">exit</span></code></pre></div>
 <p>Now open a new terminal and</p>
-<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">pgrep</span> sleep
-<span class="kw">5470</span></code></pre>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="ex">pgrep</span> sleep
+<span class="ex">5470</span></code></pre></div>
 <p>We can simulate <code>nohup</code> inside our C code too. Let’s configure signal handlers:</p>
-<pre class="sourceCode c"><code class="sourceCode c">memset (&amp;sig_act, <span class="dv">0</span> , <span class="kw">sizeof</span>(sig_act));
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">memset (&amp;sig_act, <span class="dv">0</span> , <span class="kw">sizeof</span>(sig_act));
 <span class="co">/* Ignore SIGHUP signal */</span>
-<span class="kw">if</span> (signal(SIGHUP, SIG_IGN) == SIG_ERR){
+<span class="cf">if</span> (signal(SIGHUP, SIG_IGN) == SIG_ERR){
     perror(<span class="st">&quot;signal&quot;</span>);
     exit(EXIT_FAILURE);
-}</code></pre>
+}</code></pre></div>
 <p>Now, if <code>stdout</code> is a terminal we have to redirect output to a file, just like the original command does:</p>
-<pre class="sourceCode c"><code class="sourceCode c"><span class="kw">if</span>(isatty(fileno(stdout))) {
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="cf">if</span>(isatty(fileno(stdout))) {
     rc = open (<span class="st">&quot;nohup.out&quot;</span>, O_WRONLY | O_CREAT, <span class="dv">0644</span>);
-    <span class="kw">if</span> (rc &lt; <span class="dv">0</span>) {
+    <span class="cf">if</span> (rc &lt; <span class="dv">0</span>) {
         perror(<span class="st">&quot;open&quot;</span>);
         exit(EXIT_FAILURE);
     }
     rc = dup2(rc, STDOUT_FILENO);
-    <span class="kw">if</span> (rc &lt; <span class="dv">0</span>) {
+    <span class="cf">if</span> (rc &lt; <span class="dv">0</span>) {
         perror(<span class="st">&quot;dup2&quot;</span>);
         exit(EXIT_FAILURE);
     }
-}</code></pre>
+}</code></pre></div>
 <p>Then we can <code>fork</code> and <code>exec</code> to get to our new process.</p>
 <p>Let’s test it now (<code>./a.out</code> is our test binary, it receives as arguments the command line to execute in <code>exec</code>):</p>
-<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">./a.out</span> gedit <span class="kw">&amp;</span>
-[<span class="kw">1</span>] 22727</code></pre>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="ex">./a.out</span> gedit <span class="kw">&amp;</span>
+[<span class="ex">1</span>] 22727</code></pre></div>
 <p>After we close the terminal and open a new one, we clearly see that the process will be adopted by <code>init</code>:</p>
-<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">ps</span> -ef <span class="kw">|</span> <span class="kw">grep</span> gedit
-<span class="kw">matei</span>    22727     1  2 18:25 ?        00:00:01 gedit</code></pre>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="fu">ps</span> -ef <span class="kw">|</span> <span class="fu">grep</span> gedit
+<span class="ex">matei</span>    22727     1  2 18:25 ?        00:00:01 gedit</code></pre></div>
 </section>
 <section id="disowning-a-process" class="level3">
 <h3>Disowning a process</h3>
 <p>What if we already started the process and forgot to use <code>nohup</code>? We can use <code>disown</code> to remove the process from the current session hierarchy, thus making it able to survive when the <code>tty</code> is closed.</p>
 <p>Our first job is to use <code>^Z</code> to stop/pause the program and to go back to terminal. Then we have to use <code>bg</code> to run it in the background.</p>
-<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">gedit</span>
-^<span class="kw">Z</span>
-[<span class="kw">1</span>]+  Stopped                 gedit
-$ <span class="kw">bg</span>
-[<span class="kw">1</span>]+ gedit <span class="kw">&amp;</span></code></pre>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="ex">gedit</span>
+^<span class="ex">Z</span>
+[<span class="ex">1</span>]+  Stopped                 gedit
+$ <span class="bu">bg</span>
+[<span class="ex">1</span>]+ gedit <span class="kw">&amp;</span></code></pre></div>
 <p>Now, we use <code>disown</code> with the <code>-h</code> option, to mark the process so that <code>SIGHUP</code> is not gonna be received. If we don’t use the <code>-h</code> option the process is also removed from the current jobs table, which is something we like to do anyway:</p>
-<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">disown</span></code></pre>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="bu">disown</span></code></pre></div>
 <p>If we go to another terminal, we should see that the process has been adopted by <code>init</code>:</p>
-<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">ps</span> -ef <span class="kw">|</span> <span class="kw">grep</span> gedit
-<span class="kw">matei</span>    23087 22921  8 18:38 pts/6    00:00:01 gedit</code></pre>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="fu">ps</span> -ef <span class="kw">|</span> <span class="fu">grep</span> gedit
+<span class="ex">matei</span>    23087 22921  8 18:38 pts/6    00:00:01 gedit</code></pre></div>
 <p>What happened? Our <code>gedit</code> process is not adopted by <code>init</code>. This is because we haven’t yet closed the terminal in which we have launched it. After closing it we have</p>
-<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">ps</span> -ef <span class="kw">|</span> <span class="kw">grep</span> gedit
-<span class="kw">matei</span>    12490     1  1 07:07 ?        00:00:00 gedit</code></pre>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="fu">ps</span> -ef <span class="kw">|</span> <span class="fu">grep</span> gedit
+<span class="ex">matei</span>    12490     1  1 07:07 ?        00:00:00 gedit</code></pre></div>
 <p>To conclude:</p>
 <ul>
 <li>we need to use daemons for autonomous tasks</li>
@@ -939,21 +939,21 @@ dnl the registered files from AC_CONFIG_HEADERS and
 dnl AC_CONFIG_FILES</code></pre>
 <p>Of course, the <code>configure.in</code> file can be much more complex, with many <code>AC_*</code> and <code>AM_*</code> lines. For this, we recommend the Autoconf manual.</p>
 <p>We should also have <code>Makefile.am</code> files in every subdirectory in the source tree. For example, for a tree with few source files (<code>hello</code> program with sources: <code>main.c</code> and <code>functions.c</code>):</p>
-<pre class="sourceCode makefile"><code class="sourceCode makefile"><span class="co"># src/Makefile.am</span>
+<div class="sourceCode"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span class="co"># src/Makefile.am</span>
 <span class="dt">bin_PROGRAMS </span><span class="ch">=</span><span class="st"> hello</span>
-<span class="dt">hello_SOURCES </span><span class="ch">=</span><span class="st"> main.c functions.c</span></code></pre>
+<span class="dt">hello_SOURCES </span><span class="ch">=</span><span class="st"> main.c functions.c</span></code></pre></div>
 <p>If the sources of the program contain an <code>./include/</code> directory which has header files then <code>Makefile.am</code> file from that directory must also contain this line:</p>
-<pre class="sourceCode makefile"><code class="sourceCode makefile"><span class="co"># include/Makefile.am</span>
-<span class="dt">include_HEADERS</span><span class="ch">=</span><span class="st">header1.h header2.h header3.h ... headerN.h</span></code></pre>
+<div class="sourceCode"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span class="co"># include/Makefile.am</span>
+<span class="dt">include_HEADERS</span><span class="ch">=</span><span class="st">header1.h header2.h header3.h ... headerN.h</span></code></pre></div>
 <p>In the <code>Makefile.am</code> from the root directory we must have the following line:</p>
-<pre class="sourceCode makefile"><code class="sourceCode makefile"><span class="dt">SUBDIRS </span><span class="ch">=</span><span class="st"> doc src</span></code></pre>
+<div class="sourceCode"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span class="dt">SUBDIRS </span><span class="ch">=</span><span class="st"> doc src</span></code></pre></div>
 <p>or</p>
-<pre class="sourceCode makefile"><code class="sourceCode makefile"><span class="dt">SUBDIRS </span><span class="ch">=</span><span class="st"> src</span></code></pre>
+<div class="sourceCode"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span class="dt">SUBDIRS </span><span class="ch">=</span><span class="st"> src</span></code></pre></div>
 <p><code>SUBDIRS</code> is a special variable which lists all directories in which <code>make</code> will enter, before processing the current directory.</p>
 <p>In the case of a simple library, the <code>Makefile.am</code> from the respective directory will look like this:</p>
-<pre class="sourceCode makefile"><code class="sourceCode makefile"><span class="co"># lib/Makefile.am</span>
+<div class="sourceCode"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span class="co"># lib/Makefile.am</span>
 <span class="dt">lib_LTLIBRARIES </span><span class="ch">=</span><span class="st"> libaa.la</span>
-<span class="dt">libaa_la_SOURCES </span><span class="ch">=</span><span class="st"> library-aa.c</span></code></pre>
+<span class="dt">libaa_la_SOURCES </span><span class="ch">=</span><span class="st"> library-aa.c</span></code></pre></div>
 <p>We will run the command <code>libtoolize</code>, after which two new files will be created: <code>ltconfig</code> and <code>ltmain.sh</code>.</p>
 <p>For <code>configure.in</code> and <code>Makefile.am</code>, we will run the commands <code>aclocal</code>, <code>autoconf</code>, and, then, <code>automake</code>.</p>
 <p>Also, the source code, which must be portable, must “fold” on these tools.</p>
@@ -1032,58 +1032,58 @@ strcpy(s, getenv(&quot;TERM&quot;));
 </blockquote>
 <!--more-->
 <p>Before we look at an example, let me remind you of a bit of syntactic sugar that Haskell provides in order to quickly define a list of successive integers:</p>
-<pre class="sourceCode haskell"><code class="sourceCode haskell">λ<span class="fu">:</span> [<span class="dv">20</span><span class="fu">..</span><span class="dv">70</span>]
-[<span class="dv">20</span>,<span class="dv">21</span>,<span class="dv">22</span>,<span class="dv">23</span>,<span class="dv">24</span>,<span class="dv">25</span>,<span class="dv">26</span>,<span class="dv">27</span>,<span class="dv">28</span>,<span class="dv">29</span>,<span class="dv">30</span>,<span class="dv">31</span>,<span class="dv">32</span>,<span class="dv">33</span>,<span class="dv">34</span>,<span class="dv">35</span>,<span class="dv">36</span>,<span class="dv">37</span>,<span class="dv">38</span>,<span class="dv">39</span>,<span class="dv">40</span>,<span class="dv">41</span>,<span class="dv">42</span>,<span class="dv">43</span>,<span class="dv">44</span>,<span class="dv">45</span>,<span class="dv">46</span>,<span class="dv">47</span>,<span class="dv">48</span>,<span class="dv">49</span>,<span class="dv">50</span>,<span class="dv">51</span>,<span class="dv">52</span>,<span class="dv">53</span>,<span class="dv">54</span>,<span class="dv">55</span>,<span class="dv">56</span>,<span class="dv">57</span>,<span class="dv">58</span>,<span class="dv">59</span>,<span class="dv">60</span>,<span class="dv">61</span>,<span class="dv">62</span>,<span class="dv">63</span>,<span class="dv">64</span>,<span class="dv">65</span>,<span class="dv">66</span>,<span class="dv">67</span>,<span class="dv">68</span>,<span class="dv">69</span>,<span class="dv">70</span>]</code></pre>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">λ<span class="fu">:</span> [<span class="dv">20</span><span class="fu">..</span><span class="dv">70</span>]
+[<span class="dv">20</span>,<span class="dv">21</span>,<span class="dv">22</span>,<span class="dv">23</span>,<span class="dv">24</span>,<span class="dv">25</span>,<span class="dv">26</span>,<span class="dv">27</span>,<span class="dv">28</span>,<span class="dv">29</span>,<span class="dv">30</span>,<span class="dv">31</span>,<span class="dv">32</span>,<span class="dv">33</span>,<span class="dv">34</span>,<span class="dv">35</span>,<span class="dv">36</span>,<span class="dv">37</span>,<span class="dv">38</span>,<span class="dv">39</span>,<span class="dv">40</span>,<span class="dv">41</span>,<span class="dv">42</span>,<span class="dv">43</span>,<span class="dv">44</span>,<span class="dv">45</span>,<span class="dv">46</span>,<span class="dv">47</span>,<span class="dv">48</span>,<span class="dv">49</span>,<span class="dv">50</span>,<span class="dv">51</span>,<span class="dv">52</span>,<span class="dv">53</span>,<span class="dv">54</span>,<span class="dv">55</span>,<span class="dv">56</span>,<span class="dv">57</span>,<span class="dv">58</span>,<span class="dv">59</span>,<span class="dv">60</span>,<span class="dv">61</span>,<span class="dv">62</span>,<span class="dv">63</span>,<span class="dv">64</span>,<span class="dv">65</span>,<span class="dv">66</span>,<span class="dv">67</span>,<span class="dv">68</span>,<span class="dv">69</span>,<span class="dv">70</span>]</code></pre></div>
 <p>As you might remember from <a href="http://techblog.rosedu.org/haskell-part1.html">part 1</a>, <code>λ:</code> is my custom GHCi prompt, so we’re effectively looking at the result of how GHCi interprets the notation <code>[20..70]</code>.</p>
 <p>OK then. To start, let’s define two lists:</p>
-<pre class="sourceCode haskell"><code class="sourceCode haskell">λ<span class="fu">:</span> <span class="kw">let</span> list1 <span class="fu">=</span> [<span class="dv">20</span><span class="fu">..</span><span class="dv">70</span>]
-λ<span class="fu">:</span> <span class="kw">let</span> list2 <span class="fu">=</span> map (<span class="fu">+</span><span class="dv">1</span>) list1</code></pre>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">λ<span class="fu">:</span> <span class="kw">let</span> list1 <span class="fu">=</span> [<span class="dv">20</span><span class="fu">..</span><span class="dv">70</span>]
+λ<span class="fu">:</span> <span class="kw">let</span> list2 <span class="fu">=</span> map (<span class="fu">+</span><span class="dv">1</span>) list1</code></pre></div>
 <p>At this point you might be thinking “Oh look, <code>list1</code> is the enumeration of all integers between 20 and 70, and <code>list2</code> is the enumeration of all integers between 21 and 71”.</p>
 <p><strong>Well, no.</strong> Not yet, at least.</p>
 <p>GHCi provides a command called <code>:sprint</code> that allows us to take a peek at how far along the evaluation of a given expression has progressed.</p>
-<pre class="sourceCode haskell"><code class="sourceCode haskell">λ<span class="fu">:</span> <span class="fu">:</span>sprint list1
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">λ<span class="fu">:</span> <span class="fu">:</span>sprint list1
 list1 <span class="fu">=</span> _
 λ<span class="fu">:</span> <span class="fu">:</span>sprint list2
-list2 <span class="fu">=</span> _</code></pre>
+list2 <span class="fu">=</span> _</code></pre></div>
 <p>So what <code>:sprint</code> is telling us in the above snippet is that both <code>list1</code> and <code>list2</code> are unevaluated at this point. To establish some terminology, an underscore in the context of <code>:sprint</code> output represents a <strong>thunk</strong>. Formally defined, a thunk is an expression that hasn’t yet been evaluated. You may think of it as a value wrapped in a function of zero arguments. When the function is called, the value springs into existence.</p>
 <p>We are now going to ask increasingly “intrusive” questions about <code>list2</code> and then each step along the way examine what has been evaluated and what hasn’t.</p>
 <p>The simplest and least intrusive question we can ask about a list is whether or not it’s empty.</p>
-<pre class="sourceCode haskell"><code class="sourceCode haskell">λ<span class="fu">:</span> null list2
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">λ<span class="fu">:</span> null list2
 <span class="dt">False</span>
 λ<span class="fu">:</span> <span class="fu">:</span>sprint list1
 list1 <span class="fu">=</span> <span class="dv">20</span> <span class="fu">:</span> _
 λ<span class="fu">:</span> <span class="fu">:</span>sprint list2
-list2 <span class="fu">=</span> _ <span class="fu">:</span> _</code></pre>
+list2 <span class="fu">=</span> _ <span class="fu">:</span> _</code></pre></div>
 <p>In order to answer that question, GHCi needs to know whether or not the first element exists, and as a result, <code>list2</code> is no longer unevaluated, it is now partially evaluated. GHCi now knows something about the structure of <code>list2</code> - it knows that it consists of something “consed onto” (prepended to) something else. In the next round, that “something” will turn out to be the value <code>21</code>, but for right now this fact is irrelevant to the process of answering the question “is <code>list2</code> empty”. However, we notice the value <code>20</code> is fully evaluated as the head of <code>list1</code> - this particular evaluation was necessary in order to construct the thunk <code>(+1) 20</code>.</p>
 <p>Next, we ask for the first element of <code>list2</code>:</p>
-<pre class="sourceCode haskell"><code class="sourceCode haskell">λ<span class="fu">:</span> head list2
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">λ<span class="fu">:</span> head list2
 <span class="dv">21</span>
 λ<span class="fu">:</span> <span class="fu">:</span>sprint list1
 list1 <span class="fu">=</span> <span class="dv">20</span> <span class="fu">:</span> _
 λ<span class="fu">:</span> <span class="fu">:</span>sprint list2
-list2 <span class="fu">=</span> <span class="dv">21</span> <span class="fu">:</span> _</code></pre>
+list2 <span class="fu">=</span> <span class="dv">21</span> <span class="fu">:</span> _</code></pre></div>
 <p>We notice that the expression <code>(+1) 20</code> mentioned above is now fully evaluated and therefore no longer a thunk.</p>
 <p>Next, let’s ask for the first 5 elements of <code>list2</code>:</p>
-<pre class="sourceCode haskell"><code class="sourceCode haskell">λ<span class="fu">:</span> take <span class="dv">5</span> list2
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">λ<span class="fu">:</span> take <span class="dv">5</span> list2
 [<span class="dv">21</span>,<span class="dv">22</span>,<span class="dv">23</span>,<span class="dv">24</span>,<span class="dv">25</span>]
 λ<span class="fu">:</span> <span class="fu">:</span>sprint list1
 list1 <span class="fu">=</span> <span class="dv">20</span> <span class="fu">:</span> <span class="dv">21</span> <span class="fu">:</span> <span class="dv">22</span> <span class="fu">:</span> <span class="dv">23</span> <span class="fu">:</span> <span class="dv">24</span> <span class="fu">:</span> _
 λ<span class="fu">:</span> <span class="fu">:</span>sprint list2
-list2 <span class="fu">=</span> <span class="dv">21</span> <span class="fu">:</span> <span class="dv">22</span> <span class="fu">:</span> <span class="dv">23</span> <span class="fu">:</span> <span class="dv">24</span> <span class="fu">:</span> <span class="dv">25</span> <span class="fu">:</span> _</code></pre>
+list2 <span class="fu">=</span> <span class="dv">21</span> <span class="fu">:</span> <span class="dv">22</span> <span class="fu">:</span> <span class="dv">23</span> <span class="fu">:</span> <span class="dv">24</span> <span class="fu">:</span> <span class="dv">25</span> <span class="fu">:</span> _</code></pre></div>
 <p>Next, let’s ask for the 18th element of <code>list2</code>:</p>
-<pre class="sourceCode haskell"><code class="sourceCode haskell">λ<span class="fu">:</span> list2 <span class="fu">!!</span> <span class="dv">17</span>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">λ<span class="fu">:</span> list2 <span class="fu">!!</span> <span class="dv">17</span>
 <span class="dv">38</span>
 λ<span class="fu">:</span> <span class="fu">:</span>sprint list1
 list1 <span class="fu">=</span> <span class="dv">20</span> <span class="fu">:</span> <span class="dv">21</span> <span class="fu">:</span> <span class="dv">22</span> <span class="fu">:</span> <span class="dv">23</span> <span class="fu">:</span> <span class="dv">24</span> <span class="fu">:</span> <span class="dv">25</span> <span class="fu">:</span> <span class="dv">26</span> <span class="fu">:</span> <span class="dv">27</span> <span class="fu">:</span> <span class="dv">28</span> <span class="fu">:</span> <span class="dv">29</span> <span class="fu">:</span>
         <span class="dv">30</span> <span class="fu">:</span> <span class="dv">31</span> <span class="fu">:</span> <span class="dv">32</span> <span class="fu">:</span> <span class="dv">33</span> <span class="fu">:</span> <span class="dv">34</span> <span class="fu">:</span> <span class="dv">35</span> <span class="fu">:</span> <span class="dv">36</span> <span class="fu">:</span> <span class="dv">37</span> <span class="fu">:</span> _
 λ<span class="fu">:</span> <span class="fu">:</span>sprint list2
 list2 <span class="fu">=</span> <span class="dv">21</span> <span class="fu">:</span> <span class="dv">22</span> <span class="fu">:</span> <span class="dv">23</span> <span class="fu">:</span> <span class="dv">24</span> <span class="fu">:</span> <span class="dv">25</span> <span class="fu">:</span> _ <span class="fu">:</span> _ <span class="fu">:</span> _ <span class="fu">:</span> _ <span class="fu">:</span> _ <span class="fu">:</span>
-        _ <span class="fu">:</span> _ <span class="fu">:</span> _ <span class="fu">:</span> _ <span class="fu">:</span> _ <span class="fu">:</span> _ <span class="fu">:</span> _ <span class="fu">:</span> <span class="dv">38</span> <span class="fu">:</span> _</code></pre>
+        _ <span class="fu">:</span> _ <span class="fu">:</span> _ <span class="fu">:</span> _ <span class="fu">:</span> _ <span class="fu">:</span> _ <span class="fu">:</span> _ <span class="fu">:</span> <span class="dv">38</span> <span class="fu">:</span> _</code></pre></div>
 <p>Now this is interesting.</p>
 <p>Elements from the 6th to the 17th are fully evaluated in <code>list1</code> but unevaluated in <code>list2</code>. Because of how <code>list1</code> is defined, it is going to be evaluated in small, close-proximity increments from left to right. But all values in <code>list2</code> are evaluated by applying a transformation on elements in the corresponding positions in <code>list1</code>. That is why we are starting to see gaps in <code>list2</code>.</p>
 <p>This example really drives home the essence of lazy evaluation. By default, Haskell will evaluate as little as possible, as late as possible. This is in contrast to traditional, imperative programming languages which evaluate as much as possible, as soon as possible.</p>
 <p>Next, let’s ask for the length of <code>list2</code>:</p>
-<pre class="sourceCode haskell"><code class="sourceCode haskell">λ<span class="fu">:</span> length list2
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">λ<span class="fu">:</span> length list2
 <span class="dv">51</span>
 λ<span class="fu">:</span> <span class="fu">:</span>sprint list1
 list1 <span class="fu">=</span> [<span class="dv">20</span>,<span class="dv">21</span>,<span class="dv">22</span>,<span class="dv">23</span>,<span class="dv">24</span>,<span class="dv">25</span>,<span class="dv">26</span>,<span class="dv">27</span>,<span class="dv">28</span>,<span class="dv">29</span>,
@@ -1096,17 +1096,17 @@ list2 <span class="fu">=</span> [<span class="dv">21</span>,<span class="dv">22<
          _,_,_,_,_,_,_,<span class="dv">38</span>,_,_,
          _,_,_,_,_,_,_,_,_,_,
          _,_,_,_,_,_,_,_,_,_,
-         _,_,_,_,_,_,_,_,_,_,_]</code></pre>
+         _,_,_,_,_,_,_,_,_,_,_]</code></pre></div>
 <p>At this point, <code>list1</code> is fully evaluated because there are no two ways around it - in order to compute the length of <code>list2</code>, GHCi needs to keep track of each and every one of its thunks, therefore it needs to generate the entire “spine” of the list. The process of generating the thunks <code>(+1) 25</code> through <code>(+1) 70</code> will require all elements of <code>list1</code> to be fully evaluated.</p>
 <p>Finally, there is only one thing left for us to do such that <code>list2</code> is fully evaluated too - compute the sum of its elements:</p>
-<pre class="sourceCode haskell"><code class="sourceCode haskell">λ<span class="fu">:</span> sum list2
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">λ<span class="fu">:</span> sum list2
 <span class="dv">2346</span>
 λ<span class="fu">:</span> <span class="fu">:</span>sprint list2
 list2 <span class="fu">=</span> [<span class="dv">21</span>,<span class="dv">22</span>,<span class="dv">23</span>,<span class="dv">24</span>,<span class="dv">25</span>,<span class="dv">26</span>,<span class="dv">27</span>,<span class="dv">28</span>,<span class="dv">29</span>,<span class="dv">30</span>,
          <span class="dv">31</span>,<span class="dv">32</span>,<span class="dv">33</span>,<span class="dv">34</span>,<span class="dv">35</span>,<span class="dv">36</span>,<span class="dv">37</span>,<span class="dv">38</span>,<span class="dv">39</span>,<span class="dv">40</span>,
          <span class="dv">41</span>,<span class="dv">42</span>,<span class="dv">43</span>,<span class="dv">44</span>,<span class="dv">45</span>,<span class="dv">46</span>,<span class="dv">47</span>,<span class="dv">48</span>,<span class="dv">49</span>,<span class="dv">50</span>,
          <span class="dv">51</span>,<span class="dv">52</span>,<span class="dv">53</span>,<span class="dv">54</span>,<span class="dv">55</span>,<span class="dv">56</span>,<span class="dv">57</span>,<span class="dv">58</span>,<span class="dv">59</span>,<span class="dv">60</span>,
-         <span class="dv">61</span>,<span class="dv">62</span>,<span class="dv">63</span>,<span class="dv">64</span>,<span class="dv">65</span>,<span class="dv">66</span>,<span class="dv">67</span>,<span class="dv">68</span>,<span class="dv">69</span>,<span class="dv">70</span>,<span class="dv">71</span>]</code></pre>
+         <span class="dv">61</span>,<span class="dv">62</span>,<span class="dv">63</span>,<span class="dv">64</span>,<span class="dv">65</span>,<span class="dv">66</span>,<span class="dv">67</span>,<span class="dv">68</span>,<span class="dv">69</span>,<span class="dv">70</span>,<span class="dv">71</span>]</code></pre></div>
 <section id="conclusion" class="level3">
 <h3>Conclusion</h3>
 <p>Laziness can be a tremendously helpful device for designing Haskell programs that run in constant space and feature a clean separation of pure code vs. side-effecting code. However, care must be taken to avoid what is known as “space leaks”, which we are going to cover in the next instalment of this series.</p>
@@ -1264,12 +1264,12 @@ list2 <span class="fu">=</span> [<span class="dv">21</span>,<span class="dv">22<
 <li><code>_XOPEN_SOURCE</code>, which activates SUSv1/2/3/4 functionality.</li>
 </ul>
 <p>For older POSIX functionality we have to declare the following in our source file:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#define _POSIX_SOURCE</span>
-<span class="ot">#define _POSIX_C_SOURCE 1 </span><span class="co">/* for POSIX 1990 */</span>
-<span class="co">/* use 2 for POSIX C bindings 1003.2-1992 */</span></code></pre>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="pp">#define _POSIX_SOURCE</span>
+<span class="pp">#define _POSIX_C_SOURCE 1 </span><span class="co">/* for POSIX 1990 */</span>
+<span class="co">/* use 2 for POSIX C bindings 1003.2-1992 */</span></code></pre></div>
 <p>For POSIX 2008 functionality, we define:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#define _POSIX_SOURCE</span>
-<span class="ot">#define _POSIX_C_SOURCE 200809L</span></code></pre>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="pp">#define _POSIX_SOURCE</span>
+<span class="pp">#define _POSIX_C_SOURCE 200809L</span></code></pre></div>
 <p>Or, we can compile with:</p>
 <pre><code>cc -D_POSIX_SOURCE -D_POSIX_C_SOURCE=200809L filename.c</code></pre>
 <p>If our code is written, or it will run on UNIX certified systems (hence on systems who follow SUSv1, SUSv2, SUSv3, or SUSv4), we must define also <code>_XOPEN_SOURCE</code>:</p>
@@ -1277,28 +1277,28 @@ list2 <span class="fu">=</span> [<span class="dv">21</span>,<span class="dv">22<
 <ul>
 <li>for SUSv1:</li>
 </ul>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#define _POSIX_SOURCE</span>
-<span class="ot">#define _POSIX_C_SOURCE 2</span>
-<span class="ot">#define _XOPEN_SOURCE</span>
-<span class="ot">#define _XOPEN_SOURCE_EXTENDED 1</span></code></pre>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="pp">#define _POSIX_SOURCE</span>
+<span class="pp">#define _POSIX_C_SOURCE 2</span>
+<span class="pp">#define _XOPEN_SOURCE</span>
+<span class="pp">#define _XOPEN_SOURCE_EXTENDED 1</span></code></pre></div>
 <ul>
 <li>for SUSv2:</li>
 </ul>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#define _POSIX_SOURCE</span>
-<span class="ot">#define _POSIX_C_SOURCE 199506L</span>
-<span class="ot">#define _XOPEN_SOURCE 500</span></code></pre>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="pp">#define _POSIX_SOURCE</span>
+<span class="pp">#define _POSIX_C_SOURCE 199506L</span>
+<span class="pp">#define _XOPEN_SOURCE 500</span></code></pre></div>
 <ul>
 <li>for SUSv3:</li>
 </ul>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#define _POSIX_SOURCE</span>
-<span class="ot">#define _POSIX_C_SOURCE 200112L</span>
-<span class="ot">#define _XOPEN_SOURCE 600</span></code></pre>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="pp">#define _POSIX_SOURCE</span>
+<span class="pp">#define _POSIX_C_SOURCE 200112L</span>
+<span class="pp">#define _XOPEN_SOURCE 600</span></code></pre></div>
 <ul>
 <li>for SUSv4:</li>
 </ul>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#define _POSIX_SOURCE</span>
-<span class="ot">#define _POSIX_C_SOURCE 200809L</span>
-<span class="ot">#define _XOPEN_SOURCE 700</span></code></pre>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="pp">#define _POSIX_SOURCE</span>
+<span class="pp">#define _POSIX_C_SOURCE 200809L</span>
+<span class="pp">#define _XOPEN_SOURCE 700</span></code></pre></div>
 <p>If we write code only for Linux platforms, we will use the feature test macro <code>_GNU_SOURCE</code>, which will activate GNU LIBC functionality, which sometimes isn’t POSIX compatible. There is also the feature test macro <code>_SVID_SOURCE</code> (to activate System V functionality) and <code>_BSD_SOURCE</code> (to activate BSD functionality). One important note is that a UNIX system (which follows SUSvX) can be activated to offer any SUSvX functionality.</p>
 <p>This is the way we can write Unix portable code. Other methods to find out more about the operating system on which we compile are:</p>
 <ul>
@@ -1349,38 +1349,38 @@ list2 <span class="fu">=</span> [<span class="dv">21</span>,<span class="dv">22<
 <h3>1. Higher-order functions</h3>
 <p>A high-order function is a function that takes one or more functions as an input and outputs a function. For example, we can use this higher-order functions to map, filter, fold and sort lists.</p>
 <p>Let’s start with a simple example of a high-order function, in Haskell:</p>
-<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">zipWith1 ::</span> (a <span class="ot">-&gt;</span> b <span class="ot">-&gt;</span> c) <span class="ot">-&gt;</span> [a] <span class="ot">-&gt;</span> [b] <span class="ot">-&gt;</span> [c]
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">zipWith1 ::</span> (a <span class="ot">-&gt;</span> b <span class="ot">-&gt;</span> c) <span class="ot">-&gt;</span> [a] <span class="ot">-&gt;</span> [b] <span class="ot">-&gt;</span> [c]
 zipWith1 _ [] _ <span class="fu">=</span> []
 zipWith1 _ _ [] <span class="fu">=</span> []
-zipWith1 f (x<span class="fu">:</span>xs) (y<span class="fu">:</span>ys) <span class="fu">=</span> f x y <span class="fu">:</span> zipWith1 f xs ys</code></pre>
+zipWith1 f (x<span class="fu">:</span>xs) (y<span class="fu">:</span>ys) <span class="fu">=</span> f x y <span class="fu">:</span> zipWith1 f xs ys</code></pre></div>
 <p>This function will take a function and two lists as parameters and then joins them by applying the function between corresponding elements. Let’s see a little demonstration for the function written above:</p>
-<pre class="sourceCode haskell"><code class="sourceCode haskell">ghci<span class="fu">&gt;</span> zipWith1 (<span class="fu">+</span>) [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>] [<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>]
-[<span class="dv">6</span>,<span class="dv">8</span>,<span class="dv">10</span>,<span class="dv">12</span>]</code></pre>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">ghci<span class="fu">&gt;</span> zipWith1 (<span class="fu">+</span>) [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>] [<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>]
+[<span class="dv">6</span>,<span class="dv">8</span>,<span class="dv">10</span>,<span class="dv">12</span>]</code></pre></div>
 <p>So we found out what a <a href="http://learnyouahaskell.com/higher-order-functions" title="Learn You A Haskell">higher-order function is</a>. Now, what is a lambda function? The term comes from the Lambda Calculus and refers to anonymous functions in programming. With a lambda function you can write quick functions without naming them.</p>
 <p>Let’s see the above function written using lambdas:</p>
-<pre class="sourceCode haskell"><code class="sourceCode haskell">zipWith (\x y <span class="ot">-&gt;</span> x <span class="fu">+</span> y ) [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>] [<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>]</code></pre>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">zipWith (\x y <span class="ot">-&gt;</span> x <span class="fu">+</span> y ) [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>] [<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>]</code></pre></div>
 <p>If we run this function in GHCi the result will be the same as above:</p>
-<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="dt">Prelude</span><span class="fu">&gt;</span> zipWith (\x y <span class="ot">-&gt;</span> x <span class="fu">+</span> y ) [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>] [<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>]
-[<span class="dv">6</span>,<span class="dv">8</span>,<span class="dv">10</span>,<span class="dv">12</span>]</code></pre>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="dt">Prelude</span><span class="fu">&gt;</span> zipWith (\x y <span class="ot">-&gt;</span> x <span class="fu">+</span> y ) [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>] [<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>]
+[<span class="dv">6</span>,<span class="dv">8</span>,<span class="dv">10</span>,<span class="dv">12</span>]</code></pre></div>
 <p>Now, to see the equivalence, the following functions are one and the same:</p>
-<pre class="sourceCode haskell"><code class="sourceCode haskell">f x y <span class="fu">=</span> x <span class="fu">+</span> y
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">f x y <span class="fu">=</span> x <span class="fu">+</span> y
 f x <span class="fu">=</span> \y <span class="ot">-&gt;</span> x <span class="fu">+</span> y
-f <span class="fu">=</span> \x y <span class="ot">-&gt;</span> x <span class="fu">+</span> y</code></pre>
+f <span class="fu">=</span> \x y <span class="ot">-&gt;</span> x <span class="fu">+</span> y</code></pre></div>
 <p>Now, we know what is a lambda function and a higher-order function. Let’s see how can we use lambda functions in C++.</p>
 </section>
 <section id="lambdas-in-c" class="level3">
 <h3>2. Lambdas in C++</h3>
 <p>A lambda function, in C++, starts with <code>[</code> and it has a specific syntax:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp">[capture] (params) -&gt; return_type { function_body }</code></pre>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp">[capture] (params) -&gt; <span class="dt">return_type</span> { function_body }</code></pre></div>
 <p>Let’s see a short example of a lambda function in C++:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp">[](<span class="dt">int</span> x, <span class="dt">int</span> y) -&gt; <span class="dt">int</span> { <span class="kw">return</span> x * y; }</code></pre>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp">[](<span class="dt">int</span> x, <span class="dt">int</span> y) -&gt; <span class="dt">int</span> { <span class="cf">return</span> x * y; }</code></pre></div>
 <p>This function simply multiplies two integers.</p>
 <p>Consider now the following Haskell example of applying a function to a list, using <code>map</code>:</p>
-<pre class="sourceCode haskell"><code class="sourceCode haskell">map (\x <span class="ot">-&gt;</span> x <span class="fu">+</span> <span class="dv">1</span>) [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>]</code></pre>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">map (\x <span class="ot">-&gt;</span> x <span class="fu">+</span> <span class="dv">1</span>) [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>]</code></pre></div>
 <p>In C++, we have the <a href="http://www.cplusplus.com/reference/algorithm/transform/" title="Function transform">function transform</a> which does the same thing as the <code>map</code> function from Haskell:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
-<span class="ot">#include &lt;algorithm&gt;</span>
-<span class="ot">#include &lt;vector&gt;</span>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span>
+<span class="pp">#include </span><span class="im">&lt;algorithm&gt;</span>
+<span class="pp">#include </span><span class="im">&lt;vector&gt;</span>
 
 <span class="kw">using</span> <span class="kw">namespace</span> std;
 
@@ -1390,7 +1390,7 @@ f <span class="fu">=</span> \x y <span class="ot">-&gt;</span> x <span class="fu
     vector &lt;<span class="dt">int</span>&gt; vector2;
 
     <span class="co">/* pseudo-pseudo-random values */</span>
-    <span class="kw">for</span> (<span class="dt">int</span> i=<span class="dv">1</span>;i&lt;<span class="dv">4</span>;i++)
+    <span class="cf">for</span> (<span class="dt">int</span> i=<span class="dv">1</span>;i&lt;<span class="dv">4</span>;i++)
         vector1.push_back (i);
 
     <span class="co">/* alocate memory in vector2 */</span>
@@ -1400,16 +1400,16 @@ f <span class="fu">=</span> \x y <span class="ot">-&gt;</span> x <span class="fu
 <span class="co">     * in vector1 and stores it in vector2</span>
 <span class="co">     */</span>
     transform (vector1.begin(), vector1.end(), vector2.begin(),
-        [] (<span class="dt">int</span> i) { <span class="kw">return</span> ++i; });
+        [] (<span class="dt">int</span> i) { <span class="cf">return</span> ++i; });
 
     <span class="co">/* output the result */</span>
     cout &lt;&lt; “Vector2 contains: “;
-    <span class="kw">for</span> (std::vector&lt;<span class="dt">int</span>&gt;::iterator it=vector2.begin();
+    <span class="cf">for</span> (<span class="bu">std::</span>vector&lt;<span class="dt">int</span>&gt;::iterator it=vector2.begin();
         it!=vector2.end(); ++it)
-        std::cout &lt;&lt; <span class="st">&#39; &#39;</span> &lt;&lt; *it;
+        <span class="bu">std::</span>cout &lt;&lt; <span class="st">&#39; &#39;</span> &lt;&lt; *it;
 
-    <span class="kw">return</span> <span class="dv">0</span>;
-}</code></pre>
+    <span class="cf">return</span> <span class="dv">0</span>;
+}</code></pre></div>
 <p>And the output is:</p>
 <pre><code>Vector2 contains: 2 3 4</code></pre>
 <p>You can see that our result is the same as in Haskell. We used a lambda function to increment the value for the each element from the first vector and then we printed it to standard output.</p>
@@ -1420,7 +1420,7 @@ f <span class="fu">=</span> \x y <span class="ot">-&gt;</span> x <span class="fu
 <ul>
 <li>You can write fast functions and use them in your production code</li>
 <li>You can replace macros (because macros are evil – citation needed)</li>
-<li>Because <span class="math">\(\lambda\)</span> rocks</li>
+<li>Because <span class="math inline">\(\lambda\)</span> rocks</li>
 <li>Because you can use it when you want a short-term functionality that you do not want to have to name</li>
 </ul>
 </section>
@@ -1576,12 +1576,12 @@ getenv(&quot;COLUMNS&quot;)                               = nil
 ioctl(1, 21523, 0x7fffbc2e2ee0)                 = 0</code></pre>
 <p>Like <code>strace</code>, we can also use <code>-e</code> to filter on specific calls.</p>
 <p>In the following examples we would use the following C source file which computes <code>41^41</code> and <code>42^42</code> both using the float <code>libmath</code> version and the <code>libgmp</code> multi-precision integers one. We will use threads to compute <code>42^42</code> and compute <code>41^41</code> in the <code>main</code> function with both arguments.</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;math.h&gt;</span>
-<span class="ot">#include &lt;pthread.h&gt;</span>
-<span class="ot">#include &lt;stdio.h&gt;</span>
-<span class="ot">#include &lt;stdlib.h&gt;</span>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="pp">#include </span><span class="im">&lt;math.h&gt;</span>
+<span class="pp">#include </span><span class="im">&lt;pthread.h&gt;</span>
+<span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span>
+<span class="pp">#include </span><span class="im">&lt;stdlib.h&gt;</span>
 
-<span class="ot">#include &lt;gmp.h&gt;</span>
+<span class="pp">#include </span><span class="im">&lt;gmp.h&gt;</span>
 
 <span class="dt">void</span> *do_double_thread(<span class="dt">void</span> *data)
 {
@@ -1591,7 +1591,7 @@ ioctl(1, 21523, 0x7fffbc2e2ee0)                 = 0</code></pre>
 
 <span class="dt">void</span> *do_mpz_thread(<span class="dt">void</span> *data)
 {
-  mpz_t x;
+  <span class="dt">mpz_t</span> x;
 
   mpz_init_set_ui(x, <span class="dv">42</span>);
   mpz_pow_ui(x, x, <span class="dv">42</span>);
@@ -1601,11 +1601,11 @@ ioctl(1, 21523, 0x7fffbc2e2ee0)                 = 0</code></pre>
 
 <span class="dt">int</span> main()
 {
-  pthread_t double_thread, mpz_thread;
-  pthread_attr_t attr;
+  <span class="dt">pthread_t</span> double_thread, mpz_thread;
+  <span class="dt">pthread_attr_t</span> attr;
 
   <span class="dt">double</span> y = <span class="dv">41</span>;
-  mpz_t x;
+  <span class="dt">mpz_t</span> x;
 
   mpz_init_set_ui(x, <span class="dv">41</span>);
   mpz_pow_ui(x, x, <span class="dv">41</span>);
@@ -1615,37 +1615,37 @@ ioctl(1, 21523, 0x7fffbc2e2ee0)                 = 0</code></pre>
   y = pow(y, y);
 
   <span class="co">/* initialize the attribute */</span>
-  <span class="kw">if</span> (pthread_attr_init(&amp;attr) != <span class="dv">0</span>) {
+  <span class="cf">if</span> (pthread_attr_init(&amp;attr) != <span class="dv">0</span>) {
     perror(<span class="st">&quot;pthread_attr_init&quot;</span>);
     pthread_exit(NULL);
   }
 
   <span class="co">/* set detached state */</span>
-  <span class="kw">if</span> (pthread_attr_setdetachstate(&amp;attr, PTHREAD_CREATE_JOINABLE) != <span class="dv">0</span>) {
+  <span class="cf">if</span> (pthread_attr_setdetachstate(&amp;attr, PTHREAD_CREATE_JOINABLE) != <span class="dv">0</span>) {
     perror(<span class="st">&quot;pthread_attr_setdetachstate&quot;</span>);
     pthread_exit(NULL);
   }
 
-  <span class="kw">if</span> (pthread_create(&amp;double_thread, &amp;attr, do_double_thread, NULL)) {
+  <span class="cf">if</span> (pthread_create(&amp;double_thread, &amp;attr, do_double_thread, NULL)) {
     perror(<span class="st">&quot;pthread_create&quot;</span>);
     exit(EXIT_FAILURE);
   }
 
-  <span class="kw">if</span> (pthread_create(&amp;mpz_thread, &amp;attr, do_mpz_thread, NULL)) {
+  <span class="cf">if</span> (pthread_create(&amp;mpz_thread, &amp;attr, do_mpz_thread, NULL)) {
     perror(<span class="st">&quot;pthread_create&quot;</span>);
     exit(EXIT_FAILURE);
   }
 
   pthread_attr_destroy(&amp;attr);
 
-  <span class="kw">if</span> (pthread_join(double_thread, NULL))
+  <span class="cf">if</span> (pthread_join(double_thread, NULL))
     perror(<span class="st">&quot;pthread_join&quot;</span>);
 
-  <span class="kw">if</span> (pthread_join(mpz_thread, NULL))
+  <span class="cf">if</span> (pthread_join(mpz_thread, NULL))
     perror(<span class="st">&quot;pthread_join&quot;</span>);
 
-  <span class="kw">return</span> <span class="dv">0</span>;
-}</code></pre>
+  <span class="cf">return</span> <span class="dv">0</span>;
+}</code></pre></div>
 <p>To compile, we have to link against <code>libmath</code>, <code>libpthread</code> and <code>libgmp</code>:</p>
 <pre><code>$ gcc -lm -lpthread -lgmp test.c -o test</code></pre>
 <p>Running <code>ltrace</code> on the full output we have the following:</p>
@@ -1997,28 +1997,28 @@ _fini@libgmp.so.10(0x358cc761f0, 0, 0xffffffff, 0)= 0x358ca5edc4
 <section id="mutability" class="level3">
 <h3>Mutability</h3>
 <p>To start with, here’s a Python code sample, cut and pasted from a Python 2.7 REPL (interactive console session):</p>
-<pre class="sourceCode python"><code class="sourceCode python">&gt;&gt;&gt; x = <span class="dv">1</span>
-&gt;&gt;&gt; x = x + <span class="dv">1</span>
-&gt;&gt;&gt; x
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> x <span class="op">=</span> <span class="dv">1</span>
+<span class="op">&gt;&gt;&gt;</span> x <span class="op">=</span> x <span class="op">+</span> <span class="dv">1</span>
+<span class="op">&gt;&gt;&gt;</span> x
 <span class="dv">2</span>
-&gt;&gt;&gt;</code></pre>
+<span class="op">&gt;&gt;&gt;</span></code></pre></div>
 <p>Nothing could be simpler!</p>
 <p>OK then. Time to port this snippet of code over to Haskell. I’m just going to go with the flow and naively assume – just as many newcomers to Haskell would – that porting Python code is a direct 1-to-1 syntactic translation, in other words, an easy, straightforward thing to do.</p>
 <p>The following is what happens in the Haskell REPL (called GHCi). By the way, here we have to prepend the keyword <code>let</code> - it’s the law of the land in GHCi:</p>
-<pre class="sourceCode haskell"><code class="sourceCode haskell">λ<span class="fu">:</span> <span class="kw">let</span> x <span class="fu">=</span> <span class="dv">1</span>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">λ<span class="fu">:</span> <span class="kw">let</span> x <span class="fu">=</span> <span class="dv">1</span>
 λ<span class="fu">:</span> <span class="kw">let</span> x <span class="fu">=</span> x <span class="fu">+</span> <span class="dv">1</span>
 λ<span class="fu">:</span> x
 <span class="fu">^</span><span class="dt">CInterrupted</span><span class="fu">.</span>
-λ<span class="fu">:</span></code></pre>
+λ<span class="fu">:</span></code></pre></div>
 <p>Huh? What just happened? I was expecting Haskell to compute the value 2. It took forever for the GHCi interactive console to evaluate <code>x</code>, so I got bored and pressed <code>Ctrl-C</code>. What’s happening? Explain this to me.</p>
 <p>Well, as one Reddit commenter once observed, this is just one of the many things Haskell does to haze you during your initiation.</p>
-<p>What you’re actually doing is giving Haskell a puzzle (<code>x = x + 1</code>) and saying “Go find me a solution”. Mathematically speaking, there are only 2 possible solutions to that puzzle: <span class="math">\(\infty\)</span> and <span class="math">\(- \infty\)</span>. So when you saw it hang, Haskell wasn’t merely taking its time – for no good reason – before giving you back the value 2. Instead, Haskell’s runtime was trying its hardest to give you a correct result by taking every integer value it could think of, one by one, and checking whether it was equal to its successor.</p>
+<p>What you’re actually doing is giving Haskell a puzzle (<code>x = x + 1</code>) and saying “Go find me a solution”. Mathematically speaking, there are only 2 possible solutions to that puzzle: <span class="math inline">\(\infty\)</span> and <span class="math inline">\(- \infty\)</span>. So when you saw it hang, Haskell wasn’t merely taking its time – for no good reason – before giving you back the value 2. Instead, Haskell’s runtime was trying its hardest to give you a correct result by taking every integer value it could think of, one by one, and checking whether it was equal to its successor.</p>
 <p>Just to be clear, there is a way to emulate the behavior of the Python snippet we saw above, and the Haskell code for doing that looks like this:</p>
-<pre class="sourceCode haskell"><code class="sourceCode haskell">λ<span class="fu">:</span> <span class="kw">let</span> x <span class="fu">=</span> <span class="dv">1</span>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">λ<span class="fu">:</span> <span class="kw">let</span> x <span class="fu">=</span> <span class="dv">1</span>
 λ<span class="fu">:</span> x <span class="ot">&lt;-</span> return <span class="fu">$</span> x <span class="fu">+</span> <span class="dv">1</span>
 λ<span class="fu">:</span> x
 <span class="dv">2</span>
-λ<span class="fu">:</span></code></pre>
+λ<span class="fu">:</span></code></pre></div>
 <p>As you can see, the syntax is much more verbose (and uglier) than in Python, and for good reason – in Haskell, you are strongly discouraged from using variables and mutation as the primary means of expressing algorithms.</p>
 <p>Haskell is divided in two major parts: a crystal palace of unspeakable beauty and <em>mathematical purity</em>, and an imperative ghetto for doing <em>I/O</em> and dealing with <em>mutation</em>. The equal sign in <code>x = x + 1</code> lives in the beautiful palace and symbolizes mathematical unification, while the construct <code>&lt;- return $</code> lives in the ghetto and means “evaluate the right hand side and shove the result into the identifier on the left hand side, thus overwriting what was there beforehand, in true imperative style”.</p>
 </section>
@@ -2026,19 +2026,19 @@ _fini@libgmp.so.10(0x358cc761f0, 0, 0xffffffff, 0)= 0x358ca5edc4
 <h3>Reverse Map? Upside Down Map? You decide</h3>
 <p>OK, for the next segment I’m going to assume that your beloved programming language of choice has a construct called <code>map</code>, and that you know how to use it.</p>
 <p>We start again with some Python code. While Python does indeed offer a higher-order function called <code>map</code>, it’s much more common for experienced Python developers to prefer using a list comprehension, like this:</p>
-<pre class="sourceCode python"><code class="sourceCode python">&gt;&gt;&gt; <span class="dt">list</span> = <span class="dt">range</span>(<span class="dv">20</span>,<span class="dv">31</span>)
-&gt;&gt;&gt; <span class="dt">list</span>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> <span class="bu">list</span> <span class="op">=</span> <span class="bu">range</span>(<span class="dv">20</span>,<span class="dv">31</span>)
+<span class="op">&gt;&gt;&gt;</span> <span class="bu">list</span>
 [<span class="dv">20</span>, <span class="dv">21</span>, <span class="dv">22</span>, <span class="dv">23</span>, <span class="dv">24</span>, <span class="dv">25</span>, <span class="dv">26</span>, <span class="dv">27</span>, <span class="dv">28</span>, <span class="dv">29</span>, <span class="dv">30</span>]
-&gt;&gt;&gt; [ x + <span class="dv">1</span> <span class="kw">for</span> x in <span class="dt">list</span> ]
+<span class="op">&gt;&gt;&gt;</span> [ x <span class="op">+</span> <span class="dv">1</span> <span class="cf">for</span> x <span class="kw">in</span> <span class="bu">list</span> ]
 [<span class="dv">21</span>, <span class="dv">22</span>, <span class="dv">23</span>, <span class="dv">24</span>, <span class="dv">25</span>, <span class="dv">26</span>, <span class="dv">27</span>, <span class="dv">28</span>, <span class="dv">29</span>, <span class="dv">30</span>, <span class="dv">31</span>]
-&gt;&gt;&gt;</code></pre>
+<span class="op">&gt;&gt;&gt;</span></code></pre></div>
 <p>Nothing new or earth-shattering - I would hope - so here’s the Haskell equivalent before we jump into the interesting stuff:</p>
-<pre class="sourceCode haskell"><code class="sourceCode haskell">λ<span class="fu">:</span> <span class="kw">let</span> list <span class="fu">=</span> [<span class="dv">20</span><span class="fu">..</span><span class="dv">30</span>]
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">λ<span class="fu">:</span> <span class="kw">let</span> list <span class="fu">=</span> [<span class="dv">20</span><span class="fu">..</span><span class="dv">30</span>]
 λ<span class="fu">:</span> list
 [<span class="dv">20</span>,<span class="dv">21</span>,<span class="dv">22</span>,<span class="dv">23</span>,<span class="dv">24</span>,<span class="dv">25</span>,<span class="dv">26</span>,<span class="dv">27</span>,<span class="dv">28</span>,<span class="dv">29</span>,<span class="dv">30</span>]
 λ<span class="fu">:</span> map (<span class="fu">+</span><span class="dv">1</span>) list
 [<span class="dv">21</span>,<span class="dv">22</span>,<span class="dv">23</span>,<span class="dv">24</span>,<span class="dv">25</span>,<span class="dv">26</span>,<span class="dv">27</span>,<span class="dv">28</span>,<span class="dv">29</span>,<span class="dv">30</span>,<span class="dv">31</span>]
-λ<span class="fu">:</span></code></pre>
+λ<span class="fu">:</span></code></pre></div>
 <p>So the basic idea I’m getting at here is that in the beginning we have:</p>
 <ul>
 <li>one single operation (compute an integer’s successor)</li>
@@ -2051,7 +2051,7 @@ _fini@libgmp.so.10(0x358cc761f0, 0, 0xffffffff, 0)= 0x358ca5edc4
 <li>a list of unary integer-to-integer operations</li>
 </ul>
 <p>Python can still deal with this situation fairly well, since Python’s functions are first-class values (you can place several of them inside of a list). But the Python code wouldn’t be as concise or expressive as the Haskell equivalent, shown here:</p>
-<pre class="sourceCode haskell"><code class="sourceCode haskell">λ<span class="fu">:</span> <span class="kw">let</span> function_list_1 <span class="fu">=</span> [(<span class="fu">+</span><span class="dv">2</span>),(<span class="fu">*</span><span class="dv">3</span>),(<span class="fu">^</span><span class="dv">2</span>)]
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">λ<span class="fu">:</span> <span class="kw">let</span> function_list_1 <span class="fu">=</span> [(<span class="fu">+</span><span class="dv">2</span>),(<span class="fu">*</span><span class="dv">3</span>),(<span class="fu">^</span><span class="dv">2</span>)]
 λ<span class="fu">:</span> <span class="kw">let</span> function_list_2 <span class="fu">=</span> [(<span class="fu">*</span><span class="dv">5</span>),(<span class="fu">+</span><span class="dv">7</span>),(<span class="fu">*</span><span class="dv">4</span>),(subtract <span class="dv">10</span>)]
 λ<span class="fu">:</span> <span class="kw">let</span> i <span class="fu">=</span> <span class="dv">12</span>
 λ<span class="fu">:</span> <span class="kw">import </span><span class="dt">Control.Applicative</span>
@@ -2059,7 +2059,7 @@ _fini@libgmp.so.10(0x358cc761f0, 0, 0xffffffff, 0)= 0x358ca5edc4
 [<span class="dv">14</span>,<span class="dv">36</span>,<span class="dv">144</span>]
 λ<span class="fu">:</span> function_list_2 <span class="fu">&lt;*&gt;</span> [i]
 [<span class="dv">60</span>,<span class="dv">19</span>,<span class="dv">48</span>,<span class="dv">2</span>]
-λ<span class="fu">:</span></code></pre>
+λ<span class="fu">:</span></code></pre></div>
 <p><strong>Side note:</strong> Due to brevity concerns, it is not practical to go into a detailed explanation of the <code>&lt;*&gt;</code> operator in <code>Control.Applicative</code> (a module in Haskell’s standard library). That is a topic for another blog post. The point here was to show how concisely you can express non-trivial computations with Haskell.</p>
 <p><strong>Fun fact:</strong> implementing the “upside-down map” described above was recently a requirement for admittance into <a href="http://webdev.rosedu.org/">WebDev</a> (an extracurricular course organized by ROSEdu). Candidates sent us solutions they had written in various programming languages, with varying degrees of conciseness. We found that the most verbose implementations were predominantly Java-based.</p>
 </section>
@@ -2068,22 +2068,22 @@ _fini@libgmp.so.10(0x358cc761f0, 0, 0xffffffff, 0)= 0x358ca5edc4
 <p>For the next segment I’ll just grab a <a href="https://github.com/torvalds/linux/blob/master/kernel/sched/fair.c#L507">snippet of code from the Linux kernel</a> and demonstrate how concisely you can express a tokenizer for it in Haskell.</p>
 <p>The code for Linux’s completely fair scheduler is stored in a file called <code>fair.c</code>; I’ll just grab a small function from it (function <code>__enqueue_entity</code>, which starts at line 507) and store it locally in a file called <code>enqueue_entity.c</code>.</p>
 <p>Here’s what I do subsequently, step by step:</p>
-<pre class="sourceCode haskell"><code class="sourceCode haskell">λ<span class="fu">:</span> sample_cfs_code <span class="ot">&lt;-</span> readFile <span class="st">&quot;enqueue_entity.c&quot;</span>
-λ<span class="fu">:</span></code></pre>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">λ<span class="fu">:</span> sample_cfs_code <span class="ot">&lt;-</span> readFile <span class="st">&quot;enqueue_entity.c&quot;</span>
+λ<span class="fu">:</span></code></pre></div>
 <p>I just slurped the contents of the file into <code>sample_cfs_code</code>. This is our raw material, let’s look at it:</p>
-<pre class="sourceCode haskell"><code class="sourceCode haskell">λ<span class="fu">:</span> sample_cfs_code
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">λ<span class="fu">:</span> sample_cfs_code
 <span class="st">&quot;static void __enqueue_entity(struct cfs_rq *cfs_rq, struct sched_entity *se)\n{\n        struct rb_node **link = &amp;cfs_rq-&gt;tasks_timeline.rb_node;\n        struct rb_node *parent = NULL;\n        struct sched_entity *entry;\n        int leftmost = 1;\n        while (*link) {\n                parent = *link;\n                entry = rb_entry(parent, struct sched_entity, run_node);\n                if (entity_before(se, entry)) {\n                        link = &amp;parent-&gt;rb_left;\n                } else {\n                        link = &amp;parent-&gt;rb_right;\n                        leftmost = 0;\n                }\n        }\n        if (leftmost)\n                cfs_rq-&gt;rb_leftmost = &amp;se-&gt;run_node;\n\n        rb_link_node(&amp;se-&gt;run_node, parent, link);\n        rb_insert_color(&amp;se-&gt;run_node, &amp;cfs_rq-&gt;tasks_timeline);\n}\n\n&quot;</span>
-λ<span class="fu">:</span></code></pre>
+λ<span class="fu">:</span></code></pre></div>
 <p>We now define our tokenizing function in Haskell (I trust you will appreciate how concise it is):</p>
-<pre class="sourceCode haskell"><code class="sourceCode haskell">λ<span class="fu">:</span> <span class="kw">import </span><span class="dt">Data.List</span>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">λ<span class="fu">:</span> <span class="kw">import </span><span class="dt">Data.List</span>
 λ<span class="fu">:</span> <span class="kw">let</span> tokenize_this <span class="fu">=</span> unfoldr (\x <span class="ot">-&gt;</span> <span class="kw">case</span> lex x <span class="kw">of</span> [(<span class="st">&quot;&quot;</span>,<span class="st">&quot;&quot;</span>)] <span class="ot">-&gt;</span> <span class="dt">Nothing</span>; x<span class="fu">:</span>_ <span class="ot">-&gt;</span> <span class="dt">Just</span> x)
-λ<span class="fu">:</span></code></pre>
+λ<span class="fu">:</span></code></pre></div>
 <p>The most interesting keyword here is <code>lex</code>, which is a function that is defined in Haskell’s standard library as part of the <code>GHC.Read</code> module. The <code>unfoldr</code> function also deserves some explanation, but just as before, it wouldn’t be practical to go into much detail here.</p>
 <p>So far, so good. Let’s apply our tokenizing function to the C code:</p>
-<pre class="sourceCode haskell"><code class="sourceCode haskell">λ<span class="fu">:</span> <span class="kw">let</span> tokenized_cfs_code <span class="fu">=</span> tokenize_this sample_cfs_code
-λ<span class="fu">:</span></code></pre>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">λ<span class="fu">:</span> <span class="kw">let</span> tokenized_cfs_code <span class="fu">=</span> tokenize_this sample_cfs_code
+λ<span class="fu">:</span></code></pre></div>
 <p>Finally, let’s view the resulting stream of tokens:</p>
-<pre class="sourceCode haskell"><code class="sourceCode haskell">λ<span class="fu">:</span> mapM_ print tokenized_cfs_code
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">λ<span class="fu">:</span> mapM_ print tokenized_cfs_code
 <span class="st">&quot;static&quot;</span>
 <span class="st">&quot;void&quot;</span>
 <span class="st">&quot;__enqueue_entity&quot;</span>
@@ -2122,7 +2122,7 @@ _fini@libgmp.so.10(0x358cc761f0, 0, 0xffffffff, 0)= 0x358ca5edc4
 <span class="st">&quot;)&quot;</span>
 <span class="st">&quot;;&quot;</span>
 <span class="st">&quot;}&quot;</span>
-λ<span class="fu">:</span></code></pre>
+λ<span class="fu">:</span></code></pre></div>
 <p>You can use this approach to help your language design efforts, if you plan on inventing your own DSL, or even your own general-purpose programming language. Once your source code is tokenized, you can now parse the stream of tokens into the target Haskell data structures using a technique called combinator parsing, which is where the Haskell programming language really shines.</p>
 </section>
 <section id="end-of-part-1" class="level3">

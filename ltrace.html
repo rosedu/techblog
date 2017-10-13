@@ -212,12 +212,12 @@ getenv(&quot;COLUMNS&quot;)                               = nil
 ioctl(1, 21523, 0x7fffbc2e2ee0)                 = 0</code></pre>
 <p>Like <code>strace</code>, we can also use <code>-e</code> to filter on specific calls.</p>
 <p>In the following examples we would use the following C source file which computes <code>41^41</code> and <code>42^42</code> both using the float <code>libmath</code> version and the <code>libgmp</code> multi-precision integers one. We will use threads to compute <code>42^42</code> and compute <code>41^41</code> in the <code>main</code> function with both arguments.</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;math.h&gt;</span>
-<span class="ot">#include &lt;pthread.h&gt;</span>
-<span class="ot">#include &lt;stdio.h&gt;</span>
-<span class="ot">#include &lt;stdlib.h&gt;</span>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="pp">#include </span><span class="im">&lt;math.h&gt;</span>
+<span class="pp">#include </span><span class="im">&lt;pthread.h&gt;</span>
+<span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span>
+<span class="pp">#include </span><span class="im">&lt;stdlib.h&gt;</span>
 
-<span class="ot">#include &lt;gmp.h&gt;</span>
+<span class="pp">#include </span><span class="im">&lt;gmp.h&gt;</span>
 
 <span class="dt">void</span> *do_double_thread(<span class="dt">void</span> *data)
 {
@@ -227,7 +227,7 @@ ioctl(1, 21523, 0x7fffbc2e2ee0)                 = 0</code></pre>
 
 <span class="dt">void</span> *do_mpz_thread(<span class="dt">void</span> *data)
 {
-  mpz_t x;
+  <span class="dt">mpz_t</span> x;
 
   mpz_init_set_ui(x, <span class="dv">42</span>);
   mpz_pow_ui(x, x, <span class="dv">42</span>);
@@ -237,11 +237,11 @@ ioctl(1, 21523, 0x7fffbc2e2ee0)                 = 0</code></pre>
 
 <span class="dt">int</span> main()
 {
-  pthread_t double_thread, mpz_thread;
-  pthread_attr_t attr;
+  <span class="dt">pthread_t</span> double_thread, mpz_thread;
+  <span class="dt">pthread_attr_t</span> attr;
 
   <span class="dt">double</span> y = <span class="dv">41</span>;
-  mpz_t x;
+  <span class="dt">mpz_t</span> x;
 
   mpz_init_set_ui(x, <span class="dv">41</span>);
   mpz_pow_ui(x, x, <span class="dv">41</span>);
@@ -251,37 +251,37 @@ ioctl(1, 21523, 0x7fffbc2e2ee0)                 = 0</code></pre>
   y = pow(y, y);
 
   <span class="co">/* initialize the attribute */</span>
-  <span class="kw">if</span> (pthread_attr_init(&amp;attr) != <span class="dv">0</span>) {
+  <span class="cf">if</span> (pthread_attr_init(&amp;attr) != <span class="dv">0</span>) {
     perror(<span class="st">&quot;pthread_attr_init&quot;</span>);
     pthread_exit(NULL);
   }
 
   <span class="co">/* set detached state */</span>
-  <span class="kw">if</span> (pthread_attr_setdetachstate(&amp;attr, PTHREAD_CREATE_JOINABLE) != <span class="dv">0</span>) {
+  <span class="cf">if</span> (pthread_attr_setdetachstate(&amp;attr, PTHREAD_CREATE_JOINABLE) != <span class="dv">0</span>) {
     perror(<span class="st">&quot;pthread_attr_setdetachstate&quot;</span>);
     pthread_exit(NULL);
   }
 
-  <span class="kw">if</span> (pthread_create(&amp;double_thread, &amp;attr, do_double_thread, NULL)) {
+  <span class="cf">if</span> (pthread_create(&amp;double_thread, &amp;attr, do_double_thread, NULL)) {
     perror(<span class="st">&quot;pthread_create&quot;</span>);
     exit(EXIT_FAILURE);
   }
 
-  <span class="kw">if</span> (pthread_create(&amp;mpz_thread, &amp;attr, do_mpz_thread, NULL)) {
+  <span class="cf">if</span> (pthread_create(&amp;mpz_thread, &amp;attr, do_mpz_thread, NULL)) {
     perror(<span class="st">&quot;pthread_create&quot;</span>);
     exit(EXIT_FAILURE);
   }
 
   pthread_attr_destroy(&amp;attr);
 
-  <span class="kw">if</span> (pthread_join(double_thread, NULL))
+  <span class="cf">if</span> (pthread_join(double_thread, NULL))
     perror(<span class="st">&quot;pthread_join&quot;</span>);
 
-  <span class="kw">if</span> (pthread_join(mpz_thread, NULL))
+  <span class="cf">if</span> (pthread_join(mpz_thread, NULL))
     perror(<span class="st">&quot;pthread_join&quot;</span>);
 
-  <span class="kw">return</span> <span class="dv">0</span>;
-}</code></pre>
+  <span class="cf">return</span> <span class="dv">0</span>;
+}</code></pre></div>
 <p>To compile, we have to link against <code>libmath</code>, <code>libpthread</code> and <code>libgmp</code>:</p>
 <pre><code>$ gcc -lm -lpthread -lgmp test.c -o test</code></pre>
 <p>Running <code>ltrace</code> on the full output we have the following:</p>

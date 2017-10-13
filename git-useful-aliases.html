@@ -115,15 +115,11 @@ hint: See the 'Note about fast-forwards' in 'git push --help' for details.</code
 <p>If and only if <code>B</code> is a descendant of <code>A</code> we have a fast-forward update. Otherwise, the update is non-fast-forward. These definitions generalize to local branches or any other kind of reference updates.</p>
 <p>What is the purpose of this distinction? Any fast-forward updated guarantees that the history of <em>both</em> branches is not lost. In contrast, a non-fast-forward update will certainly lose a part of the history.</p>
 <p>We need to change our point of view to see this. Let us view the two repositories in a simple diagram showing both branches from the very moment when the local repository was cloned:</p>
-<figure>
-<img src="./images/gua-1.png" alt="initial-repo" /><figcaption>initial-repo</figcaption>
-</figure>
+<p><img src="./images/gua-1.png" alt="initial repo" style="max-width:400px;" /></p>
 <p>The <code>HEAD</code> reference for the remote repository was pointing at commit <code>A</code> and we want to make it to point at commit <code>B</code> which is not a direct descendent of <code>A</code>, thus the update is non-fast-forward.</p>
 <p>If <code>git push</code> was allowed to finish successfully in any of the two cases then the history from <code>O</code> up to <code>A</code> would be lost: developers would only see the history from <code>O</code> to <code>B</code> and would work only on top of the <code>B</code> commit. This is why <code>git push</code> failed.</p>
 <p>The error message suggests to do a <code>git pull</code> in order to merge the two branches. Let’s see what will happen when we do this:</p>
-<figure>
-<img src="./images/gua-2.png" alt="merge commit" /><figcaption>merge commit</figcaption>
-</figure>
+<p><img src="./images/gua-2.png" alt="merge commit" style="max-width:400px;" /></p>
 <p>A merge commit <code>C</code> was created containing changes from both <code>A</code> and <code>B</code>. This is a <em>new</em> commit and it looks like the following one:</p>
 <pre><code>mihai@keldon:$ git show 2603167
 commit 2603167229a11b8dad6715246041ad29f792308c
@@ -134,9 +130,7 @@ Date:   Wed Nov 30 15:32:05 2011 +0200
     Merge branch 'contrib' of git.rosedu.org:techblog into contrib</code></pre>
 <p>There are cases where this merge commit is needed. However, not all instances of the above diagram need a merge commit.</p>
 <p>The other alternative is to do a rebase first using <code>git pull --rebase</code> for example. In this case, the following thing will happen: a new commit <code>D</code> will be created containing the set of changes needed to be applied on top of <code>A</code> in order to reach <code>B</code>.</p>
-<figure>
-<img src="./images/gua-3.png" alt="rebase commit" /><figcaption>rebase commit</figcaption>
-</figure>
+<p><img src="./images/gua-3.png" alt="rebase commit" style="max-width:400px;" /></p>
 <p>Now, the <code>D</code> commit is already on top of <code>A</code> and the push will be a fast-forward update. This can be seen from the following screen as well:</p>
 <pre><code>mihai@keldon:$ git pull --rebase
 remote: Counting objects: 5, done.
@@ -148,9 +142,7 @@ From git.rosedu.org:techblog
 First, rewinding head to replay your work on top of it...
 Applying: Add author for first article.</code></pre>
 <p>The push will simply update the <code>HEAD</code> reference to point to the <code>D</code> commit.</p>
-<figure>
-<img src="./images/gua-4.png" alt="update HEAD after rebase commit" /><figcaption>update HEAD after rebase commit</figcaption>
-</figure>
+<p><img src="./images/gua-4.png" alt="update HEAD after rebase commit" style="max-width:400px;" /></p>
 <p>If the rebase cannot be done because of a merge conflict we are announced of this and the rebase will stop until we resolve it.</p>
 <p>There are several ways to make <a href="http://git-scm.com/" title="Git">git</a> try to always use <code>--rebase</code> when pulling. What I recommend is to create an alias. I have this in <code>~/.gitconfig</code>:</p>
 <pre><code>[alias]

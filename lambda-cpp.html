@@ -103,38 +103,38 @@
 <h3>1. Higher-order functions</h3>
 <p>A high-order function is a function that takes one or more functions as an input and outputs a function. For example, we can use this higher-order functions to map, filter, fold and sort lists.</p>
 <p>Let’s start with a simple example of a high-order function, in Haskell:</p>
-<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">zipWith1 ::</span> (a <span class="ot">-&gt;</span> b <span class="ot">-&gt;</span> c) <span class="ot">-&gt;</span> [a] <span class="ot">-&gt;</span> [b] <span class="ot">-&gt;</span> [c]
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">zipWith1 ::</span> (a <span class="ot">-&gt;</span> b <span class="ot">-&gt;</span> c) <span class="ot">-&gt;</span> [a] <span class="ot">-&gt;</span> [b] <span class="ot">-&gt;</span> [c]
 zipWith1 _ [] _ <span class="fu">=</span> []
 zipWith1 _ _ [] <span class="fu">=</span> []
-zipWith1 f (x<span class="fu">:</span>xs) (y<span class="fu">:</span>ys) <span class="fu">=</span> f x y <span class="fu">:</span> zipWith1 f xs ys</code></pre>
+zipWith1 f (x<span class="fu">:</span>xs) (y<span class="fu">:</span>ys) <span class="fu">=</span> f x y <span class="fu">:</span> zipWith1 f xs ys</code></pre></div>
 <p>This function will take a function and two lists as parameters and then joins them by applying the function between corresponding elements. Let’s see a little demonstration for the function written above:</p>
-<pre class="sourceCode haskell"><code class="sourceCode haskell">ghci<span class="fu">&gt;</span> zipWith1 (<span class="fu">+</span>) [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>] [<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>]
-[<span class="dv">6</span>,<span class="dv">8</span>,<span class="dv">10</span>,<span class="dv">12</span>]</code></pre>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">ghci<span class="fu">&gt;</span> zipWith1 (<span class="fu">+</span>) [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>] [<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>]
+[<span class="dv">6</span>,<span class="dv">8</span>,<span class="dv">10</span>,<span class="dv">12</span>]</code></pre></div>
 <p>So we found out what a <a href="http://learnyouahaskell.com/higher-order-functions" title="Learn You A Haskell">higher-order function is</a>. Now, what is a lambda function? The term comes from the Lambda Calculus and refers to anonymous functions in programming. With a lambda function you can write quick functions without naming them.</p>
 <p>Let’s see the above function written using lambdas:</p>
-<pre class="sourceCode haskell"><code class="sourceCode haskell">zipWith (\x y <span class="ot">-&gt;</span> x <span class="fu">+</span> y ) [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>] [<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>]</code></pre>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">zipWith (\x y <span class="ot">-&gt;</span> x <span class="fu">+</span> y ) [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>] [<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>]</code></pre></div>
 <p>If we run this function in GHCi the result will be the same as above:</p>
-<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="dt">Prelude</span><span class="fu">&gt;</span> zipWith (\x y <span class="ot">-&gt;</span> x <span class="fu">+</span> y ) [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>] [<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>]
-[<span class="dv">6</span>,<span class="dv">8</span>,<span class="dv">10</span>,<span class="dv">12</span>]</code></pre>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="dt">Prelude</span><span class="fu">&gt;</span> zipWith (\x y <span class="ot">-&gt;</span> x <span class="fu">+</span> y ) [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>] [<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>]
+[<span class="dv">6</span>,<span class="dv">8</span>,<span class="dv">10</span>,<span class="dv">12</span>]</code></pre></div>
 <p>Now, to see the equivalence, the following functions are one and the same:</p>
-<pre class="sourceCode haskell"><code class="sourceCode haskell">f x y <span class="fu">=</span> x <span class="fu">+</span> y
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">f x y <span class="fu">=</span> x <span class="fu">+</span> y
 f x <span class="fu">=</span> \y <span class="ot">-&gt;</span> x <span class="fu">+</span> y
-f <span class="fu">=</span> \x y <span class="ot">-&gt;</span> x <span class="fu">+</span> y</code></pre>
+f <span class="fu">=</span> \x y <span class="ot">-&gt;</span> x <span class="fu">+</span> y</code></pre></div>
 <p>Now, we know what is a lambda function and a higher-order function. Let’s see how can we use lambda functions in C++.</p>
 </section>
 <section id="lambdas-in-c" class="level3">
 <h3>2. Lambdas in C++</h3>
 <p>A lambda function, in C++, starts with <code>[</code> and it has a specific syntax:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp">[capture] (params) -&gt; return_type { function_body }</code></pre>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp">[capture] (params) -&gt; <span class="dt">return_type</span> { function_body }</code></pre></div>
 <p>Let’s see a short example of a lambda function in C++:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp">[](<span class="dt">int</span> x, <span class="dt">int</span> y) -&gt; <span class="dt">int</span> { <span class="kw">return</span> x * y; }</code></pre>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp">[](<span class="dt">int</span> x, <span class="dt">int</span> y) -&gt; <span class="dt">int</span> { <span class="cf">return</span> x * y; }</code></pre></div>
 <p>This function simply multiplies two integers.</p>
 <p>Consider now the following Haskell example of applying a function to a list, using <code>map</code>:</p>
-<pre class="sourceCode haskell"><code class="sourceCode haskell">map (\x <span class="ot">-&gt;</span> x <span class="fu">+</span> <span class="dv">1</span>) [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>]</code></pre>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">map (\x <span class="ot">-&gt;</span> x <span class="fu">+</span> <span class="dv">1</span>) [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>]</code></pre></div>
 <p>In C++, we have the <a href="http://www.cplusplus.com/reference/algorithm/transform/" title="Function transform">function transform</a> which does the same thing as the <code>map</code> function from Haskell:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
-<span class="ot">#include &lt;algorithm&gt;</span>
-<span class="ot">#include &lt;vector&gt;</span>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span>
+<span class="pp">#include </span><span class="im">&lt;algorithm&gt;</span>
+<span class="pp">#include </span><span class="im">&lt;vector&gt;</span>
 
 <span class="kw">using</span> <span class="kw">namespace</span> std;
 
@@ -144,7 +144,7 @@ f <span class="fu">=</span> \x y <span class="ot">-&gt;</span> x <span class="fu
     vector &lt;<span class="dt">int</span>&gt; vector2;
 
     <span class="co">/* pseudo-pseudo-random values */</span>
-    <span class="kw">for</span> (<span class="dt">int</span> i=<span class="dv">1</span>;i&lt;<span class="dv">4</span>;i++)
+    <span class="cf">for</span> (<span class="dt">int</span> i=<span class="dv">1</span>;i&lt;<span class="dv">4</span>;i++)
         vector1.push_back (i);
 
     <span class="co">/* alocate memory in vector2 */</span>
@@ -154,16 +154,16 @@ f <span class="fu">=</span> \x y <span class="ot">-&gt;</span> x <span class="fu
 <span class="co">     * in vector1 and stores it in vector2</span>
 <span class="co">     */</span>
     transform (vector1.begin(), vector1.end(), vector2.begin(),
-        [] (<span class="dt">int</span> i) { <span class="kw">return</span> ++i; });
+        [] (<span class="dt">int</span> i) { <span class="cf">return</span> ++i; });
 
     <span class="co">/* output the result */</span>
     cout &lt;&lt; “Vector2 contains: “;
-    <span class="kw">for</span> (std::vector&lt;<span class="dt">int</span>&gt;::iterator it=vector2.begin();
+    <span class="cf">for</span> (<span class="bu">std::</span>vector&lt;<span class="dt">int</span>&gt;::iterator it=vector2.begin();
         it!=vector2.end(); ++it)
-        std::cout &lt;&lt; <span class="st">' '</span> &lt;&lt; *it;
+        <span class="bu">std::</span>cout &lt;&lt; <span class="st">' '</span> &lt;&lt; *it;
 
-    <span class="kw">return</span> <span class="dv">0</span>;
-}</code></pre>
+    <span class="cf">return</span> <span class="dv">0</span>;
+}</code></pre></div>
 <p>And the output is:</p>
 <pre><code>Vector2 contains: 2 3 4</code></pre>
 <p>You can see that our result is the same as in Haskell. We used a lambda function to increment the value for the each element from the first vector and then we printed it to standard output.</p>
@@ -174,7 +174,7 @@ f <span class="fu">=</span> \x y <span class="ot">-&gt;</span> x <span class="fu
 <ul>
 <li>You can write fast functions and use them in your production code</li>
 <li>You can replace macros (because macros are evil – citation needed)</li>
-<li>Because <span class="math">\(\lambda\)</span> rocks</li>
+<li>Because <span class="math inline">\(\lambda\)</span> rocks</li>
 <li>Because you can use it when you want a short-term functionality that you do not want to have to name</li>
 </ul>
 </section>

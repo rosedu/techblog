@@ -195,21 +195,21 @@ dnl the registered files from AC_CONFIG_HEADERS and
 dnl AC_CONFIG_FILES</code></pre>
 <p>Of course, the <code>configure.in</code> file can be much more complex, with many <code>AC_*</code> and <code>AM_*</code> lines. For this, we recommend the Autoconf manual.</p>
 <p>We should also have <code>Makefile.am</code> files in every subdirectory in the source tree. For example, for a tree with few source files (<code>hello</code> program with sources: <code>main.c</code> and <code>functions.c</code>):</p>
-<pre class="sourceCode makefile"><code class="sourceCode makefile"><span class="co"># src/Makefile.am</span>
+<div class="sourceCode"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span class="co"># src/Makefile.am</span>
 <span class="dt">bin_PROGRAMS </span><span class="ch">=</span><span class="st"> hello</span>
-<span class="dt">hello_SOURCES </span><span class="ch">=</span><span class="st"> main.c functions.c</span></code></pre>
+<span class="dt">hello_SOURCES </span><span class="ch">=</span><span class="st"> main.c functions.c</span></code></pre></div>
 <p>If the sources of the program contain an <code>./include/</code> directory which has header files then <code>Makefile.am</code> file from that directory must also contain this line:</p>
-<pre class="sourceCode makefile"><code class="sourceCode makefile"><span class="co"># include/Makefile.am</span>
-<span class="dt">include_HEADERS</span><span class="ch">=</span><span class="st">header1.h header2.h header3.h ... headerN.h</span></code></pre>
+<div class="sourceCode"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span class="co"># include/Makefile.am</span>
+<span class="dt">include_HEADERS</span><span class="ch">=</span><span class="st">header1.h header2.h header3.h ... headerN.h</span></code></pre></div>
 <p>In the <code>Makefile.am</code> from the root directory we must have the following line:</p>
-<pre class="sourceCode makefile"><code class="sourceCode makefile"><span class="dt">SUBDIRS </span><span class="ch">=</span><span class="st"> doc src</span></code></pre>
+<div class="sourceCode"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span class="dt">SUBDIRS </span><span class="ch">=</span><span class="st"> doc src</span></code></pre></div>
 <p>or</p>
-<pre class="sourceCode makefile"><code class="sourceCode makefile"><span class="dt">SUBDIRS </span><span class="ch">=</span><span class="st"> src</span></code></pre>
+<div class="sourceCode"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span class="dt">SUBDIRS </span><span class="ch">=</span><span class="st"> src</span></code></pre></div>
 <p><code>SUBDIRS</code> is a special variable which lists all directories in which <code>make</code> will enter, before processing the current directory.</p>
 <p>In the case of a simple library, the <code>Makefile.am</code> from the respective directory will look like this:</p>
-<pre class="sourceCode makefile"><code class="sourceCode makefile"><span class="co"># lib/Makefile.am</span>
+<div class="sourceCode"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span class="co"># lib/Makefile.am</span>
 <span class="dt">lib_LTLIBRARIES </span><span class="ch">=</span><span class="st"> libaa.la</span>
-<span class="dt">libaa_la_SOURCES </span><span class="ch">=</span><span class="st"> library-aa.c</span></code></pre>
+<span class="dt">libaa_la_SOURCES </span><span class="ch">=</span><span class="st"> library-aa.c</span></code></pre></div>
 <p>We will run the command <code>libtoolize</code>, after which two new files will be created: <code>ltconfig</code> and <code>ltmain.sh</code>.</p>
 <p>For <code>configure.in</code> and <code>Makefile.am</code>, we will run the commands <code>aclocal</code>, <code>autoconf</code>, and, then, <code>automake</code>.</p>
 <p>Also, the source code, which must be portable, must “fold” on these tools.</p>

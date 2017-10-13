@@ -104,11 +104,11 @@
 <p>In practice, the compiler will allocate stack space a little different than expected. It will allocate local variables space in increments of a fixed size, so sometimes having two int variables or three int variables will be the same.</p>
 <p>As an example, <code>gcc</code> will allocate in increments of 16 bytes. Let’s make an experiment… we take a simple C program and turn into assembly code.</p>
 <p>The C file looks something like this:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">int</span> main(<span class="dt">void</span>)
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">int</span> main(<span class="dt">void</span>)
 {
 	<span class="dt">int</span> a=<span class="dv">1</span>, b=<span class="dv">2</span>;
-	<span class="kw">return</span> <span class="dv">0</span>;
-}</code></pre>
+	<span class="cf">return</span> <span class="dv">0</span>;
+}</code></pre></div>
 <p>The variables must be used after declaration or they will be ignored by the compiler.</p>
 <p>The resulting assembly code (<code>gcc -S</code>) looks like this:</p>
 <pre><code>main:
@@ -123,11 +123,11 @@
 <p>Notice the <code>subl</code> instruction that clears 16 bytes in the stack space by decrementing the ESP. Those 16 bytes are enough for four 32bit integers. If you have 1,2,3 or 4 local variables declared (and used), you get those 16 bytes.</p>
 <p>If we declare 5 integers, the allocated space will now be 32bytes. Same thing for 6, 7, or 8. If we have 9 to 12 integers the compiler will allocate 48 bytes. An so on…</p>
 <p>What if we don’t only have integers? Let’s add some chars.</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">int</span> main(<span class="dt">void</span>)
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">int</span> main(<span class="dt">void</span>)
 {
 	<span class="dt">int</span> a=<span class="dv">1</span>, b=<span class="dv">2</span>;
 	<span class="dt">char</span> c=<span class="dv">3</span>, d=<span class="dv">4</span>;
-}</code></pre>
+}</code></pre></div>
 <p>Result:</p>
 <pre><code>main:
 	pushl	%ebp

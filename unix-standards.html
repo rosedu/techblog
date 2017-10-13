@@ -205,12 +205,12 @@
 <li><code>_XOPEN_SOURCE</code>, which activates SUSv1/2/3/4 functionality.</li>
 </ul>
 <p>For older POSIX functionality we have to declare the following in our source file:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#define _POSIX_SOURCE</span>
-<span class="ot">#define _POSIX_C_SOURCE 1 </span><span class="co">/* for POSIX 1990 */</span>
-<span class="co">/* use 2 for POSIX C bindings 1003.2-1992 */</span></code></pre>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="pp">#define _POSIX_SOURCE</span>
+<span class="pp">#define _POSIX_C_SOURCE 1 </span><span class="co">/* for POSIX 1990 */</span>
+<span class="co">/* use 2 for POSIX C bindings 1003.2-1992 */</span></code></pre></div>
 <p>For POSIX 2008 functionality, we define:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#define _POSIX_SOURCE</span>
-<span class="ot">#define _POSIX_C_SOURCE 200809L</span></code></pre>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="pp">#define _POSIX_SOURCE</span>
+<span class="pp">#define _POSIX_C_SOURCE 200809L</span></code></pre></div>
 <p>Or, we can compile with:</p>
 <pre><code>cc -D_POSIX_SOURCE -D_POSIX_C_SOURCE=200809L filename.c</code></pre>
 <p>If our code is written, or it will run on UNIX certified systems (hence on systems who follow SUSv1, SUSv2, SUSv3, or SUSv4), we must define also <code>_XOPEN_SOURCE</code>:</p>
@@ -218,28 +218,28 @@
 <ul>
 <li>for SUSv1:</li>
 </ul>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#define _POSIX_SOURCE</span>
-<span class="ot">#define _POSIX_C_SOURCE 2</span>
-<span class="ot">#define _XOPEN_SOURCE</span>
-<span class="ot">#define _XOPEN_SOURCE_EXTENDED 1</span></code></pre>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="pp">#define _POSIX_SOURCE</span>
+<span class="pp">#define _POSIX_C_SOURCE 2</span>
+<span class="pp">#define _XOPEN_SOURCE</span>
+<span class="pp">#define _XOPEN_SOURCE_EXTENDED 1</span></code></pre></div>
 <ul>
 <li>for SUSv2:</li>
 </ul>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#define _POSIX_SOURCE</span>
-<span class="ot">#define _POSIX_C_SOURCE 199506L</span>
-<span class="ot">#define _XOPEN_SOURCE 500</span></code></pre>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="pp">#define _POSIX_SOURCE</span>
+<span class="pp">#define _POSIX_C_SOURCE 199506L</span>
+<span class="pp">#define _XOPEN_SOURCE 500</span></code></pre></div>
 <ul>
 <li>for SUSv3:</li>
 </ul>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#define _POSIX_SOURCE</span>
-<span class="ot">#define _POSIX_C_SOURCE 200112L</span>
-<span class="ot">#define _XOPEN_SOURCE 600</span></code></pre>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="pp">#define _POSIX_SOURCE</span>
+<span class="pp">#define _POSIX_C_SOURCE 200112L</span>
+<span class="pp">#define _XOPEN_SOURCE 600</span></code></pre></div>
 <ul>
 <li>for SUSv4:</li>
 </ul>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#define _POSIX_SOURCE</span>
-<span class="ot">#define _POSIX_C_SOURCE 200809L</span>
-<span class="ot">#define _XOPEN_SOURCE 700</span></code></pre>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="pp">#define _POSIX_SOURCE</span>
+<span class="pp">#define _POSIX_C_SOURCE 200809L</span>
+<span class="pp">#define _XOPEN_SOURCE 700</span></code></pre></div>
 <p>If we write code only for Linux platforms, we will use the feature test macro <code>_GNU_SOURCE</code>, which will activate GNU LIBC functionality, which sometimes isn’t POSIX compatible. There is also the feature test macro <code>_SVID_SOURCE</code> (to activate System V functionality) and <code>_BSD_SOURCE</code> (to activate BSD functionality). One important note is that a UNIX system (which follows SUSvX) can be activated to offer any SUSvX functionality.</p>
 <p>This is the way we can write Unix portable code. Other methods to find out more about the operating system on which we compile are:</p>
 <ul>

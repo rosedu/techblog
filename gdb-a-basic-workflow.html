@@ -107,16 +107,16 @@
 <li>using a <code>core</code> generated file, usually from a serious error</li>
 </ul>
 <p>Let’s have a look at the former one on a simple program:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">int</span> random() {
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">int</span> random() {
 	<span class="dt">int</span> r = <span class="dv">4</span>;
-	<span class="kw">return</span> r;
+	<span class="cf">return</span> r;
 }
 
 <span class="dt">int</span> main() {
 	<span class="dt">char</span> *no_addr = <span class="dv">0</span>;
 	*no_addr = random();
-	<span class="kw">return</span> <span class="dv">0</span>;
-}</code></pre>
+	<span class="cf">return</span> <span class="dv">0</span>;
+}</code></pre></div>
 <p>The <code>-g</code> compiler option is used to add debugging information to the executable (here a.out) for use by GDB. We’ll run it again using <code>gdb</code>, because the above code gives us a segmentation fault:</p>
 <pre><code>$ gcc -Wall -g random.c
 $ gdb a.out
@@ -194,12 +194,12 @@ Program received signal SIGSEGV, Segmentation fault.
 #0  0x080483d3 in main () at random.c:8
 (gdb) quit</code></pre>
 <p>Now, some other thing you may find useful is to have the value of an expression get printed frequently (automatically, of course). You can do that with <code>display expression</code>. Take this sample code:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">int</span> main() {
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">int</span> main() {
 	<span class="dt">int</span> i, j = <span class="dv">0</span>;
-	<span class="kw">for</span> (i = <span class="dv">0</span>; i &lt; <span class="dv">10</span>; i++)
+	<span class="cf">for</span> (i = <span class="dv">0</span>; i &lt; <span class="dv">10</span>; i++)
 		j += i * <span class="dv">10</span>;
-	<span class="kw">return</span> <span class="dv">0</span>;
-}</code></pre>
+	<span class="cf">return</span> <span class="dv">0</span>;
+}</code></pre></div>
 <p>And run it in <code>gdb</code>:</p>
 <pre><code>(gdb) break main
 Breakpoint 1 at 0x804839a: file random2.c, line 2.

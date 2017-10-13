@@ -103,20 +103,20 @@
 <p>For example, the Linux Kernel has its coding style well defined in the <a href="http://www.kernel.org/doc/Documentation/CodingStyle">Documentation pages</a>. It is based on the Kernighan &amp; Ritchie (K&amp;R) style, the Linux Kernel being written in C. This is a very popular coding style with several projects using it, sometimes considered the de facto coding style for C.</p>
 <p>If you want to check if your code follows the coding style of Linux, you can use <code>checkpatch.pl</code>. This script can be found in the source code of the Linux Kernel in the scripts directory. It is mainly used for checking patches submitted for Linux, but it can be used on normal C source fies using the <code>-f</code> parameter. You need to clone the Linux tree to get the script, and you need to run it from the root of the tree.</p>
 <p>Here is an example of badly written code:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp">  <span class="dv">1</span>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp">  <span class="dv">1</span>
   <span class="dv">2</span> <span class="dt">int</span> main(<span class="dt">void</span>)···
   <span class="dv">3</span> {
   <span class="dv">4</span>    <span class="dt">int</span> i,a;···
   <span class="dv">5</span> »       »       
-  <span class="dv">6</span>    <span class="kw">for</span>(i=<span class="dv">0</span>;i&lt;<span class="dv">10</span>;i++)
+  <span class="dv">6</span>    <span class="cf">for</span>(i=<span class="dv">0</span>;i&lt;<span class="dv">10</span>;i++)
   <span class="dv">7</span>       a=i;
   <span class="dv">8</span>    <span class="co">//this code is useless</span>
-  <span class="dv">9</span>    <span class="kw">if</span>(a==i){
- <span class="dv">10</span>    <span class="kw">return</span> <span class="dv">0</span>;
+  <span class="dv">9</span>    <span class="cf">if</span>(a==i){
+ <span class="dv">10</span>    <span class="cf">return</span> <span class="dv">0</span>;
  <span class="dv">11</span>    }
  <span class="dv">12</span>
- <span class="dv">13</span>    <span class="kw">return</span> <span class="dv">0</span>;
- <span class="dv">14</span> }·····</code></pre>
+ <span class="dv">13</span>    <span class="cf">return</span> <span class="dv">0</span>;
+ <span class="dv">14</span> }·····</code></pre></div>
 <p>Note that the · character would represent a space and » would represent a tab. Spaces would represent… spaces.</p>
 <p>And this is what checkpatch would report:</p>
 <pre><code>alexj@ixmint ~/linux $ scripts/checkpatch.pl -f bad.c
@@ -253,18 +253,18 @@ bad.c has style problems, please review.</code></pre>
 <p>Curly braces should be used, but only when needed. If an <code>if</code> has only one instruction to be executed on the branch, it is pointless to have braces enclosing it. Indentation is enough to mark the instruction.</p>
 <p>Comment types are a delicate subject. The classic C specification only allows <code>/* */</code> block comments. C99 allows <code>//</code> as one line comments. Some coding styles (like the Linux coding style) don’t allow C99 comments.</p>
 <p>This is the way the code <strong>should</strong> look like with proper coding style:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp">  <span class="dv">1</span> <span class="dt">int</span> main(<span class="dt">void</span>)
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp">  <span class="dv">1</span> <span class="dt">int</span> main(<span class="dt">void</span>)
   <span class="dv">2</span> {
   <span class="dv">3</span> »       <span class="dt">int</span> i, a;
   <span class="dv">4</span> 
-  <span class="dv">5</span> »       <span class="kw">for</span> (i = <span class="dv">0</span>; i &lt; <span class="dv">10</span>; i++)
+  <span class="dv">5</span> »       <span class="cf">for</span> (i = <span class="dv">0</span>; i &lt; <span class="dv">10</span>; i++)
   <span class="dv">6</span> »       »       a = i;
   <span class="dv">7</span> »       <span class="co">/* This code is useless */</span>
-  <span class="dv">8</span> »       <span class="kw">if</span> (a == i)
-  <span class="dv">9</span> »       »       <span class="kw">return</span> <span class="dv">1</span>;
+  <span class="dv">8</span> »       <span class="cf">if</span> (a == i)
+  <span class="dv">9</span> »       »       <span class="cf">return</span> <span class="dv">1</span>;
  <span class="dv">10</span> 
- <span class="dv">11</span> »       <span class="kw">return</span> <span class="dv">0</span>;
- <span class="dv">12</span> }</code></pre>
+ <span class="dv">11</span> »       <span class="cf">return</span> <span class="dv">0</span>;
+ <span class="dv">12</span> }</code></pre></div>
 <p>Other programing languages can have similar coding guidelines. For Python, there is <a href="http://www.python.org/dev/peps/pep-0008/">PEP</a>, as dictated by the creator of Python himself.</p>
 <p>But we should always keep in mind that there is no One True Coding Style. Like all great debates, everybody could argue that one is better than another. What is important and everybody (mostly) agrees is to have consistency within a project in regards to the code the community writes.</p>
 
