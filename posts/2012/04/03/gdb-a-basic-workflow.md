@@ -1,6 +1,6 @@
 ---
 date: 2012-04-03
-title: GDB: A basic workflow
+title: "GDB: A basic workflow"
 author: Andrei Petre
 tags: gdb, debugging, CLI, .gdbinit, backtrace, breakpoint
 ---

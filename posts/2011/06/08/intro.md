@@ -1,6 +1,6 @@
 ---
 date: 2011-06-08
-title: Open Techblog: Success
+title: "Open Techblog: Success"
 author: Mihai Maruseac
 tags: Jekyll, ROSEdu, git
 ---

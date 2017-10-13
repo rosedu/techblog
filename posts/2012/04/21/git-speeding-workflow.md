@@ -1,6 +1,6 @@
 ---
 date: 2012-04-21
-title: Git: speeding workflow
+title: "Git: speeding workflow"
 author: Andrei Petre
 tags: git, .gitconfig, alias, speed, log, config
 ---

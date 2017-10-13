@@ -1,6 +1,6 @@
 ---
 date: 2014-03-02
-title: A superficial exploration of Haskell, part 2: Lazy by default
+title: "A superficial exploration of Haskell, part 2: Lazy by default"
 author: Dan Șerban
 tags: haskell
 ---
