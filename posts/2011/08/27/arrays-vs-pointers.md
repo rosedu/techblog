@@ -11,7 +11,7 @@ our discussion on the following two programs:
 
 <!--more-->
 
-<img style="float:right" src='/images/arrays-vs-pointers.png'
+<img style="float:right" src='/images/arrays-vs-pointers/arrays-vs-pointers.png'
 alt='Array and pointer representation' width="376" height="192"/>
 
 **array.c**
@@ -63,7 +63,7 @@ string literal pointed by `p`.
 We will now have a look at the generated assembly code and notice the section
 where string literal `"ROSEdu"` is stored.
 
-<img style="float:right" src='/images/arrays-vs-pointers-addr.png'
+<img style="float:right" src='/images/arrays-vs-pointers/arrays-vs-pointers-addr.png'
 alt='Array and pointer representation' width="298" height="283"/>
 
     $ gcc -S array.c -o array.s
@@ -115,4 +115,3 @@ We invite you to answer following questions:
 
 [1]: http://c0x.coding-guidelines.com/
 [2]: http://c0x.coding-guidelines.com/6.7.8.html
-[ap-img]: ./img/arrays-vs-pointers.png "arrays-vs-pointers - illustrative snapshot"

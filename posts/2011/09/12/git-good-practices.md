@@ -297,7 +297,7 @@ those predicaments:
 
         git reset --hard
 
-###Other Resources
+### Other Resources
 
 The Internet is filled with tutorials and tips regarding the use of Git.
 [Google][google] is one of your best friends to provide you a rapid
