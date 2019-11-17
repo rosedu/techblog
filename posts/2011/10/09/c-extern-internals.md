@@ -16,7 +16,7 @@ analyze the differences between `extern char*` and `extern char[]`.
 storage of a variable or the definition of a function is located
 elsewhere, typically in another source file.
 
-<img style="float:right" src='/images/c-extern-simple-usage.png'
+<img style="float:right" src='/images/c-extern-internals/c-extern-simple-usage.png'
 alt="C extern simple usage" width="227" height="263"/>
 
 
@@ -103,7 +103,7 @@ defines a pointer to a memory area holding a string literal. At link time, the
 symbol `str` from `main.c` is bound to a memory area representing the address
 of a string.
 
-<img style="float:right" src='/images/c-extern-char.png'
+<img style="float:right" src='/images/c-extern-internals/c-extern-char.png'
 alt="C extern simple usage" width="217" height="252"/>
 
 **pointer.c**
@@ -144,7 +144,7 @@ The file `main.c` declares a pointer to a memory area holding one
 or more characters. The linker will associate `str` from `main.o` with the
 storage defined by `str` array from `array.o`.
 
-<img style="float:right" src='/images/c-extern-pointer.png'
+<img style="float:right" src='/images/c-extern-internals/c-extern-pointer.png'
 alt="C extern simple usage" width="217" height="252"/>
 
 **array.c**
