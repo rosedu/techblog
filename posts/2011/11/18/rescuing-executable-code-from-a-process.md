@@ -30,7 +30,7 @@ system will be inaccessible. What can you do?
 
 The code of your bash is no longer on the hard drive, but it is in the virtual
 memory of the process you are currently running. You can find out what’s the
-PID of the current shell instance using `$$` enviroment variable . Knowing
+PID of the current shell instance using `$$` enviroment variable. Knowing
 that, you can cd to the `/proc/$$` and access the content of the `exe` file
 there.
 

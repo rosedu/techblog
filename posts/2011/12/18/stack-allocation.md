@@ -58,12 +58,13 @@ main:
 ~~~
 
 Notice the `subl` instruction that clears 16 bytes in the stack space by
-decrementing the ESP. Those 16 bytes are enough for four 32bit integers. If you
-have 1,2,3 or 4 local variables declared (and used), you get those 16 bytes.
+decrementing the ESP. Those 16 bytes are enough for four 32bit integers. If
+you have 1, 2, 3 or 4 local variables declared (and used) you get those 16
+bytes.
 
-If we declare 5 integers, the allocated space will now be 32bytes. Same
-thing for 6, 7, or 8. If we have 9 to 12 integers the compiler will
-allocate 48 bytes. An so on...
+If we declare 5 integers, the allocated space will now be 32 bytes. Same thing
+for 6, 7, or 8. If we have 9 to 12 integers the compiler will allocate 48
+bytes. An so on...
 
 What if we don't only have integers? Let's add some chars.
 
