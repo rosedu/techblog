@@ -48,7 +48,7 @@ We need to change our point of view to see this. Let us view the two
 repositories in a simple diagram showing both branches from the very moment
 when the local repository was cloned:
 
-<img src="./images/gua-1.png" alt="initial repo" style="max-width:400px;"/>
+<img src="./images/git-useful-aliases/gua-1.png" alt="initial repo" style="max-width:400px;"/>
 
 The `HEAD` reference for the remote repository was pointing at commit
 `A` and we want to make it to point at commit `B` which is not a
@@ -62,7 +62,7 @@ why `git push` failed.
 The error message suggests to do a `git pull` in order to merge the two
 branches. Let's see what will happen when we do this:
 
-<img src="./images/gua-2.png" alt="merge commit" style="max-width:400px;"/>
+<img src="./images/git-useful-aliases/gua-2.png" alt="merge commit" style="max-width:400px;"/>
 
 A merge commit `C` was created containing changes from both `A`
 and `B`. This is a _new_ commit and it looks like the following one:
@@ -83,7 +83,7 @@ example. In this case, the following thing will happen: a new commit `D` will
 be created containing the set of changes needed to be applied on top of `A` in
 order to reach `B`.
 
-<img src="./images/gua-3.png" alt="rebase commit" style="max-width:400px;"/>
+<img src="./images/git-useful-aliases/gua-3.png" alt="rebase commit" style="max-width:400px;"/>
 
 Now, the `D` commit is already on top of `A` and the push will be a
 fast-forward update. This can be seen from the following screen as well:
@@ -100,7 +100,7 @@ fast-forward update. This can be seen from the following screen as well:
 
 The push will simply update the `HEAD` reference to point to the `D` commit.
 
-<img src="./images/gua-4.png" alt="update HEAD after rebase commit" style="max-width:400px;"/>
+<img src="./images/git-useful-aliases/gua-4.png" alt="update HEAD after rebase commit" style="max-width:400px;"/>
 
 If the rebase cannot be done because of a merge conflict we are announced of
 this and the rebase will stop until we resolve it.
@@ -154,8 +154,8 @@ I have imprinted in my muscle memory to never type `git add` but `git gap`.
 ### Conclusions
 
 The two aliases presented above help us be a little more proficient with
-[git][git] usage. I am using them for several months now and the results are
-good.
+[git][git] usage. I have been using them for several months now and the
+results are good.
 
 [git]: http://git-scm.com/ "Git"
 [ggp]: http://techblog.rosedu.org/git-good-practices.html "Git good practices"
