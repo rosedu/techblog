@@ -72,7 +72,7 @@ amount of time. We will offer an overview of the algorithm using colours
 before we run straightforward with numbers and abstract formula.
 
 <img style="float:right"
-src='/images/from-0-to-cryptography-diffie-hellman-key-exchange.png'
+src='/images/from-0-to-cryptography/diffie-hellman-key-exchange.png'
 alt="Diffie-Hellman Key Exchange" width="300" height="450"/>
 
 1. **Step 1**: Alice and Bob come to an agreement for a common colour.
@@ -425,10 +425,10 @@ identification documents (ID card, passport, etc). Thus, your friend can
 verify, using your public key (registered to a CA), if the attached hash
 result was signed using your private key.
 
-<img style="float:center" src='/images/encoding.png' alt="Digital signing"
+<img style="float:center" src='/images/from-0-to-cryptography/encoding.png' alt="Digital signing"
 width="685" height="159"/>
 
-<img style="float:center" src='/images/decoding.png' alt="Verifying digital
+<img style="float:center" src='/images/from-0-to-cryptography/decoding.png' alt="Verifying digital
 signature" width="685" height="239"/>
 
 ### GnuPG (GPG)
@@ -682,7 +682,7 @@ able to trust people you have met and also they have friends, thus you trust
 their friends. And so on. Think of a big community where people trust each
 other. The following picture will show you how this work.
 
-<img style="float:center" src='/images/web_of_trust.png' alt="Web of trust"
+<img style="float:center" src='/images/from-0-to-cryptography/web_of_trust.png' alt="Web of trust"
 width="625" height="578"/>
 
 How can you trust people and people trust you?
