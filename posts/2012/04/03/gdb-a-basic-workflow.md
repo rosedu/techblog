@@ -19,7 +19,7 @@ GDB can be run in two distinct ways:
 
 Let's have a look at the former one on a simple program:
 
-~~~ cpp
+``` cpp
 int random() {
 	int r = 4;
 	return r;
@@ -30,7 +30,7 @@ int main() {
 	*no_addr = random();
 	return 0;
 }
-~~~
+```
 
 The `-g` compiler option is used to add debugging information to the
 executable (here a.out) for use by GDB. We'll run it again using `gdb`,

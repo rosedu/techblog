@@ -63,7 +63,7 @@ thing we do is create a table.
 
 At the `sqlite>` prompt, type the following SQL statement:
 
-~~~ sql
+``` sql
 CREATE TABLE presidencies (
   id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
   first_name VARCHAR(255),
@@ -72,7 +72,7 @@ CREATE TABLE presidencies (
   year_to INTEGER,
   notes TEXT
 );
-~~~
+```
 
 SQLite does not give any output in response, and that means it has
 successfully executed the statement.
@@ -86,7 +86,7 @@ The next step is therefore to populate the table with some data.
 
 We do this by using the `INSERT` statement. Try this:
 
-~~~ sql
+``` sql
 INSERT INTO presidencies VALUES (
   NULL,
   "Barack",
@@ -95,7 +95,7 @@ INSERT INTO presidencies VALUES (
   2012,
   "Won against John McCain"
 );
-~~~
+```
 
 Again, SQLite is not giving us any response, which means the `INSERT`
 statement was successfully executed.
@@ -103,9 +103,9 @@ statement was successfully executed.
 If we now query the contents of the table, we should see the newly inserted
 row. Try this:
 
-~~~ sql
+``` sql
 SELECT * FROM presidencies;
-~~~
+```
 
 The output you should see is this:
 
@@ -129,7 +129,7 @@ available positive integer value and stored it as this record's primary key.
 Let's put this behavior to the test. Try the same `INSERT` statement as
 before, only replace `NULL` with `1` (an already existing `id`):
 
-~~~ sql
+``` sql
 INSERT INTO presidencies VALUES (
   1,
   "Barack",
@@ -138,7 +138,7 @@ INSERT INTO presidencies VALUES (
   2012,
   "Won against John McCain"
 );
-~~~
+```
 
 The output you should see is:
 
@@ -147,9 +147,9 @@ The output you should see is:
 To change a record in the table, we are going to use an `UPDATE` statement
 with a precisely targeted `WHERE` clause:
 
-~~~ sql
+``` sql
 UPDATE presidencies SET notes = "His campaign slogan was yes-we-can" WHERE id = 1;
-~~~
+```
 
 Query the whole table again to see the changes:
 

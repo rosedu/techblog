@@ -36,25 +36,24 @@ script, and you need to run it from the root of the tree.
 
 Here is an example of badly written code:
 
-~~~ cpp
-  1
-  2 int main(void)···
-  3 {
-  4    int i,a;···
-  5 »       »       
-  6    for(i=0;i<10;i++)
-  7       a=i;
-  8    //this code is useless
-  9    if(a==i){
- 10    return 0;
- 11    }
- 12
- 13    return 0;
- 14 }·····
-~~~
+``` cpp
+int main(void)···
+{
+   int i,a;···
+»       »       
+   for(i=0;i<10;i++)
+      a=i;
+   //this code is useless
+   if(a==i){
+   return 0;
+   }
 
-Note that the · character would represent a space and » would represent a
-tab. Spaces would represent... spaces.
+   return 0;
+}·····
+```
+
+Note that the · character would represent a trailing space and » would
+represent a tab. Spaces would represent... spaces.
 
 And this is what checkpatch would report:
 
@@ -215,20 +214,20 @@ coding styles (like the Linux coding style) don't allow C99 comments.
 
 This is the way the code **should** look like with proper coding style:
 
-~~~ cpp
-  1 int main(void)
-  2 {
-  3 »       int i, a;
-  4 
-  5 »       for (i = 0; i < 10; i++)
-  6 »       »       a = i;
-  7 »       /* This code is useless */
-  8 »       if (a == i)
-  9 »       »       return 1;
- 10 
- 11 »       return 0;
- 12 }
-~~~
+``` cpp
+int main(void)
+{
+»       int i, a;
+
+»       for (i = 0; i < 10; i++)
+»       »       a = i;
+»       /* This code is useless */
+»       if (a == i)
+»       »       return 1;
+
+»       return 0;
+}
+```
 
 Other programing languages can have similar coding guidelines. For Python,
 there is [PEP](http://www.python.org/dev/peps/pep-0008/), as dictated by

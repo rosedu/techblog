@@ -77,26 +77,26 @@ So what does `ifconfig` still have to keep it around? Its biggest weakness is
 its biggest strength: its age. `ifconfig` has been out and used for so long
 that it's very hard to put it away. Still many scripts in the heart of Linux
 distributions rely on `ifconfig` to work and most system administrators are
-used to the ifconfig command and it's hard to move them to something new and
+used to the `ifconfig` command and it's hard to move them to something new and
 unfamiliar. A lot of tutorials on the Internet about network configuration
-teach ifconfig and not iproute2 to beginners. For example, LPIC-1, one of the
-biggest Linux Certification out there, still requires ifconfig skills for
-passing the exam and barely mentiones iproute2.
+teach `ifconfig` and not `iproute2`  to beginners. For example, LPIC-1, one of
+the biggest Linux Certification out there, still requires `ifconfig` skills
+for passing the exam and barely mentiones `iproute2`.
 
-When released, iproute2 had at least one advantage over ifconfig, and that was
-the feature of interacting with the IPv6 stack while ifconfig was only for
-IPv4. But since then, fans of ifconfig patched it so it could also be IPv6
-ready.
+When released, `iproute2`  had at least one advantage over `ifconfig`, and
+that was the feature of interacting with the IPv6 stack while `ifconfig` was
+only for IPv4. But since then, fans of `ifconfig` patched it so it could also
+be IPv6 ready.
 
 But other features were not replicated. In old Linux Kernels, an interface
-could have only one IP address, so in ifconfig you could configure only one
+could have only one IP address, so in `ifconfig` you could configure only one
 IP address on an interfaces. In newer kernels, each interface has a list of
-addresses and iproute2 via the NetLink interface can manage them. Lastly,
-ifconfig versions still rely on the idea of subinterfaces to provide more
+addresses and `iproute2`  via the NetLink interface can manage them. Lastly,
+`ifconfig` versions still rely on the idea of subinterfaces to provide more
 than one address on an interfaces.
 
-So, given all these arguments, iproute2 should be declared the winner. But
+So, given all these arguments, `iproute2`  should be declared the winner. But
 it's not that easy. Just like in the case of IPv4 vs IPv6, where the latter
-one is the obvious choice, iproute2 will eventually replace ifconfig. Only
-it's going to take a long time for that to happen, so net-tools will still be
-around for some time, but they will be eventually phased out.
+one is the obvious choice, `iproute2`  will eventually replace `ifconfig`.
+Only it's going to take a long time for that to happen, so `net-tools` will
+still be around for some time, but they will be eventually phased out.

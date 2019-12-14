@@ -11,7 +11,7 @@ lists of integers in C.
 
 <!--more-->
 
-~~~ cpp
+``` cpp
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -68,7 +68,7 @@ int main()
 	free_q(q);
 	return 0;
 }
-~~~
+```
 
 The idea is simple: we insert `4` and `2` into the queue and expect the output
 to be `42`, the digits being output in the order of their insertion into the
@@ -87,7 +87,7 @@ Let's ignore for now the fact that [clang][clang] gives the correct response
 and let's answer this question: What went wrong? The queue implementation
 seems correct but let's replace it by a dummy implementation:
 
-~~~ cpp
+``` cpp
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -112,7 +112,7 @@ int main()
 	printf("%d%d\n", dec(), dec());
 	return 0;
 }
-~~~
+```
 
 Basically, we have removed the queue and replaced it by it's length, stored in
 the global `x` variable. The expected output is `10`.
@@ -186,7 +186,7 @@ explain it.
 Let's go on. In the above snippet we have used functions to increment and
 decrement the global value. Let us rewrite that code:
 
-~~~ cpp
+``` cpp
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -198,7 +198,7 @@ int main()
 	printf("%d%d\n", --x, --x);
 	return 0;
 }
-~~~
+```
 
 Here, we have another suprise:
 
@@ -283,7 +283,7 @@ different. This harms portability and should be avoided.
 Before finishing the article, let's see another example, using different
 constructs:
 
-~~~ cpp
+``` cpp
 #include <stdio.h>
 #include <stdlib.h>
 #include <limits.h>
@@ -298,7 +298,7 @@ int main()
 
 	return 0;
 }
-~~~
+```
 
 The possible outputs of this code and the reasoning behind are left as an
 exercise. Use the comments area to provide solutions for all exercises left in
