@@ -171,11 +171,11 @@ Heh, we can **write below** our table!
 #### Low-level
 
 The assembly code, responsible for checking the indices can be viewed below.
-<img style="float:center" src='/images/ida-atoi-read.png' alt="Read - atoi"/>
+<img style="float:center" src='/images/ctf-return-to-libc/ida-atoi-read.png' alt="Read - atoi"/>
 
 As you can _not_ see, there is no check code for the index when we're doing a *read* operation.
 
-<img style="float:center" src='/images/ida-atoi-write.png' alt="Write - atoi"/>
+<img style="float:center" src='/images/ctf-return-to-libc/ida-atoi-write.png' alt="Write - atoi"/>
 
 For the *write* operation there is checking using the instruction `jle`. But
 `jle` instruction is used for comparing *signed* integers. The instruction
@@ -281,7 +281,7 @@ There are three cases where the buffer might be located:
 
 Probably because pwn250 is **not** the hardest level, the buffer is in the `.data` section.
 
-<img style="float:center" src='/images/ida-values.png' alt="Values buffer"/>
+<img style="float:center" src='/images/ctf-return-to-libc/ida-values.png' alt="Values buffer"/>
 
 Because our buffer is in `.data` section and we can use negative indices for
 read and write, we have a **good** control over the memory __below__ our
@@ -291,7 +291,7 @@ that there's a `math` variable. The program is capable of switching from one
 operation (addition) to another one (multiplication) it does so by changing a
 pointer to a function. The pointer is in the `.bss` section.
 
-<img style="float:center" src='/images/ida-indirect-jump.png' alt="Indirect jump via math_ptr"/>
+<img style="float:center" src='/images/ctf-return-to-libc/ida-indirect-jump.png' alt="Indirect jump via math_ptr"/>
 
 I know at this point, one might argue that the authors of the program used
 this pointer to facilitate the problem solving - it's true I wouldn't argue
