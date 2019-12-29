@@ -41,13 +41,13 @@ if you're just starting out with a freshly installed copy of Haskell.
 To start with, here's a Python code sample, cut and pasted from a Python 2.7
 REPL (interactive console session):
 
-~~~ python
+``` python
 >>> x = 1
 >>> x = x + 1
 >>> x
 2
 >>>
-~~~
+```
 
 Nothing could be simpler!
 
@@ -59,13 +59,13 @@ words, an easy, straightforward thing to do.
 The following is what happens in the Haskell REPL (called GHCi). By the way,
 here we have to prepend the keyword `let` - it's the law of the land in GHCi:
 
-~~~ haskell
+``` haskell
 λ: let x = 1
 λ: let x = x + 1
 λ: x
 ^CInterrupted.
 λ:
-~~~
+```
 
 Huh? What just happened? I was expecting Haskell to compute the value 2. It
 took forever for the GHCi interactive console to evaluate `x`, so I got bored
@@ -85,13 +85,13 @@ by one, and checking whether it was equal to its successor.
 Just to be clear, there is a way to emulate the behavior of the Python snippet
 we saw above, and the Haskell code for doing that looks like this:
 
-~~~ haskell
+``` haskell
 λ: let x = 1
 λ: x <- return $ x + 1
 λ: x
 2
 λ:
-~~~
+```
 
 As you can see, the syntax is much more verbose (and uglier) than in Python,
 and for good reason -- in Haskell, you are strongly discouraged from using
@@ -115,26 +115,26 @@ We start again with some Python code. While Python does indeed offer a
 higher-order function called `map`, it's much more common for experienced
 Python developers to prefer using a list comprehension, like this:
 
-~~~ Python
+``` python
 >>> list = range(20,31)
 >>> list
 [20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30]
 >>> [ x + 1 for x in list ]
 [21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31]
 >>>
-~~~
+```
 
 Nothing new or earth-shattering - I would hope - so here's the Haskell
 equivalent before we jump into the interesting stuff:
 
-~~~ haskell
+``` haskell
 λ: let list = [20..30]
 λ: list
 [20,21,22,23,24,25,26,27,28,29,30]
 λ: map (+1) list
 [21,22,23,24,25,26,27,28,29,30,31]
 λ:
-~~~
+```
 
 So the basic idea I'm getting at here is that in the beginning we have:
 

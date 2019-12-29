@@ -23,10 +23,10 @@ Even experts and common-sense is at fault in this realm. For example, did you
 know that *always* comparing two floating points like in the following code is
 *bad*?
 
-~~~ cpp
+``` cpp
 if (fabs(a - b) < 0.0001)
     do_something_with_equal_numbers(a);
-~~~
+```
 
 Without being a complete guide, this article shows some of the beauties and
 dangers of the floating-point realm.
@@ -246,7 +246,7 @@ However, looking at `xmm0` register we see that the last 32 bits have the same
 pattern as `-0xc($rbp)`. Thus, the SSE 128 bits registers **are not using**
 the `binary128` standard! If they were using it, the last value displayed
 there should have been `3FFD3333333333333333333333333333`. As said on [reddit
-thread for this article][reddit], excess precision comes form the `x87`
+thread for this article][reddit], excess precision comes from the `x87`
 coprocessor which uses 80 bits of precision.
 
 Now it is time to see some other aspects of working with floating point

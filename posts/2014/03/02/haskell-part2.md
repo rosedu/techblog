@@ -195,4 +195,4 @@ available both in e-book format as well as free of charge online.
 In recent versions of GHC, due to the `Monomorphism Restriction` being off by
 default (in contrast with the current ones) some of the examples might look a
 little different. See [the discussion on
-twitter](http://www.reddit.com/r/haskell/comments/1zfz5m/a_superficial_exploration_of_haskell_part_2_lazy/).
+reddit](http://www.reddit.com/r/haskell/comments/1zfz5m/a_superficial_exploration_of_haskell_part_2_lazy/).

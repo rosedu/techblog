@@ -184,7 +184,7 @@ computes `41^41` and `42^42` both using the float `libmath` version and the
 `libgmp` multi-precision integers one. We will use threads to compute `42^42`
 and compute `41^41` in the `main` function with both arguments.
 
-~~~ cpp
+``` cpp
 #include <math.h>
 #include <pthread.h>
 #include <stdio.h>
@@ -255,7 +255,7 @@ int main()
 
   return 0;
 }
-~~~
+```
 
 To compile, we have to link against `libmath`, `libpthread` and `libgmp`:
 

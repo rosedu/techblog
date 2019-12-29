@@ -48,7 +48,7 @@ we will show the long path of using `fork()` and `setsid()`.
 First step (see [this FAQ][1] for reference) is to `fork` and `exit` such that
 the process is no longer a process leader:
 
-``` c
+``` cpp
 /*
  * Fork the parent process
  */
@@ -72,7 +72,7 @@ Because we want to have a completely new controlling terminal we need to make
 our process be a session leader using `setsid()`. The above `fork` was needed
 just to allow this to succeed:
 
-``` c
+``` cpp
 sessionID=setsid();
 if (sessionID < 0) {
     perror("setsid");
@@ -83,7 +83,7 @@ if (sessionID < 0) {
 Next step is to `fork()/exit()` again. Since the session leader is now dead
 our process can never get access to a controlling terminal:
 
-``` c
+``` cpp
 pid = fork();
 if (pid < 0) {
     perror("fork");
@@ -103,7 +103,7 @@ current running directory to prevent cases where if the program was started
 in a `cwd` from a different partition that partition could no longer be
 `umount`ed.
 
-``` c
+``` cpp
 change_dir = chdir("/");
 if (change_dir < 0 ) {
     perror("chdir");
@@ -121,7 +121,7 @@ of opened file descriptors in order to close all of them and prevent leaks.
 Then, we will set `umask` to 0 to gain complete permissions over anything we
 write.
 
-``` c
+``` cpp
 maxfd = sysconf(_SC_OPEN_MAX);
 if (maxfd < 0) {
     perror("sysconf _SC_OPEN_MAX");
@@ -138,7 +138,7 @@ umask(0);
 Now we should reopen the 3 standard file descriptors. We can point them to
 `/dev/null` or to specific log files. Here we open all of them to `/dev/null`:
 
-``` c
+``` cpp
 fd = open("/dev/null", 0);
 if (fd < 0) {
     perror("open /dev/null");
@@ -201,7 +201,7 @@ $ pgrep sleep
 We can simulate `nohup` inside our C code too. Let's configure signal
 handlers:
 
-``` c
+``` cpp
 memset (&sig_act, 0 , sizeof(sig_act));
 /* Ignore SIGHUP signal */
 if (signal(SIGHUP, SIG_IGN) == SIG_ERR){
@@ -213,7 +213,7 @@ if (signal(SIGHUP, SIG_IGN) == SIG_ERR){
 Now, if `stdout` is a terminal we have to redirect output to a file, just like
 the original command does:
 
-```c
+``` cpp
 if(isatty(fileno(stdout))) {
     rc = open ("nohup.out", O_WRONLY | O_CREAT, 0644);
     if (rc < 0) {
