@@ -3,6 +3,7 @@ name: Blog improvements
 about: Use this template to signal issues with the toolchain or the website
 style
 labels: improvement
+
 ---
 
 **Description of issue**

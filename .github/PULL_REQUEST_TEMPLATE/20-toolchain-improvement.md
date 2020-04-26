@@ -3,6 +3,7 @@ name: Blog toolchain improvements
 about: Use this PR template to propose changes to the toolchain used to create
 the website from the markdown articles (eg. Haskell code)
 labels: 'pr:toolchain'
+
 ---
 
 Thank you for contributing a toolchain improvement to [ROSEdu

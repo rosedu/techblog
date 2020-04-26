@@ -3,6 +3,7 @@ name: Blog style improvements
 about: Use this PR template to propose changes to the look of the blog webstie
 (eg. CSS theme)
 labels: 'pr:style'
+
 ---
 
 Thank you for contributing a style improvement to [ROSEdu

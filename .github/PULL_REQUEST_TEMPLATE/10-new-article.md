@@ -2,6 +2,7 @@
 name: New article
 about: Use this PR template to propose new articles
 labels: 'pr:new-article'
+
 ---
 
 Thank you for contributing a new article to [ROSEdu
