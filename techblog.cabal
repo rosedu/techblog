@@ -1,13 +1,5 @@
 name:                techblog
-
--- The package version.  See the Haskell package versioning policy (PVP) 
--- for standards guiding when and how versions should be incremented.
--- See: http://www.haskell.org/haskellwiki/Package_versioning_policy
--- For further documentation, see http://haskell.org/cabal/users-guide/
--- PVP summary:      +-+------- breaking API changes
---                   | | +----- non-breaking API additions
---                   | | | +--- code changes with no API change
-version:             2.0.0.11
+version:             2.0.0.12
 synopsis:            Techblog is a ROSEdu (http://www.rosedu.org) technical
                      blogging project.
 description:         Techblog is a ROSEdu (http://www.rosedu.org) technical

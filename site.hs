@@ -1,14 +1,13 @@
 {-# LANGUAGE DeriveDataTypeable #-}
 {-# LANGUAGE OverloadedStrings #-}
 
-import Hakyll
+import Hakyll hiding (Clean,Deploy,Watch)
 
 import Control.Applicative (empty)
 import Control.Monad (liftM)
 import Data.Char (isAlphaNum, isAscii, toLower)
 import Data.List (intersperse)
 import Data.Maybe (maybeToList)
-import Data.Monoid (mappend, mconcat)
 import GHC.IO.Encoding (setLocaleEncoding, setForeignEncoding, utf8,
   setFileSystemEncoding)
 import System.Console.CmdArgs (cmdArgs, cmdArgsMode, help, program, ignore,
@@ -361,7 +360,6 @@ techblogWOptions :: WriterOptions
 techblogWOptions = defaultHakyllWriterOptions
   { writerHTMLMathMethod = MathJax ""
   , writerSectionDivs = True
-  , writerHtml5 = True
   }
 
 {-
