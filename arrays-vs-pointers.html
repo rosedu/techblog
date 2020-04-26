@@ -94,31 +94,31 @@
       <br />
       <span class="meta">
         Tagged:
-        <span class="tags"><a href="./tags/arrays.html">arrays</a>, <a href="./tags/pointers.html">pointers</a>, <a href="./tags/strings.html">strings</a>, <a href="./tags/.rodata.html">.rodata</a></span>
+        <span class="tags"><a title="All pages tagged 'arrays'." href="./tags/arrays.html">arrays</a>, <a title="All pages tagged 'pointers'." href="./tags/pointers.html">pointers</a>, <a title="All pages tagged 'strings'." href="./tags/strings.html">strings</a>, <a title="All pages tagged '.rodata'." href="./tags/.rodata.html">.rodata</a></span>
       </span>
 
       <p>This post will shed some light on the differences between arrays and pointers specifically when it comes about referencing string literals. We will base our discussion on the following two programs:</p>
 <!--more-->
 <p><img style="float:right" src="./images/arrays-vs-pointers.png" alt="Array and pointer representation" width="376" height="192" /></p>
 <p><strong>array.c</strong></p>
-<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">char</span> a[] = <span class="st">&quot;ROSEdu&quot;</span>;
-<span class="dt">int</span> main(<span class="dt">void</span>)
-{
-	a[<span class="dv">0</span>] = <span class="st">'r'</span>;
-	printf(<span class="st">&quot;</span><span class="sc">%s\n</span><span class="st">&quot;</span>, a);
-	<span class="cf">return</span> <span class="dv">0</span>;
-}</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb1-1"><a href="#cb1-1"></a><span class="dt">char</span> a[] = <span class="st">&quot;ROSEdu&quot;</span>;</span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="dt">int</span> main(<span class="dt">void</span>)</span>
+<span id="cb1-3"><a href="#cb1-3"></a>{</span>
+<span id="cb1-4"><a href="#cb1-4"></a>	a[<span class="dv">0</span>] = <span class="ch">'r'</span>;</span>
+<span id="cb1-5"><a href="#cb1-5"></a>	printf(<span class="st">&quot;</span><span class="sc">%s\n</span><span class="st">&quot;</span>, a);</span>
+<span id="cb1-6"><a href="#cb1-6"></a>	<span class="cf">return</span> <span class="dv">0</span>;</span>
+<span id="cb1-7"><a href="#cb1-7"></a>}</span></code></pre></div>
 <p><strong>pointer.c</strong></p>
-<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">char</span> *p = <span class="st">&quot;ROSEdu&quot;</span>;
-<span class="dt">int</span> main(<span class="dt">void</span>)
-{
-	*p = <span class="st">'r'</span>;
-	printf(<span class="st">&quot;</span><span class="sc">%s\n</span><span class="st">&quot;</span>, p);
-	<span class="cf">return</span> <span class="dv">0</span>;
-}</code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb2-1"><a href="#cb2-1"></a><span class="dt">char</span> *p = <span class="st">&quot;ROSEdu&quot;</span>;</span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="dt">int</span> main(<span class="dt">void</span>)</span>
+<span id="cb2-3"><a href="#cb2-3"></a>{</span>
+<span id="cb2-4"><a href="#cb2-4"></a>	*p = <span class="ch">'r'</span>;</span>
+<span id="cb2-5"><a href="#cb2-5"></a>	printf(<span class="st">&quot;</span><span class="sc">%s\n</span><span class="st">&quot;</span>, p);</span>
+<span id="cb2-6"><a href="#cb2-6"></a>	<span class="cf">return</span> <span class="dv">0</span>;</span>
+<span id="cb2-7"><a href="#cb2-7"></a>}</span></code></pre></div>
 <p>Program <code>array.c</code> defines an array of char whose elements are initialized with character string literals, while <code>pointer.c</code> defines a pointer to char and initializes it with the address of a memory area holding a string literal.</p>
 <p>Notice array <code>a</code> and pointer <code>p</code> allocations in the image above. Can you make a guess about size of <code>a</code> and size of <code>p</code>?</p>
-<p>Next, both programs modify the first character of the string literal <code>&quot;ROSEdu&quot;</code>.</p>
+<p>Next, both programs modify the first character of the string literal <code>"ROSEdu"</code>.</p>
 <p>Are these two programs equivalent? At the first glance the answer seems to be positive, but let’s have a minute and actually run the code.</p>
 <pre><code>$ ./array
 rOSEdu
@@ -126,7 +126,7 @@ rOSEdu
 $ ./pointer
 Segmentation fault</code></pre>
 <p>While we could modify array <code>a</code>, our program was killed attempting to modify string literal pointed by <code>p</code>.</p>
-<p>We will now have a look at the generated assembly code and notice the section where string literal <code>&quot;ROSEdu&quot;</code> is stored.</p>
+<p>We will now have a look at the generated assembly code and notice the section where string literal <code>"ROSEdu"</code> is stored.</p>
 <p><img style="float:right" src="./images/arrays-vs-pointers-addr.png" alt="Array and pointer representation" width="298" height="283" /></p>
 <pre><code>$ gcc -S array.c -o array.s
 $ cat array.s
@@ -160,7 +160,7 @@ p:
 <ul>
 <li>What is the <code>sizeof(p)</code> and <code>sizeof(a)</code> in our previous examples?</li>
 <li>What happens if variables <code>a</code> and <code>p</code> are declared on the stack?</li>
-<li>Is it possible for the following expression <code>(const char []){&quot;ROSEdu&quot;} ==    &quot;ROSEdu&quot;</code> to yield true?</li>
+<li>Is it possible for the following expression <code>(const char []){"ROSEdu"} ==    "ROSEdu"</code> to yield true?</li>
 </ul>
 
     </div>

@@ -94,7 +94,7 @@
       <br />
       <span class="meta">
         Tagged:
-        <span class="tags"><a href="./tags/cryptography.html">cryptography</a>, <a href="./tags/encryption.html">encryption</a>, <a href="./tags/security.html">security</a>, <a href="./tags/rsa.html">rsa</a>, <a href="./tags/gpg.html">gpg</a></span>
+        <span class="tags"><a title="All pages tagged 'cryptography'." href="./tags/cryptography.html">cryptography</a>, <a title="All pages tagged 'encryption'." href="./tags/encryption.html">encryption</a>, <a title="All pages tagged 'security'." href="./tags/security.html">security</a>, <a title="All pages tagged 'rsa'." href="./tags/rsa.html">rsa</a>, <a title="All pages tagged 'gpg'." href="./tags/gpg.html">gpg</a></span>
       </span>
 
       <p>This guide is designed to explain why you need to hide information and how can you do this when you do not trust the channel through which messages are conveyed. We will discuss about cryptographic system, encryption, decryption, one-way function, asymmetric keys and more. You may think of cryptography as the thing that keeps you untouchable inside of a soap bubble travelling by air around the world.</p>
@@ -131,11 +131,9 @@
 <li><p><strong>Step 1</strong>: Alice and Bob come to an agreement for a common colour.</p></li>
 <li><p><strong>Step 2</strong>: Alice choose her secret colour that will not tell to Bob. Bob will do the same thing.</p></li>
 <li><p><strong>Step 3</strong>: Alice will mix the common colour with the secret one and the result is a mixture. Bob will also mix his secret colour with the common one and will obtain a different mixture from Alice’s one.</p></li>
-<li><p><strong>Step 4</strong>: Alice and Bob exchange the mixtures. This is the most critical step for communication because a <a href="https://en.wikipedia.org/wiki/Man-in-the-middle_attack">man-in-the-middle</a> could get access to those two mixtures. There is also a problem if the <a href="https://en.wikipedia.org/wiki/Man-in-the-middle_attack">man-in-the-middle</a> has both mixtures. Colour decomposition is irreversible. So the only chance to find two’s secret colour is mixing all possible colours with the common colour from step one. Also, remember that a secret colour can be also a mixture of many other colours.</p></li>
-</ol>
-<p><strong>Update:</strong> Diffie-Hellman does not protect you from a <a href="https://en.wikipedia.org/wiki/Man-in-the-middle_attack">man-in-the-middle</a> attack. To see why, imagine an attacker receiving all messages from Alice and replaying them back to Bob.</p>
-<ol start="5" type="1">
-<li><strong>Step 5</strong>: Alice will add again her secret colour to the mixture that Bob sent to her. Bob will follow the same steps.</li>
+<li><p><strong>Step 4</strong>: Alice and Bob exchange the mixtures. This is the most critical step for communication because a <a href="https://en.wikipedia.org/wiki/Man-in-the-middle_attack">man-in-the-middle</a> could get access to those two mixtures. There is also a problem if the <a href="https://en.wikipedia.org/wiki/Man-in-the-middle_attack">man-in-the-middle</a> has both mixtures. Colour decomposition is irreversible. So the only chance to find two’s secret colour is mixing all possible colours with the common colour from step one. Also, remember that a secret colour can be also a mixture of many other colours.</p>
+<p><strong>Update:</strong> Diffie-Hellman does not protect you from a <a href="https://en.wikipedia.org/wiki/Man-in-the-middle_attack">man-in-the-middle</a> attack. To see why, imagine an attacker receiving all messages from Alice and replaying them back to Bob.</p></li>
+<li><p><strong>Step 5</strong>: Alice will add again her secret colour to the mixture that Bob sent to her. Bob will follow the same steps.</p></li>
 </ol>
 <p>Finally Alice and Bob will obtain <strong>a common</strong> secret colour. Now, Alice and Bob can safely exchange the symmetric-key we were talking in a previous chapter, because they can encrypt and decrypt any message (sent through a communication channel) using the above <strong>secret colour</strong>.</p>
 <p>And here comes math. It is always about math when we do not have enough colours.</p>

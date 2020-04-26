@@ -94,7 +94,7 @@
       <br />
       <span class="meta">
         Tagged:
-        <span class="tags"><a href="./tags/library.html">library</a>, <a href="./tags/dynamic-linker.html">dynamic linker</a>, <a href="./tags/dynamic-loader.html">dynamic loader</a>, <a href="./tags/ldconfig.html">ldconfig</a></span>
+        <span class="tags"><a title="All pages tagged 'library'." href="./tags/library.html">library</a>, <a title="All pages tagged 'dynamic linker'." href="./tags/dynamic-linker.html">dynamic linker</a>, <a title="All pages tagged 'dynamic loader'." href="./tags/dynamic-loader.html">dynamic loader</a>, <a title="All pages tagged 'ldconfig'." href="./tags/ldconfig.html">ldconfig</a></span>
       </span>
 
       <p>This article aims to shed some light on the topic of library management with insight on the linker and loader. The <code>ldconfig</code> command, for example, is heavily used in Linux, though unknown to some of users.</p>
@@ -129,11 +129,11 @@ gcc -o myexec exec.o -L. -l test
 LD_LIBRARY_PATH=. ./myexec</code></pre>
 <p>When the loader creates a new process (<code>LD_LIBRARY_PATH=. ./myexec</code>), the library (<code>libtest.so</code>) is mapped into memory and necessary function code is accessed.</p>
 <p>The use of run-time linking requires a specialized API for loading needed function code while the process is running: <a href="http://linux.die.net/man/3/dlopen" title="dlopen(3) - Linux man page">dlopen &amp; friends</a>. A sample is shown below:</p>
-<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp">    <span class="dt">double</span> (*cosine)(<span class="dt">double</span>);
-
-    handle = dlopen (<span class="st">&quot;libm.so&quot;</span>, RTLD_LAZY);
-    cosine = dlsym(handle, <span class="st">&quot;cos&quot;</span>);
-    printf (<span class="st">&quot;</span><span class="sc">%f\n</span><span class="st">&quot;</span>, (*cosine)(<span class="fl">2.0</span>));</code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb3-1"><a href="#cb3-1"></a>    <span class="dt">double</span> (*cosine)(<span class="dt">double</span>);</span>
+<span id="cb3-2"><a href="#cb3-2"></a></span>
+<span id="cb3-3"><a href="#cb3-3"></a>    handle = dlopen (<span class="st">&quot;libm.so&quot;</span>, RTLD_LAZY);</span>
+<span id="cb3-4"><a href="#cb3-4"></a>    cosine = dlsym(handle, <span class="st">&quot;cos&quot;</span>);</span>
+<span id="cb3-5"><a href="#cb3-5"></a>    printf (<span class="st">&quot;</span><span class="sc">%f\n</span><span class="st">&quot;</span>, (*cosine)(<span class="fl">2.0</span>));</span></code></pre></div>
 <p>Unlike static and load-time dynamic linking, run-time dynamic linking doesn’t require the presence of a library argument to the link command (that is <code>-L. -ltest</code>).</p>
 <p>Advantages of a certain type of library (static or dynamic) are disadvantages for the other one and vice versa.</p>
 <p>Static library-generated executables have increased portability. All code is inserted into the executable such that, moving it on a different platform doesn’t require the presence of that library. These executables tend to be faster as no additional overhead is implied during load-time or run-time.</p>

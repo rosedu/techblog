@@ -94,67 +94,67 @@
       <br />
       <span class="meta">
         Tagged:
-        <span class="tags"><a href="./tags/c.html">C</a>, <a href="./tags/undefined-behaviour.html">undefined behaviour</a>, <a href="./tags/sequence-points.html">sequence points</a></span>
+        <span class="tags"><a title="All pages tagged 'C'." href="./tags/c.html">C</a>, <a title="All pages tagged 'undefined behaviour'." href="./tags/undefined-behaviour.html">undefined behaviour</a>, <a title="All pages tagged 'sequence points'." href="./tags/sequence-points.html">sequence points</a></span>
       </span>
 
       <p>Let us start from a common mistake made by programmers learning simple data structures in C. The following code is an implementation for simple linked lists of integers in C.</p>
 <!--more-->
-<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span>
-<span class="pp">#include </span><span class="im">&lt;stdlib.h&gt;</span>
-
-<span class="kw">struct</span> queue {
-	<span class="dt">int</span> elm;
-	<span class="kw">struct</span> queue* next;
-};
-
-<span class="kw">struct</span> queue* init()
-{
-	<span class="kw">struct</span> queue *q = calloc(<span class="dv">1</span>, <span class="kw">sizeof</span>(*q));
-	q-&gt;next = q;
-	<span class="cf">return</span> q;
-}
-
-<span class="dt">void</span> add(<span class="kw">struct</span> queue *q, <span class="dt">int</span> x)
-{
-	<span class="kw">struct</span> queue *n = calloc(<span class="dv">1</span>, <span class="kw">sizeof</span>(*n));
-	<span class="kw">struct</span> queue *head = q;
-
-	n-&gt;elm = x;
-	n-&gt;next = head;
-	<span class="cf">while</span> (q-&gt;next != head)
-		q = q-&gt;next;
-	q-&gt;next = n;
-}
-
-<span class="dt">int</span> pop(<span class="kw">struct</span> queue *q)
-{
-	<span class="dt">int</span> x = q-&gt;next-&gt;elm;
-	<span class="kw">struct</span> queue *tmp = q-&gt;next;
-	q-&gt;next = tmp-&gt;next;
-	free(tmp);
-	<span class="cf">return</span> x;
-}
-
-<span class="dt">void</span> free_q(<span class="kw">struct</span> queue *q)
-{
-	<span class="kw">struct</span> queue *tmp;
-	<span class="cf">while</span> (q-&gt;next != q) {
-		tmp = q-&gt;next;
-		free(q);
-		q = tmp;
-	}
-	free(q);
-}
-
-<span class="dt">int</span> main()
-{
-	<span class="kw">struct</span> queue *q = init();
-	add(q, <span class="dv">4</span>);
-	add(q, <span class="dv">2</span>);
-	printf(<span class="st">&quot;</span><span class="sc">%d%d\n</span><span class="st">&quot;</span>, pop(q), pop(q));
-	free_q(q);
-	<span class="cf">return</span> <span class="dv">0</span>;
-}</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb1-1"><a href="#cb1-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="pp">#include </span><span class="im">&lt;stdlib.h&gt;</span></span>
+<span id="cb1-3"><a href="#cb1-3"></a></span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="kw">struct</span> queue {</span>
+<span id="cb1-5"><a href="#cb1-5"></a>	<span class="dt">int</span> elm;</span>
+<span id="cb1-6"><a href="#cb1-6"></a>	<span class="kw">struct</span> queue* next;</span>
+<span id="cb1-7"><a href="#cb1-7"></a>};</span>
+<span id="cb1-8"><a href="#cb1-8"></a></span>
+<span id="cb1-9"><a href="#cb1-9"></a><span class="kw">struct</span> queue* init()</span>
+<span id="cb1-10"><a href="#cb1-10"></a>{</span>
+<span id="cb1-11"><a href="#cb1-11"></a>	<span class="kw">struct</span> queue *q = calloc(<span class="dv">1</span>, <span class="kw">sizeof</span>(*q));</span>
+<span id="cb1-12"><a href="#cb1-12"></a>	q-&gt;next = q;</span>
+<span id="cb1-13"><a href="#cb1-13"></a>	<span class="cf">return</span> q;</span>
+<span id="cb1-14"><a href="#cb1-14"></a>}</span>
+<span id="cb1-15"><a href="#cb1-15"></a></span>
+<span id="cb1-16"><a href="#cb1-16"></a><span class="dt">void</span> add(<span class="kw">struct</span> queue *q, <span class="dt">int</span> x)</span>
+<span id="cb1-17"><a href="#cb1-17"></a>{</span>
+<span id="cb1-18"><a href="#cb1-18"></a>	<span class="kw">struct</span> queue *n = calloc(<span class="dv">1</span>, <span class="kw">sizeof</span>(*n));</span>
+<span id="cb1-19"><a href="#cb1-19"></a>	<span class="kw">struct</span> queue *head = q;</span>
+<span id="cb1-20"><a href="#cb1-20"></a></span>
+<span id="cb1-21"><a href="#cb1-21"></a>	n-&gt;elm = x;</span>
+<span id="cb1-22"><a href="#cb1-22"></a>	n-&gt;next = head;</span>
+<span id="cb1-23"><a href="#cb1-23"></a>	<span class="cf">while</span> (q-&gt;next != head)</span>
+<span id="cb1-24"><a href="#cb1-24"></a>		q = q-&gt;next;</span>
+<span id="cb1-25"><a href="#cb1-25"></a>	q-&gt;next = n;</span>
+<span id="cb1-26"><a href="#cb1-26"></a>}</span>
+<span id="cb1-27"><a href="#cb1-27"></a></span>
+<span id="cb1-28"><a href="#cb1-28"></a><span class="dt">int</span> pop(<span class="kw">struct</span> queue *q)</span>
+<span id="cb1-29"><a href="#cb1-29"></a>{</span>
+<span id="cb1-30"><a href="#cb1-30"></a>	<span class="dt">int</span> x = q-&gt;next-&gt;elm;</span>
+<span id="cb1-31"><a href="#cb1-31"></a>	<span class="kw">struct</span> queue *tmp = q-&gt;next;</span>
+<span id="cb1-32"><a href="#cb1-32"></a>	q-&gt;next = tmp-&gt;next;</span>
+<span id="cb1-33"><a href="#cb1-33"></a>	free(tmp);</span>
+<span id="cb1-34"><a href="#cb1-34"></a>	<span class="cf">return</span> x;</span>
+<span id="cb1-35"><a href="#cb1-35"></a>}</span>
+<span id="cb1-36"><a href="#cb1-36"></a></span>
+<span id="cb1-37"><a href="#cb1-37"></a><span class="dt">void</span> free_q(<span class="kw">struct</span> queue *q)</span>
+<span id="cb1-38"><a href="#cb1-38"></a>{</span>
+<span id="cb1-39"><a href="#cb1-39"></a>	<span class="kw">struct</span> queue *tmp;</span>
+<span id="cb1-40"><a href="#cb1-40"></a>	<span class="cf">while</span> (q-&gt;next != q) {</span>
+<span id="cb1-41"><a href="#cb1-41"></a>		tmp = q-&gt;next;</span>
+<span id="cb1-42"><a href="#cb1-42"></a>		free(q);</span>
+<span id="cb1-43"><a href="#cb1-43"></a>		q = tmp;</span>
+<span id="cb1-44"><a href="#cb1-44"></a>	}</span>
+<span id="cb1-45"><a href="#cb1-45"></a>	free(q);</span>
+<span id="cb1-46"><a href="#cb1-46"></a>}</span>
+<span id="cb1-47"><a href="#cb1-47"></a></span>
+<span id="cb1-48"><a href="#cb1-48"></a><span class="dt">int</span> main()</span>
+<span id="cb1-49"><a href="#cb1-49"></a>{</span>
+<span id="cb1-50"><a href="#cb1-50"></a>	<span class="kw">struct</span> queue *q = init();</span>
+<span id="cb1-51"><a href="#cb1-51"></a>	add(q, <span class="dv">4</span>);</span>
+<span id="cb1-52"><a href="#cb1-52"></a>	add(q, <span class="dv">2</span>);</span>
+<span id="cb1-53"><a href="#cb1-53"></a>	printf(<span class="st">&quot;</span><span class="sc">%d%d\n</span><span class="st">&quot;</span>, pop(q), pop(q));</span>
+<span id="cb1-54"><a href="#cb1-54"></a>	free_q(q);</span>
+<span id="cb1-55"><a href="#cb1-55"></a>	<span class="cf">return</span> <span class="dv">0</span>;</span>
+<span id="cb1-56"><a href="#cb1-56"></a>}</span></code></pre></div>
 <p>The idea is simple: we insert <code>4</code> and <code>2</code> into the queue and expect the output to be <code>42</code>, the digits being output in the order of their insertion into the queue.</p>
 <p>However, running the program, we have a big surprise:</p>
 <pre><code>$ gcc -Wall -Wextra 1.c -g -o 1-gcc
@@ -164,30 +164,30 @@ $ ./1-gcc
 $ ./1-clang 
 42</code></pre>
 <p>Let’s ignore for now the fact that <a href="http://clang.llvm.org/" title="clang">clang</a> gives the correct response and let’s answer this question: What went wrong? The queue implementation seems correct but let’s replace it by a dummy implementation:</p>
-<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span>
-<span class="pp">#include </span><span class="im">&lt;stdlib.h&gt;</span>
-
-<span class="dt">int</span> x;
-
-<span class="dt">int</span> inc()
-{
-	x++;
-	<span class="cf">return</span> x;
-}
-
-<span class="dt">int</span> dec()
-{
-	x--;
-	<span class="cf">return</span> x;
-}
-
-<span class="dt">int</span> main()
-{
-	inc();
-	inc();
-	printf(<span class="st">&quot;</span><span class="sc">%d%d\n</span><span class="st">&quot;</span>, dec(), dec());
-	<span class="cf">return</span> <span class="dv">0</span>;
-}</code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb3-1"><a href="#cb3-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="pp">#include </span><span class="im">&lt;stdlib.h&gt;</span></span>
+<span id="cb3-3"><a href="#cb3-3"></a></span>
+<span id="cb3-4"><a href="#cb3-4"></a><span class="dt">int</span> x;</span>
+<span id="cb3-5"><a href="#cb3-5"></a></span>
+<span id="cb3-6"><a href="#cb3-6"></a><span class="dt">int</span> inc()</span>
+<span id="cb3-7"><a href="#cb3-7"></a>{</span>
+<span id="cb3-8"><a href="#cb3-8"></a>	x++;</span>
+<span id="cb3-9"><a href="#cb3-9"></a>	<span class="cf">return</span> x;</span>
+<span id="cb3-10"><a href="#cb3-10"></a>}</span>
+<span id="cb3-11"><a href="#cb3-11"></a></span>
+<span id="cb3-12"><a href="#cb3-12"></a><span class="dt">int</span> dec()</span>
+<span id="cb3-13"><a href="#cb3-13"></a>{</span>
+<span id="cb3-14"><a href="#cb3-14"></a>	x--;</span>
+<span id="cb3-15"><a href="#cb3-15"></a>	<span class="cf">return</span> x;</span>
+<span id="cb3-16"><a href="#cb3-16"></a>}</span>
+<span id="cb3-17"><a href="#cb3-17"></a></span>
+<span id="cb3-18"><a href="#cb3-18"></a><span class="dt">int</span> main()</span>
+<span id="cb3-19"><a href="#cb3-19"></a>{</span>
+<span id="cb3-20"><a href="#cb3-20"></a>	inc();</span>
+<span id="cb3-21"><a href="#cb3-21"></a>	inc();</span>
+<span id="cb3-22"><a href="#cb3-22"></a>	printf(<span class="st">&quot;</span><span class="sc">%d%d\n</span><span class="st">&quot;</span>, dec(), dec());</span>
+<span id="cb3-23"><a href="#cb3-23"></a>	<span class="cf">return</span> <span class="dv">0</span>;</span>
+<span id="cb3-24"><a href="#cb3-24"></a>}</span></code></pre></div>
 <p>Basically, we have removed the queue and replaced it by it’s length, stored in the global <code>x</code> variable. The expected output is <code>10</code>.</p>
 <pre><code>$ clang -Wall -Wextra 2.c -g -o 2-clang
 $ gcc -Wall -Wextra 2.c -g -o 2-gcc
@@ -234,17 +234,17 @@ callq   printf</code></pre>
 <p>The understanding of the assembly code is left as an exercise to the reader. It is easy to see that <code>clang</code> uses the stack to store the results.</p>
 <p>Both snippets were obtained using no optimization. As an exercise, try to observe the effect of each optimization level on the generated code and explain it.</p>
 <p>Let’s go on. In the above snippet we have used functions to increment and decrement the global value. Let us rewrite that code:</p>
-<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span>
-<span class="pp">#include </span><span class="im">&lt;stdlib.h&gt;</span>
-
-<span class="dt">int</span> main()
-{
-	<span class="dt">int</span> x = <span class="dv">0</span>;
-	x++;
-	x++;
-	printf(<span class="st">&quot;</span><span class="sc">%d%d\n</span><span class="st">&quot;</span>, --x, --x);
-	<span class="cf">return</span> <span class="dv">0</span>;
-}</code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb7-1"><a href="#cb7-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb7-2"><a href="#cb7-2"></a><span class="pp">#include </span><span class="im">&lt;stdlib.h&gt;</span></span>
+<span id="cb7-3"><a href="#cb7-3"></a></span>
+<span id="cb7-4"><a href="#cb7-4"></a><span class="dt">int</span> main()</span>
+<span id="cb7-5"><a href="#cb7-5"></a>{</span>
+<span id="cb7-6"><a href="#cb7-6"></a>	<span class="dt">int</span> x = <span class="dv">0</span>;</span>
+<span id="cb7-7"><a href="#cb7-7"></a>	x++;</span>
+<span id="cb7-8"><a href="#cb7-8"></a>	x++;</span>
+<span id="cb7-9"><a href="#cb7-9"></a>	printf(<span class="st">&quot;</span><span class="sc">%d%d\n</span><span class="st">&quot;</span>, --x, --x);</span>
+<span id="cb7-10"><a href="#cb7-10"></a>	<span class="cf">return</span> <span class="dv">0</span>;</span>
+<span id="cb7-11"><a href="#cb7-11"></a>}</span></code></pre></div>
 <p>Here, we have another suprise:</p>
 <pre><code>$ ./3-gcc 
 00
@@ -302,20 +302,20 @@ $ gcc -Wall -Wextra 3.c -g -o 3-gcc
 </ul>
 <p>Thus, our side effects in the <code>printf</code> function cause undefined behaviour and unspecified behaviour. Depending on the compiler, the results can be very different. This harms portability and should be avoided.</p>
 <p>Before finishing the article, let’s see another example, using different constructs:</p>
-<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span>
-<span class="pp">#include </span><span class="im">&lt;stdlib.h&gt;</span>
-<span class="pp">#include </span><span class="im">&lt;limits.h&gt;</span>
-
-<span class="dt">int</span> main()
-{
-	<span class="dt">int</span> x = INT_MAX;
-	<span class="dt">void</span> *p = &amp;x;
-
-	printf(<span class="st">&quot;</span><span class="sc">%d</span><span class="st"> </span><span class="sc">%d\n</span><span class="st">&quot;</span>, x, x + <span class="dv">1</span>);
-	printf(<span class="st">&quot;%p %p</span><span class="sc">\n</span><span class="st">&quot;</span>, p, p + <span class="dv">1</span>);
-
-	<span class="cf">return</span> <span class="dv">0</span>;
-}</code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb12-1"><a href="#cb12-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb12-2"><a href="#cb12-2"></a><span class="pp">#include </span><span class="im">&lt;stdlib.h&gt;</span></span>
+<span id="cb12-3"><a href="#cb12-3"></a><span class="pp">#include </span><span class="im">&lt;limits.h&gt;</span></span>
+<span id="cb12-4"><a href="#cb12-4"></a></span>
+<span id="cb12-5"><a href="#cb12-5"></a><span class="dt">int</span> main()</span>
+<span id="cb12-6"><a href="#cb12-6"></a>{</span>
+<span id="cb12-7"><a href="#cb12-7"></a>	<span class="dt">int</span> x = INT_MAX;</span>
+<span id="cb12-8"><a href="#cb12-8"></a>	<span class="dt">void</span> *p = &amp;x;</span>
+<span id="cb12-9"><a href="#cb12-9"></a></span>
+<span id="cb12-10"><a href="#cb12-10"></a>	printf(<span class="st">&quot;</span><span class="sc">%d</span><span class="st"> </span><span class="sc">%d\n</span><span class="st">&quot;</span>, x, x + <span class="dv">1</span>);</span>
+<span id="cb12-11"><a href="#cb12-11"></a>	printf(<span class="st">&quot;</span><span class="sc">%p</span><span class="st"> </span><span class="sc">%p\n</span><span class="st">&quot;</span>, p, p + <span class="dv">1</span>);</span>
+<span id="cb12-12"><a href="#cb12-12"></a></span>
+<span id="cb12-13"><a href="#cb12-13"></a>	<span class="cf">return</span> <span class="dv">0</span>;</span>
+<span id="cb12-14"><a href="#cb12-14"></a>}</span></code></pre></div>
 <p>The possible outputs of this code and the reasoning behind are left as an exercise. Use the comments area to provide solutions for all exercises left in this article.</p>
 <p>As a rule of thumb, try to limit the use of side effects inside a function call. You don’t know when you’ll fall into this trap again.</p>
 

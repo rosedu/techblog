@@ -94,7 +94,7 @@
       <br />
       <span class="meta">
         Tagged:
-        <span class="tags"><a href="./tags/arrays.html">arrays</a>, <a href="./tags/pointers.html">pointers</a>, <a href="./tags/extern.html">extern</a>, <a href="./tags/c.html">C</a></span>
+        <span class="tags"><a title="All pages tagged 'arrays'." href="./tags/arrays.html">arrays</a>, <a title="All pages tagged 'pointers'." href="./tags/pointers.html">pointers</a>, <a title="All pages tagged 'extern'." href="./tags/extern.html">extern</a>, <a title="All pages tagged 'C'." href="./tags/c.html">C</a></span>
       </span>
 
       <p>The idea for this post came from <a href="http://techblog.rosedu.org/arrays-vs-pointers.html#IDComment189927033">Virgil’s</a> comment on <a href="http://techblog.rosedu.org/arrays-vs-pointers.html">char[] versus char*</a> entry. We will dig into some of C’s extern keyword internals by means of examples and then analyze the differences between <code>extern char*</code> and <code>extern char[]</code>.</p>
@@ -103,13 +103,13 @@
 <p><img style="float:right" src="./images/c-extern-simple-usage.png" alt="C extern simple usage" width="227" height="263" /></p>
 <p>Let’s start with a simple example:</p>
 <p><strong>helper.c</strong></p>
-<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">int</span> sample = <span class="dv">42</span>; <span class="co">/* definition */</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb1-1"><a href="#cb1-1"></a><span class="dt">int</span> sample = <span class="dv">42</span>; <span class="co">/* definition */</span></span></code></pre></div>
 <p><strong>main.c</strong></p>
-<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="at">extern</span> <span class="dt">int</span> sample; <span class="co">/* declaration */</span>
-<span class="dt">int</span> main(<span class="dt">void</span>)
-{
-	printf(<span class="st">&quot;sample = </span><span class="sc">%d\n</span><span class="st">&quot;</span>, sample);
-}</code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb2-1"><a href="#cb2-1"></a><span class="at">extern</span> <span class="dt">int</span> sample; <span class="co">/* declaration */</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="dt">int</span> main(<span class="dt">void</span>)</span>
+<span id="cb2-3"><a href="#cb2-3"></a>{</span>
+<span id="cb2-4"><a href="#cb2-4"></a>	printf(<span class="st">&quot;sample = </span><span class="sc">%d\n</span><span class="st">&quot;</span>, sample);</span>
+<span id="cb2-5"><a href="#cb2-5"></a>}</span></code></pre></div>
 <p>Having obtained the corresponding object files <code>helper.o</code> and <code>main.o</code> we link them together into an executable named <code>main</code>. We will use the <a href="http://linux.die.net/man/1/nm">nm</a> tool to check the symbols from each object file:</p>
 <pre><code>$ nm helper.o
 00000000 D sample
@@ -121,15 +121,15 @@ $ nm main.o
 sample = 42</code></pre>
 <p>Now let’s see how the compiler behaves if the types for cross-referenced variables do not match:</p>
 <p><strong>foo.c</strong></p>
-<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">char</span> *foo = <span class="st">&quot;Hello&quot;</span>;</code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb5-1"><a href="#cb5-1"></a><span class="dt">char</span> *foo = <span class="st">&quot;Hello&quot;</span>;</span></code></pre></div>
 <p><strong>main.c</strong></p>
-<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">void</span> foo(<span class="dt">void</span>);
-
-<span class="dt">int</span> main(<span class="dt">void</span>)
-{
-	foo();
-	<span class="cf">return</span> <span class="dv">0</span>;
-}</code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb6-1"><a href="#cb6-1"></a><span class="dt">void</span> foo(<span class="dt">void</span>);</span>
+<span id="cb6-2"><a href="#cb6-2"></a></span>
+<span id="cb6-3"><a href="#cb6-3"></a><span class="dt">int</span> main(<span class="dt">void</span>)</span>
+<span id="cb6-4"><a href="#cb6-4"></a>{</span>
+<span id="cb6-5"><a href="#cb6-5"></a>	foo();</span>
+<span id="cb6-6"><a href="#cb6-6"></a>	<span class="cf">return</span> <span class="dv">0</span>;</span>
+<span id="cb6-7"><a href="#cb6-7"></a>}</span></code></pre></div>
 <pre><code>$ gcc -Wall -c foo.c -o foo.o
 $ gcc -Wall -c main.c -o main.o
 $ gcc -o main main.o foo.o
@@ -142,18 +142,18 @@ Segmentation fault</code></pre>
 <p>The file <code>main.c</code> declares an extern array of chars, leaving it to the linker to find the actual storage area defined for it. File <code>pointer.c</code> defines a pointer to a memory area holding a string literal. At link time, the symbol <code>str</code> from <code>main.c</code> is bound to a memory area representing the address of a string.</p>
 <p><img style="float:right" src="./images/c-extern-char.png" alt="C extern simple usage" width="217" height="252" /></p>
 <p><strong>pointer.c</strong></p>
-<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">char</span> *str = <span class="st">&quot;1234&quot;</span>;
-<span class="dt">char</span> a = <span class="st">'A'</span>; <span class="co">/* memory guards */</span>
-<span class="dt">char</span> b = <span class="st">'B'</span>;
-<span class="dt">char</span> c = <span class="st">'C'</span>;</code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb8-1"><a href="#cb8-1"></a><span class="dt">char</span> *str = <span class="st">&quot;1234&quot;</span>;</span>
+<span id="cb8-2"><a href="#cb8-2"></a><span class="dt">char</span> a = <span class="ch">'A'</span>; <span class="co">/* memory guards */</span></span>
+<span id="cb8-3"><a href="#cb8-3"></a><span class="dt">char</span> b = <span class="ch">'B'</span>;</span>
+<span id="cb8-4"><a href="#cb8-4"></a><span class="dt">char</span> c = <span class="ch">'C'</span>;</span></code></pre></div>
 <p><strong>main.c</strong></p>
-<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="at">extern</span> <span class="dt">char</span> str[];
-
-<span class="dt">int</span> main(<span class="dt">void</span>)
-{
-	printf(<span class="st">&quot;</span><span class="sc">%s\n</span><span class="st">&quot;</span>, str);
-	<span class="cf">return</span> <span class="dv">0</span>;
-}</code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb9-1"><a href="#cb9-1"></a><span class="at">extern</span> <span class="dt">char</span> str[];</span>
+<span id="cb9-2"><a href="#cb9-2"></a></span>
+<span id="cb9-3"><a href="#cb9-3"></a><span class="dt">int</span> main(<span class="dt">void</span>)</span>
+<span id="cb9-4"><a href="#cb9-4"></a>{</span>
+<span id="cb9-5"><a href="#cb9-5"></a>	printf(<span class="st">&quot;</span><span class="sc">%s\n</span><span class="st">&quot;</span>, str);</span>
+<span id="cb9-6"><a href="#cb9-6"></a>	<span class="cf">return</span> <span class="dv">0</span>;</span>
+<span id="cb9-7"><a href="#cb9-7"></a>}</span></code></pre></div>
 <p>By compiling and linking <code>main.c</code> and <code>pointer.c</code> together we get <code>main</code> executable.</p>
 <pre><code>$ ./main
 \�ABC</code></pre>
@@ -162,16 +162,16 @@ Segmentation fault</code></pre>
 <p>The file <code>main.c</code> declares a pointer to a memory area holding one or more characters. The linker will associate <code>str</code> from <code>main.o</code> with the storage defined by <code>str</code> array from <code>array.o</code>.</p>
 <p><img style="float:right" src="./images/c-extern-pointer.png" alt="C extern simple usage" width="217" height="252" /></p>
 <p><strong>array.c</strong></p>
-<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">char</span> str[] = <span class="st">&quot;1234&quot;</span>;</code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb11-1"><a href="#cb11-1"></a><span class="dt">char</span> str[] = <span class="st">&quot;1234&quot;</span>;</span></code></pre></div>
 <p><strong>main.c</strong></p>
-<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="at">extern</span> <span class="dt">char</span> *str;
-
-<span class="dt">int</span> main(<span class="dt">void</span>)
-{
-	printf(<span class="st">&quot;</span><span class="sc">%s\n</span><span class="st">&quot;</span>, str);
-
-	<span class="cf">return</span> <span class="dv">0</span>;
-}</code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb12-1"><a href="#cb12-1"></a><span class="at">extern</span> <span class="dt">char</span> *str;</span>
+<span id="cb12-2"><a href="#cb12-2"></a></span>
+<span id="cb12-3"><a href="#cb12-3"></a><span class="dt">int</span> main(<span class="dt">void</span>)</span>
+<span id="cb12-4"><a href="#cb12-4"></a>{</span>
+<span id="cb12-5"><a href="#cb12-5"></a>	printf(<span class="st">&quot;</span><span class="sc">%s\n</span><span class="st">&quot;</span>, str);</span>
+<span id="cb12-6"><a href="#cb12-6"></a></span>
+<span id="cb12-7"><a href="#cb12-7"></a>	<span class="cf">return</span> <span class="dv">0</span>;</span>
+<span id="cb12-8"><a href="#cb12-8"></a>}</span></code></pre></div>
 <p>By compiling and linking together these programs we notice that running the <code>main</code> executable results in a crash.</p>
 <pre><code>$ ./main
 Segmentation fault</code></pre>

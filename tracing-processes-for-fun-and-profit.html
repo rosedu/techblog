@@ -94,7 +94,7 @@
       <br />
       <span class="meta">
         Tagged:
-        <span class="tags"><a href="./tags/trace.html">trace</a>, <a href="./tags/strace.html">strace</a>, <a href="./tags/ptrace.html">ptrace</a>, <a href="./tags/debugging.html">debugging</a></span>
+        <span class="tags"><a title="All pages tagged 'trace'." href="./tags/trace.html">trace</a>, <a title="All pages tagged 'strace'." href="./tags/strace.html">strace</a>, <a title="All pages tagged 'ptrace'." href="./tags/ptrace.html">ptrace</a>, <a title="All pages tagged 'debugging'." href="./tags/debugging.html">debugging</a></span>
       </span>
 
       <p>After talking about <a href="http://techblog.rosedu.org/valgrind-introduction.html" title="Valgrind introduction">Valgrind</a> and <a href="http://techblog.rosedu.org/gdb-a-basic-workflow.html" title="GDB - basic workflow">GDB</a>, it is time to present another useful program for developers and system administrators.</p>
@@ -139,18 +139,18 @@ read(3, </code></pre>
 <p>We see that the application stopped while trying to read data from the third file descriptor. Looking backwards we find:</p>
 <pre><code>open(&quot;/dev/random&quot;, O_RDONLY)           = 3</code></pre>
 <p>Using these clues, we can construct a new source file which will compile into an application which has the exact same bug and nothing more:</p>
-<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span>
-<span class="pp">#include </span><span class="im">&lt;stdlib.h&gt;</span>
-
-<span class="pp">#define SIZE 1000</span>
-
-<span class="dt">int</span> main ()
-{
-        <span class="dt">char</span> a[SIZE];
-        FILE *f = fopen(<span class="st">&quot;/dev/random&quot;</span>, <span class="st">&quot;r&quot;</span>);
-        fgets(a, SIZE, f);
-        <span class="cf">return</span> <span class="dv">0</span>;
-}</code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb4-1"><a href="#cb4-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="pp">#include </span><span class="im">&lt;stdlib.h&gt;</span></span>
+<span id="cb4-3"><a href="#cb4-3"></a></span>
+<span id="cb4-4"><a href="#cb4-4"></a><span class="pp">#define SIZE </span><span class="dv">1000</span></span>
+<span id="cb4-5"><a href="#cb4-5"></a></span>
+<span id="cb4-6"><a href="#cb4-6"></a><span class="dt">int</span> main ()</span>
+<span id="cb4-7"><a href="#cb4-7"></a>{</span>
+<span id="cb4-8"><a href="#cb4-8"></a>        <span class="dt">char</span> a[SIZE];</span>
+<span id="cb4-9"><a href="#cb4-9"></a>        <span class="dt">FILE</span> *f = fopen(<span class="st">&quot;/dev/random&quot;</span>, <span class="st">&quot;r&quot;</span>);</span>
+<span id="cb4-10"><a href="#cb4-10"></a>        fgets(a, SIZE, f);</span>
+<span id="cb4-11"><a href="#cb4-11"></a>        <span class="cf">return</span> <span class="dv">0</span>;</span>
+<span id="cb4-12"><a href="#cb4-12"></a>}</span></code></pre></div>
 <p>Of course, the building of a new application is not always needed. In our case, we see that we are reading from <code>/dev/random</code>. Knowing that this requires entropy sources to generate the random stream, we understand why the process stopped. Changing the file to <code>/dev/urandom</code> solves the bug for our toy application, therefore it must solve it for the original one as well. Or, we could generate more entropy to increase the speed of the application.</p>
 <p>For the second example, let’s consider the problem of finding which configuration files are read when launching an application. This can be used to debug a faulty <code>vim</code> setting, to see what <code>*rc</code> files are read when launching <code>bash</code>, etc. In our case, we want to see the order in which <code>git</code> reads its configuration files to see what files are to be ignored from the repository (we have 4 options: global <code>.gitignore</code>, <code>.gitignore</code> in root folder or in a subdirectory and <code>.git/info/exclude</code>):</p>
 <pre><code>$strace git status
