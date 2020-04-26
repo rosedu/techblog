@@ -2,7 +2,7 @@
 name: Blog improvements
 about: Use this template to report issues with the toolchain/website
 title: "[Toolchain issue] Title"
-labels: new-article-request
+labels: toolchain-issue
 assignees: mihaimaruseac
 
 ---
