@@ -1,8 +1,9 @@
 ---
 name: Blog improvements
-about: Use this template to signal issues with the toolchain or the website
-style
-labels: improvement
+about: Use this template to report issues with the toolchain/website
+title: "[Toolchain issue] Title"
+labels: new-article-request
+assignees: mihaimaruseac
 
 ---
 
