@@ -1,7 +1,10 @@
 ---
 name: New article
 about: Use this template to request new articles
-labels: 'issue:new-article'
+title: "[Article request] Title"
+labels: new-article-request
+assignees: mihaimaruseac
+
 ---
 
 **Description of new article**
