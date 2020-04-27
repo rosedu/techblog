@@ -1,7 +1,9 @@
 ---
 name: New article
 about: Use this PR template to propose new articles
-labels: 'pr:new-article'
+title: "[New article] Title"
+labels: toolchain-issue
+assignees: mihaimaruseac
 
 ---
 

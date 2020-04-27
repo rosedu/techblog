@@ -1,7 +1,9 @@
 ---
 name: Blog style improvements
 about: Use this PR template to propose changes to the style of the blog
-labels: 'pr:style'
+title: "[Style fix] Title"
+labels: toolchain-issue
+assignees: mihaimaruseac
 
 ---
 

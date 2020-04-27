@@ -1,7 +1,9 @@
 ---
 name: Blog toolchain improvements
 about: Use this PR template to propose changes to the toolchain
-labels: 'pr:toolchain'
+title: "[Toolchain fix] Title"
+labels: toolchain-issue
+assignees: mihaimaruseac
 
 ---
 
