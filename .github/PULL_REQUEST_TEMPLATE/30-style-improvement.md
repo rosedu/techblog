@@ -1,7 +1,6 @@
 ---
 name: Blog style improvements
-about: Use this PR template to propose changes to the look of the blog webstie
-(eg. CSS theme)
+about: Use this PR template to propose changes to the style of the blog
 labels: 'pr:style'
 
 ---

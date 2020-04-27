@@ -1,7 +1,6 @@
 ---
 name: Blog toolchain improvements
-about: Use this PR template to propose changes to the toolchain used to create
-the website from the markdown articles (eg. Haskell code)
+about: Use this PR template to propose changes to the toolchain
 labels: 'pr:toolchain'
 
 ---
