@@ -78,25 +78,56 @@
 <p>Techblog is a blog about various IT-related technical topics and it’s written by people interested in technology and high-tech.</p>
 <section id="how-to-write-an-article-on-techblog" class="level3">
 <h3>How to write an article on Techblog</h3>
-<p>The simplest way is just to send an e-mail to <code>techblog</code> [<em>at</em>] <code>rosedu</code> [<em>dot</em>] <code>org</code> to announce your desire to write something along with a draft in any format you want (text file, PDF, HTML). If the idea looks good we will work from there.</p>
-<p>If you want to be extremely formal and do the entire work yourself then you first clone the repository:</p>
+<p>All articles on the blog are generated from Markdown files. To write a new article, all you need to do is write the post under <code>posts/$year/$month/$day/$name.md</code> where <code>$name</code> is a short name for the file containing the article. For example, <a href="https://techblog.rosedu.org/fp-dragons.html">the article on floating point</a> resides under <a href="https://github.com/rosedu/techblog/blob/master/posts/2014/03/30/fp-dragons.md"><code>posts/2014/03/30/fp-dragons.md</code></a>. This short name is also visible in the URL, so make sure it is relevant to the article.</p>
+<p>Start the article with a simple YAML stanza describing the article: your name, the expected publication date, the title and a set of tags associated with the article and related to the contents. Continuing the example, here is the stanza for the floating point article:</p>
+<pre><code>---
+date: 2014-03-30
+title: Here be Dragons - The Interesting Realm of Floating Point Operations
+author: Mihai Maruseac
+tags: floating point, numerical methods, approximate algorithms, fast transcedental functions, fast inverse square root
+---</code></pre>
+<p>Then, write a short introduction to the article. It should be as long as needed to create interest into reading the article but not longer than that. This would create the blurb that is shown on the front page.</p>
+<p>After the short introduction, add the following 3 lines to separate it from the rest of the article:</p>
+<pre><code>
+&lt;!--more--&gt;
+</code></pre>
+<p>Then, continue writing the article in markdown format, in the same file.</p>
+<p>If you have images to attach to the article, place them under <code>images/$name/</code> where <code>$name</code> matches the name given to the main article file (without the <code>.md</code> extension). Then refer to the image in the article using Markdown link format.</p>
+<p>If an article needs additional resources (e.g., binaries for CTF puzzles), then please place them under <code>res/$name/</code>. We recommend including a full version of the source code mentioned in an article including <code>Makefile</code> or other build-related configuration. Make sure these are linked to from the article itself.</p>
+<p>Once the article is written, create a pull request on <a href="https://github.com/rosedu/techblog/compare?expand=1">GitHub</a>. You can send an email to <code>techblog</code> [<em>at</em>] <code>rosedu</code> [<em>dot</em>] <code>org</code> to have people review the PR as fast as possible.</p>
+<p>We require two approving reviewers before the article gets published. If you have reviewers in mind when you write the article, you can mention them on the PR.</p>
+<section id="previewing-the-article" class="level4">
+<h4>Previewing the article</h4>
+<p>You can preview how the article looks like using the GitHub preview facility but if you want to see how it looks on the website you need a few additional steps: first, clone the repository:</p>
 <pre><code>git clone https://github.com/rosedu/techblog.git</code></pre>
-<p>then you install Haskell Platform and run <code>./build-exec</code> to have <code>hakyll</code> and dependencies installed. After this you write your article in a <code>posts/year/month/day/name.md</code> file – using <a href="http://daringfireball.net/projects/markdown/syntax">markdown syntax</a> –, run <code>./techblog</code> to see the future aspect of the site on <code>0.0.0.0:8000</code> and then make a pull request. Please send an email to <code>techblog</code> [<em>at</em>] <code>rosedu</code> [<em>dot</em>] <code>org</code> afterwards to ensure that your pull request is acted upon as soon as possible.</p>
+<p>After this, you need to either build the binary that builds the website or download it from the <a href="https://github.com/rosedu/techblog/releases">releases page</a>.</p>
+<p>To build the binary, you need a working Haskell environment. We provide tooling for <a href="https://docs.haskellstack.org/en/stable/README/">Haskell Stack</a> but installing the <a href="https://www.haskell.org/downloads/">minimal installer or the full Haskell Platform</a> should also work.</p>
+<p>Assuming a Stack based toolchain, you then have to build the binary using <code>stack build</code>. If you want, you can also install it on a directory in <code>PATH</code> using <code>stack install</code>.</p>
+<p>Then, you can preview the article on a local web-server that refreshes as soon as the file contents change by running <code>techblog</code> (alternatively, if you didn’t run <code>stack install</code>, then you will need to run <code>stack exec techblog</code>).</p>
+<p>Opening your browser and navigating to <code>127.0.0.1:8000</code> will then display the blog from a locally generated copy.</p>
+</section>
+<section id="for-curators" class="level4">
+<h4>For curators</h4>
+<p>Once pull requests are merged into <code>master</code>, to update the site you will have to manually run <code>stack exec techblog -- deploy</code> (or <code>techblog deploy</code> if you ran <code>stack install</code> before) after pulling from the GitHub remote. In the future, this process will be automated via GitHub actions.</p>
+<p>The binary has one additional running mode, <code>techblog validate</code> where all articles are scanned and all links are checked to see that their server returns a <code>200 OK</code> HTTP code.</p>
+<p>Finally, to completely clean the generated website and all associated caches, you can run <code>techblog clean</code>. You will need to do this again if you compile a new version of the tool.</p>
+</section>
 </section>
 <section id="i-have-seen-a-bug" class="level3">
 <h3>I have seen a bug</h3>
-<p>If you have found something which needs to be changed in the layout of the site, please <a href="https://github.com/rosedu/techblog/issues/new">leave an issue</a> and we will start working on it as soon as possible.</p>
-<p>If you have found something wrong inside one article leave a comment on that article or send an email to <code>techblog</code> [<em>at</em>] <code>rosedu</code> [<em>dot</em>] <code>org</code> or <code>rosedu-general</code> [<em>at</em>] <code>rosedu</code> [<em>dot</em>] <code>org</code>. We will try to fix things as soon as possible. If need be, we will write a follow-up article containing your remark and proper thanks and attributions.</p>
+<p>If you have found something which needs to be changed in the layout of the site, please <a href="https://github.com/rosedu/techblog/issues/new?assignees=mihaimaruseac&amp;labels=toolchain-issue&amp;template=20-improvement-request.md&amp;title=%5BToolchain+issue%5D+Title">leave an issue</a> and we will start working on it as soon as possible.</p>
+<p>If you have found something wrong inside one article leave a comment on that article or open an issue. Alternatively, send an email to <code>techblog</code> [<em>at</em>] <code>rosedu</code> [<em>dot</em>] <code>org</code> or <code>rosedu-general</code> [<em>at</em>] <code>rosedu</code> [<em>dot</em>] <code>org</code>. We will try to fix things as soon as possible. If need be, we will write a follow-up article containing your remark and proper thanks and attributions.</p>
 </section>
 <section id="i-want-to-propose-an-article." class="level3">
 <h3>I want to propose an article.</h3>
-<p>If you want to propose an article you can either edit the <a href="https://github.com/rosedu/techblog/wiki/FutureArticles">proposal page</a> or send an email to <code>techblog</code> [<em>at</em>] <code>rosedu</code> [<em>dot</em>] <code>org</code> or <code>rosedu-general</code> [<em>at</em>] <code>rosedu</code> [<em>dot</em>] <code>org</code>. As soon as someone can write an article on that idea and he has some free time the article will be written and you’ll get an attribution at the end of it.</p>
+<p>Please open <a href="https://github.com/rosedu/techblog/issues/new?assignees=mihaimaruseac&amp;labels=new-article-request&amp;template=10-new-article.md&amp;title=%5BArticle+request%5D+Title">a new issue with the corresponding template</a> to suggest writing a new article.</p>
+<p>If the request is approved, someone (could be you) will write the article and both the author and the author of the proposal will be credited.</p>
 </section>
 </section>
 <section class="footnotes" role="doc-endnotes">
 <hr />
 <ol>
-<li id="fn1" role="doc-endnote"><p>Last updated 2014/03/25.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn1" role="doc-endnote"><p>Last updated 2020/04/26.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
               </article>
@@ -123,19 +154,10 @@
                 </a>
               </div>
 
-              <h4>Powered by</h4>
-              <ul>
-                <li class="contact">
-                  <address>
-                    <a class="author fn n" href="http://www.rosedu.org">ROSEdu</a>
-                  </address>
-                </li>
-                <li class="contact">
-                  <address>
-                    <a class="author fn n" href="http://jaspervdj.be/hakyll">Hakyll</a>
-                  </address>
-                </li>
-              </ul>
+              <h4>Tech</h4>
+              <div class="bucket">
+                This blog is created by <a class="author fn n" href="http://www.rosedu.org">ROSEdu</a> community using <a class="author fn n" href="http://jaspervdj.be/hakyll">Hakyll</a>. See source on <a href="https://github.com/rosedu/techblog">GitHub</a>.
+              </div>
 
               <h4>License</h4>
               <div class="bucket">
