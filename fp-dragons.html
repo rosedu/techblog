@@ -211,7 +211,7 @@ minus pi (xkcd)" title="e to pi minus pi (xkcd)"></p>
 <span id="cb8-6"><a href="#cb8-6"></a><span class="bn">0x7fffffffdfa4</span>: <span class="bn">0x3e99999a</span></span>
 <span id="cb8-7"><a href="#cb8-7"></a>(gdb) p/x <span class="er">$</span>xmm0</span>
 <span id="cb8-8"><a href="#cb8-8"></a><span class="er">$</span><span class="dv">4</span> = {.... uint128 = <span class="bn">0x0000000000000000000000003e99999a</span>}</span></code></pre></div>
-<p>Looking through the analyzer, <code>0x3dcccccd</code> (the value for <code>a</code>) is <code>1.00000001490116119384765625E-1</code> which is both close to the original value of <code>0.1</code> and to the displayed value of <code>0.100000001</code>. Same for <code>b</code> and <code>c</code>. However, looking at <code>xmm0</code> register we see that the last 32 bits have the same pattern as <code>-0xc($rbp)</code>. Thus, the SSE 128 bits registers <strong>are not using</strong> the <code>binary128</code> standard! If they were using it, the last value displayed there should have been <code>3FFD3333333333333333333333333333</code>. As said on <a href="http://www.reddit.com/r/programming/comments/21qzz2/an_overview_of_floating_point_realm/" title="This article on reddit">reddit thread for this article</a>, excess precision comes form the <code>x87</code> coprocessor which uses 80 bits of precision.</p>
+<p>Looking through the analyzer, <code>0x3dcccccd</code> (the value for <code>a</code>) is <code>1.00000001490116119384765625E-1</code> which is both close to the original value of <code>0.1</code> and to the displayed value of <code>0.100000001</code>. Same for <code>b</code> and <code>c</code>. However, looking at <code>xmm0</code> register we see that the last 32 bits have the same pattern as <code>-0xc($rbp)</code>. Thus, the SSE 128 bits registers <strong>are not using</strong> the <code>binary128</code> standard! If they were using it, the last value displayed there should have been <code>3FFD3333333333333333333333333333</code>. As said on <a href="http://www.reddit.com/r/programming/comments/21qzz2/an_overview_of_floating_point_realm/" title="This article on reddit">reddit thread for this article</a>, excess precision comes from the <code>x87</code> coprocessor which uses 80 bits of precision.</p>
 <p>Now it is time to see some other aspects of working with floating point numbers.</p>
 </section>
 <section id="testing-them-all" class="level3">
@@ -565,13 +565,13 @@ minus pi (xkcd)" title="e to pi minus pi (xkcd)"></p>
               <h4>Social</h4>
               <div class="rss">
                 <a href="http://techblog.rosedu.org/rss.xml" target="_blank">
-                  <img src="./images/rss.png" alt="Subscribe to RSS Feed" />
+                  <img src="./images/style/rss.png" alt="Subscribe to RSS Feed" />
                 </a>
                 <a href="http://www.reddit.com/submit?url='+encodeURIComponent(window.location)" target="_blank" onclick="window.location='http://www.reddit.com/submit?url='+encodeURIComponent(window.location); return false">
-                  <img src="./images/reddit.png" alt="Submit to Reddit" />
+                  <img src="./images/style/reddit.png" alt="Submit to Reddit" />
                 </a>
                 <a href="http://twitter.com/share" class="twitter-share-button" data-count="none" target="_blank">
-                  <img src="./images/twitter.png" alt="Submit to Twitter" />
+                  <img src="./images/style/twitter.png" alt="Submit to Twitter" />
                 </a>
               </div>
 

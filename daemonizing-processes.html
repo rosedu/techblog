@@ -117,7 +117,7 @@
 <h3>Let’s code a Daemon</h3>
 <p>In this article we will show how one can write a simple daemon process. First, we will show the long path of using <code>fork()</code> and <code>setsid()</code>.</p>
 <p>First step (see <a href="http://web.archive.org/web/20120914180018/http://www.steve.org.uk/Reference/Unix/faq_2.html#SEC16" title="How to code a daemon">this FAQ</a> for reference) is to <code>fork</code> and <code>exit</code> such that the process is no longer a process leader:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1"></a><span class="co">/*</span></span>
+<div class="sourceCode" id="cb3"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb3-1"><a href="#cb3-1"></a><span class="co">/*</span></span>
 <span id="cb3-2"><a href="#cb3-2"></a><span class="co"> * Fork the parent process</span></span>
 <span id="cb3-3"><a href="#cb3-3"></a><span class="co"> */</span></span>
 <span id="cb3-4"><a href="#cb3-4"></a>pid = fork();</span>
@@ -135,13 +135,13 @@
 <span id="cb3-16"><a href="#cb3-16"></a><span class="cf">if</span> (pid &gt; <span class="dv">0</span>)</span>
 <span id="cb3-17"><a href="#cb3-17"></a>    exit(EXIT_SUCCESS);</span></code></pre></div>
 <p>Because we want to have a completely new controlling terminal we need to make our process be a session leader using <code>setsid()</code>. The above <code>fork</code> was needed just to allow this to succeed:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1"></a>sessionID=setsid();</span>
+<div class="sourceCode" id="cb4"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb4-1"><a href="#cb4-1"></a>sessionID=setsid();</span>
 <span id="cb4-2"><a href="#cb4-2"></a><span class="cf">if</span> (sessionID &lt; <span class="dv">0</span>) {</span>
 <span id="cb4-3"><a href="#cb4-3"></a>    perror(<span class="st">&quot;setsid&quot;</span>);</span>
 <span id="cb4-4"><a href="#cb4-4"></a>    exit(EXIT_FAILURE);</span>
 <span id="cb4-5"><a href="#cb4-5"></a>}</span></code></pre></div>
 <p>Next step is to <code>fork()/exit()</code> again. Since the session leader is now dead our process can never get access to a controlling terminal:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb5-1"><a href="#cb5-1"></a>pid = fork();</span>
+<div class="sourceCode" id="cb5"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb5-1"><a href="#cb5-1"></a>pid = fork();</span>
 <span id="cb5-2"><a href="#cb5-2"></a><span class="cf">if</span> (pid &lt; <span class="dv">0</span>) {</span>
 <span id="cb5-3"><a href="#cb5-3"></a>    perror(<span class="st">&quot;fork&quot;</span>);</span>
 <span id="cb5-4"><a href="#cb5-4"></a>    exit(EXIT_FAILURE);</span>
@@ -150,14 +150,14 @@
 <span id="cb5-7"><a href="#cb5-7"></a><span class="cf">if</span> (pid &gt; <span class="dv">0</span>)</span>
 <span id="cb5-8"><a href="#cb5-8"></a>    exit(EXIT_SUCCESS);</span></code></pre></div>
 <p>Now, we will switch to the directory which contains the files needed for this daemon to run (for example in case of <code>dovecot</code> we would switch to <code>/run/dovectot</code> which contains the sockets for different mail queues). Or, we could switch to <code>/</code> (like <code>apache2</code> and <code>sshd</code> do for example) if we don’t want to change to a specific directory. Anyway, it is essential to change the current running directory to prevent cases where if the program was started in a <code>cwd</code> from a different partition that partition could no longer be <code>umount</code>ed.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1"></a>change_dir = chdir(<span class="st">&quot;/&quot;</span>);</span>
+<div class="sourceCode" id="cb6"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb6-1"><a href="#cb6-1"></a>change_dir = chdir(<span class="st">&quot;/&quot;</span>);</span>
 <span id="cb6-2"><a href="#cb6-2"></a><span class="cf">if</span> (change_dir &lt; <span class="dv">0</span> ) {</span>
 <span id="cb6-3"><a href="#cb6-3"></a>    perror(<span class="st">&quot;chdir&quot;</span>);</span>
 <span id="cb6-4"><a href="#cb6-4"></a>    exit(EXIT_FAILURE);</span>
 <span id="cb6-5"><a href="#cb6-5"></a>}</span></code></pre></div>
 <p>Though the following steps are optional, it is better to do them too to ensure a reproducible behaviour of our executable, no matter what state the system was when we started it.</p>
 <p>Because a child process inherits file descriptors and file descriptors from his parent, we need to close them. We use <code>sysconf</code> to get the maximum number of opened file descriptors in order to close all of them and prevent leaks. Then, we will set <code>umask</code> to 0 to gain complete permissions over anything we write.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb7-1"><a href="#cb7-1"></a>maxfd = sysconf(_SC_OPEN_MAX);</span>
+<div class="sourceCode" id="cb7"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb7-1"><a href="#cb7-1"></a>maxfd = sysconf(_SC_OPEN_MAX);</span>
 <span id="cb7-2"><a href="#cb7-2"></a><span class="cf">if</span> (maxfd &lt; <span class="dv">0</span>) {</span>
 <span id="cb7-3"><a href="#cb7-3"></a>    perror(<span class="st">&quot;sysconf _SC_OPEN_MAX&quot;</span>);</span>
 <span id="cb7-4"><a href="#cb7-4"></a>    exit(EXIT_FAILURE);</span>
@@ -169,7 +169,7 @@
 <span id="cb7-10"><a href="#cb7-10"></a></span>
 <span id="cb7-11"><a href="#cb7-11"></a>umask(<span class="dv">0</span>);</span></code></pre></div>
 <p>Now we should reopen the 3 standard file descriptors. We can point them to <code>/dev/null</code> or to specific log files. Here we open all of them to <code>/dev/null</code>:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb8-1"><a href="#cb8-1"></a>fd = open(<span class="st">&quot;/dev/null&quot;</span>, <span class="dv">0</span>);</span>
+<div class="sourceCode" id="cb8"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb8-1"><a href="#cb8-1"></a>fd = open(<span class="st">&quot;/dev/null&quot;</span>, <span class="dv">0</span>);</span>
 <span id="cb8-2"><a href="#cb8-2"></a><span class="cf">if</span> (fd &lt; <span class="dv">0</span>) {</span>
 <span id="cb8-3"><a href="#cb8-3"></a>    perror(<span class="st">&quot;open /dev/null&quot;</span>);</span>
 <span id="cb8-4"><a href="#cb8-4"></a>    exit(EXIT_FAILURE);</span>
@@ -208,14 +208,14 @@
 <div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1"></a>$ <span class="ex">pgrep</span> sleep</span>
 <span id="cb10-2"><a href="#cb10-2"></a><span class="ex">5470</span></span></code></pre></div>
 <p>We can simulate <code>nohup</code> inside our C code too. Let’s configure signal handlers:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb11-1"><a href="#cb11-1"></a>memset (&amp;sig_act, <span class="dv">0</span> , <span class="kw">sizeof</span>(sig_act));</span>
+<div class="sourceCode" id="cb11"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb11-1"><a href="#cb11-1"></a>memset (&amp;sig_act, <span class="dv">0</span> , <span class="kw">sizeof</span>(sig_act));</span>
 <span id="cb11-2"><a href="#cb11-2"></a><span class="co">/* Ignore SIGHUP signal */</span></span>
 <span id="cb11-3"><a href="#cb11-3"></a><span class="cf">if</span> (signal(SIGHUP, SIG_IGN) == SIG_ERR){</span>
 <span id="cb11-4"><a href="#cb11-4"></a>    perror(<span class="st">&quot;signal&quot;</span>);</span>
 <span id="cb11-5"><a href="#cb11-5"></a>    exit(EXIT_FAILURE);</span>
 <span id="cb11-6"><a href="#cb11-6"></a>}</span></code></pre></div>
 <p>Now, if <code>stdout</code> is a terminal we have to redirect output to a file, just like the original command does:</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb12-1"><a href="#cb12-1"></a><span class="cf">if</span>(isatty(fileno(stdout))) {</span>
+<div class="sourceCode" id="cb12"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb12-1"><a href="#cb12-1"></a><span class="cf">if</span>(isatty(fileno(stdout))) {</span>
 <span id="cb12-2"><a href="#cb12-2"></a>    rc = open (<span class="st">&quot;nohup.out&quot;</span>, O_WRONLY | O_CREAT, <span class="bn">0644</span>);</span>
 <span id="cb12-3"><a href="#cb12-3"></a>    <span class="cf">if</span> (rc &lt; <span class="dv">0</span>) {</span>
 <span id="cb12-4"><a href="#cb12-4"></a>        perror(<span class="st">&quot;open&quot;</span>);</span>
@@ -315,13 +315,13 @@
               <h4>Social</h4>
               <div class="rss">
                 <a href="http://techblog.rosedu.org/rss.xml" target="_blank">
-                  <img src="./images/rss.png" alt="Subscribe to RSS Feed" />
+                  <img src="./images/style/rss.png" alt="Subscribe to RSS Feed" />
                 </a>
                 <a href="http://www.reddit.com/submit?url='+encodeURIComponent(window.location)" target="_blank" onclick="window.location='http://www.reddit.com/submit?url='+encodeURIComponent(window.location); return false">
-                  <img src="./images/reddit.png" alt="Submit to Reddit" />
+                  <img src="./images/style/reddit.png" alt="Submit to Reddit" />
                 </a>
                 <a href="http://twitter.com/share" class="twitter-share-button" data-count="none" target="_blank">
-                  <img src="./images/twitter.png" alt="Submit to Twitter" />
+                  <img src="./images/style/twitter.png" alt="Submit to Twitter" />
                 </a>
               </div>
 

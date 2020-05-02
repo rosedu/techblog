@@ -99,7 +99,7 @@
 
       <p>This post will shed some light on the differences between arrays and pointers specifically when it comes about referencing string literals. We will base our discussion on the following two programs:</p>
 <!--more-->
-<p><img style="float:right" src="./images/arrays-vs-pointers.png" alt="Array and pointer representation" width="376" height="192" /></p>
+<p><img style="float:right" src="./images/arrays-vs-pointers/arrays-vs-pointers.png" alt="Array and pointer representation" width="376" height="192" /></p>
 <p><strong>array.c</strong></p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb1-1"><a href="#cb1-1"></a><span class="dt">char</span> a[] = <span class="st">&quot;ROSEdu&quot;</span>;</span>
 <span id="cb1-2"><a href="#cb1-2"></a><span class="dt">int</span> main(<span class="dt">void</span>)</span>
@@ -127,7 +127,7 @@ $ ./pointer
 Segmentation fault</code></pre>
 <p>While we could modify array <code>a</code>, our program was killed attempting to modify string literal pointed by <code>p</code>.</p>
 <p>We will now have a look at the generated assembly code and notice the section where string literal <code>"ROSEdu"</code> is stored.</p>
-<p><img style="float:right" src="./images/arrays-vs-pointers-addr.png" alt="Array and pointer representation" width="298" height="283" /></p>
+<p><img style="float:right" src="./images/arrays-vs-pointers/arrays-vs-pointers-addr.png" alt="Array and pointer representation" width="298" height="283" /></p>
 <pre><code>$ gcc -S array.c -o array.s
 $ cat array.s
 .globl a
@@ -217,13 +217,13 @@ p:
               <h4>Social</h4>
               <div class="rss">
                 <a href="http://techblog.rosedu.org/rss.xml" target="_blank">
-                  <img src="./images/rss.png" alt="Subscribe to RSS Feed" />
+                  <img src="./images/style/rss.png" alt="Subscribe to RSS Feed" />
                 </a>
                 <a href="http://www.reddit.com/submit?url='+encodeURIComponent(window.location)" target="_blank" onclick="window.location='http://www.reddit.com/submit?url='+encodeURIComponent(window.location); return false">
-                  <img src="./images/reddit.png" alt="Submit to Reddit" />
+                  <img src="./images/style/reddit.png" alt="Submit to Reddit" />
                 </a>
                 <a href="http://twitter.com/share" class="twitter-share-button" data-count="none" target="_blank">
-                  <img src="./images/twitter.png" alt="Submit to Twitter" />
+                  <img src="./images/style/twitter.png" alt="Submit to Twitter" />
                 </a>
               </div>
 

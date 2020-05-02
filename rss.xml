@@ -305,7 +305,7 @@ minus pi (xkcd)" title="e to pi minus pi (xkcd)"></p>
 <span id="cb8-6"><a href="#cb8-6"></a><span class="bn">0x7fffffffdfa4</span>: <span class="bn">0x3e99999a</span></span>
 <span id="cb8-7"><a href="#cb8-7"></a>(gdb) p/x <span class="er">$</span>xmm0</span>
 <span id="cb8-8"><a href="#cb8-8"></a><span class="er">$</span><span class="dv">4</span> = {.... uint128 = <span class="bn">0x0000000000000000000000003e99999a</span>}</span></code></pre></div>
-<p>Looking through the analyzer, <code>0x3dcccccd</code> (the value for <code>a</code>) is <code>1.00000001490116119384765625E-1</code> which is both close to the original value of <code>0.1</code> and to the displayed value of <code>0.100000001</code>. Same for <code>b</code> and <code>c</code>. However, looking at <code>xmm0</code> register we see that the last 32 bits have the same pattern as <code>-0xc($rbp)</code>. Thus, the SSE 128 bits registers <strong>are not using</strong> the <code>binary128</code> standard! If they were using it, the last value displayed there should have been <code>3FFD3333333333333333333333333333</code>. As said on <a href="http://www.reddit.com/r/programming/comments/21qzz2/an_overview_of_floating_point_realm/" title="This article on reddit">reddit thread for this article</a>, excess precision comes form the <code>x87</code> coprocessor which uses 80 bits of precision.</p>
+<p>Looking through the analyzer, <code>0x3dcccccd</code> (the value for <code>a</code>) is <code>1.00000001490116119384765625E-1</code> which is both close to the original value of <code>0.1</code> and to the displayed value of <code>0.100000001</code>. Same for <code>b</code> and <code>c</code>. However, looking at <code>xmm0</code> register we see that the last 32 bits have the same pattern as <code>-0xc($rbp)</code>. Thus, the SSE 128 bits registers <strong>are not using</strong> the <code>binary128</code> standard! If they were using it, the last value displayed there should have been <code>3FFD3333333333333333333333333333</code>. As said on <a href="http://www.reddit.com/r/programming/comments/21qzz2/an_overview_of_floating_point_realm/" title="This article on reddit">reddit thread for this article</a>, excess precision comes from the <code>x87</code> coprocessor which uses 80 bits of precision.</p>
 <p>Now it is time to see some other aspects of working with floating point numbers.</p>
 </section>
 <section id="testing-them-all" class="level3">
@@ -661,7 +661,7 @@ minus pi (xkcd)" title="e to pi minus pi (xkcd)"></p>
 <h3>Let’s code a Daemon</h3>
 <p>In this article we will show how one can write a simple daemon process. First, we will show the long path of using <code>fork()</code> and <code>setsid()</code>.</p>
 <p>First step (see <a href="http://web.archive.org/web/20120914180018/http://www.steve.org.uk/Reference/Unix/faq_2.html#SEC16" title="How to code a daemon">this FAQ</a> for reference) is to <code>fork</code> and <code>exit</code> such that the process is no longer a process leader:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1"></a><span class="co">/*</span></span>
+<div class="sourceCode" id="cb3"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb3-1"><a href="#cb3-1"></a><span class="co">/*</span></span>
 <span id="cb3-2"><a href="#cb3-2"></a><span class="co"> * Fork the parent process</span></span>
 <span id="cb3-3"><a href="#cb3-3"></a><span class="co"> */</span></span>
 <span id="cb3-4"><a href="#cb3-4"></a>pid = fork();</span>
@@ -679,13 +679,13 @@ minus pi (xkcd)" title="e to pi minus pi (xkcd)"></p>
 <span id="cb3-16"><a href="#cb3-16"></a><span class="cf">if</span> (pid &gt; <span class="dv">0</span>)</span>
 <span id="cb3-17"><a href="#cb3-17"></a>    exit(EXIT_SUCCESS);</span></code></pre></div>
 <p>Because we want to have a completely new controlling terminal we need to make our process be a session leader using <code>setsid()</code>. The above <code>fork</code> was needed just to allow this to succeed:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1"></a>sessionID=setsid();</span>
+<div class="sourceCode" id="cb4"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb4-1"><a href="#cb4-1"></a>sessionID=setsid();</span>
 <span id="cb4-2"><a href="#cb4-2"></a><span class="cf">if</span> (sessionID &lt; <span class="dv">0</span>) {</span>
 <span id="cb4-3"><a href="#cb4-3"></a>    perror(<span class="st">&quot;setsid&quot;</span>);</span>
 <span id="cb4-4"><a href="#cb4-4"></a>    exit(EXIT_FAILURE);</span>
 <span id="cb4-5"><a href="#cb4-5"></a>}</span></code></pre></div>
 <p>Next step is to <code>fork()/exit()</code> again. Since the session leader is now dead our process can never get access to a controlling terminal:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb5-1"><a href="#cb5-1"></a>pid = fork();</span>
+<div class="sourceCode" id="cb5"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb5-1"><a href="#cb5-1"></a>pid = fork();</span>
 <span id="cb5-2"><a href="#cb5-2"></a><span class="cf">if</span> (pid &lt; <span class="dv">0</span>) {</span>
 <span id="cb5-3"><a href="#cb5-3"></a>    perror(<span class="st">&quot;fork&quot;</span>);</span>
 <span id="cb5-4"><a href="#cb5-4"></a>    exit(EXIT_FAILURE);</span>
@@ -694,14 +694,14 @@ minus pi (xkcd)" title="e to pi minus pi (xkcd)"></p>
 <span id="cb5-7"><a href="#cb5-7"></a><span class="cf">if</span> (pid &gt; <span class="dv">0</span>)</span>
 <span id="cb5-8"><a href="#cb5-8"></a>    exit(EXIT_SUCCESS);</span></code></pre></div>
 <p>Now, we will switch to the directory which contains the files needed for this daemon to run (for example in case of <code>dovecot</code> we would switch to <code>/run/dovectot</code> which contains the sockets for different mail queues). Or, we could switch to <code>/</code> (like <code>apache2</code> and <code>sshd</code> do for example) if we don’t want to change to a specific directory. Anyway, it is essential to change the current running directory to prevent cases where if the program was started in a <code>cwd</code> from a different partition that partition could no longer be <code>umount</code>ed.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1"></a>change_dir = chdir(<span class="st">&quot;/&quot;</span>);</span>
+<div class="sourceCode" id="cb6"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb6-1"><a href="#cb6-1"></a>change_dir = chdir(<span class="st">&quot;/&quot;</span>);</span>
 <span id="cb6-2"><a href="#cb6-2"></a><span class="cf">if</span> (change_dir &lt; <span class="dv">0</span> ) {</span>
 <span id="cb6-3"><a href="#cb6-3"></a>    perror(<span class="st">&quot;chdir&quot;</span>);</span>
 <span id="cb6-4"><a href="#cb6-4"></a>    exit(EXIT_FAILURE);</span>
 <span id="cb6-5"><a href="#cb6-5"></a>}</span></code></pre></div>
 <p>Though the following steps are optional, it is better to do them too to ensure a reproducible behaviour of our executable, no matter what state the system was when we started it.</p>
 <p>Because a child process inherits file descriptors and file descriptors from his parent, we need to close them. We use <code>sysconf</code> to get the maximum number of opened file descriptors in order to close all of them and prevent leaks. Then, we will set <code>umask</code> to 0 to gain complete permissions over anything we write.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb7-1"><a href="#cb7-1"></a>maxfd = sysconf(_SC_OPEN_MAX);</span>
+<div class="sourceCode" id="cb7"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb7-1"><a href="#cb7-1"></a>maxfd = sysconf(_SC_OPEN_MAX);</span>
 <span id="cb7-2"><a href="#cb7-2"></a><span class="cf">if</span> (maxfd &lt; <span class="dv">0</span>) {</span>
 <span id="cb7-3"><a href="#cb7-3"></a>    perror(<span class="st">&quot;sysconf _SC_OPEN_MAX&quot;</span>);</span>
 <span id="cb7-4"><a href="#cb7-4"></a>    exit(EXIT_FAILURE);</span>
@@ -713,7 +713,7 @@ minus pi (xkcd)" title="e to pi minus pi (xkcd)"></p>
 <span id="cb7-10"><a href="#cb7-10"></a></span>
 <span id="cb7-11"><a href="#cb7-11"></a>umask(<span class="dv">0</span>);</span></code></pre></div>
 <p>Now we should reopen the 3 standard file descriptors. We can point them to <code>/dev/null</code> or to specific log files. Here we open all of them to <code>/dev/null</code>:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb8-1"><a href="#cb8-1"></a>fd = open(<span class="st">&quot;/dev/null&quot;</span>, <span class="dv">0</span>);</span>
+<div class="sourceCode" id="cb8"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb8-1"><a href="#cb8-1"></a>fd = open(<span class="st">&quot;/dev/null&quot;</span>, <span class="dv">0</span>);</span>
 <span id="cb8-2"><a href="#cb8-2"></a><span class="cf">if</span> (fd &lt; <span class="dv">0</span>) {</span>
 <span id="cb8-3"><a href="#cb8-3"></a>    perror(<span class="st">&quot;open /dev/null&quot;</span>);</span>
 <span id="cb8-4"><a href="#cb8-4"></a>    exit(EXIT_FAILURE);</span>
@@ -752,14 +752,14 @@ minus pi (xkcd)" title="e to pi minus pi (xkcd)"></p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1"></a>$ <span class="ex">pgrep</span> sleep</span>
 <span id="cb10-2"><a href="#cb10-2"></a><span class="ex">5470</span></span></code></pre></div>
 <p>We can simulate <code>nohup</code> inside our C code too. Let’s configure signal handlers:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb11-1"><a href="#cb11-1"></a>memset (&amp;sig_act, <span class="dv">0</span> , <span class="kw">sizeof</span>(sig_act));</span>
+<div class="sourceCode" id="cb11"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb11-1"><a href="#cb11-1"></a>memset (&amp;sig_act, <span class="dv">0</span> , <span class="kw">sizeof</span>(sig_act));</span>
 <span id="cb11-2"><a href="#cb11-2"></a><span class="co">/* Ignore SIGHUP signal */</span></span>
 <span id="cb11-3"><a href="#cb11-3"></a><span class="cf">if</span> (signal(SIGHUP, SIG_IGN) == SIG_ERR){</span>
 <span id="cb11-4"><a href="#cb11-4"></a>    perror(<span class="st">&quot;signal&quot;</span>);</span>
 <span id="cb11-5"><a href="#cb11-5"></a>    exit(EXIT_FAILURE);</span>
 <span id="cb11-6"><a href="#cb11-6"></a>}</span></code></pre></div>
 <p>Now, if <code>stdout</code> is a terminal we have to redirect output to a file, just like the original command does:</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb12-1"><a href="#cb12-1"></a><span class="cf">if</span>(isatty(fileno(stdout))) {</span>
+<div class="sourceCode" id="cb12"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb12-1"><a href="#cb12-1"></a><span class="cf">if</span>(isatty(fileno(stdout))) {</span>
 <span id="cb12-2"><a href="#cb12-2"></a>    rc = open (<span class="st">&quot;nohup.out&quot;</span>, O_WRONLY | O_CREAT, <span class="bn">0644</span>);</span>
 <span id="cb12-3"><a href="#cb12-3"></a>    <span class="cf">if</span> (rc &lt; <span class="dv">0</span>) {</span>
 <span id="cb12-4"><a href="#cb12-4"></a>        perror(<span class="st">&quot;open&quot;</span>);</span>
@@ -1117,7 +1117,7 @@ strcpy(s, getenv(&quot;TERM&quot;));
 </section>
 <section id="update" class="level3">
 <h3>Update</h3>
-<p>In recent versions of GHC, due to the <code>Monomorphism Restriction</code> being off by default (in contrast with the current ones) some of the examples might look a little different. See <a href="http://www.reddit.com/r/haskell/comments/1zfz5m/a_superficial_exploration_of_haskell_part_2_lazy/">the discussion on twitter</a>.</p>
+<p>In recent versions of GHC, due to the <code>Monomorphism Restriction</code> being off by default (in contrast with the current ones) some of the examples might look a little different. See <a href="http://www.reddit.com/r/haskell/comments/1zfz5m/a_superficial_exploration_of_haskell_part_2_lazy/">the discussion on reddit</a>.</p>
 </section>
 
     </div>
@@ -2168,10 +2168,7 @@ _fini@libgmp.so.10(0x358cc761f0, 0, 0xffffffff, 0)= 0x358ca5edc4
         <span class="tags"><a title="All pages tagged &#39;facebook&#39;." href="/tags/facebook.html">facebook</a>, <a title="All pages tagged &#39;hackathon&#39;." href="/tags/hackathon.html">hackathon</a>, <a title="All pages tagged &#39;live&#39;." href="/tags/live.html">live</a>, <a title="All pages tagged &#39;blogging&#39;." href="/tags/blogging.html">blogging</a>, <a title="All pages tagged &#39;coders&#39;." href="/tags/coders.html">coders</a></span>
       </span>
 
-      <div class="right">
-<p><img style="float:right" width="300" height="300" src="http://distilleryimage10.ak.instagram.com/b88daa3e38a911e3893622000a1fcd0b_7.jpg"></p>
-</div>
-<section id="pm" class="level4">
+      <section id="pm" class="level4">
 <h4>3:30PM</h4>
 <p>Ladies and gentlemen, fast hackers and coder perfectionists, web developers and mobile app creators, we present you the first edition of the Facebook hackathon in Romania. Organized by your favorite open-source community ROSEdu, the volunteers have been busy all morning preparing the workspace for the 15 participating teams. We have pizza, beer and a mountain of bean bags for people who <em>move fast and break things</em>.</p>
 <!--more-->
@@ -2182,9 +2179,6 @@ _fini@libgmp.so.10(0x358cc761f0, 0, 0xffffffff, 0)= 0x358ca5edc4
 <section id="pm-1" class="level4">
 <h4>3:30PM</h4>
 <p>People have started their IDEs (or text editors for more hardcore people) and started installing their gems (Ruby guy here sorry). After a quick intro from the organizers about the rules, the Facebook engineers presented their skills and their expectations: it’s fun to code, but it’s awesome <strong>to ship</strong>. So happy shipping hackers!</p>
-<div class="center">
-<p><img width="600" height="400" src="https://fbcdn-sphotos-g-a.akamaihd.net/hphotos-ak-ash3/1381306_602864479775589_1298026562_n.jpg"></p>
-</div>
 </section>
 <section id="pm-2" class="level4">
 <h4>5:30PM</h4>

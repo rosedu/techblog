@@ -100,7 +100,7 @@
       <p>The idea for this post came from <a href="http://techblog.rosedu.org/arrays-vs-pointers.html#IDComment189927033">Virgil’s</a> comment on <a href="http://techblog.rosedu.org/arrays-vs-pointers.html">char[] versus char*</a> entry. We will dig into some of C’s extern keyword internals by means of examples and then analyze the differences between <code>extern char*</code> and <code>extern char[]</code>.</p>
 <!--more-->
 <p><code>extern</code> is a storage class specifier, indicating that the actual storage of a variable or the definition of a function is located elsewhere, typically in another source file.</p>
-<p><img style="float:right" src="./images/c-extern-simple-usage.png" alt="C extern simple usage" width="227" height="263" /></p>
+<p><img style="float:right" src="./images/c-extern-internals/c-extern-simple-usage.png" alt="C extern simple usage" width="227" height="263" /></p>
 <p>Let’s start with a simple example:</p>
 <p><strong>helper.c</strong></p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb1-1"><a href="#cb1-1"></a><span class="dt">int</span> sample = <span class="dv">42</span>; <span class="co">/* definition */</span></span></code></pre></div>
@@ -140,7 +140,7 @@ Segmentation fault</code></pre>
 <p>Finally, let’s analyze if we can use a pointer and an array interchangeably between 2 source files.</p>
 <p><em>First try</em></p>
 <p>The file <code>main.c</code> declares an extern array of chars, leaving it to the linker to find the actual storage area defined for it. File <code>pointer.c</code> defines a pointer to a memory area holding a string literal. At link time, the symbol <code>str</code> from <code>main.c</code> is bound to a memory area representing the address of a string.</p>
-<p><img style="float:right" src="./images/c-extern-char.png" alt="C extern simple usage" width="217" height="252" /></p>
+<p><img style="float:right" src="./images/c-extern-internals/c-extern-char.png" alt="C extern simple usage" width="217" height="252" /></p>
 <p><strong>pointer.c</strong></p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb8-1"><a href="#cb8-1"></a><span class="dt">char</span> *str = <span class="st">&quot;1234&quot;</span>;</span>
 <span id="cb8-2"><a href="#cb8-2"></a><span class="dt">char</span> a = <span class="ch">'A'</span>; <span class="co">/* memory guards */</span></span>
@@ -160,7 +160,7 @@ Segmentation fault</code></pre>
 <p>Notice how the array <code>str</code> is mapped to a memory area where an address is stored. The <code>printf</code> function will display raw data until a <code>\0</code> is encountered. Fortunately, because of our guarding arrays, printing stops after showing some garbage and string <code>ABC</code>.</p>
 <p><em>Second try</em></p>
 <p>The file <code>main.c</code> declares a pointer to a memory area holding one or more characters. The linker will associate <code>str</code> from <code>main.o</code> with the storage defined by <code>str</code> array from <code>array.o</code>.</p>
-<p><img style="float:right" src="./images/c-extern-pointer.png" alt="C extern simple usage" width="217" height="252" /></p>
+<p><img style="float:right" src="./images/c-extern-internals/c-extern-pointer.png" alt="C extern simple usage" width="217" height="252" /></p>
 <p><strong>array.c</strong></p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb11-1"><a href="#cb11-1"></a><span class="dt">char</span> str[] = <span class="st">&quot;1234&quot;</span>;</span></code></pre></div>
 <p><strong>main.c</strong></p>
@@ -240,13 +240,13 @@ $1 = 0x34333231 Address 0x34333231 out of bounds</code></pre>
               <h4>Social</h4>
               <div class="rss">
                 <a href="http://techblog.rosedu.org/rss.xml" target="_blank">
-                  <img src="./images/rss.png" alt="Subscribe to RSS Feed" />
+                  <img src="./images/style/rss.png" alt="Subscribe to RSS Feed" />
                 </a>
                 <a href="http://www.reddit.com/submit?url='+encodeURIComponent(window.location)" target="_blank" onclick="window.location='http://www.reddit.com/submit?url='+encodeURIComponent(window.location); return false">
-                  <img src="./images/reddit.png" alt="Submit to Reddit" />
+                  <img src="./images/style/reddit.png" alt="Submit to Reddit" />
                 </a>
                 <a href="http://twitter.com/share" class="twitter-share-button" data-count="none" target="_blank">
-                  <img src="./images/twitter.png" alt="Submit to Twitter" />
+                  <img src="./images/style/twitter.png" alt="Submit to Twitter" />
                 </a>
               </div>
 

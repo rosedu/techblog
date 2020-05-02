@@ -224,9 +224,9 @@ Connection closed by foreign host.</code></pre>
 </section>
 <section id="low-level" class="level4">
 <h4>Low-level</h4>
-<p>The assembly code, responsible for checking the indices can be viewed below. <img style="float:center" src="./images/ida-atoi-read.png" alt="Read - atoi" /></p>
+<p>The assembly code, responsible for checking the indices can be viewed below. <img style="float:center" src="./images/ctf-return-to-libc/ida-atoi-read.png" alt="Read - atoi" /></p>
 <p>As you can <em>not</em> see, there is no check code for the index when we’re doing a <em>read</em> operation.</p>
-<p><img style="float:center" src="./images/ida-atoi-write.png" alt="Write - atoi" /></p>
+<p><img style="float:center" src="./images/ctf-return-to-libc/ida-atoi-write.png" alt="Write - atoi" /></p>
 <p>For the <em>write</em> operation there is checking using the instruction <code>jle</code>. But <code>jle</code> instruction is used for comparing <em>signed</em> integers. The instruction <code>jbe</code> should be used in this case which compares <em>unsigned</em> integers. You can find more on this <a href="http://en.wikibooks.org/wiki/X86_Assembly/Control_Flow#Jump_if_Less">wiki article</a>. Probably the original code looks something like this:</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb13-1"><a href="#cb13-1"></a><span class="dt">int</span> i;</span>
 <span id="cb13-2"><a href="#cb13-2"></a>i = atoi(str);</span>
@@ -282,9 +282,9 @@ Program Headers:
 <li>declared global (<code>.bss</code> or <code>.data</code> section). The address of the buffer is the same as in the binary, no runtime hazards.</li>
 </ul>
 <p>Probably because pwn250 is <strong>not</strong> the hardest level, the buffer is in the <code>.data</code> section.</p>
-<p><img style="float:center" src="./images/ida-values.png" alt="Values buffer" /></p>
+<p><img style="float:center" src="./images/ctf-return-to-libc/ida-values.png" alt="Values buffer" /></p>
 <p>Because our buffer is in <code>.data</code> section and we can use negative indices for read and write, we have a <strong>good</strong> control over the memory <strong>below</strong> our buffer. Moreover, you can see in the <a href="https://www.hex-rays.com/products/ida/index.shtml">IDA</a> screenshot above, that there’s a <code>math</code> variable. The program is capable of switching from one operation (addition) to another one (multiplication) it does so by changing a pointer to a function. The pointer is in the <code>.bss</code> section.</p>
-<p><img style="float:center" src="./images/ida-indirect-jump.png" alt="Indirect jump via math_ptr" /></p>
+<p><img style="float:center" src="./images/ctf-return-to-libc/ida-indirect-jump.png" alt="Indirect jump via math_ptr" /></p>
 <p>I know at this point, one might argue that the authors of the program used this pointer to facilitate the problem solving - it’s true I wouldn’t argue against this - it’s just a game.</p>
 <p>So <strong>let’s state our idea</strong>: we will override a pointer to a function which is called later; the function will be called whenever the <code>math</code> function is called.</p>
 </section>
@@ -336,7 +336,9 @@ Program terminated with signal 11, Segmentation fault.
 <li>you can test this by computing 2^33 + 0x804c040-4*(2^31 - (0x38/4)) - because of the way the buffer is addressed (4 bytes values, <a href="http://en.wikipedia.org/wiki/Addressing_mode#Scaled">scaled addressing</a>) the overflow is ignored and the index value <em>wraps</em> around. We need to do <em>wrap</em> around only when we try to access a value above the base address of the vector.</li>
 </ul>
 <p>The instruction pointer is the value that we wrote, 0x11111111 in decimal is <strong>286331153</strong>, so we’ve managed to modify the flow of the program by doing a write, and we’ve managed to do so in a predictable way.</p>
-<p>##Second PoC</p>
+</section>
+<section id="second-poc" class="level2">
+<h2>Second PoC</h2>
 <p>We are in the following state: we’ve managed to make our program to jump at any location. But <strong>where</strong> to jump? Because we don’t have any possibility of injecting code, we should rely on the available code. Available code means, our code and the dynamic libraries code which are mapped in our address space.</p>
 <p>Let’s inspect again our binary to see what is used from shared libraries.</p>
 <pre><code>$ nm -D -u ./back2skool-3fbcd46db37c50ad52675294f566790c777b9d1f 
@@ -514,13 +516,13 @@ ebx            0xb7fa5a5a	-1208329638
               <h4>Social</h4>
               <div class="rss">
                 <a href="http://techblog.rosedu.org/rss.xml" target="_blank">
-                  <img src="./images/rss.png" alt="Subscribe to RSS Feed" />
+                  <img src="./images/style/rss.png" alt="Subscribe to RSS Feed" />
                 </a>
                 <a href="http://www.reddit.com/submit?url='+encodeURIComponent(window.location)" target="_blank" onclick="window.location='http://www.reddit.com/submit?url='+encodeURIComponent(window.location); return false">
-                  <img src="./images/reddit.png" alt="Submit to Reddit" />
+                  <img src="./images/style/reddit.png" alt="Submit to Reddit" />
                 </a>
                 <a href="http://twitter.com/share" class="twitter-share-button" data-count="none" target="_blank">
-                  <img src="./images/twitter.png" alt="Submit to Twitter" />
+                  <img src="./images/style/twitter.png" alt="Submit to Twitter" />
                 </a>
               </div>
 

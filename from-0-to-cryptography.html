@@ -126,7 +126,7 @@
 <section id="diffie-hellman-key-exchange" class="level4">
 <h4>Diffie-Hellman key exchange</h4>
 <p>This key exchange is based on an algorithm that mathematically cannot easily compute <a href="https://en.wikipedia.org/wiki/Discrete_logarithm">discrete logarithms</a> of large numbers in a reasonable amount of time. We will offer an overview of the algorithm using colours before we run straightforward with numbers and abstract formula.</p>
-<p><img style="float:right" src="./images/from-0-to-cryptography-diffie-hellman-key-exchange.png" alt="Diffie-Hellman Key Exchange" width="300" height="450" /></p>
+<p><img style="float:right" src="./images/from-0-to-cryptography/diffie-hellman-key-exchange.png" alt="Diffie-Hellman Key Exchange" width="300" height="450" /></p>
 <ol type="1">
 <li><p><strong>Step 1</strong>: Alice and Bob come to an agreement for a common colour.</p></li>
 <li><p><strong>Step 2</strong>: Alice choose her secret colour that will not tell to Bob. Bob will do the same thing.</p></li>
@@ -285,8 +285,8 @@ tibi@tbarbu-pc:~/hash_collision$ md5sum message1 message2
 <p>You may wonder why do we run the message <code>M</code> through a hash function (step 2) and not sign only the message. Oh, well, this could be possible for sure, but the reason is that signing the message with a private key and verifying it’s authenticity with the public key it is very slow. Moreover, it produces a big volume of data. Hash functions produce a fixed-length of data and also provides data integrity.</p>
 <p>There is one problem: How can your friend be sure which is your public key? He can’t, but a digital certificate CAN!</p>
 <p>The only difference between a digital signature and a digital certificate is that the public key is certified by a trusted international Certifying Authority(CA). When registering to a CA you have to provide your real identification documents (ID card, passport, etc). Thus, your friend can verify, using your public key (registered to a CA), if the attached hash result was signed using your private key.</p>
-<p><img style="float:center" src="./images/encoding.png" alt="Digital signing" width="685" height="159" /></p>
-<p><img style="float:center" src="./images/decoding.png" alt="Verifying digital
+<p><img style="float:center" src="./images/from-0-to-cryptography/encoding.png" alt="Digital signing" width="685" height="159" /></p>
+<p><img style="float:center" src="./images/from-0-to-cryptography/decoding.png" alt="Verifying digital
 signature" width="685" height="239" /></p>
 </section>
 <section id="gnupg-gpg" class="level3">
@@ -452,7 +452,7 @@ gpg: Good signature from &quot;Alice &lt;alice@home.com&gt;&quot;</code></pre>
 gpg: Signature made Thu 13 Sep 2012 05:39:58 PM EEST using RSA key ID BD806C61
 gpg: BAD signature from &quot;Alice &lt;alice@home.com&gt;&quot;</code></pre>
 <p>So what makes GnuPG differ from Digital Signing if both of them use the same algorithms, the same hash functions? Also I can not be sure that Alice’s public key is the real one. <a href="https://en.wikipedia.org/wiki/Web_of_trust">Web of trust</a> is the concept used in GnuPG. Here we do not need a centralized Certificate Authority (CA) because web of trust is a descentralized model where people trust each other (and their keys). You self-sign your documents, you are your own CA. You will be able to trust people you have met and also they have friends, thus you trust their friends. And so on. Think of a big community where people trust each other. The following picture will show you how this work.</p>
-<p><img style="float:center" src="./images/web_of_trust.png" alt="Web of trust" width="625" height="578" /></p>
+<p><img style="float:center" src="./images/from-0-to-cryptography/web_of_trust.png" alt="Web of trust" width="625" height="578" /></p>
 <p>How can you trust people and people trust you?</p>
 <p>If I want to trust Bob because yesterday I went out to a party and interacted with new friends, then I ask Bob to share with me his public key. I import his key and check the fingerprint and UID, then I trust him signing his key:</p>
 <pre><code>tibi@tbarbu-pc:~/.gnupg$ gpg --import bob.asc
@@ -580,13 +580,13 @@ gpg: Good signature from &quot;Tiberiu (This is my GPG key) &lt;email@home.com&g
               <h4>Social</h4>
               <div class="rss">
                 <a href="http://techblog.rosedu.org/rss.xml" target="_blank">
-                  <img src="./images/rss.png" alt="Subscribe to RSS Feed" />
+                  <img src="./images/style/rss.png" alt="Subscribe to RSS Feed" />
                 </a>
                 <a href="http://www.reddit.com/submit?url='+encodeURIComponent(window.location)" target="_blank" onclick="window.location='http://www.reddit.com/submit?url='+encodeURIComponent(window.location); return false">
-                  <img src="./images/reddit.png" alt="Submit to Reddit" />
+                  <img src="./images/style/reddit.png" alt="Submit to Reddit" />
                 </a>
                 <a href="http://twitter.com/share" class="twitter-share-button" data-count="none" target="_blank">
-                  <img src="./images/twitter.png" alt="Submit to Twitter" />
+                  <img src="./images/style/twitter.png" alt="Submit to Twitter" />
                 </a>
               </div>
 
