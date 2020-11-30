@@ -30,6 +30,7 @@ main = do
   case args' of
     Help -> showHelp
     Validate -> withArgs ["check"] buildTechblog
+    Generate -> withArgs ["build"] buildTechblog
     x -> withArgs [map toLower $ show x] buildTechblog
 
 buildTechblog :: IO ()
@@ -411,6 +412,7 @@ data TechblogArgs
   | Help
   | Validate
   | Watch
+  | Generate
   deriving (Data, Typeable, Show)
 
 techblogArgs :: TechblogArgs
@@ -419,7 +421,8 @@ techblogArgs = modes
   , Deploy &= help "Deploy the site."
   , Help &= help "Show this message"
   , Validate &= help "Check for broken links, validate site."
-  , Watch &= help "Build the site and open a preview server." &= auto
+  , Watch &= help "Build the site and open a preview server."
+  , Generate &= help "Build the site and stop." &= auto
   ]
   &= help "Hakyll powered Techblog site compiler"
   &= program "techblog"
