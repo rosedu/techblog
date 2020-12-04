@@ -7,7 +7,7 @@ tags: exploit, ctf, return-to-libc, strace, debugging, gdb, write-up
 
 # Introduction
 
-This is a write-up for Pwnable 250 level from [Ghost in the Shellcode] capture
+This is a write-up for Pwnable 250 level from Ghost in the Shellcode capture
 the flag competition. Basically a return-to-libc attack will be described; we
 will also describe the steps for solving the mentioned CTF level using the
 [original binary] from the competition.
@@ -253,9 +253,7 @@ about this right now.
 
 In order to modify the flow control of the program by only changing
 non-executable memory, we will have to find an **indirect jump** and change
-the value from that specific address.
-[GOT](http://althing.cs.dartmouth.edu/secref/resources/plt-got.txt) is the
-starting point for this.
+the value from that specific address. GOT is the starting point for this.
 
 The idea that comes to our mind is: we will write (override) an address of
 function which is called later from the GOT. The GOT table is always at the
@@ -550,7 +548,7 @@ I don't know of any method of doing a reliable return-to-libc attack without
 knowing the addresses of some functions. Maybe there's a method of getting all
 the symbols after knowing the libc base, that would be neat.
 
-The final exploit can be found [here](res/pwn250.py).
+The final exploit can be found [here](res/ctf-return-to-libc/pwn250.py).
 
 # Conclusion
 
@@ -562,5 +560,4 @@ this makes the exploit unreliable.
 In the end, it boils down to have the right skill for using the right tools,
 it's nothing fancy.
 
-[original binary]: res/back2skool-3fbcd46db37c50ad52675294f566790c777b9d1f "Vulnerable binary"
-[Ghost in the Shellcode]: http://ghostintheshellcode.com/ "Ghost in the Shellcode CTF"
+[original binary]: res/ctf-return-to-libc/back2skool-3fbcd46db37c50ad52675294f566790c777b9d1f "Vulnerable binary"

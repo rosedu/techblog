@@ -69,7 +69,7 @@ Windows, but everything else goes into a virtualenv.
 
 [homebrew]: http://brew.sh/
 [distribute-setup]: http://python-distribute.org/distribute_setup.py
-[pil]: http://www.pythonware.com/products/pil/
+[pil]: https://pillow.readthedocs.io/en/stable/
 [scipy]: http://www.scipy.org/
 
 
@@ -140,7 +140,7 @@ Python's import path to find your package, any dependencies in
 `setup.py` are installed, and scripts are installed in `$MYENV/bin`, if
 the package has any.
 
-[wouso]: https://projects.rosedu.org/projects/wousodjango
+[wouso]: https://github.com/rosedu/wouso
 [django]: https://www.djangoproject.com/
 [pypi]: http://pypi.python.org/
 

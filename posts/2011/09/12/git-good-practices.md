@@ -18,8 +18,7 @@ good practices.
 My aim is to present tips and good practices that allow using Git at its
 value and conforming to recommendations. This is not a tutorial or a
 comprehensive view of Git. In case you are looking for that I recommend
-the excellent [Gitimmersion tutorial][gitimmersion] and the [Pro Git
-Book][pro-git].
+the excellent [Gitimmersion tutorial][gitimmersion] and the Pro Git Book.
 
 <!--more-->
 
@@ -305,10 +304,9 @@ solution to a problem. Through Google, I've found a lot of answers on
 [Stack Overflow][stackoverflow].
 
 As mentioned above, I find the [Git Immersion tutorial][gitimmersion] to
-be very well presented and easy to follow and the [Pro Git
-Book][pro-git] as a good technical presentation of Git and its features.
-An excellent site, consisting of a plethora of very nicely presented
-tips is [git ready][git-ready].
+be very well presented and easy to follow and the Pro Git Book as a good
+technical presentation of Git and its features.  An excellent site, consisting
+of a plethora of very nicely presented tips is [git ready][git-ready].
 
 As a funny link, I recommend you access [Commit Message
 Generator][whatthecommit].
@@ -325,6 +323,5 @@ Generator][whatthecommit].
 [google]: http://www.google.com/ "Google"
 [stackoverflow]: http://stackoverflow.com/ "Stack Overflow"
 [gitimmersion]: http://gitimmersion.com/ "Git Immersion"
-[pro-git]: http://progit.org/ "Pro Git Book"
 [git-ready]: http://gitready.com/ "git ready >> learn git one commit at a time"
 [whatthecommit]: http://whatthecommit.com/ "Commit Message Generator"

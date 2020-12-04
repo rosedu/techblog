@@ -251,6 +251,3 @@ coloured than GDB. Also, try this in GDB (I know this from Andrada Georgescu):
     Breakpoint 1, main () at random2.c:2
     2		int i, j = 0;
     (gdb) -					# add dash and enter
-
-For more on GDB, check out this tutorial, [8 gdb tricks you should
-know](https://blogs.oracle.com/ksplice/entry/8_gdb_tricks_you_should).
