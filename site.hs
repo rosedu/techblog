@@ -421,8 +421,8 @@ techblogArgs = modes
   , Deploy &= help "Deploy the site."
   , Help &= help "Show this message"
   , Validate &= help "Check for broken links, validate site."
-  , Watch &= help "Build the site and open a preview server."
-  , Generate &= help "Build the site and stop." &= auto
+  , Watch &= help "Build the site and open a preview server." &= auto
+  , Generate &= help "Build the site and stop."
   ]
   &= help "Hakyll powered Techblog site compiler"
   &= program "techblog"
