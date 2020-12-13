@@ -11,4 +11,4 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Debug
-        run: echo "OK"
+        run: echo "OK, works"
