@@ -6,9 +6,13 @@ on:
 
 jobs:
   build:
-    name: Generating the website
+    name: Generating the binary
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - uses: actions/setup-haskell@v1
+        with:
+          enable-stack: true
+          stack-version: 'latest'
       - name: Debug
         run: echo "OK, works"
