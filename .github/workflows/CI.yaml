@@ -14,5 +14,14 @@ jobs:
         with:
           enable-stack: true
           stack-version: 'latest'
+      - name: Cache Haskell build
+        uses: actions/cache@v2
+        with:
+          path: ~/.stack
+          key: stack-cache-${{ hashFiles('stack.yaml') }}-${{ hashFiles('techblog.cabal') }}
+          restore-keys: |
+            stack-cache-${{ hashFiles('stack.yaml') }}
+      - name: Build
+        run: stack build
       - name: Debug
         run: echo "OK, works"
