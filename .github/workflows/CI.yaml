@@ -5,7 +5,7 @@ on:
     branches: [master]
 
 jobs:
-  build:
+  build-generator:
     name: Generating the binary
     runs-on: ubuntu-latest
     steps:
@@ -23,5 +23,9 @@ jobs:
             stack-cache-${{ hashFiles('stack.yaml') }}
       - name: Build
         run: stack build
+  build-site:
+    name: Generating the website
+    runs-on: ubuntu-latest
+    steps:
       - name: Debug
         run: echo "OK, works"
