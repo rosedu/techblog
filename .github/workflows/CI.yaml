@@ -5,16 +5,12 @@ on:
     branches: [master]
 
 jobs:
-  checkout:
-    name: Checkout repository
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
   build-generator:
     name: Generating the binary
     needs: checkout
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
       - uses: actions/setup-haskell@v1
         with:
           enable-stack: true
@@ -33,6 +29,7 @@ jobs:
     needs: build-generator
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
       - name: Build the site
         run: stack exec -- techblog generate
       - name: Debug
