@@ -108,9 +108,13 @@ tags: floating point, numerical methods, approximate algorithms, fast transceden
 </section>
 <section id="for-curators" class="level4">
 <h4>For curators</h4>
-<p>Once pull requests are merged into <code>master</code>, to update the site you will have to manually run <code>stack exec techblog -- deploy</code> (or <code>techblog deploy</code> if you ran <code>stack install</code> before) after pulling from the GitHub remote. In the future, this process will be automated via GitHub actions.</p>
+<p>Once pull requests are merged into <code>master</code>, to update the site you will have to manually run <code>stack exec techblog -- deploy</code> (or <code>techblog deploy</code> if you ran <code>stack install</code> before) after pulling from the GitHub remote.</p>
 <p>The binary has one additional running mode, <code>techblog validate</code> where all articles are scanned and all links are checked to see that their server returns a <code>200 OK</code> HTTP code.</p>
 <p>Finally, to completely clean the generated website and all associated caches, you can run <code>techblog clean</code>. You will need to do this again if you compile a new version of the tool.</p>
+</section>
+<section id="automation" class="level4">
+<h4>Automation</h4>
+<p>Most of these steps have been automated with <a href="https://github.com/rosedu/techblog/blob/master/.github/workflows/CI.yaml">GitHub actions</a>. However, automatically pushing to the GitHub page that serves the blog is not possible, hence one curator will still need to run <code>stack exec -- techblog deploy</code> after merging the PR.</p>
 </section>
 </section>
 <section id="i-have-seen-a-bug" class="level3">
