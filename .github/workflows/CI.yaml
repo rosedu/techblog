@@ -7,7 +7,6 @@ on:
 jobs:
   build-generator:
     name: Generating the binary
-    needs: checkout
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
