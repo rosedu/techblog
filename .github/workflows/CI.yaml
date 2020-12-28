@@ -23,13 +23,19 @@ jobs:
             stack-cache-${{ hashFiles('stack.yaml') }}
       - name: Build
         run: stack build
+      - name: Debug
+        run: pwd
+      - name: Build the site
+        run: ls -a
   build-site:
     name: Generating the website
     needs: build-generator
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Debug
+        run: pwd
       - name: Build the site
-        run: stack exec -- techblog generate
+        run: ls -a
       - name: Debug
         run: echo "OK, works"
