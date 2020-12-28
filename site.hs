@@ -22,6 +22,8 @@ import qualified System.Console.CmdArgs.Explicit as CA
 import qualified Text.Blaze.Html5 as H
 import qualified Text.Blaze.Html5.Attributes as A
 
+import Debug.Trace
+
 type People = Tags
 
 main :: IO ()
@@ -382,37 +384,37 @@ techblogConfiguration = defaultConfiguration { deploySite = doDeploy }
 doDeploy :: Configuration -> IO ExitCode
 doDeploy _ = do
   -- return a nasty user error/pattern match failure if any command fails
-  putStrLn "git stash"
+  trace "git stash"
   ExitSuccess <- system "git stash"
-  putStrLn "git checkout gh-pages"
+  trace "git checkout gh-pages"
   ExitSuccess <- system "git checkout gh-pages"
-  putStrLn "git pull --rebase"
+  trace "git pull --rebase"
   ExitSuccess <- system "git pull --rebase"
-  putStrLn "git rm *.html"
+  trace "git rm *.html"
   _ <- system "git rm *.html &> /dev/null"
-  putStrLn "git rm -rf css/"
+  trace "git rm -rf css/"
   _ <- system "git rm -rf css/ &> /dev/null"
-  putStrLn "git rm -rf font/"
+  trace "git rm -rf font/"
   _ <- system "git rm -rf font/ &> /dev/null"
-  putStrLn "git rm -rf images/"
+  trace "git rm -rf images/"
   _ <- system "git rm -rf images/ &> /dev/null"
-  putStrLn "git rm -rf res/"
+  trace "git rm -rf res/"
   _ <- system "git rm -rf res/ &> /dev/null"
-  putStrLn "git rm -rf tags/"
+  trace "git rm -rf tags/"
   _ <- system "git rm -rf tags/ &> /dev/null"
-  putStrLn "git rm -rf people/"
+  trace "git rm -rf people/"
   _ <- system "git rm -rf people/ &> /dev/null"
-  putStrLn "cp -r _site/* ."
+  trace "cp -r _site/* ."
   ExitSuccess <- system "cp -r _site/* ."
-  putStrLn "git add ."
+  trace "git add ."
   ExitSuccess <- system "git add ."
-  putStrLn "git commit ..."
+  trace "git commit ..."
   _ <- system "git commit -m \"`git log master --pretty=format:'%h %s%n' -n1`\""
-  putStrLn "git push origin gh-pages"
+  trace "git push origin gh-pages"
   ExitSuccess <- system "git push origin gh-pages"
-  putStrLn "git checkout master"
+  trace "git checkout master"
   ExitSuccess <- system "git checkout master"
-  putStrLn "git stash apply"
+  trace "git stash apply"
   system "git stash apply"
 
 {-
