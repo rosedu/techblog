@@ -6,3 +6,4 @@
 /techblog
 cabal.sandbox.config
 stack.yaml.lock
+/.stack-work/
