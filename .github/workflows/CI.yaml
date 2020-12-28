@@ -36,4 +36,7 @@ jobs:
       # run: stack exec -- techblog validate
       - name: Deploying the site
         if: ${{ github.event_name == 'push' }}
-        run: stack exec -- techblog deploy
+        run: |
+          git config --global user.email "techblog@rosedu.org"
+          git config --global user.name "ROSEdu Techblog"
+          stack exec -- techblog deploy
