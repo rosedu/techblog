@@ -34,4 +34,6 @@ jobs:
         run: stack exec -- techblog validate
       - name: Deploying the site
         if: ${{ github.event_name == 'push' }}
-        run: stack exec -- techblog deploy
+        run: |
+          git fetch gh-pages
+          stack exec -- techblog deploy
