@@ -97,6 +97,8 @@
         <span class="tags"><a title="All pages tagged 'Unix'." href="./tags/unix.html">Unix</a>, <a title="All pages tagged 'C'." href="./tags/c.html">C</a>, <a title="All pages tagged 'portable code'." href="./tags/portable-code.html">portable code</a>, <a title="All pages tagged 'POSIX'." href="./tags/posix.html">POSIX</a>, <a title="All pages tagged 'SUS'." href="./tags/sus.html">SUS</a>, <a title="All pages tagged 'libc'." href="./tags/libc.html">libc</a></span>
       </span>
 
+      
+
       <p>The purpose of this article is to present in a general way the Unix standards and how can we write portable code on Unix systems, not only on Linux ones.</p>
 <!--more-->
 <p>In the Unix world at present, there are three important standards:</p>
@@ -205,12 +207,12 @@
 <li><code>_XOPEN_SOURCE</code>, which activates SUSv1/2/3/4 functionality.</li>
 </ul>
 <p>For older POSIX functionality we have to declare the following in our source file:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb1-1"><a href="#cb1-1"></a><span class="pp">#define _POSIX_SOURCE</span></span>
-<span id="cb1-2"><a href="#cb1-2"></a><span class="pp">#define _POSIX_C_SOURCE </span><span class="dv">1</span><span class="pp"> </span><span class="co">/* for POSIX 1990 */</span></span>
-<span id="cb1-3"><a href="#cb1-3"></a><span class="co">/* use 2 for POSIX C bindings 1003.2-1992 */</span></span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="pp">#define _POSIX_SOURCE</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="pp">#define _POSIX_C_SOURCE </span><span class="dv">1</span><span class="pp"> </span><span class="co">/* for POSIX 1990 */</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a><span class="co">/* use 2 for POSIX C bindings 1003.2-1992 */</span></span></code></pre></div>
 <p>For POSIX 2008 functionality, we define:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb2-1"><a href="#cb2-1"></a><span class="pp">#define _POSIX_SOURCE</span></span>
-<span id="cb2-2"><a href="#cb2-2"></a><span class="pp">#define _POSIX_C_SOURCE </span><span class="dv">200809</span><span class="bu">L</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="pp">#define _POSIX_SOURCE</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a><span class="pp">#define _POSIX_C_SOURCE </span><span class="dv">200809</span><span class="bu">L</span></span></code></pre></div>
 <p>Or, we can compile with:</p>
 <pre><code>cc -D_POSIX_SOURCE -D_POSIX_C_SOURCE=200809L filename.c</code></pre>
 <p>If our code is written, or it will run on UNIX certified systems (hence on systems who follow SUSv1, SUSv2, SUSv3, or SUSv4), we must define also <code>_XOPEN_SOURCE</code>:</p>
@@ -218,28 +220,28 @@
 <ul>
 <li>for SUSv1:</li>
 </ul>
-<div class="sourceCode" id="cb4"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb4-1"><a href="#cb4-1"></a><span class="pp">#define _POSIX_SOURCE</span></span>
-<span id="cb4-2"><a href="#cb4-2"></a><span class="pp">#define _POSIX_C_SOURCE </span><span class="dv">2</span></span>
-<span id="cb4-3"><a href="#cb4-3"></a><span class="pp">#define _XOPEN_SOURCE</span></span>
-<span id="cb4-4"><a href="#cb4-4"></a><span class="pp">#define _XOPEN_SOURCE_EXTENDED </span><span class="dv">1</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="pp">#define _POSIX_SOURCE</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a><span class="pp">#define _POSIX_C_SOURCE </span><span class="dv">2</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true"></a><span class="pp">#define _XOPEN_SOURCE</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true"></a><span class="pp">#define _XOPEN_SOURCE_EXTENDED </span><span class="dv">1</span></span></code></pre></div>
 <ul>
 <li>for SUSv2:</li>
 </ul>
-<div class="sourceCode" id="cb5"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb5-1"><a href="#cb5-1"></a><span class="pp">#define _POSIX_SOURCE</span></span>
-<span id="cb5-2"><a href="#cb5-2"></a><span class="pp">#define _POSIX_C_SOURCE </span><span class="dv">199506</span><span class="bu">L</span></span>
-<span id="cb5-3"><a href="#cb5-3"></a><span class="pp">#define _XOPEN_SOURCE </span><span class="dv">500</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="pp">#define _POSIX_SOURCE</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a><span class="pp">#define _POSIX_C_SOURCE </span><span class="dv">199506</span><span class="bu">L</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a><span class="pp">#define _XOPEN_SOURCE </span><span class="dv">500</span></span></code></pre></div>
 <ul>
 <li>for SUSv3:</li>
 </ul>
-<div class="sourceCode" id="cb6"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb6-1"><a href="#cb6-1"></a><span class="pp">#define _POSIX_SOURCE</span></span>
-<span id="cb6-2"><a href="#cb6-2"></a><span class="pp">#define _POSIX_C_SOURCE </span><span class="dv">200112</span><span class="bu">L</span></span>
-<span id="cb6-3"><a href="#cb6-3"></a><span class="pp">#define _XOPEN_SOURCE </span><span class="dv">600</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a><span class="pp">#define _POSIX_SOURCE</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a><span class="pp">#define _POSIX_C_SOURCE </span><span class="dv">200112</span><span class="bu">L</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a><span class="pp">#define _XOPEN_SOURCE </span><span class="dv">600</span></span></code></pre></div>
 <ul>
 <li>for SUSv4:</li>
 </ul>
-<div class="sourceCode" id="cb7"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb7-1"><a href="#cb7-1"></a><span class="pp">#define _POSIX_SOURCE</span></span>
-<span id="cb7-2"><a href="#cb7-2"></a><span class="pp">#define _POSIX_C_SOURCE </span><span class="dv">200809</span><span class="bu">L</span></span>
-<span id="cb7-3"><a href="#cb7-3"></a><span class="pp">#define _XOPEN_SOURCE </span><span class="dv">700</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a><span class="pp">#define _POSIX_SOURCE</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true"></a><span class="pp">#define _POSIX_C_SOURCE </span><span class="dv">200809</span><span class="bu">L</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true"></a><span class="pp">#define _XOPEN_SOURCE </span><span class="dv">700</span></span></code></pre></div>
 <p>If we write code only for Linux platforms, we will use the feature test macro <code>_GNU_SOURCE</code>, which will activate GNU LIBC functionality, which sometimes isn’t POSIX compatible. There is also the feature test macro <code>_SVID_SOURCE</code> (to activate System V functionality) and <code>_BSD_SOURCE</code> (to activate BSD functionality). One important note is that a UNIX system (which follows SUSvX) can be activated to offer any SUSvX functionality.</p>
 <p>This is the way we can write Unix portable code. Other methods to find out more about the operating system on which we compile are:</p>
 <ul>

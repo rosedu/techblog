@@ -97,73 +97,75 @@
         <span class="tags"><a title="All pages tagged 'lambda'." href="./tags/lambda.html">lambda</a>, <a title="All pages tagged 'higher-order functions'." href="./tags/higher-order-functions.html">higher-order functions</a>, <a title="All pages tagged 'c++'." href="./tags/c%2B%2B.html">c++</a></span>
       </span>
 
+      
+
       <p>The C++ 2011 standard introduced the lambda expression syntax element causing some people ask <a href="http://stackoverflow.com/questions/7627098/what-is-a-lambda-expression-in-c11" title="What is a lambda expression in C++?">why it was needed</a>. In reality, it was not a new use case, people have been using this under different names since C was created. You had functors (C++ terminology) and pointer to functions for example. A basic use case was in applying the same transform over all elements of a collection (the functor’s widely shared example) or sorting elements of a vector (via <code>qsort</code> in C). But, in reality, all of these cases can be reduced to using <em>higher-order functions</em>.</p>
 <!--more-->
 <section id="higher-order-functions" class="level3">
 <h3>1. Higher-order functions</h3>
 <p>A high-order function is a function that takes one or more functions as an input and outputs a function. For example, we can use this higher-order functions to map, filter, fold and sort lists.</p>
 <p>Let’s start with a simple example of a high-order function, in Haskell:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb1-1"><a href="#cb1-1"></a><span class="ot">zipWith1 ::</span> (a <span class="ot">-&gt;</span> b <span class="ot">-&gt;</span> c) <span class="ot">-&gt;</span> [a] <span class="ot">-&gt;</span> [b] <span class="ot">-&gt;</span> [c]</span>
-<span id="cb1-2"><a href="#cb1-2"></a>zipWith1 _ [] _ <span class="ot">=</span> []</span>
-<span id="cb1-3"><a href="#cb1-3"></a>zipWith1 _ _ [] <span class="ot">=</span> []</span>
-<span id="cb1-4"><a href="#cb1-4"></a>zipWith1 f (x<span class="op">:</span>xs) (y<span class="op">:</span>ys) <span class="ot">=</span> f x y <span class="op">:</span> zipWith1 f xs ys</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="ot">zipWith1 ::</span> (a <span class="ot">-&gt;</span> b <span class="ot">-&gt;</span> c) <span class="ot">-&gt;</span> [a] <span class="ot">-&gt;</span> [b] <span class="ot">-&gt;</span> [c]</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a>zipWith1 _ [] _ <span class="ot">=</span> []</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a>zipWith1 _ _ [] <span class="ot">=</span> []</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a>zipWith1 f (x<span class="op">:</span>xs) (y<span class="op">:</span>ys) <span class="ot">=</span> f x y <span class="op">:</span> zipWith1 f xs ys</span></code></pre></div>
 <p>This function will take a function and two lists as parameters and then joins them by applying the function between corresponding elements. Let’s see a little demonstration for the function written above:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb2-1"><a href="#cb2-1"></a>ghci<span class="op">&gt;</span> zipWith1 (<span class="op">+</span>) [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>] [<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>]</span>
-<span id="cb2-2"><a href="#cb2-2"></a>[<span class="dv">6</span>,<span class="dv">8</span>,<span class="dv">10</span>,<span class="dv">12</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a>ghci<span class="op">&gt;</span> zipWith1 (<span class="op">+</span>) [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>] [<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>]</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a>[<span class="dv">6</span>,<span class="dv">8</span>,<span class="dv">10</span>,<span class="dv">12</span>]</span></code></pre></div>
 <p>So we found out what a <a href="http://learnyouahaskell.com/higher-order-functions" title="Learn You A Haskell">higher-order function is</a>. Now, what is a lambda function? The term comes from the Lambda Calculus and refers to anonymous functions in programming. With a lambda function you can write quick functions without naming them.</p>
 <p>Let’s see the above function written using lambdas:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb3-1"><a href="#cb3-1"></a><span class="fu">zipWith</span> (\x y <span class="ot">-&gt;</span> x <span class="op">+</span> y ) [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>] [<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="fu">zipWith</span> (\x y <span class="ot">-&gt;</span> x <span class="op">+</span> y ) [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>] [<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>]</span></code></pre></div>
 <p>If we run this function in GHCi the result will be the same as above:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb4-1"><a href="#cb4-1"></a><span class="dt">Prelude</span><span class="op">&gt;</span> <span class="fu">zipWith</span> (\x y <span class="ot">-&gt;</span> x <span class="op">+</span> y ) [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>] [<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>]</span>
-<span id="cb4-2"><a href="#cb4-2"></a>[<span class="dv">6</span>,<span class="dv">8</span>,<span class="dv">10</span>,<span class="dv">12</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="dt">Prelude</span><span class="op">&gt;</span> <span class="fu">zipWith</span> (\x y <span class="ot">-&gt;</span> x <span class="op">+</span> y ) [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>] [<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>]</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a>[<span class="dv">6</span>,<span class="dv">8</span>,<span class="dv">10</span>,<span class="dv">12</span>]</span></code></pre></div>
 <p>Now, to see the equivalence, the following functions are one and the same:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb5-1"><a href="#cb5-1"></a>f x y <span class="ot">=</span> x <span class="op">+</span> y</span>
-<span id="cb5-2"><a href="#cb5-2"></a>f x <span class="ot">=</span> \y <span class="ot">-&gt;</span> x <span class="op">+</span> y</span>
-<span id="cb5-3"><a href="#cb5-3"></a>f <span class="ot">=</span> \x y <span class="ot">-&gt;</span> x <span class="op">+</span> y</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a>f x y <span class="ot">=</span> x <span class="op">+</span> y</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a>f x <span class="ot">=</span> \y <span class="ot">-&gt;</span> x <span class="op">+</span> y</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a>f <span class="ot">=</span> \x y <span class="ot">-&gt;</span> x <span class="op">+</span> y</span></code></pre></div>
 <p>Now, we know what is a lambda function and a higher-order function. Let’s see how can we use lambda functions in C++.</p>
 </section>
 <section id="lambdas-in-c" class="level3">
 <h3>2. Lambdas in C++</h3>
 <p>A lambda function, in C++, starts with <code>[</code> and it has a specific syntax:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb6-1"><a href="#cb6-1"></a>[capture] (params) -&gt; <span class="dt">return_type</span> { function_body }</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a>[capture] (params) -&gt; <span class="dt">return_type</span> { function_body }</span></code></pre></div>
 <p>Let’s see a short example of a lambda function in C++:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb7-1"><a href="#cb7-1"></a>[](<span class="dt">int</span> x, <span class="dt">int</span> y) -&gt; <span class="dt">int</span> { <span class="cf">return</span> x * y; }</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a>[](<span class="dt">int</span> x, <span class="dt">int</span> y) -&gt; <span class="dt">int</span> { <span class="cf">return</span> x * y; }</span></code></pre></div>
 <p>This function simply multiplies two integers.</p>
 <p>Consider now the following Haskell example of applying a function to a list, using <code>map</code>:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb8-1"><a href="#cb8-1"></a><span class="fu">map</span> (\x <span class="ot">-&gt;</span> x <span class="op">+</span> <span class="dv">1</span>) [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a><span class="fu">map</span> (\x <span class="ot">-&gt;</span> x <span class="op">+</span> <span class="dv">1</span>) [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>]</span></code></pre></div>
 <p>In C++, we have the <a href="http://www.cplusplus.com/reference/algorithm/transform/" title="Function transform">function transform</a> which does the same thing as the <code>map</code> function from Haskell:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb9-1"><a href="#cb9-1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
-<span id="cb9-2"><a href="#cb9-2"></a><span class="pp">#include </span><span class="im">&lt;algorithm&gt;</span></span>
-<span id="cb9-3"><a href="#cb9-3"></a><span class="pp">#include </span><span class="im">&lt;vector&gt;</span></span>
-<span id="cb9-4"><a href="#cb9-4"></a></span>
-<span id="cb9-5"><a href="#cb9-5"></a><span class="kw">using</span> <span class="kw">namespace</span> std;</span>
-<span id="cb9-6"><a href="#cb9-6"></a></span>
-<span id="cb9-7"><a href="#cb9-7"></a><span class="dt">int</span> main (){</span>
-<span id="cb9-8"><a href="#cb9-8"></a>    <span class="co">/* declare 2 vectors */</span></span>
-<span id="cb9-9"><a href="#cb9-9"></a>    vector &lt;<span class="dt">int</span>&gt; vector1;</span>
-<span id="cb9-10"><a href="#cb9-10"></a>    vector &lt;<span class="dt">int</span>&gt; vector2;</span>
-<span id="cb9-11"><a href="#cb9-11"></a></span>
-<span id="cb9-12"><a href="#cb9-12"></a>    <span class="co">/* pseudo-pseudo-random values */</span></span>
-<span id="cb9-13"><a href="#cb9-13"></a>    <span class="cf">for</span> (<span class="dt">int</span> i=<span class="dv">1</span>;i&lt;<span class="dv">4</span>;i++)</span>
-<span id="cb9-14"><a href="#cb9-14"></a>        vector1.push_back (i);</span>
-<span id="cb9-15"><a href="#cb9-15"></a></span>
-<span id="cb9-16"><a href="#cb9-16"></a>    <span class="co">/* alocate memory in vector2 */</span></span>
-<span id="cb9-17"><a href="#cb9-17"></a>    vector2.resize(vector1.size());</span>
-<span id="cb9-18"><a href="#cb9-18"></a></span>
-<span id="cb9-19"><a href="#cb9-19"></a>    <span class="co">/* applies our lambda function for each element</span></span>
-<span id="cb9-20"><a href="#cb9-20"></a><span class="co">     * in vector1 and stores it in vector2</span></span>
-<span id="cb9-21"><a href="#cb9-21"></a><span class="co">     */</span></span>
-<span id="cb9-22"><a href="#cb9-22"></a>    transform (vector1.begin(), vector1.end(), vector2.begin(),</span>
-<span id="cb9-23"><a href="#cb9-23"></a>        [] (<span class="dt">int</span> i) { <span class="cf">return</span> ++i; });</span>
-<span id="cb9-24"><a href="#cb9-24"></a></span>
-<span id="cb9-25"><a href="#cb9-25"></a>    <span class="co">/* output the result */</span></span>
-<span id="cb9-26"><a href="#cb9-26"></a>    cout &lt;&lt; “Vector2 contains: “;</span>
-<span id="cb9-27"><a href="#cb9-27"></a>    <span class="cf">for</span> (<span class="bu">std::</span>vector&lt;<span class="dt">int</span>&gt;::iterator it=vector2.begin();</span>
-<span id="cb9-28"><a href="#cb9-28"></a>        it!=vector2.end(); ++it)</span>
-<span id="cb9-29"><a href="#cb9-29"></a>        <span class="bu">std::</span>cout &lt;&lt; <span class="ch">' '</span> &lt;&lt; *it;</span>
-<span id="cb9-30"><a href="#cb9-30"></a></span>
-<span id="cb9-31"><a href="#cb9-31"></a>    <span class="cf">return</span> <span class="dv">0</span>;</span>
-<span id="cb9-32"><a href="#cb9-32"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&lt;algorithm&gt;</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&lt;vector&gt;</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true"></a></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true"></a><span class="kw">using</span> <span class="kw">namespace</span> std;</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true"></a><span class="dt">int</span> main (){</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true"></a>    <span class="co">/* declare 2 vectors */</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true"></a>    vector &lt;<span class="dt">int</span>&gt; vector1;</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true"></a>    vector &lt;<span class="dt">int</span>&gt; vector2;</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true"></a></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true"></a>    <span class="co">/* pseudo-pseudo-random values */</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true"></a>    <span class="cf">for</span> (<span class="dt">int</span> i=<span class="dv">1</span>;i&lt;<span class="dv">4</span>;i++)</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true"></a>        vector1.push_back (i);</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true"></a></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true"></a>    <span class="co">/* alocate memory in vector2 */</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true"></a>    vector2.resize(vector1.size());</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true"></a></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true"></a>    <span class="co">/* applies our lambda function for each element</span></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true"></a><span class="co">     * in vector1 and stores it in vector2</span></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true"></a><span class="co">     */</span></span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true"></a>    transform (vector1.begin(), vector1.end(), vector2.begin(),</span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true"></a>        [] (<span class="dt">int</span> i) { <span class="cf">return</span> ++i; });</span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true"></a></span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true"></a>    <span class="co">/* output the result */</span></span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true"></a>    cout &lt;&lt; “Vector2 contains: “;</span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true"></a>    <span class="cf">for</span> (<span class="bu">std::</span>vector&lt;<span class="dt">int</span>&gt;::iterator it=vector2.begin();</span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true"></a>        it!=vector2.end(); ++it)</span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true"></a>        <span class="bu">std::</span>cout &lt;&lt; <span class="ch">' '</span> &lt;&lt; *it;</span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true"></a></span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true"></a>    <span class="cf">return</span> <span class="dv">0</span>;</span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true"></a>}</span></code></pre></div>
 <p>And the output is:</p>
 <pre><code>Vector2 contains: 2 3 4</code></pre>
 <p>You can see that our result is the same as in Haskell. We used a lambda function to increment the value for the each element from the first vector and then we printed it to standard output.</p>

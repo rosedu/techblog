@@ -97,41 +97,43 @@
         <span class="tags"><a title="All pages tagged 'floating point'." href="./tags/floating-point.html">floating point</a>, <a title="All pages tagged 'numerical methods'." href="./tags/numerical-methods.html">numerical methods</a>, <a title="All pages tagged 'approximate algorithms'." href="./tags/approximate-algorithms.html">approximate algorithms</a>, <a title="All pages tagged 'fast transcedental functions'." href="./tags/fast-transcedental-functions.html">fast transcedental functions</a>, <a title="All pages tagged 'fast inverse square root'." href="./tags/fast-inverse-square-root.html">fast inverse square root</a></span>
       </span>
 
+      
+
       <p>In every programmer’s life there comes a time when he has to leave the realm of integers and tread into the dangerous land of rational numbers. He/she might do some scientific computation, or work on a financial application or a game rendering pipeline or even in some artificial intelligence or data-mining algorithm – in all of these cases and many others, restricting oneself to using only integers is no longer feasible.</p>
 <p>And, as soon as one starts using floating point a lot of interesting things happen, starting from results which don’t show up nicely and bad equality testing and going towards subtler and subtler bugs.</p>
 <p><img src="http://imgs.xkcd.com/comics/e_to_the_pi_minus_pi.png" alt="e to pi
 minus pi (xkcd)" title="e to pi minus pi (xkcd)"></p>
 <p>Even experts and common-sense is at fault in this realm. For example, did you know that <em>always</em> comparing two floating points like in the following code is <em>bad</em>?</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb1-1"><a href="#cb1-1"></a><span class="cf">if</span> (fabs(a - b) &lt; <span class="fl">0.0001</span>)</span>
-<span id="cb1-2"><a href="#cb1-2"></a>    do_something_with_equal_numbers(a);</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="cf">if</span> (fabs(a - b) &lt; <span class="fl">0.0001</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a>    do_something_with_equal_numbers(a);</span></code></pre></div>
 <p>Without being a complete guide, this article shows some of the beauties and dangers of the floating-point realm.</p>
 <!--more-->
 <section id="a-common-pitfall" class="level3">
 <h3>A common pitfall</h3>
 <p>Beginners programmers expect floating point number to act as the real fractional numbers: no errors involved. Slightly experienced programmers know that this is not the case, yet even the most careful and experienced ones make mistakes from time to time. We will focus more on the common pitfalls and not on the occasional mistreatments given by experts.</p>
 <p>For example, someone unprepared might write the following code</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb2-1"><a href="#cb2-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
-<span id="cb2-2"><a href="#cb2-2"></a><span class="pp">#include </span><span class="im">&lt;stdlib.h&gt;</span></span>
-<span id="cb2-3"><a href="#cb2-3"></a></span>
-<span id="cb2-4"><a href="#cb2-4"></a><span class="dt">int</span> main ()</span>
-<span id="cb2-5"><a href="#cb2-5"></a>{</span>
-<span id="cb2-6"><a href="#cb2-6"></a>    <span class="dt">float</span> a = <span class="fl">0.1</span>;</span>
-<span id="cb2-7"><a href="#cb2-7"></a>    <span class="dt">float</span> b = <span class="fl">0.2</span>;</span>
-<span id="cb2-8"><a href="#cb2-8"></a>    <span class="dt">float</span> c = a + b;</span>
-<span id="cb2-9"><a href="#cb2-9"></a>    <span class="cf">if</span> (c != <span class="fl">0.3</span>)</span>
-<span id="cb2-10"><a href="#cb2-10"></a>        printf(<span class="st">&quot;</span><span class="sc">%f\n%f\n%f\n%f\n</span><span class="st">&quot;</span>, c, a + b, <span class="dv">3</span> * a, <span class="fl">1.5</span> * b);</span>
-<span id="cb2-11"><a href="#cb2-11"></a>    <span class="cf">return</span> <span class="dv">0</span>;</span>
-<span id="cb2-12"><a href="#cb2-12"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&lt;stdlib.h&gt;</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a><span class="dt">int</span> main ()</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a>{</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true"></a>    <span class="dt">float</span> a = <span class="fl">0.1</span>;</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true"></a>    <span class="dt">float</span> b = <span class="fl">0.2</span>;</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true"></a>    <span class="dt">float</span> c = a + b;</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true"></a>    <span class="cf">if</span> (c != <span class="fl">0.3</span>)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true"></a>        printf(<span class="st">&quot;</span><span class="sc">%f\n%f\n%f\n%f\n</span><span class="st">&quot;</span>, c, a + b, <span class="dv">3</span> * a, <span class="fl">1.5</span> * b);</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true"></a>    <span class="cf">return</span> <span class="dv">0</span>;</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true"></a>}</span></code></pre></div>
 <p>and be surprised to see that results are</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1"></a>$ <span class="ex">./a.out</span></span>
-<span id="cb3-2"><a href="#cb3-2"></a><span class="ex">0.300000</span></span>
-<span id="cb3-3"><a href="#cb3-3"></a><span class="ex">0.300000</span></span>
-<span id="cb3-4"><a href="#cb3-4"></a><span class="ex">0.300000</span></span>
-<span id="cb3-5"><a href="#cb3-5"></a><span class="ex">0.300000</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a>$ <span class="ex">./a.out</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="ex">0.300000</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a><span class="ex">0.300000</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true"></a><span class="ex">0.300000</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true"></a><span class="ex">0.300000</span></span></code></pre></div>
 <p><em>Note</em>: Your results on your machine might vary. <a href="#determinism-correctness-and-fastness">Later in the article</a> we will discuss this aspect at length.</p>
 <p>Of course, the problem in here is pretty simple: all floating point constants use double precision thus the code should <em>at least</em> read</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb4-1"><a href="#cb4-1"></a><span class="cf">if</span> (c != <span class="fl">0.3</span><span class="bu">f</span>)</span>
-<span id="cb4-2"><a href="#cb4-2"></a>    printf(...)</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="cf">if</span> (c != <span class="fl">0.3</span><span class="bu">f</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a>    printf(...)</span></code></pre></div>
 <p>I say <em>at least</em> because even if on my architecture I got the exact value of <code>0.3</code>, this is not the case on all of them. Why? Because none of the <code>0.1</code>, <code>0.2</code> and <code>0.3</code> values have an exact representation in base 2. One can see that by trying to convert the number into base 2. Let’s follow the example of <code>0.3</code>:</p>
 <ul>
 <li>the integral part of <code>0.3</code> is <code>0</code> so it is also in base 2</li>
@@ -143,50 +145,50 @@ minus pi (xkcd)" title="e to pi minus pi (xkcd)"></p>
 </ul>
 <p>Thus, the binary representation of <code>0.3</code> would be <code>0.01001100110011001..</code>. Repeating the same algorithm with <code>0.1</code> and <code>0.2</code> will end in the same loop between <code>0.2</code>, <code>0.4</code>, <code>0.8</code> and <code>0.6</code>. So, none of <code>0.1</code>, <code>0.2</code> or <code>0.3</code> has an exact representation. Thus, no result of any operation with these numbers will be an exact answer.</p>
 <p>But, then, why did we get the exact answer in here? The two sensible answers are that either the compiler generates code which uses a higher level of precision than the space reserved for float or the printing routine does hard work to properly display the numbers. We can test these hypotheses using <code>gdb</code>:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb5-1"><a href="#cb5-1"></a><span class="er">$</span> gdb -q ./a.out </span>
-<span id="cb5-2"><a href="#cb5-2"></a>Reading symbols from /tmp/fps/a.out...done.</span>
-<span id="cb5-3"><a href="#cb5-3"></a>(gdb) b main</span>
-<span id="cb5-4"><a href="#cb5-4"></a>Breakpoint <span class="dv">1</span> at <span class="bn">0x400538</span>: file <span class="fl">1.</span><span class="er">c</span>, line <span class="fl">6.</span></span>
-<span id="cb5-5"><a href="#cb5-5"></a>(gdb) r</span>
-<span id="cb5-6"><a href="#cb5-6"></a>Starting program: /tmp/fps/a.out </span>
-<span id="cb5-7"><a href="#cb5-7"></a></span>
-<span id="cb5-8"><a href="#cb5-8"></a>Breakpoint <span class="dv">1</span>, main () at <span class="fl">1.</span><span class="er">c</span>:<span class="dv">6</span></span>
-<span id="cb5-9"><a href="#cb5-9"></a><span class="dv">6</span>       <span class="dt">float</span> a = <span class="fl">0.1</span>;</span>
-<span id="cb5-10"><a href="#cb5-10"></a>(gdb) n</span>
-<span id="cb5-11"><a href="#cb5-11"></a><span class="dv">7</span>       <span class="dt">float</span> b = <span class="fl">0.2</span>;</span>
-<span id="cb5-12"><a href="#cb5-12"></a>(gdb) p a</span>
-<span id="cb5-13"><a href="#cb5-13"></a><span class="er">$</span><span class="dv">1</span> = <span class="fl">0.100000001</span></span>
-<span id="cb5-14"><a href="#cb5-14"></a>(gdb) n</span>
-<span id="cb5-15"><a href="#cb5-15"></a><span class="dv">8</span>       <span class="dt">float</span> c = a + b;</span>
-<span id="cb5-16"><a href="#cb5-16"></a>(gdb) p b</span>
-<span id="cb5-17"><a href="#cb5-17"></a><span class="er">$</span><span class="dv">2</span> = <span class="fl">0.200000003</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="er">$</span> gdb -q ./a.out </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a>Reading symbols from /tmp/fps/a.out...done.</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a>(gdb) b main</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true"></a>Breakpoint <span class="dv">1</span> at <span class="bn">0x400538</span>: file <span class="fl">1.</span><span class="er">c</span>, line <span class="fl">6.</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true"></a>(gdb) r</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true"></a>Starting program: /tmp/fps/a.out </span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true"></a>Breakpoint <span class="dv">1</span>, main () at <span class="fl">1.</span><span class="er">c</span>:<span class="dv">6</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true"></a><span class="dv">6</span>       <span class="dt">float</span> a = <span class="fl">0.1</span>;</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true"></a>(gdb) n</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true"></a><span class="dv">7</span>       <span class="dt">float</span> b = <span class="fl">0.2</span>;</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true"></a>(gdb) p a</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true"></a><span class="er">$</span><span class="dv">1</span> = <span class="fl">0.100000001</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true"></a>(gdb) n</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true"></a><span class="dv">8</span>       <span class="dt">float</span> c = a + b;</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true"></a>(gdb) p b</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true"></a><span class="er">$</span><span class="dv">2</span> = <span class="fl">0.200000003</span></span></code></pre></div>
 <p>As you can see, printing the values from memory shows that they are not <code>0.1</code> and <code>0.2</code> but values close to that.</p>
 <p>Let’s see now what the assembly code around <code>c = a + b</code> looks like:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb6-1"><a href="#cb6-1"></a>(gdb) disass</span>
-<span id="cb6-2"><a href="#cb6-2"></a>Dump of assembler code <span class="cf">for</span> function main:</span>
-<span id="cb6-3"><a href="#cb6-3"></a>   <span class="bn">0x0000000000400530</span> &lt;+<span class="dv">0</span>&gt;:     push   %rbp</span>
-<span id="cb6-4"><a href="#cb6-4"></a>   <span class="bn">0x0000000000400531</span> &lt;+<span class="dv">1</span>&gt;:     mov    %rsp,%rbp</span>
-<span id="cb6-5"><a href="#cb6-5"></a>   <span class="bn">0x0000000000400534</span> &lt;+<span class="dv">4</span>&gt;:     sub    <span class="er">$</span><span class="bn">0x10</span>,%rsp</span>
-<span id="cb6-6"><a href="#cb6-6"></a>   <span class="bn">0x0000000000400538</span> &lt;+<span class="dv">8</span>&gt;:     mov    <span class="bn">0x142</span>(%rip),%eax        <span class="er"># 0x400680</span></span>
-<span id="cb6-7"><a href="#cb6-7"></a>   <span class="bn">0x000000000040053e</span> &lt;+<span class="dv">14</span>&gt;:    mov    %eax,-<span class="bn">0x4</span>(%rbp)</span>
-<span id="cb6-8"><a href="#cb6-8"></a>   <span class="bn">0x0000000000400541</span> &lt;+<span class="dv">17</span>&gt;:    mov    <span class="bn">0x13d</span>(%rip),%eax        <span class="er"># 0x400684</span></span>
-<span id="cb6-9"><a href="#cb6-9"></a>   <span class="bn">0x0000000000400547</span> &lt;+<span class="dv">23</span>&gt;:    mov    %eax,-<span class="bn">0x8</span>(%rbp)</span>
-<span id="cb6-10"><a href="#cb6-10"></a>=&gt; <span class="bn">0x000000000040054a</span> &lt;+<span class="dv">26</span>&gt;:    movss  -<span class="bn">0x4</span>(%rbp),%xmm0</span>
-<span id="cb6-11"><a href="#cb6-11"></a>   <span class="bn">0x000000000040054f</span> &lt;+<span class="dv">31</span>&gt;:    addss  -<span class="bn">0x8</span>(%rbp),%xmm0</span>
-<span id="cb6-12"><a href="#cb6-12"></a>   <span class="bn">0x0000000000400554</span> &lt;+<span class="dv">36</span>&gt;:    movss  %xmm0,-<span class="bn">0xc</span>(%rbp)</span>
-<span id="cb6-13"><a href="#cb6-13"></a>---Type &lt;<span class="cf">return</span>&gt; to <span class="cf">continue</span>, <span class="kw">or</span> q &lt;<span class="cf">return</span>&gt; to quit---q</span>
-<span id="cb6-14"><a href="#cb6-14"></a>Quit</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a>(gdb) disass</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a>Dump of assembler code <span class="cf">for</span> function main:</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a>   <span class="bn">0x0000000000400530</span> &lt;+<span class="dv">0</span>&gt;:     push   %rbp</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true"></a>   <span class="bn">0x0000000000400531</span> &lt;+<span class="dv">1</span>&gt;:     mov    %rsp,%rbp</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true"></a>   <span class="bn">0x0000000000400534</span> &lt;+<span class="dv">4</span>&gt;:     sub    <span class="er">$</span><span class="bn">0x10</span>,%rsp</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true"></a>   <span class="bn">0x0000000000400538</span> &lt;+<span class="dv">8</span>&gt;:     mov    <span class="bn">0x142</span>(%rip),%eax        <span class="er"># 0x400680</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true"></a>   <span class="bn">0x000000000040053e</span> &lt;+<span class="dv">14</span>&gt;:    mov    %eax,-<span class="bn">0x4</span>(%rbp)</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true"></a>   <span class="bn">0x0000000000400541</span> &lt;+<span class="dv">17</span>&gt;:    mov    <span class="bn">0x13d</span>(%rip),%eax        <span class="er"># 0x400684</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true"></a>   <span class="bn">0x0000000000400547</span> &lt;+<span class="dv">23</span>&gt;:    mov    %eax,-<span class="bn">0x8</span>(%rbp)</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true"></a>=&gt; <span class="bn">0x000000000040054a</span> &lt;+<span class="dv">26</span>&gt;:    movss  -<span class="bn">0x4</span>(%rbp),%xmm0</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true"></a>   <span class="bn">0x000000000040054f</span> &lt;+<span class="dv">31</span>&gt;:    addss  -<span class="bn">0x8</span>(%rbp),%xmm0</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true"></a>   <span class="bn">0x0000000000400554</span> &lt;+<span class="dv">36</span>&gt;:    movss  %xmm0,-<span class="bn">0xc</span>(%rbp)</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true"></a>---Type &lt;<span class="cf">return</span>&gt; to <span class="cf">continue</span>, <span class="kw">or</span> q &lt;<span class="cf">return</span>&gt; to quit---q</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true"></a>Quit</span></code></pre></div>
 <p>The last three lines are the assembly lines generated for <code>float c = a + b</code> (you can test that by running an <code>objdump -CDgS | less</code> and searching for <code>float c</code>). <code>-0x4(%rbp)</code> is where <code>a</code> is stored on the stack. <code>b</code> is stored at <code>-0x8(%rbp)</code>. The assembly instructions used – <code>addss</code> and <code>movss</code> – and the register involved – <code>xmm0</code> – show that we are working with <a href="http://en.wikipedia.org/wiki/Streaming_SIMD_Extensions" title="SSE - Wikipedia">Streaming SIMD Extensions (SSE)</a>. This register has a precision of 128 bits which is 4 times greater than the 32 bits used by the <code>float</code> datatype. We are tempted now to think that we are able to use the full width of the register – even if the SIMD part of the extension tells that this is not the case, we want a real proof based on the memory/register contents.</p>
 <p>Continuing the execution, we see:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb7-1"><a href="#cb7-1"></a>(gdb) n</span>
-<span id="cb7-2"><a href="#cb7-2"></a><span class="dv">9</span>       <span class="cf">if</span> (c != <span class="fl">0.3</span>)</span>
-<span id="cb7-3"><a href="#cb7-3"></a>(gdb) p <span class="er">$</span>xmm0</span>
-<span id="cb7-4"><a href="#cb7-4"></a><span class="er">$</span><span class="dv">3</span> = {v4_float = {<span class="fl">0.300000012</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>}, v2_double = {<span class="fl">5.18894283457103e-315</span>,</span>
-<span id="cb7-5"><a href="#cb7-5"></a><span class="dv">0</span>}, v16_int8 = {-<span class="dv">102</span>, -<span class="dv">103</span>, -<span class="dv">103</span>, <span class="dv">62</span>, <span class="dv">0</span> &lt;repeats <span class="dv">12</span> times&gt;}, v8_int16 = {</span>
-<span id="cb7-6"><a href="#cb7-6"></a>-<span class="dv">26214</span>, <span class="dv">16025</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>}, v4_int32 = {<span class="dv">1050253722</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>}, v2_int64 =</span>
-<span id="cb7-7"><a href="#cb7-7"></a>{<span class="dv">1050253722</span>, <span class="dv">0</span>}, uint128 = <span class="dv">1050253722</span>}</span>
-<span id="cb7-8"><a href="#cb7-8"></a>(gdb) p c</span>
-<span id="cb7-9"><a href="#cb7-9"></a><span class="er">$</span><span class="dv">4</span> = <span class="fl">0.300000012</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a>(gdb) n</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true"></a><span class="dv">9</span>       <span class="cf">if</span> (c != <span class="fl">0.3</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true"></a>(gdb) p <span class="er">$</span>xmm0</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true"></a><span class="er">$</span><span class="dv">3</span> = {v4_float = {<span class="fl">0.300000012</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>}, v2_double = {<span class="fl">5.18894283457103e-315</span>,</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true"></a><span class="dv">0</span>}, v16_int8 = {-<span class="dv">102</span>, -<span class="dv">103</span>, -<span class="dv">103</span>, <span class="dv">62</span>, <span class="dv">0</span> &lt;repeats <span class="dv">12</span> times&gt;}, v8_int16 = {</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true"></a>-<span class="dv">26214</span>, <span class="dv">16025</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>}, v4_int32 = {<span class="dv">1050253722</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>}, v2_int64 =</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true"></a>{<span class="dv">1050253722</span>, <span class="dv">0</span>}, uint128 = <span class="dv">1050253722</span>}</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true"></a>(gdb) p c</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true"></a><span class="er">$</span><span class="dv">4</span> = <span class="fl">0.300000012</span></span></code></pre></div>
 <p>Indeed, our <code>c</code> is not <code>0.3</code>. But it seems that not even the contents of <code>xmm0</code> are closer to the truth.</p>
 <p>So, the fact that we got <code>0.3</code> in the output is caused not by the fact that we use a 128-bits wide registers but by the fact that the <a href="http://kurtstephens.com/files/p372-steele.pdf" title="Printing Floating Point Numbers (PDF)">up-to-recent unsolved problem</a> of precisely printing floating point numbers is no longer so.</p>
 </section>
@@ -203,55 +205,55 @@ minus pi (xkcd)" title="e to pi minus pi (xkcd)"></p>
 <section id="back-to-the-castle-and-a-final-conclusion" class="level3">
 <h3>Back to the castle and a final conclusion</h3>
 <p>Returning to our code, we want to see what values are stored in memory for <code>a</code>, <code>b</code> and <code>c</code> and also in register <code>xmm0</code>:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb8-1"><a href="#cb8-1"></a>(gdb) x <span class="er">$</span>rbp - <span class="bn">0x4</span></span>
-<span id="cb8-2"><a href="#cb8-2"></a><span class="bn">0x7fffffffdfac</span>: <span class="bn">0x3dcccccd</span></span>
-<span id="cb8-3"><a href="#cb8-3"></a>(gdb) x <span class="er">$</span>rbp - <span class="bn">0x8</span></span>
-<span id="cb8-4"><a href="#cb8-4"></a><span class="bn">0x7fffffffdfa8</span>: <span class="bn">0x3e4ccccd</span></span>
-<span id="cb8-5"><a href="#cb8-5"></a>(gdb) x <span class="er">$</span>rbp - <span class="bn">0xc</span></span>
-<span id="cb8-6"><a href="#cb8-6"></a><span class="bn">0x7fffffffdfa4</span>: <span class="bn">0x3e99999a</span></span>
-<span id="cb8-7"><a href="#cb8-7"></a>(gdb) p/x <span class="er">$</span>xmm0</span>
-<span id="cb8-8"><a href="#cb8-8"></a><span class="er">$</span><span class="dv">4</span> = {.... uint128 = <span class="bn">0x0000000000000000000000003e99999a</span>}</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a>(gdb) x <span class="er">$</span>rbp - <span class="bn">0x4</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true"></a><span class="bn">0x7fffffffdfac</span>: <span class="bn">0x3dcccccd</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true"></a>(gdb) x <span class="er">$</span>rbp - <span class="bn">0x8</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true"></a><span class="bn">0x7fffffffdfa8</span>: <span class="bn">0x3e4ccccd</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true"></a>(gdb) x <span class="er">$</span>rbp - <span class="bn">0xc</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true"></a><span class="bn">0x7fffffffdfa4</span>: <span class="bn">0x3e99999a</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true"></a>(gdb) p/x <span class="er">$</span>xmm0</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true"></a><span class="er">$</span><span class="dv">4</span> = {.... uint128 = <span class="bn">0x0000000000000000000000003e99999a</span>}</span></code></pre></div>
 <p>Looking through the analyzer, <code>0x3dcccccd</code> (the value for <code>a</code>) is <code>1.00000001490116119384765625E-1</code> which is both close to the original value of <code>0.1</code> and to the displayed value of <code>0.100000001</code>. Same for <code>b</code> and <code>c</code>. However, looking at <code>xmm0</code> register we see that the last 32 bits have the same pattern as <code>-0xc($rbp)</code>. Thus, the SSE 128 bits registers <strong>are not using</strong> the <code>binary128</code> standard! If they were using it, the last value displayed there should have been <code>3FFD3333333333333333333333333333</code>. As said on <a href="http://www.reddit.com/r/programming/comments/21qzz2/an_overview_of_floating_point_realm/" title="This article on reddit">reddit thread for this article</a>, excess precision comes from the <code>x87</code> coprocessor which uses 80 bits of precision.</p>
 <p>Now it is time to see some other aspects of working with floating point numbers.</p>
 </section>
 <section id="testing-them-all" class="level3">
 <h3>Testing them all</h3>
 <p>Since there is a perfect isomorphism between <code>float</code> values and <code>int</code> ones and there are only <code>2^32</code> ints (on normal architectures), sometimes it is easy and desirable to test a new function on all of the possible values. Unfortunately, this doesn’t properly work for functions with more than one argument because one would have to spend ages for that. But for one single argument things are pretty nice: it only takes 16 seconds on my machine to run the following code which tests that changing the sign twice gives the same value:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb9-1"><a href="#cb9-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
-<span id="cb9-2"><a href="#cb9-2"></a><span class="pp">#include </span><span class="im">&lt;stdlib.h&gt;</span></span>
-<span id="cb9-3"><a href="#cb9-3"></a></span>
-<span id="cb9-4"><a href="#cb9-4"></a><span class="dt">int</span> main()</span>
-<span id="cb9-5"><a href="#cb9-5"></a>{</span>
-<span id="cb9-6"><a href="#cb9-6"></a>    <span class="dt">unsigned</span> <span class="dt">int</span> i = <span class="dv">0</span>;</span>
-<span id="cb9-7"><a href="#cb9-7"></a>    <span class="dt">float</span> x;</span>
-<span id="cb9-8"><a href="#cb9-8"></a></span>
-<span id="cb9-9"><a href="#cb9-9"></a>    <span class="cf">do</span> {</span>
-<span id="cb9-10"><a href="#cb9-10"></a>        x = *((<span class="dt">float</span>*)&amp;i);</span>
-<span id="cb9-11"><a href="#cb9-11"></a>        <span class="cf">if</span> (x != -(-x))</span>
-<span id="cb9-12"><a href="#cb9-12"></a>            printf(<span class="st">&quot;</span><span class="sc">%f</span><span class="st"> </span><span class="sc">%u\n</span><span class="st">&quot;</span>, x, i);</span>
-<span id="cb9-13"><a href="#cb9-13"></a>        i++;</span>
-<span id="cb9-14"><a href="#cb9-14"></a>    } <span class="cf">while</span> (i != <span class="dv">0</span>);</span>
-<span id="cb9-15"><a href="#cb9-15"></a></span>
-<span id="cb9-16"><a href="#cb9-16"></a>    <span class="cf">return</span> <span class="dv">0</span>;</span>
-<span id="cb9-17"><a href="#cb9-17"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&lt;stdlib.h&gt;</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true"></a><span class="dt">int</span> main()</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true"></a>{</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true"></a>    <span class="dt">unsigned</span> <span class="dt">int</span> i = <span class="dv">0</span>;</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true"></a>    <span class="dt">float</span> x;</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true"></a></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true"></a>    <span class="cf">do</span> {</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true"></a>        x = *((<span class="dt">float</span>*)&amp;i);</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true"></a>        <span class="cf">if</span> (x != -(-x))</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true"></a>            printf(<span class="st">&quot;</span><span class="sc">%f</span><span class="st"> </span><span class="sc">%u\n</span><span class="st">&quot;</span>, x, i);</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true"></a>        i++;</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true"></a>    } <span class="cf">while</span> (i != <span class="dv">0</span>);</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true"></a></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true"></a>    <span class="cf">return</span> <span class="dv">0</span>;</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true"></a>}</span></code></pre></div>
 <p>Running it we see:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1"></a>$ <span class="fu">gcc</span> -Wall -Wextra -O0 -g 2.c </span>
-<span id="cb10-2"><a href="#cb10-2"></a>$ <span class="ex">./a.out</span>  <span class="kw">|</span> <span class="fu">head</span> -n 5</span>
-<span id="cb10-3"><a href="#cb10-3"></a><span class="ex">nan</span> 2139095041</span>
-<span id="cb10-4"><a href="#cb10-4"></a><span class="ex">nan</span> 2139095042</span>
-<span id="cb10-5"><a href="#cb10-5"></a><span class="ex">nan</span> 2139095043</span>
-<span id="cb10-6"><a href="#cb10-6"></a><span class="ex">nan</span> 2139095044</span>
-<span id="cb10-7"><a href="#cb10-7"></a><span class="ex">nan</span> 2139095045</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true"></a>$ <span class="fu">gcc</span> -Wall -Wextra -O0 -g 2.c </span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true"></a>$ <span class="ex">./a.out</span>  <span class="kw">|</span> <span class="fu">head</span> -n 5</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true"></a><span class="ex">nan</span> 2139095041</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true"></a><span class="ex">nan</span> 2139095042</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true"></a><span class="ex">nan</span> 2139095043</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true"></a><span class="ex">nan</span> 2139095044</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true"></a><span class="ex">nan</span> 2139095045</span></code></pre></div>
 <p>It seems that our hypothesis fails when the initial number was a <code>NaN</code> value. For now, let us filter all of these values and test the hypothesis on the remaining domain.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1"></a>$ <span class="bu">time</span> ./a.out <span class="kw">|</span> <span class="fu">grep</span> -v nan</span>
-<span id="cb11-2"><a href="#cb11-2"></a></span>
-<span id="cb11-3"><a href="#cb11-3"></a><span class="ex">real</span>    0m15.895s</span>
-<span id="cb11-4"><a href="#cb11-4"></a><span class="ex">user</span>    0m17.977s</span>
-<span id="cb11-5"><a href="#cb11-5"></a><span class="ex">sys</span> 0m0.163s</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true"></a>$ <span class="bu">time</span> ./a.out <span class="kw">|</span> <span class="fu">grep</span> -v nan</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true"></a><span class="ex">real</span>    0m15.895s</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true"></a><span class="ex">user</span>    0m17.977s</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true"></a><span class="ex">sys</span> 0m0.163s</span></code></pre></div>
 <p>Something which we would have expected.</p>
 <p><em>Note</em>: Compiling with optimisations on might make the compiler issue the following warning:</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb12-1"><a href="#cb12-1"></a>warning: dereferencing type-punned pointer will <span class="cf">break</span> strict-aliasing rules [-Wstrict-aliasing]</span>
-<span id="cb12-2"><a href="#cb12-2"></a>    ^</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true"></a>warning: dereferencing type-punned pointer will <span class="cf">break</span> strict-aliasing rules [-Wstrict-aliasing]</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true"></a>    ^</span></code></pre></div>
 <p>This is because the C/C++ standard says that the compiler can assume that different types don’t overlap in memory so neither should pointers to those types. Knowing that a pointer to an array of integers and one array of doubles don’t overlap opens a way for some optimizations. Breaking them is at your own risk. See also the documentation for <code>-fstrict-aliasing</code> flag of <code>gcc</code>.</p>
 </section>
 <section id="the-nan-problem" class="level3">
@@ -259,223 +261,223 @@ minus pi (xkcd)" title="e to pi minus pi (xkcd)"></p>
 <p>You might be wondering why do we have so many <code>NaN</code> values (the 5 above are but a small sample of them all). Thing is, the standard allows some <code>NaN</code> values to carry an exception code within it such that the programmer debugging the code can know why he got this value. We would not enter into details regarding this aspect though.</p>
 <p>A more interesting question is how these <code>NaN</code> values arise. One example is doing <code>asin(1+smth)</code> or <code>sqrt(0-smth_else)</code>. You might say: “but I will never do that” to which I will reply that since every floating point operation has some rounding and errors tend to propagate you might find in some occasions doing exactly that.</p>
 <p>Now, the question is how to filter out these values from code. The standard states that the <code>NaN</code> values have form <code>s1111111 1axxxxxx xxxxxxxx xxxxxxxx</code> so one might just check the first few bits of the number (<code>s</code> is the sign and is ignored and <code>a</code> is used to differentiate between a quiet <code>NaN</code> and a signalling one while <code>x</code> represent payload bits showing why the signalling <code>NaN</code> was produced). So we change the code to read</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb13-1"><a href="#cb13-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
-<span id="cb13-2"><a href="#cb13-2"></a><span class="pp">#include </span><span class="im">&lt;stdlib.h&gt;</span></span>
-<span id="cb13-3"><a href="#cb13-3"></a></span>
-<span id="cb13-4"><a href="#cb13-4"></a><span class="dt">int</span> main()</span>
-<span id="cb13-5"><a href="#cb13-5"></a>{</span>
-<span id="cb13-6"><a href="#cb13-6"></a>    <span class="dt">unsigned</span> <span class="dt">int</span> i = <span class="dv">0</span>;</span>
-<span id="cb13-7"><a href="#cb13-7"></a>    <span class="dt">float</span> x;</span>
-<span id="cb13-8"><a href="#cb13-8"></a></span>
-<span id="cb13-9"><a href="#cb13-9"></a>    <span class="cf">do</span> {</span>
-<span id="cb13-10"><a href="#cb13-10"></a>        x = *((<span class="dt">float</span>*)&amp;i);</span>
-<span id="cb13-11"><a href="#cb13-11"></a>        <span class="cf">if</span> (x != -(-x))</span>
-<span id="cb13-12"><a href="#cb13-12"></a>            printf(<span class="st">&quot;</span><span class="sc">%f</span><span class="st"> </span><span class="sc">%u\n</span><span class="st">&quot;</span>, x, i);</span>
-<span id="cb13-13"><a href="#cb13-13"></a>        i++;</span>
-<span id="cb13-14"><a href="#cb13-14"></a>        <span class="cf">if</span> (i &gt; <span class="bn">0x7f800000</span>)</span>
-<span id="cb13-15"><a href="#cb13-15"></a>            <span class="cf">break</span>;</span>
-<span id="cb13-16"><a href="#cb13-16"></a>    } <span class="cf">while</span> (i != <span class="dv">0</span>);</span>
-<span id="cb13-17"><a href="#cb13-17"></a></span>
-<span id="cb13-18"><a href="#cb13-18"></a>    <span class="cf">return</span> <span class="dv">0</span>;</span>
-<span id="cb13-19"><a href="#cb13-19"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&lt;stdlib.h&gt;</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true"></a><span class="dt">int</span> main()</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true"></a>{</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true"></a>    <span class="dt">unsigned</span> <span class="dt">int</span> i = <span class="dv">0</span>;</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true"></a>    <span class="dt">float</span> x;</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true"></a></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true"></a>    <span class="cf">do</span> {</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true"></a>        x = *((<span class="dt">float</span>*)&amp;i);</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true"></a>        <span class="cf">if</span> (x != -(-x))</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true"></a>            printf(<span class="st">&quot;</span><span class="sc">%f</span><span class="st"> </span><span class="sc">%u\n</span><span class="st">&quot;</span>, x, i);</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true"></a>        i++;</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true"></a>        <span class="cf">if</span> (i &gt; <span class="bn">0x7f800000</span>)</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true"></a>            <span class="cf">break</span>;</span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true"></a>    } <span class="cf">while</span> (i != <span class="dv">0</span>);</span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true"></a></span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true"></a>    <span class="cf">return</span> <span class="dv">0</span>;</span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true"></a>}</span></code></pre></div>
 <p>If you don’t remember the bit pattern you can still filter out by knowing that all <code>NaN</code> values are required to compare unequal even themselves. Thus, a test <code>x == x</code> is always false for <code>NaN</code> values.</p>
 </section>
 <section id="the-associativity-problem" class="level3">
 <h3>The Associativity Problem</h3>
 <p>One of the ideas behind this post was <a href="http://stackoverflow.com/questions/6430448/why-doesnt-gcc-optimize-aaaaaa-to-aaaaaa" title="Why doesn't GCC optimize...">this StackOverflow question</a>. We can test this to see on how many floats the output is wrong:</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb14-1"><a href="#cb14-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
-<span id="cb14-2"><a href="#cb14-2"></a><span class="pp">#include </span><span class="im">&lt;stdlib.h&gt;</span></span>
-<span id="cb14-3"><a href="#cb14-3"></a></span>
-<span id="cb14-4"><a href="#cb14-4"></a><span class="dt">int</span> main()</span>
-<span id="cb14-5"><a href="#cb14-5"></a>{</span>
-<span id="cb14-6"><a href="#cb14-6"></a>    <span class="dt">unsigned</span> <span class="dt">int</span> i = <span class="dv">0</span>;</span>
-<span id="cb14-7"><a href="#cb14-7"></a>    <span class="dt">float</span> x, y, z;</span>
-<span id="cb14-8"><a href="#cb14-8"></a>    <span class="dt">unsigned</span> <span class="dt">long</span> <span class="dt">long</span> s = <span class="dv">0</span>;</span>
-<span id="cb14-9"><a href="#cb14-9"></a></span>
-<span id="cb14-10"><a href="#cb14-10"></a>    <span class="cf">do</span> {</span>
-<span id="cb14-11"><a href="#cb14-11"></a>        x = *((<span class="dt">float</span>*)&amp;i);</span>
-<span id="cb14-12"><a href="#cb14-12"></a>        y = x * x * x * x * x * x;</span>
-<span id="cb14-13"><a href="#cb14-13"></a>        z = (x * x * x);</span>
-<span id="cb14-14"><a href="#cb14-14"></a>        z = z * z;</span>
-<span id="cb14-15"><a href="#cb14-15"></a>        <span class="cf">if</span> (y != z)</span>
-<span id="cb14-16"><a href="#cb14-16"></a>            printf(<span class="st">&quot;</span><span class="sc">%f</span><span class="st"> </span><span class="sc">%u\n</span><span class="st">&quot;</span>, x, i);</span>
-<span id="cb14-17"><a href="#cb14-17"></a>        s += i;</span>
-<span id="cb14-18"><a href="#cb14-18"></a>        i++;</span>
-<span id="cb14-19"><a href="#cb14-19"></a>        <span class="cf">if</span> (i &gt; <span class="bn">0x7f800000</span>)</span>
-<span id="cb14-20"><a href="#cb14-20"></a>            <span class="cf">break</span>;</span>
-<span id="cb14-21"><a href="#cb14-21"></a>    } <span class="cf">while</span> (i != <span class="dv">0</span>);</span>
-<span id="cb14-22"><a href="#cb14-22"></a></span>
-<span id="cb14-23"><a href="#cb14-23"></a>    printf(<span class="st">&quot;</span><span class="sc">%lld\n</span><span class="st">&quot;</span>, s);</span>
-<span id="cb14-24"><a href="#cb14-24"></a></span>
-<span id="cb14-25"><a href="#cb14-25"></a>    <span class="cf">return</span> <span class="dv">0</span>;</span>
-<span id="cb14-26"><a href="#cb14-26"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&lt;stdlib.h&gt;</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true"></a></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true"></a><span class="dt">int</span> main()</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true"></a>{</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true"></a>    <span class="dt">unsigned</span> <span class="dt">int</span> i = <span class="dv">0</span>;</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true"></a>    <span class="dt">float</span> x, y, z;</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true"></a>    <span class="dt">unsigned</span> <span class="dt">long</span> <span class="dt">long</span> s = <span class="dv">0</span>;</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true"></a></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true"></a>    <span class="cf">do</span> {</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true"></a>        x = *((<span class="dt">float</span>*)&amp;i);</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true"></a>        y = x * x * x * x * x * x;</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true"></a>        z = (x * x * x);</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true"></a>        z = z * z;</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true"></a>        <span class="cf">if</span> (y != z)</span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true"></a>            printf(<span class="st">&quot;</span><span class="sc">%f</span><span class="st"> </span><span class="sc">%u\n</span><span class="st">&quot;</span>, x, i);</span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true"></a>        s += i;</span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true"></a>        i++;</span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true"></a>        <span class="cf">if</span> (i &gt; <span class="bn">0x7f800000</span>)</span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true"></a>            <span class="cf">break</span>;</span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true"></a>    } <span class="cf">while</span> (i != <span class="dv">0</span>);</span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true"></a></span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true"></a>    printf(<span class="st">&quot;</span><span class="sc">%lld\n</span><span class="st">&quot;</span>, s);</span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true"></a></span>
+<span id="cb14-25"><a href="#cb14-25" aria-hidden="true"></a>    <span class="cf">return</span> <span class="dv">0</span>;</span>
+<span id="cb14-26"><a href="#cb14-26" aria-hidden="true"></a>}</span></code></pre></div>
 <p>Since we are compiling with <code>-O3</code> we don’t want the compiler to optimize our loop away. Thus we have a <code>s</code> variable in which we store the sum of all <code>i</code>s. Also, the code already removes the <code>NaN</code> values. Running it we get:</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1"></a>$ <span class="bu">time</span> ./a.out <span class="kw">|</span> <span class="fu">wc</span> -l</span>
-<span id="cb15-2"><a href="#cb15-2"></a><span class="ex">163049703</span></span>
-<span id="cb15-3"><a href="#cb15-3"></a></span>
-<span id="cb15-4"><a href="#cb15-4"></a><span class="ex">real</span>    1m58.114s</span>
-<span id="cb15-5"><a href="#cb15-5"></a><span class="ex">user</span>    1m59.005s</span>
-<span id="cb15-6"><a href="#cb15-6"></a><span class="ex">sys</span> 0m3.148s</span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true"></a>$ <span class="bu">time</span> ./a.out <span class="kw">|</span> <span class="fu">wc</span> -l</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true"></a><span class="ex">163049703</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true"></a></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true"></a><span class="ex">real</span>    1m58.114s</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true"></a><span class="ex">user</span>    1m59.005s</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true"></a><span class="ex">sys</span> 0m3.148s</span></code></pre></div>
 <p>That is, there is a total of 3.79% values for which doing the optimization in question will give a different result on this machine.</p>
 </section>
 <section id="equality-testing-done-right" class="level3">
 <h3>Equality testing done right</h3>
 <p>Finally, we have arrived to an interesting aspect: how do we compare if two floats are almost the same? We already know that doing a comparison with <code>==</code> is bad. Let us pick now two numbers: <code>10000</code> and the next representable float and compare between them using the standard method:</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb16-1"><a href="#cb16-1"></a><span class="pp">#include </span><span class="im">&lt;math.h&gt;</span></span>
-<span id="cb16-2"><a href="#cb16-2"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
-<span id="cb16-3"><a href="#cb16-3"></a><span class="pp">#include </span><span class="im">&lt;stdlib.h&gt;</span></span>
-<span id="cb16-4"><a href="#cb16-4"></a></span>
-<span id="cb16-5"><a href="#cb16-5"></a><span class="dt">int</span> main ()</span>
-<span id="cb16-6"><a href="#cb16-6"></a>{</span>
-<span id="cb16-7"><a href="#cb16-7"></a>    <span class="dt">int</span> expectedAsInt = <span class="dv">1176256512</span>;</span>
-<span id="cb16-8"><a href="#cb16-8"></a>    <span class="dt">int</span> resultAsInt = expectedAsInt + <span class="dv">1</span>;</span>
-<span id="cb16-9"><a href="#cb16-9"></a>    <span class="dt">float</span> expectedResult = *((<span class="dt">float</span>*)&amp;expectedAsInt);</span>
-<span id="cb16-10"><a href="#cb16-10"></a>    <span class="dt">float</span> result = *((<span class="dt">float</span>*)&amp;resultAsInt);</span>
-<span id="cb16-11"><a href="#cb16-11"></a></span>
-<span id="cb16-12"><a href="#cb16-12"></a>    printf(<span class="st">&quot;</span><span class="sc">%f</span><span class="st"> </span><span class="sc">%f\n</span><span class="st">&quot;</span>, result, expectedResult);</span>
-<span id="cb16-13"><a href="#cb16-13"></a></span>
-<span id="cb16-14"><a href="#cb16-14"></a>    <span class="cf">if</span> (fabs(result - expectedResult) &lt; <span class="fl">0.0001</span>)</span>
-<span id="cb16-15"><a href="#cb16-15"></a>        printf(<span class="st">&quot;Numbers are close</span><span class="sc">\n</span><span class="st">&quot;</span>);</span>
-<span id="cb16-16"><a href="#cb16-16"></a></span>
-<span id="cb16-17"><a href="#cb16-17"></a>    <span class="cf">return</span> <span class="dv">0</span>;</span>
-<span id="cb16-18"><a href="#cb16-18"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&lt;math.h&gt;</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&lt;stdlib.h&gt;</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true"></a></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true"></a><span class="dt">int</span> main ()</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true"></a>{</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true"></a>    <span class="dt">int</span> expectedAsInt = <span class="dv">1176256512</span>;</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true"></a>    <span class="dt">int</span> resultAsInt = expectedAsInt + <span class="dv">1</span>;</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true"></a>    <span class="dt">float</span> expectedResult = *((<span class="dt">float</span>*)&amp;expectedAsInt);</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true"></a>    <span class="dt">float</span> result = *((<span class="dt">float</span>*)&amp;resultAsInt);</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true"></a></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true"></a>    printf(<span class="st">&quot;</span><span class="sc">%f</span><span class="st"> </span><span class="sc">%f\n</span><span class="st">&quot;</span>, result, expectedResult);</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true"></a></span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true"></a>    <span class="cf">if</span> (fabs(result - expectedResult) &lt; <span class="fl">0.0001</span>)</span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true"></a>        printf(<span class="st">&quot;Numbers are close</span><span class="sc">\n</span><span class="st">&quot;</span>);</span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true"></a></span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true"></a>    <span class="cf">return</span> <span class="dv">0</span>;</span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true"></a>}</span></code></pre></div>
 <p>The output</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1"></a>$ <span class="ex">./a.out</span></span>
-<span id="cb17-2"><a href="#cb17-2"></a><span class="ex">10000.000977</span> 10000.000000</span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true"></a>$ <span class="ex">./a.out</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true"></a><span class="ex">10000.000977</span> 10000.000000</span></code></pre></div>
 <p>So the above test fails to consider two floating points which are neighbors as being the same. If your algorithm produced a <code>result</code> which would be between these two floats and it would be rounded to the wrong one you would get the impression that your algorithm is wrong.</p>
 <p>Anyway, even if this method was correct, what value should one use for the bound in the test? <code>float.h</code> defines <code>FLT_EPSILON</code> so one might decide to test using that:</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb18-1"><a href="#cb18-1"></a><span class="pp">#include </span><span class="im">&lt;float.h&gt;</span></span>
-<span id="cb18-2"><a href="#cb18-2"></a><span class="pp">#include </span><span class="im">&lt;math.h&gt;</span></span>
-<span id="cb18-3"><a href="#cb18-3"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
-<span id="cb18-4"><a href="#cb18-4"></a><span class="pp">#include </span><span class="im">&lt;stdlib.h&gt;</span></span>
-<span id="cb18-5"><a href="#cb18-5"></a></span>
-<span id="cb18-6"><a href="#cb18-6"></a><span class="dt">int</span> closeFloats(<span class="dt">float</span> number, <span class="dt">float</span> target)</span>
-<span id="cb18-7"><a href="#cb18-7"></a>{</span>
-<span id="cb18-8"><a href="#cb18-8"></a>    <span class="cf">return</span> fabs(number - target) &lt; FLT_EPSILON;</span>
-<span id="cb18-9"><a href="#cb18-9"></a>}</span>
-<span id="cb18-10"><a href="#cb18-10"></a></span>
-<span id="cb18-11"><a href="#cb18-11"></a><span class="kw">inline</span> <span class="dt">float</span> getFloatFromInt(<span class="dt">int</span> value)</span>
-<span id="cb18-12"><a href="#cb18-12"></a>{</span>
-<span id="cb18-13"><a href="#cb18-13"></a>    <span class="cf">return</span> *((<span class="dt">float</span>*)&amp;value);</span>
-<span id="cb18-14"><a href="#cb18-14"></a>}</span>
-<span id="cb18-15"><a href="#cb18-15"></a></span>
-<span id="cb18-16"><a href="#cb18-16"></a><span class="dt">void</span> testFloatTesting(<span class="dt">int</span> src)</span>
-<span id="cb18-17"><a href="#cb18-17"></a>{</span>
-<span id="cb18-18"><a href="#cb18-18"></a>    <span class="dt">float</span> target = getFloatFromInt(src);</span>
-<span id="cb18-19"><a href="#cb18-19"></a>    <span class="dt">float</span> next = getFloatFromInt(src + <span class="dv">1</span>);</span>
-<span id="cb18-20"><a href="#cb18-20"></a></span>
-<span id="cb18-21"><a href="#cb18-21"></a>    printf(<span class="st">&quot;src=</span><span class="sc">%d</span><span class="st"> target=</span><span class="sc">%f</span><span class="st"> next=</span><span class="sc">%f</span><span class="st"> compare=</span><span class="sc">%d\n</span><span class="st">&quot;</span>, src, target, next,</span>
-<span id="cb18-22"><a href="#cb18-22"></a>            closeFloats(next, target));</span>
-<span id="cb18-23"><a href="#cb18-23"></a>}</span>
-<span id="cb18-24"><a href="#cb18-24"></a></span>
-<span id="cb18-25"><a href="#cb18-25"></a><span class="dt">int</span> main ()</span>
-<span id="cb18-26"><a href="#cb18-26"></a>{</span>
-<span id="cb18-27"><a href="#cb18-27"></a>    <span class="co">/* 0.5 and next float */</span></span>
-<span id="cb18-28"><a href="#cb18-28"></a>    testFloatTesting(<span class="bn">0x3F000000</span>);</span>
-<span id="cb18-29"><a href="#cb18-29"></a></span>
-<span id="cb18-30"><a href="#cb18-30"></a>    <span class="co">/* 1.5 and next float */</span></span>
-<span id="cb18-31"><a href="#cb18-31"></a>    testFloatTesting(<span class="bn">0x3FC00000</span>);</span>
-<span id="cb18-32"><a href="#cb18-32"></a></span>
-<span id="cb18-33"><a href="#cb18-33"></a>    <span class="co">/* 100.5 and next float */</span></span>
-<span id="cb18-34"><a href="#cb18-34"></a>    testFloatTesting(<span class="bn">0x42C90000</span>);</span>
-<span id="cb18-35"><a href="#cb18-35"></a></span>
-<span id="cb18-36"><a href="#cb18-36"></a>    <span class="co">/* 10000.5 and next float */</span></span>
-<span id="cb18-37"><a href="#cb18-37"></a>    testFloatTesting(<span class="bn">0x461C4200</span>);</span>
-<span id="cb18-38"><a href="#cb18-38"></a></span>
-<span id="cb18-39"><a href="#cb18-39"></a>    <span class="cf">return</span> <span class="dv">0</span>;</span>
-<span id="cb18-40"><a href="#cb18-40"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&lt;float.h&gt;</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&lt;math.h&gt;</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&lt;stdlib.h&gt;</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true"></a></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true"></a><span class="dt">int</span> closeFloats(<span class="dt">float</span> number, <span class="dt">float</span> target)</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true"></a>{</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true"></a>    <span class="cf">return</span> fabs(number - target) &lt; FLT_EPSILON;</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true"></a>}</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true"></a></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true"></a><span class="kw">inline</span> <span class="dt">float</span> getFloatFromInt(<span class="dt">int</span> value)</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true"></a>{</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true"></a>    <span class="cf">return</span> *((<span class="dt">float</span>*)&amp;value);</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true"></a>}</span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true"></a></span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true"></a><span class="dt">void</span> testFloatTesting(<span class="dt">int</span> src)</span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true"></a>{</span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true"></a>    <span class="dt">float</span> target = getFloatFromInt(src);</span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true"></a>    <span class="dt">float</span> next = getFloatFromInt(src + <span class="dv">1</span>);</span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true"></a></span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true"></a>    printf(<span class="st">&quot;src=</span><span class="sc">%d</span><span class="st"> target=</span><span class="sc">%f</span><span class="st"> next=</span><span class="sc">%f</span><span class="st"> compare=</span><span class="sc">%d\n</span><span class="st">&quot;</span>, src, target, next,</span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true"></a>            closeFloats(next, target));</span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true"></a>}</span>
+<span id="cb18-24"><a href="#cb18-24" aria-hidden="true"></a></span>
+<span id="cb18-25"><a href="#cb18-25" aria-hidden="true"></a><span class="dt">int</span> main ()</span>
+<span id="cb18-26"><a href="#cb18-26" aria-hidden="true"></a>{</span>
+<span id="cb18-27"><a href="#cb18-27" aria-hidden="true"></a>    <span class="co">/* 0.5 and next float */</span></span>
+<span id="cb18-28"><a href="#cb18-28" aria-hidden="true"></a>    testFloatTesting(<span class="bn">0x3F000000</span>);</span>
+<span id="cb18-29"><a href="#cb18-29" aria-hidden="true"></a></span>
+<span id="cb18-30"><a href="#cb18-30" aria-hidden="true"></a>    <span class="co">/* 1.5 and next float */</span></span>
+<span id="cb18-31"><a href="#cb18-31" aria-hidden="true"></a>    testFloatTesting(<span class="bn">0x3FC00000</span>);</span>
+<span id="cb18-32"><a href="#cb18-32" aria-hidden="true"></a></span>
+<span id="cb18-33"><a href="#cb18-33" aria-hidden="true"></a>    <span class="co">/* 100.5 and next float */</span></span>
+<span id="cb18-34"><a href="#cb18-34" aria-hidden="true"></a>    testFloatTesting(<span class="bn">0x42C90000</span>);</span>
+<span id="cb18-35"><a href="#cb18-35" aria-hidden="true"></a></span>
+<span id="cb18-36"><a href="#cb18-36" aria-hidden="true"></a>    <span class="co">/* 10000.5 and next float */</span></span>
+<span id="cb18-37"><a href="#cb18-37" aria-hidden="true"></a>    testFloatTesting(<span class="bn">0x461C4200</span>);</span>
+<span id="cb18-38"><a href="#cb18-38" aria-hidden="true"></a></span>
+<span id="cb18-39"><a href="#cb18-39" aria-hidden="true"></a>    <span class="cf">return</span> <span class="dv">0</span>;</span>
+<span id="cb18-40"><a href="#cb18-40" aria-hidden="true"></a>}</span></code></pre></div>
 <p>A proper <code>closeFloats</code> function is what we are looking for. We use <code>testFloatTesting</code> to test this on two floats which come from two neighboring integers (a more formal definition is floats which differ by 1ULP – <em>units in last place</em>). Running it, we get:</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1"></a>$ <span class="ex">./a.out</span></span>
-<span id="cb19-2"><a href="#cb19-2"></a><span class="va">src=</span>1056964608 <span class="va">target=</span>0.500000 <span class="va">next=</span>0.500000 <span class="va">compare=</span>1</span>
-<span id="cb19-3"><a href="#cb19-3"></a><span class="va">src=</span>1069547520 <span class="va">target=</span>1.500000 <span class="va">next=</span>1.500000 <span class="va">compare=</span>0</span>
-<span id="cb19-4"><a href="#cb19-4"></a><span class="va">src=</span>1120468992 <span class="va">target=</span>100.500000 <span class="va">next=</span>100.500008 <span class="va">compare=</span>0</span>
-<span id="cb19-5"><a href="#cb19-5"></a><span class="va">src=</span>1176257024 <span class="va">target=</span>10000.500000 <span class="va">next=</span>10000.500977 <span class="va">compare=</span>0</span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true"></a>$ <span class="ex">./a.out</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true"></a><span class="va">src=</span>1056964608 <span class="va">target=</span>0.500000 <span class="va">next=</span>0.500000 <span class="va">compare=</span>1</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true"></a><span class="va">src=</span>1069547520 <span class="va">target=</span>1.500000 <span class="va">next=</span>1.500000 <span class="va">compare=</span>0</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true"></a><span class="va">src=</span>1120468992 <span class="va">target=</span>100.500000 <span class="va">next=</span>100.500008 <span class="va">compare=</span>0</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true"></a><span class="va">src=</span>1176257024 <span class="va">target=</span>10000.500000 <span class="va">next=</span>10000.500977 <span class="va">compare=</span>0</span></code></pre></div>
 <p>All of the initial numbers were chosen to be exactly representable but this is not vital. What’s interesting is that only the numbers between 0 and 1 show as being close when using the <code>FLT_EPSILON</code> absolute method.</p>
 <p>Let’s try now to use a relative error and compare that with <code>FLT_EPSILON</code>:</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb20-1"><a href="#cb20-1"></a><span class="dt">int</span> closeFloats(<span class="dt">float</span> number, <span class="dt">float</span> target)</span>
-<span id="cb20-2"><a href="#cb20-2"></a>{</span>
-<span id="cb20-3"><a href="#cb20-3"></a>    <span class="cf">return</span> fabs(number - target) / target &lt; FLT_EPSILON;</span>
-<span id="cb20-4"><a href="#cb20-4"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true"></a><span class="dt">int</span> closeFloats(<span class="dt">float</span> number, <span class="dt">float</span> target)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true"></a>{</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true"></a>    <span class="cf">return</span> fabs(number - target) / target &lt; FLT_EPSILON;</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true"></a>}</span></code></pre></div>
 <p>Using the above gives the following results:</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb21-1"><a href="#cb21-1"></a><span class="er">$</span> ./a.out </span>
-<span id="cb21-2"><a href="#cb21-2"></a>src=<span class="dv">1056964608</span> target=<span class="fl">0.500000</span> next=<span class="fl">0.500000</span> compare=<span class="dv">0</span></span>
-<span id="cb21-3"><a href="#cb21-3"></a>src=<span class="dv">1069547520</span> target=<span class="fl">1.500000</span> next=<span class="fl">1.500000</span> compare=<span class="dv">1</span></span>
-<span id="cb21-4"><a href="#cb21-4"></a>src=<span class="dv">1120468992</span> target=<span class="fl">100.500000</span> next=<span class="fl">100.500008</span> compare=<span class="dv">1</span></span>
-<span id="cb21-5"><a href="#cb21-5"></a>src=<span class="dv">1176257024</span> target=<span class="fl">10000.500000</span> next=<span class="fl">10000.500977</span> compare=<span class="dv">1</span></span></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true"></a><span class="er">$</span> ./a.out </span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true"></a>src=<span class="dv">1056964608</span> target=<span class="fl">0.500000</span> next=<span class="fl">0.500000</span> compare=<span class="dv">0</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true"></a>src=<span class="dv">1069547520</span> target=<span class="fl">1.500000</span> next=<span class="fl">1.500000</span> compare=<span class="dv">1</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true"></a>src=<span class="dv">1120468992</span> target=<span class="fl">100.500000</span> next=<span class="fl">100.500008</span> compare=<span class="dv">1</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true"></a>src=<span class="dv">1176257024</span> target=<span class="fl">10000.500000</span> next=<span class="fl">10000.500977</span> compare=<span class="dv">1</span></span></code></pre></div>
 <p>We get better results above 1 but worse below. This is because we are dividing to a smaller number closing to doing a division by <code>0</code>. So, don’t use the above method as well.</p>
 <p>Let’s try with a third option:</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb22-1"><a href="#cb22-1"></a><span class="dt">int</span> closeFloats(<span class="dt">float</span> number, <span class="dt">float</span> target)</span>
-<span id="cb22-2"><a href="#cb22-2"></a>{</span>
-<span id="cb22-3"><a href="#cb22-3"></a>    <span class="dt">float</span> diff = fabs(number - target);</span>
-<span id="cb22-4"><a href="#cb22-4"></a>    <span class="dt">float</span> largest;</span>
-<span id="cb22-5"><a href="#cb22-5"></a></span>
-<span id="cb22-6"><a href="#cb22-6"></a>    number = fabs(number);</span>
-<span id="cb22-7"><a href="#cb22-7"></a>    target = fabs(target);</span>
-<span id="cb22-8"><a href="#cb22-8"></a>    largest = (target &gt; number) ? target : number;</span>
-<span id="cb22-9"><a href="#cb22-9"></a></span>
-<span id="cb22-10"><a href="#cb22-10"></a>    <span class="cf">return</span> diff &lt;= largest * FLT_EPSILON;</span>
-<span id="cb22-11"><a href="#cb22-11"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true"></a><span class="dt">int</span> closeFloats(<span class="dt">float</span> number, <span class="dt">float</span> target)</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true"></a>{</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true"></a>    <span class="dt">float</span> diff = fabs(number - target);</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true"></a>    <span class="dt">float</span> largest;</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true"></a></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true"></a>    number = fabs(number);</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true"></a>    target = fabs(target);</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true"></a>    largest = (target &gt; number) ? target : number;</span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true"></a></span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true"></a>    <span class="cf">return</span> diff &lt;= largest * FLT_EPSILON;</span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true"></a>}</span></code></pre></div>
 <p>This time, instead of dividing we use multiplication. Also, to ensure some more safety, we pick the largest absolute value as being the mark around which we compute the relative error. Running this test we finally get:</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb23-1"><a href="#cb23-1"></a><span class="er">$</span> ./a.out</span>
-<span id="cb23-2"><a href="#cb23-2"></a>src=<span class="dv">1056964608</span> target=<span class="fl">0.500000</span> next=<span class="fl">0.500000</span> compare=<span class="dv">1</span></span>
-<span id="cb23-3"><a href="#cb23-3"></a>src=<span class="dv">1069547520</span> target=<span class="fl">1.500000</span> next=<span class="fl">1.500000</span> compare=<span class="dv">1</span></span>
-<span id="cb23-4"><a href="#cb23-4"></a>src=<span class="dv">1120468992</span> target=<span class="fl">100.500000</span> next=<span class="fl">100.500008</span> compare=<span class="dv">1</span></span>
-<span id="cb23-5"><a href="#cb23-5"></a>src=<span class="dv">1176257024</span> target=<span class="fl">10000.500000</span> next=<span class="fl">10000.500977</span> compare=<span class="dv">1</span></span></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true"></a><span class="er">$</span> ./a.out</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true"></a>src=<span class="dv">1056964608</span> target=<span class="fl">0.500000</span> next=<span class="fl">0.500000</span> compare=<span class="dv">1</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true"></a>src=<span class="dv">1069547520</span> target=<span class="fl">1.500000</span> next=<span class="fl">1.500000</span> compare=<span class="dv">1</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true"></a>src=<span class="dv">1120468992</span> target=<span class="fl">100.500000</span> next=<span class="fl">100.500008</span> compare=<span class="dv">1</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true"></a>src=<span class="dv">1176257024</span> target=<span class="fl">10000.500000</span> next=<span class="fl">10000.500977</span> compare=<span class="dv">1</span></span></code></pre></div>
 <p>However, the story is not yet finished. What happens if the <code>FLT_EPSILON</code> is too large a gap in relative error? You might be tempted to say <em>just multiply <code>FLT_EPSILON</code> with <code>0.1</code> and be done</em>. Test it and you’ll see that all of the results turn to <code>0</code>: it is as if <strong>we didn’t use any bound at all and tested using <code>==</code></strong>. So we are thus restricted to having a relative gap no smaller than <code>FLT_EPSILON</code>.</p>
 <p>Now, let’s turn to the other side: what if the gap is too small? You can multiply <code>FLT_EPSILON</code> with a small value for this. However, finding out which value to use is hard because this way of computing the error is not linked at all with the representation of the floating point numbers. So, let’s try with using ULPs:</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb24-1"><a href="#cb24-1"></a><span class="dt">int</span> closeFloats(<span class="dt">float</span> number, <span class="dt">float</span> target)</span>
-<span id="cb24-2"><a href="#cb24-2"></a>{</span>
-<span id="cb24-3"><a href="#cb24-3"></a>	<span class="dt">int</span> numberULP = *((<span class="dt">int</span> *) &amp;number);</span>
-<span id="cb24-4"><a href="#cb24-4"></a>	<span class="dt">int</span> targetULP = *((<span class="dt">int</span> *) &amp;target);</span>
-<span id="cb24-5"><a href="#cb24-5"></a></span>
-<span id="cb24-6"><a href="#cb24-6"></a>	<span class="cf">if</span> ((numberULP &gt;&gt; <span class="dv">31</span>) != (targetULP &gt;&gt; <span class="dv">31</span>))</span>
-<span id="cb24-7"><a href="#cb24-7"></a>		<span class="cf">return</span> number == target;</span>
-<span id="cb24-8"><a href="#cb24-8"></a>	<span class="cf">return</span> abs(numberULP - targetULP) &lt; <span class="dv">5</span>;</span>
-<span id="cb24-9"><a href="#cb24-9"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true"></a><span class="dt">int</span> closeFloats(<span class="dt">float</span> number, <span class="dt">float</span> target)</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true"></a>{</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true"></a>	<span class="dt">int</span> numberULP = *((<span class="dt">int</span> *) &amp;number);</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true"></a>	<span class="dt">int</span> targetULP = *((<span class="dt">int</span> *) &amp;target);</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true"></a></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true"></a>	<span class="cf">if</span> ((numberULP &gt;&gt; <span class="dv">31</span>) != (targetULP &gt;&gt; <span class="dv">31</span>))</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true"></a>		<span class="cf">return</span> number == target;</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true"></a>	<span class="cf">return</span> abs(numberULP - targetULP) &lt; <span class="dv">5</span>;</span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true"></a>}</span></code></pre></div>
 <p>In the above we consider numbers which differ by at most 5 ULPs as being close. Also, observe the first check which tests if the numbers have different signs. In the positive case we compare using <code>==</code> the <strong>floating point numbers</strong> to ensure that we catch the case <code>+0 == -0</code>.</p>
 <p>Running it we get:</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb25-1"><a href="#cb25-1"></a><span class="er">$</span> ./a.out</span>
-<span id="cb25-2"><a href="#cb25-2"></a>src=<span class="dv">1056964608</span> target=<span class="fl">0.500000</span> next=<span class="fl">0.500000</span> compare=<span class="dv">1</span></span>
-<span id="cb25-3"><a href="#cb25-3"></a>src=<span class="dv">1069547520</span> target=<span class="fl">1.500000</span> next=<span class="fl">1.500000</span> compare=<span class="dv">1</span></span>
-<span id="cb25-4"><a href="#cb25-4"></a>src=<span class="dv">1120468992</span> target=<span class="fl">100.500000</span> next=<span class="fl">100.500008</span> compare=<span class="dv">1</span></span>
-<span id="cb25-5"><a href="#cb25-5"></a>src=<span class="dv">1176257024</span> target=<span class="fl">10000.500000</span> next=<span class="fl">10000.500977</span> compare=<span class="dv">1</span></span></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true"></a><span class="er">$</span> ./a.out</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true"></a>src=<span class="dv">1056964608</span> target=<span class="fl">0.500000</span> next=<span class="fl">0.500000</span> compare=<span class="dv">1</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true"></a>src=<span class="dv">1069547520</span> target=<span class="fl">1.500000</span> next=<span class="fl">1.500000</span> compare=<span class="dv">1</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true"></a>src=<span class="dv">1120468992</span> target=<span class="fl">100.500000</span> next=<span class="fl">100.500008</span> compare=<span class="dv">1</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true"></a>src=<span class="dv">1176257024</span> target=<span class="fl">10000.500000</span> next=<span class="fl">10000.500977</span> compare=<span class="dv">1</span></span></code></pre></div>
 <p>which was somehow obvious (since the number are already one ULP apart).</p>
 <p>Now you might raise one more question: which of the two methods is fastest? Let’s test:</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb26-1"><a href="#cb26-1"></a><span class="dt">void</span> testFloatTesting(<span class="dt">int</span> src)</span>
-<span id="cb26-2"><a href="#cb26-2"></a>{</span>
-<span id="cb26-3"><a href="#cb26-3"></a>    <span class="dt">float</span> target = getFloatFromInt(src);</span>
-<span id="cb26-4"><a href="#cb26-4"></a>    <span class="dt">float</span> next = getFloatFromInt(src + <span class="dv">1</span>);</span>
-<span id="cb26-5"><a href="#cb26-5"></a></span>
-<span id="cb26-6"><a href="#cb26-6"></a>    <span class="cf">if</span> (closeFloats(next, target) != <span class="dv">1</span>)</span>
-<span id="cb26-7"><a href="#cb26-7"></a>        printf(<span class="st">&quot;src=</span><span class="sc">%d</span><span class="st"> target=</span><span class="sc">%f</span><span class="st"> next=</span><span class="sc">%f</span><span class="st"> compare=</span><span class="sc">%d\n</span><span class="st">&quot;</span>, src, target,</span>
-<span id="cb26-8"><a href="#cb26-8"></a>                next, closeFloats(next, target));</span>
-<span id="cb26-9"><a href="#cb26-9"></a>}</span>
-<span id="cb26-10"><a href="#cb26-10"></a></span>
-<span id="cb26-11"><a href="#cb26-11"></a><span class="dt">int</span> main ()</span>
-<span id="cb26-12"><a href="#cb26-12"></a>{</span>
-<span id="cb26-13"><a href="#cb26-13"></a>    <span class="dt">unsigned</span> <span class="dt">int</span> i = <span class="dv">0</span>;</span>
-<span id="cb26-14"><a href="#cb26-14"></a></span>
-<span id="cb26-15"><a href="#cb26-15"></a>    <span class="cf">do</span> {</span>
-<span id="cb26-16"><a href="#cb26-16"></a>        testFloatTesting(i++);</span>
-<span id="cb26-17"><a href="#cb26-17"></a>        <span class="cf">if</span> (i &gt; <span class="bn">0x7f800000</span>)</span>
-<span id="cb26-18"><a href="#cb26-18"></a>            <span class="cf">break</span>;</span>
-<span id="cb26-19"><a href="#cb26-19"></a>    } <span class="cf">while</span> (i != <span class="dv">0</span>);</span>
-<span id="cb26-20"><a href="#cb26-20"></a></span>
-<span id="cb26-21"><a href="#cb26-21"></a>    <span class="cf">return</span> <span class="dv">0</span>;</span>
-<span id="cb26-22"><a href="#cb26-22"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true"></a><span class="dt">void</span> testFloatTesting(<span class="dt">int</span> src)</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true"></a>{</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true"></a>    <span class="dt">float</span> target = getFloatFromInt(src);</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true"></a>    <span class="dt">float</span> next = getFloatFromInt(src + <span class="dv">1</span>);</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true"></a></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true"></a>    <span class="cf">if</span> (closeFloats(next, target) != <span class="dv">1</span>)</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true"></a>        printf(<span class="st">&quot;src=</span><span class="sc">%d</span><span class="st"> target=</span><span class="sc">%f</span><span class="st"> next=</span><span class="sc">%f</span><span class="st"> compare=</span><span class="sc">%d\n</span><span class="st">&quot;</span>, src, target,</span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true"></a>                next, closeFloats(next, target));</span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true"></a>}</span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true"></a></span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true"></a><span class="dt">int</span> main ()</span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true"></a>{</span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true"></a>    <span class="dt">unsigned</span> <span class="dt">int</span> i = <span class="dv">0</span>;</span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true"></a></span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true"></a>    <span class="cf">do</span> {</span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true"></a>        testFloatTesting(i++);</span>
+<span id="cb26-17"><a href="#cb26-17" aria-hidden="true"></a>        <span class="cf">if</span> (i &gt; <span class="bn">0x7f800000</span>)</span>
+<span id="cb26-18"><a href="#cb26-18" aria-hidden="true"></a>            <span class="cf">break</span>;</span>
+<span id="cb26-19"><a href="#cb26-19" aria-hidden="true"></a>    } <span class="cf">while</span> (i != <span class="dv">0</span>);</span>
+<span id="cb26-20"><a href="#cb26-20" aria-hidden="true"></a></span>
+<span id="cb26-21"><a href="#cb26-21" aria-hidden="true"></a>    <span class="cf">return</span> <span class="dv">0</span>;</span>
+<span id="cb26-22"><a href="#cb26-22" aria-hidden="true"></a>}</span></code></pre></div>
 <p>Using ULP we get these results:</p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb27-1"><a href="#cb27-1"></a><span class="er">$</span> time ./a.out</span>
-<span id="cb27-2"><a href="#cb27-2"></a></span>
-<span id="cb27-3"><a href="#cb27-3"></a>real    <span class="dv">0</span><span class="er">m32</span><span class="fl">.343</span><span class="bu">s</span></span>
-<span id="cb27-4"><a href="#cb27-4"></a>user    <span class="dv">0</span><span class="er">m32</span><span class="fl">.290</span><span class="bu">s</span></span>
-<span id="cb27-5"><a href="#cb27-5"></a>sys <span class="dv">0</span><span class="er">m0</span><span class="fl">.007</span><span class="bu">s</span></span></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true"></a><span class="er">$</span> time ./a.out</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true"></a></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true"></a>real    <span class="dv">0</span><span class="er">m32</span><span class="fl">.343</span><span class="bu">s</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true"></a>user    <span class="dv">0</span><span class="er">m32</span><span class="fl">.290</span><span class="bu">s</span></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true"></a>sys <span class="dv">0</span><span class="er">m0</span><span class="fl">.007</span><span class="bu">s</span></span></code></pre></div>
 <p>Using the floating point - relative method we get:</p>
-<div class="sourceCode" id="cb28"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb28-1"><a href="#cb28-1"></a><span class="er">$</span> time ./a.out | wc -l</span>
-<span id="cb28-2"><a href="#cb28-2"></a><span class="dv">4194305</span></span>
-<span id="cb28-3"><a href="#cb28-3"></a></span>
-<span id="cb28-4"><a href="#cb28-4"></a>real    <span class="dv">1</span><span class="er">m4</span><span class="fl">.161</span><span class="bu">s</span></span>
-<span id="cb28-5"><a href="#cb28-5"></a>user    <span class="dv">1</span><span class="er">m4</span><span class="fl">.137</span><span class="bu">s</span></span>
-<span id="cb28-6"><a href="#cb28-6"></a>sys <span class="dv">0</span><span class="er">m0</span><span class="fl">.204</span><span class="bu">s</span></span></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true"></a><span class="er">$</span> time ./a.out | wc -l</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true"></a><span class="dv">4194305</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true"></a></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true"></a>real    <span class="dv">1</span><span class="er">m4</span><span class="fl">.161</span><span class="bu">s</span></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true"></a>user    <span class="dv">1</span><span class="er">m4</span><span class="fl">.137</span><span class="bu">s</span></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true"></a>sys <span class="dv">0</span><span class="er">m0</span><span class="fl">.204</span><span class="bu">s</span></span></code></pre></div>
 <p>We seem to be getting some wrong results (<code>0.9%</code>). Indeed, around 0 both comparison methods fail. The relative error method fails because we are close to dividing by <code>0</code> and because of catastrophic cancellation. The ULP method because there are many numbers between 0 and <code>FLT_MIN</code> (the minimum properly representable float) – these values are denormalized and using them might slow down your computation quite a lot. So, what should we use in this case? It turns out that if you want to compare with <code>0</code> the absolute error method is the best.</p>
 <p>Also note that on my machine the relative method is twice as slow as the ULP one.</p>
 <p>To conclude this part:</p>

@@ -97,6 +97,8 @@
         <span class="tags"><a title="All pages tagged 'Unix'." href="./tags/unix.html">Unix</a>, <a title="All pages tagged 'C'." href="./tags/c.html">C</a>, <a title="All pages tagged 'portable code'." href="./tags/portable-code.html">portable code</a>, <a title="All pages tagged 'autoconf'." href="./tags/autoconf.html">autoconf</a>, <a title="All pages tagged 'automake'." href="./tags/automake.html">automake</a>, <a title="All pages tagged 'libtool'." href="./tags/libtool.html">libtool</a></span>
       </span>
 
+      
+
       <p>The purpose of this article is to generally present the utilities <a href="http://www.gnu.org/software/autoconf/manual/index.html" title="autoconf">Autoconf</a>, <a href="http://www.gnu.org/software/automake/manual/index.html" title="automake">Automake</a> and <a href="http://www.gnu.org/software/libtool/manual/index.html" title="libtool">Libtool</a>, which ease very much the process of installation from sources of software packages or libraries, from the point of view of users. It is assumed that the user uses any Unix/Unix-like system, and the purpose of the developer, who chooses to use these GNU tools, is to make the installation, on the user’s system, as easy as possible.</p>
 <!--more-->
 <p>If you are a serious Unix/Linux user, for sure you have been in the situation of compiling a program or a library from sources. Then, you called <code>./configure; make; make install</code> and you got an executable or a library. In this article, we change the point of view, assuming that we are the software’s developers and not the users, and our purpose is to understand in principle how can we generate the <code>configure</code> script and the other additional files,</p>
@@ -195,21 +197,21 @@ dnl the registered files from AC_CONFIG_HEADERS and
 dnl AC_CONFIG_FILES</code></pre>
 <p>Of course, the <code>configure.in</code> file can be much more complex, with many <code>AC_*</code> and <code>AM_*</code> lines. For this, we recommend the Autoconf manual.</p>
 <p>We should also have <code>Makefile.am</code> files in every subdirectory in the source tree. For example, for a tree with few source files (<code>hello</code> program with sources: <code>main.c</code> and <code>functions.c</code>):</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb3-1"><a href="#cb3-1"></a><span class="co"># src/Makefile.am</span></span>
-<span id="cb3-2"><a href="#cb3-2"></a><span class="dt">bin_PROGRAMS </span><span class="ch">=</span><span class="st"> hello</span></span>
-<span id="cb3-3"><a href="#cb3-3"></a><span class="dt">hello_SOURCES </span><span class="ch">=</span><span class="st"> main.c functions.c</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="co"># src/Makefile.am</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="dt">bin_PROGRAMS </span><span class="ch">=</span><span class="st"> hello</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a><span class="dt">hello_SOURCES </span><span class="ch">=</span><span class="st"> main.c functions.c</span></span></code></pre></div>
 <p>If the sources of the program contain an <code>./include/</code> directory which has header files then <code>Makefile.am</code> file from that directory must also contain this line:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb4-1"><a href="#cb4-1"></a><span class="co"># include/Makefile.am</span></span>
-<span id="cb4-2"><a href="#cb4-2"></a><span class="dt">include_HEADERS</span><span class="ch">=</span><span class="st">header1.h header2.h header3.h ... headerN.h</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="co"># include/Makefile.am</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a><span class="dt">include_HEADERS</span><span class="ch">=</span><span class="st">header1.h header2.h header3.h ... headerN.h</span></span></code></pre></div>
 <p>In the <code>Makefile.am</code> from the root directory we must have the following line:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb5-1"><a href="#cb5-1"></a><span class="dt">SUBDIRS </span><span class="ch">=</span><span class="st"> doc src</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="dt">SUBDIRS </span><span class="ch">=</span><span class="st"> doc src</span></span></code></pre></div>
 <p>or</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb6-1"><a href="#cb6-1"></a><span class="dt">SUBDIRS </span><span class="ch">=</span><span class="st"> src</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a><span class="dt">SUBDIRS </span><span class="ch">=</span><span class="st"> src</span></span></code></pre></div>
 <p><code>SUBDIRS</code> is a special variable which lists all directories in which <code>make</code> will enter, before processing the current directory.</p>
 <p>In the case of a simple library, the <code>Makefile.am</code> from the respective directory will look like this:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb7-1"><a href="#cb7-1"></a><span class="co"># lib/Makefile.am</span></span>
-<span id="cb7-2"><a href="#cb7-2"></a><span class="dt">lib_LTLIBRARIES </span><span class="ch">=</span><span class="st"> libaa.la</span></span>
-<span id="cb7-3"><a href="#cb7-3"></a><span class="dt">libaa_la_SOURCES </span><span class="ch">=</span><span class="st"> library-aa.c</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a><span class="co"># lib/Makefile.am</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true"></a><span class="dt">lib_LTLIBRARIES </span><span class="ch">=</span><span class="st"> libaa.la</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true"></a><span class="dt">libaa_la_SOURCES </span><span class="ch">=</span><span class="st"> library-aa.c</span></span></code></pre></div>
 <p>We will run the command <code>libtoolize</code>, after which two new files will be created: <code>ltconfig</code> and <code>ltmain.sh</code>.</p>
 <p>For <code>configure.in</code> and <code>Makefile.am</code>, we will run the commands <code>aclocal</code>, <code>autoconf</code>, and, then, <code>automake</code>.</p>
 <p>Also, the source code, which must be portable, must “fold” on these tools.</p>

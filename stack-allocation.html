@@ -97,6 +97,8 @@
         <span class="tags"><a title="All pages tagged 'stack'." href="./tags/stack.html">stack</a>, <a title="All pages tagged 'sp'." href="./tags/sp.html">sp</a>, <a title="All pages tagged 'esp'." href="./tags/esp.html">esp</a>, <a title="All pages tagged 'C'." href="./tags/c.html">C</a>, <a title="All pages tagged 'assembly'." href="./tags/assembly.html">assembly</a>, <a title="All pages tagged 'cache'." href="./tags/cache.html">cache</a>, <a title="All pages tagged 'memory'." href="./tags/memory.html">memory</a></span>
       </span>
 
+      
+
       <p><strong>Stack space</strong> is the part of each process’ virtual memory where function arguments and return addresses are stored, along with local variables declared within a function. Usually, the stack begins at the high address space of the virtual memory and grows down.</p>
 <!--more-->
 <p>At every function call, a new <strong>stack frame</strong> is created on the stack. It contains the parameters sent to the function, the return address (the address of a code in the caller function) and the locally declared variables.</p>
@@ -104,11 +106,11 @@
 <p>In practice, the compiler will allocate stack space a little different than expected. It will allocate local variables space in increments of a fixed size, so sometimes having two int variables or three int variables will be the same.</p>
 <p>As an example, <code>gcc</code> will allocate in increments of 16 bytes. Let’s make an experiment… we take a simple C program and turn into assembly code.</p>
 <p>The C file looks something like this:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb1-1"><a href="#cb1-1"></a><span class="dt">int</span> main(<span class="dt">void</span>)</span>
-<span id="cb1-2"><a href="#cb1-2"></a>{</span>
-<span id="cb1-3"><a href="#cb1-3"></a>	<span class="dt">int</span> a=<span class="dv">1</span>, b=<span class="dv">2</span>;</span>
-<span id="cb1-4"><a href="#cb1-4"></a>	<span class="cf">return</span> <span class="dv">0</span>;</span>
-<span id="cb1-5"><a href="#cb1-5"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="dt">int</span> main(<span class="dt">void</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a>{</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a>	<span class="dt">int</span> a=<span class="dv">1</span>, b=<span class="dv">2</span>;</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a>	<span class="cf">return</span> <span class="dv">0</span>;</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true"></a>}</span></code></pre></div>
 <p>The variables must be used after declaration or they will be ignored by the compiler.</p>
 <p>The resulting assembly code (<code>gcc -S</code>) looks like this:</p>
 <pre><code>main:
@@ -123,11 +125,11 @@
 <p>Notice the <code>subl</code> instruction that clears 16 bytes in the stack space by decrementing the ESP. Those 16 bytes are enough for four 32bit integers. If you have 1, 2, 3 or 4 local variables declared (and used) you get those 16 bytes.</p>
 <p>If we declare 5 integers, the allocated space will now be 32 bytes. Same thing for 6, 7, or 8. If we have 9 to 12 integers the compiler will allocate 48 bytes. An so on…</p>
 <p>What if we don’t only have integers? Let’s add some chars.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb3-1"><a href="#cb3-1"></a><span class="dt">int</span> main(<span class="dt">void</span>)</span>
-<span id="cb3-2"><a href="#cb3-2"></a>{</span>
-<span id="cb3-3"><a href="#cb3-3"></a>	<span class="dt">int</span> a=<span class="dv">1</span>, b=<span class="dv">2</span>;</span>
-<span id="cb3-4"><a href="#cb3-4"></a>	<span class="dt">char</span> c=<span class="dv">3</span>, d=<span class="dv">4</span>;</span>
-<span id="cb3-5"><a href="#cb3-5"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="dt">int</span> main(<span class="dt">void</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>{</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a>	<span class="dt">int</span> a=<span class="dv">1</span>, b=<span class="dv">2</span>;</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true"></a>	<span class="dt">char</span> c=<span class="dv">3</span>, d=<span class="dv">4</span>;</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true"></a>}</span></code></pre></div>
 <p>Result:</p>
 <pre><code>main:
 	pushl	%ebp

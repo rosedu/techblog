@@ -97,6 +97,8 @@
         <span class="tags"><a title="All pages tagged 'trace'." href="./tags/trace.html">trace</a>, <a title="All pages tagged 'ltrace'." href="./tags/ltrace.html">ltrace</a>, <a title="All pages tagged 'strace'." href="./tags/strace.html">strace</a>, <a title="All pages tagged 'ptrace'." href="./tags/ptrace.html">ptrace</a>, <a title="All pages tagged 'debugging'." href="./tags/debugging.html">debugging</a></span>
       </span>
 
+      
+
       <p>Two years ago this blog had a series of articles on debugging tools. We have presented tools like <a href="http://techblog.rosedu.org/valgrind-introduction.html" title="Valgrind introduction">Valgrind</a> and <a href="http://techblog.rosedu.org/gdb-a-basic-workflow.html" title="GDB - basic workflow">GDB</a> and we stopped with an introduction to <a href="http://techblog.rosedu.org/tracing-processes-for-fun-and-profit.html" title="Tracing Processes for Fun and Profit">strace</a>. At the end of that article we mentioned that there are other tools useful for debugging beyond these three already mentioned. After two years of silence, the debugging series is on with an article on <code>ltrace</code>.</p>
 <!--more-->
 <p>Ask around developers and you’ll see that the proportion of those knowing about <code>ltrace</code> compared to those knowing how to use <code>strace</code> is at most the same as the proportion of <code>strace</code> users among users knowing how to use <code>gdb</code> and <code>valgrind</code>.</p>
@@ -212,76 +214,76 @@ getenv(&quot;COLUMNS&quot;)                               = nil
 ioctl(1, 21523, 0x7fffbc2e2ee0)                 = 0</code></pre>
 <p>Like <code>strace</code>, we can also use <code>-e</code> to filter on specific calls.</p>
 <p>In the following examples we would use the following C source file which computes <code>41^41</code> and <code>42^42</code> both using the float <code>libmath</code> version and the <code>libgmp</code> multi-precision integers one. We will use threads to compute <code>42^42</code> and compute <code>41^41</code> in the <code>main</code> function with both arguments.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb6-1"><a href="#cb6-1"></a><span class="pp">#include </span><span class="im">&lt;math.h&gt;</span></span>
-<span id="cb6-2"><a href="#cb6-2"></a><span class="pp">#include </span><span class="im">&lt;pthread.h&gt;</span></span>
-<span id="cb6-3"><a href="#cb6-3"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
-<span id="cb6-4"><a href="#cb6-4"></a><span class="pp">#include </span><span class="im">&lt;stdlib.h&gt;</span></span>
-<span id="cb6-5"><a href="#cb6-5"></a></span>
-<span id="cb6-6"><a href="#cb6-6"></a><span class="pp">#include </span><span class="im">&lt;gmp.h&gt;</span></span>
-<span id="cb6-7"><a href="#cb6-7"></a></span>
-<span id="cb6-8"><a href="#cb6-8"></a><span class="dt">void</span> *do_double_thread(<span class="dt">void</span> *data)</span>
-<span id="cb6-9"><a href="#cb6-9"></a>{</span>
-<span id="cb6-10"><a href="#cb6-10"></a>  <span class="dt">double</span> x = <span class="dv">42</span>;</span>
-<span id="cb6-11"><a href="#cb6-11"></a>  x = pow(x, x);</span>
-<span id="cb6-12"><a href="#cb6-12"></a>}</span>
-<span id="cb6-13"><a href="#cb6-13"></a></span>
-<span id="cb6-14"><a href="#cb6-14"></a><span class="dt">void</span> *do_mpz_thread(<span class="dt">void</span> *data)</span>
-<span id="cb6-15"><a href="#cb6-15"></a>{</span>
-<span id="cb6-16"><a href="#cb6-16"></a>  <span class="dt">mpz_t</span> x;</span>
-<span id="cb6-17"><a href="#cb6-17"></a></span>
-<span id="cb6-18"><a href="#cb6-18"></a>  mpz_init_set_ui(x, <span class="dv">42</span>);</span>
-<span id="cb6-19"><a href="#cb6-19"></a>  mpz_pow_ui(x, x, <span class="dv">42</span>);</span>
-<span id="cb6-20"><a href="#cb6-20"></a></span>
-<span id="cb6-21"><a href="#cb6-21"></a>  mpz_clear(x);</span>
-<span id="cb6-22"><a href="#cb6-22"></a>}</span>
-<span id="cb6-23"><a href="#cb6-23"></a></span>
-<span id="cb6-24"><a href="#cb6-24"></a><span class="dt">int</span> main()</span>
-<span id="cb6-25"><a href="#cb6-25"></a>{</span>
-<span id="cb6-26"><a href="#cb6-26"></a>  <span class="dt">pthread_t</span> double_thread, mpz_thread;</span>
-<span id="cb6-27"><a href="#cb6-27"></a>  <span class="dt">pthread_attr_t</span> attr;</span>
-<span id="cb6-28"><a href="#cb6-28"></a></span>
-<span id="cb6-29"><a href="#cb6-29"></a>  <span class="dt">double</span> y = <span class="dv">41</span>;</span>
-<span id="cb6-30"><a href="#cb6-30"></a>  <span class="dt">mpz_t</span> x;</span>
-<span id="cb6-31"><a href="#cb6-31"></a></span>
-<span id="cb6-32"><a href="#cb6-32"></a>  mpz_init_set_ui(x, <span class="dv">41</span>);</span>
-<span id="cb6-33"><a href="#cb6-33"></a>  mpz_pow_ui(x, x, <span class="dv">41</span>);</span>
-<span id="cb6-34"><a href="#cb6-34"></a></span>
-<span id="cb6-35"><a href="#cb6-35"></a>  mpz_clear(x);</span>
-<span id="cb6-36"><a href="#cb6-36"></a></span>
-<span id="cb6-37"><a href="#cb6-37"></a>  y = pow(y, y);</span>
-<span id="cb6-38"><a href="#cb6-38"></a></span>
-<span id="cb6-39"><a href="#cb6-39"></a>  <span class="co">/* initialize the attribute */</span></span>
-<span id="cb6-40"><a href="#cb6-40"></a>  <span class="cf">if</span> (pthread_attr_init(&amp;attr) != <span class="dv">0</span>) {</span>
-<span id="cb6-41"><a href="#cb6-41"></a>    perror(<span class="st">&quot;pthread_attr_init&quot;</span>);</span>
-<span id="cb6-42"><a href="#cb6-42"></a>    pthread_exit(NULL);</span>
-<span id="cb6-43"><a href="#cb6-43"></a>  }</span>
-<span id="cb6-44"><a href="#cb6-44"></a></span>
-<span id="cb6-45"><a href="#cb6-45"></a>  <span class="co">/* set detached state */</span></span>
-<span id="cb6-46"><a href="#cb6-46"></a>  <span class="cf">if</span> (pthread_attr_setdetachstate(&amp;attr, PTHREAD_CREATE_JOINABLE) != <span class="dv">0</span>) {</span>
-<span id="cb6-47"><a href="#cb6-47"></a>    perror(<span class="st">&quot;pthread_attr_setdetachstate&quot;</span>);</span>
-<span id="cb6-48"><a href="#cb6-48"></a>    pthread_exit(NULL);</span>
-<span id="cb6-49"><a href="#cb6-49"></a>  }</span>
-<span id="cb6-50"><a href="#cb6-50"></a></span>
-<span id="cb6-51"><a href="#cb6-51"></a>  <span class="cf">if</span> (pthread_create(&amp;double_thread, &amp;attr, do_double_thread, NULL)) {</span>
-<span id="cb6-52"><a href="#cb6-52"></a>    perror(<span class="st">&quot;pthread_create&quot;</span>);</span>
-<span id="cb6-53"><a href="#cb6-53"></a>    exit(EXIT_FAILURE);</span>
-<span id="cb6-54"><a href="#cb6-54"></a>  }</span>
-<span id="cb6-55"><a href="#cb6-55"></a></span>
-<span id="cb6-56"><a href="#cb6-56"></a>  <span class="cf">if</span> (pthread_create(&amp;mpz_thread, &amp;attr, do_mpz_thread, NULL)) {</span>
-<span id="cb6-57"><a href="#cb6-57"></a>    perror(<span class="st">&quot;pthread_create&quot;</span>);</span>
-<span id="cb6-58"><a href="#cb6-58"></a>    exit(EXIT_FAILURE);</span>
-<span id="cb6-59"><a href="#cb6-59"></a>  }</span>
-<span id="cb6-60"><a href="#cb6-60"></a></span>
-<span id="cb6-61"><a href="#cb6-61"></a>  pthread_attr_destroy(&amp;attr);</span>
-<span id="cb6-62"><a href="#cb6-62"></a></span>
-<span id="cb6-63"><a href="#cb6-63"></a>  <span class="cf">if</span> (pthread_join(double_thread, NULL))</span>
-<span id="cb6-64"><a href="#cb6-64"></a>    perror(<span class="st">&quot;pthread_join&quot;</span>);</span>
-<span id="cb6-65"><a href="#cb6-65"></a></span>
-<span id="cb6-66"><a href="#cb6-66"></a>  <span class="cf">if</span> (pthread_join(mpz_thread, NULL))</span>
-<span id="cb6-67"><a href="#cb6-67"></a>    perror(<span class="st">&quot;pthread_join&quot;</span>);</span>
-<span id="cb6-68"><a href="#cb6-68"></a></span>
-<span id="cb6-69"><a href="#cb6-69"></a>  <span class="cf">return</span> <span class="dv">0</span>;</span>
-<span id="cb6-70"><a href="#cb6-70"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&lt;math.h&gt;</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&lt;pthread.h&gt;</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&lt;stdlib.h&gt;</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true"></a></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&lt;gmp.h&gt;</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true"></a></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true"></a><span class="dt">void</span> *do_double_thread(<span class="dt">void</span> *data)</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true"></a>{</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true"></a>  <span class="dt">double</span> x = <span class="dv">42</span>;</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true"></a>  x = pow(x, x);</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true"></a>}</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true"></a></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true"></a><span class="dt">void</span> *do_mpz_thread(<span class="dt">void</span> *data)</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true"></a>{</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true"></a>  <span class="dt">mpz_t</span> x;</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true"></a></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true"></a>  mpz_init_set_ui(x, <span class="dv">42</span>);</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true"></a>  mpz_pow_ui(x, x, <span class="dv">42</span>);</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true"></a></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true"></a>  mpz_clear(x);</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true"></a>}</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true"></a></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true"></a><span class="dt">int</span> main()</span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true"></a>{</span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true"></a>  <span class="dt">pthread_t</span> double_thread, mpz_thread;</span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true"></a>  <span class="dt">pthread_attr_t</span> attr;</span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true"></a></span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true"></a>  <span class="dt">double</span> y = <span class="dv">41</span>;</span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true"></a>  <span class="dt">mpz_t</span> x;</span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true"></a></span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true"></a>  mpz_init_set_ui(x, <span class="dv">41</span>);</span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true"></a>  mpz_pow_ui(x, x, <span class="dv">41</span>);</span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true"></a></span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true"></a>  mpz_clear(x);</span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true"></a></span>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true"></a>  y = pow(y, y);</span>
+<span id="cb6-38"><a href="#cb6-38" aria-hidden="true"></a></span>
+<span id="cb6-39"><a href="#cb6-39" aria-hidden="true"></a>  <span class="co">/* initialize the attribute */</span></span>
+<span id="cb6-40"><a href="#cb6-40" aria-hidden="true"></a>  <span class="cf">if</span> (pthread_attr_init(&amp;attr) != <span class="dv">0</span>) {</span>
+<span id="cb6-41"><a href="#cb6-41" aria-hidden="true"></a>    perror(<span class="st">&quot;pthread_attr_init&quot;</span>);</span>
+<span id="cb6-42"><a href="#cb6-42" aria-hidden="true"></a>    pthread_exit(NULL);</span>
+<span id="cb6-43"><a href="#cb6-43" aria-hidden="true"></a>  }</span>
+<span id="cb6-44"><a href="#cb6-44" aria-hidden="true"></a></span>
+<span id="cb6-45"><a href="#cb6-45" aria-hidden="true"></a>  <span class="co">/* set detached state */</span></span>
+<span id="cb6-46"><a href="#cb6-46" aria-hidden="true"></a>  <span class="cf">if</span> (pthread_attr_setdetachstate(&amp;attr, PTHREAD_CREATE_JOINABLE) != <span class="dv">0</span>) {</span>
+<span id="cb6-47"><a href="#cb6-47" aria-hidden="true"></a>    perror(<span class="st">&quot;pthread_attr_setdetachstate&quot;</span>);</span>
+<span id="cb6-48"><a href="#cb6-48" aria-hidden="true"></a>    pthread_exit(NULL);</span>
+<span id="cb6-49"><a href="#cb6-49" aria-hidden="true"></a>  }</span>
+<span id="cb6-50"><a href="#cb6-50" aria-hidden="true"></a></span>
+<span id="cb6-51"><a href="#cb6-51" aria-hidden="true"></a>  <span class="cf">if</span> (pthread_create(&amp;double_thread, &amp;attr, do_double_thread, NULL)) {</span>
+<span id="cb6-52"><a href="#cb6-52" aria-hidden="true"></a>    perror(<span class="st">&quot;pthread_create&quot;</span>);</span>
+<span id="cb6-53"><a href="#cb6-53" aria-hidden="true"></a>    exit(EXIT_FAILURE);</span>
+<span id="cb6-54"><a href="#cb6-54" aria-hidden="true"></a>  }</span>
+<span id="cb6-55"><a href="#cb6-55" aria-hidden="true"></a></span>
+<span id="cb6-56"><a href="#cb6-56" aria-hidden="true"></a>  <span class="cf">if</span> (pthread_create(&amp;mpz_thread, &amp;attr, do_mpz_thread, NULL)) {</span>
+<span id="cb6-57"><a href="#cb6-57" aria-hidden="true"></a>    perror(<span class="st">&quot;pthread_create&quot;</span>);</span>
+<span id="cb6-58"><a href="#cb6-58" aria-hidden="true"></a>    exit(EXIT_FAILURE);</span>
+<span id="cb6-59"><a href="#cb6-59" aria-hidden="true"></a>  }</span>
+<span id="cb6-60"><a href="#cb6-60" aria-hidden="true"></a></span>
+<span id="cb6-61"><a href="#cb6-61" aria-hidden="true"></a>  pthread_attr_destroy(&amp;attr);</span>
+<span id="cb6-62"><a href="#cb6-62" aria-hidden="true"></a></span>
+<span id="cb6-63"><a href="#cb6-63" aria-hidden="true"></a>  <span class="cf">if</span> (pthread_join(double_thread, NULL))</span>
+<span id="cb6-64"><a href="#cb6-64" aria-hidden="true"></a>    perror(<span class="st">&quot;pthread_join&quot;</span>);</span>
+<span id="cb6-65"><a href="#cb6-65" aria-hidden="true"></a></span>
+<span id="cb6-66"><a href="#cb6-66" aria-hidden="true"></a>  <span class="cf">if</span> (pthread_join(mpz_thread, NULL))</span>
+<span id="cb6-67"><a href="#cb6-67" aria-hidden="true"></a>    perror(<span class="st">&quot;pthread_join&quot;</span>);</span>
+<span id="cb6-68"><a href="#cb6-68" aria-hidden="true"></a></span>
+<span id="cb6-69"><a href="#cb6-69" aria-hidden="true"></a>  <span class="cf">return</span> <span class="dv">0</span>;</span>
+<span id="cb6-70"><a href="#cb6-70" aria-hidden="true"></a>}</span></code></pre></div>
 <p>To compile, we have to link against <code>libmath</code>, <code>libpthread</code> and <code>libgmp</code>:</p>
 <pre><code>$ gcc -lm -lpthread -lgmp test.c -o test</code></pre>
 <p>Running <code>ltrace</code> on the full output we have the following:</p>

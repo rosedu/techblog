@@ -97,26 +97,28 @@
         <span class="tags"><a title="All pages tagged 'valgrind'." href="./tags/valgrind.html">valgrind</a>, <a title="All pages tagged 'debugging'." href="./tags/debugging.html">debugging</a></span>
       </span>
 
+      
+
       <p>A good programmer has a variety of tools to help him in developing good applications. We talked about <a href="http://sources.redhat.com/gdb/">gdb</a> in an <a href="http://techblog.rosedu.org/gdb-a-basic-workflow.html">article</a> at the beginning of April. Now, it is time for a crash introduction to <a href="http://valgrind.org/">Valgrind</a>.</p>
 <!--more-->
 <p>This program is a collection of different tools. For example, it offers a <a href="http://valgrind.org/docs/manual/ms-manual.html">heap profiler</a>, a <a href="http://valgrind.org/docs/manual/hg-manual.html">thread error detector</a> or a <a href="http://valgrind.org/docs/manual/cg-manual.html">cache profiler</a>. However, the tool which gave <a href="http://valgrind.org/">Valgrind</a>’s fame is <a href="http://valgrind.org/docs/manual/mc-manual.html">Memcheck</a>, a memory error detector. Because of its popularity, this tool is the default one (to use other <a href="http://valgrind.org/">Valgrind</a> tools you have to use the <code>--tool=option</code> command line argument). In this article, we will concentrate on <a href="http://valgrind.org/docs/manual/mc-manual.html">Memcheck</a> only.</p>
 <section id="detecting-memory-leaks" class="level3">
 <h3>Detecting memory leaks</h3>
 <p>Mainly, one would use <a href="http://valgrind.org/">Valgrind</a> to detect memory leaks in his application. By this, we mean memory which was allocated but wasn’t released back. For example, take this program:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb1-1"><a href="#cb1-1"></a><span class="dt">void</span> f()</span>
-<span id="cb1-2"><a href="#cb1-2"></a>{</span>
-<span id="cb1-3"><a href="#cb1-3"></a>    <span class="dt">int</span> *a = calloc(<span class="dv">1024</span>, <span class="kw">sizeof</span>(a[<span class="dv">0</span>]));</span>
-<span id="cb1-4"><a href="#cb1-4"></a>}</span>
-<span id="cb1-5"><a href="#cb1-5"></a></span>
-<span id="cb1-6"><a href="#cb1-6"></a><span class="dt">int</span> main()</span>
-<span id="cb1-7"><a href="#cb1-7"></a>{</span>
-<span id="cb1-8"><a href="#cb1-8"></a>    <span class="dt">int</span> i;</span>
-<span id="cb1-9"><a href="#cb1-9"></a></span>
-<span id="cb1-10"><a href="#cb1-10"></a>    <span class="cf">for</span> (i = <span class="dv">0</span>; i &lt; <span class="dv">1024</span>; i++)</span>
-<span id="cb1-11"><a href="#cb1-11"></a>        f();</span>
-<span id="cb1-12"><a href="#cb1-12"></a></span>
-<span id="cb1-13"><a href="#cb1-13"></a>    <span class="cf">return</span> <span class="dv">0</span>;</span>
-<span id="cb1-14"><a href="#cb1-14"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="dt">void</span> f()</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a>{</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a>    <span class="dt">int</span> *a = calloc(<span class="dv">1024</span>, <span class="kw">sizeof</span>(a[<span class="dv">0</span>]));</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a>}</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true"></a><span class="dt">int</span> main()</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true"></a>{</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true"></a>    <span class="dt">int</span> i;</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true"></a>    <span class="cf">for</span> (i = <span class="dv">0</span>; i &lt; <span class="dv">1024</span>; i++)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true"></a>        f();</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true"></a>    <span class="cf">return</span> <span class="dv">0</span>;</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true"></a>}</span></code></pre></div>
 <p>This program allocates <code>sizeof(int)</code> MB of memory and doesn’t free them. Of course, at the end of the execution, the operating systems takes care of releasing this memory. However, suppose that the <code>f</code> function was instead called from a server executable which shouldn’t be stopped. In this case, each invocation of <code>f</code> will eat away <code>sizeof(int)</code> KB memory (depending on architecture, 4KB or 8KB).</p>
 <p>The example is simple, the problem could be observed with naked eyes. However, let’s see what <a href="http://valgrind.org/">Valgrind</a> tells us:</p>
 <pre><code>==11418== Memcheck, a memory error detector
@@ -172,19 +174,19 @@
 <section id="wrong-cases-of-memory-release" class="level3">
 <h3>Wrong cases of memory release</h3>
 <p>What happens when we free the same memory address twice? Let’s use this program:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb4-1"><a href="#cb4-1"></a><span class="dt">void</span> *f()</span>
-<span id="cb4-2"><a href="#cb4-2"></a>{</span>
-<span id="cb4-3"><a href="#cb4-3"></a>	<span class="dt">int</span> *a = calloc(<span class="dv">16</span>, <span class="kw">sizeof</span>(a[<span class="dv">0</span>]));</span>
-<span id="cb4-4"><a href="#cb4-4"></a>	free(a);</span>
-<span id="cb4-5"><a href="#cb4-5"></a>	<span class="cf">return</span> a;</span>
-<span id="cb4-6"><a href="#cb4-6"></a>}</span>
-<span id="cb4-7"><a href="#cb4-7"></a></span>
-<span id="cb4-8"><a href="#cb4-8"></a><span class="dt">int</span> main()</span>
-<span id="cb4-9"><a href="#cb4-9"></a>{</span>
-<span id="cb4-10"><a href="#cb4-10"></a>	<span class="dt">int</span> *a = f();</span>
-<span id="cb4-11"><a href="#cb4-11"></a>	free(a);</span>
-<span id="cb4-12"><a href="#cb4-12"></a>	<span class="cf">return</span> <span class="dv">0</span>;</span>
-<span id="cb4-13"><a href="#cb4-13"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="dt">void</span> *f()</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a>{</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true"></a>	<span class="dt">int</span> *a = calloc(<span class="dv">16</span>, <span class="kw">sizeof</span>(a[<span class="dv">0</span>]));</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true"></a>	free(a);</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true"></a>	<span class="cf">return</span> a;</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true"></a>}</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true"></a></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true"></a><span class="dt">int</span> main()</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true"></a>{</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true"></a>	<span class="dt">int</span> *a = f();</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true"></a>	free(a);</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true"></a>	<span class="cf">return</span> <span class="dv">0</span>;</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true"></a>}</span></code></pre></div>
 <p>Running it with <a href="http://valgrind.org/">Valgrind</a> yields:</p>
 <pre><code>mihai@keldon:/tmp/mm/valgrind$ valgrind ./a.out
 ==11734== Memcheck, a memory error detector
@@ -211,18 +213,18 @@
 ==11734== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 3 from 3)</code></pre>
 <p>We can see both locations where the memory was released.</p>
 <p>Now, consider this C++ code, a tweaked version of the above:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb6-1"><a href="#cb6-1"></a><span class="dt">int</span> *f()</span>
-<span id="cb6-2"><a href="#cb6-2"></a>{</span>
-<span id="cb6-3"><a href="#cb6-3"></a>	<span class="dt">int</span> *a = (<span class="dt">int</span> *)calloc(<span class="dv">16</span>, <span class="kw">sizeof</span>(a[<span class="dv">0</span>]));</span>
-<span id="cb6-4"><a href="#cb6-4"></a>	<span class="cf">return</span> a;</span>
-<span id="cb6-5"><a href="#cb6-5"></a>}</span>
-<span id="cb6-6"><a href="#cb6-6"></a></span>
-<span id="cb6-7"><a href="#cb6-7"></a><span class="dt">int</span> main()</span>
-<span id="cb6-8"><a href="#cb6-8"></a>{</span>
-<span id="cb6-9"><a href="#cb6-9"></a>	<span class="dt">int</span> *a = f();</span>
-<span id="cb6-10"><a href="#cb6-10"></a>	<span class="kw">delete</span> a;</span>
-<span id="cb6-11"><a href="#cb6-11"></a>	<span class="cf">return</span> <span class="dv">0</span>;</span>
-<span id="cb6-12"><a href="#cb6-12"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a><span class="dt">int</span> *f()</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a>{</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a>	<span class="dt">int</span> *a = (<span class="dt">int</span> *)calloc(<span class="dv">16</span>, <span class="kw">sizeof</span>(a[<span class="dv">0</span>]));</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true"></a>	<span class="cf">return</span> a;</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true"></a>}</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true"></a><span class="dt">int</span> main()</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true"></a>{</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true"></a>	<span class="dt">int</span> *a = f();</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true"></a>	<span class="kw">delete</span> a;</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true"></a>	<span class="cf">return</span> <span class="dv">0</span>;</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true"></a>}</span></code></pre></div>
 <p>Running under <a href="http://valgrind.org/">Valgrind</a>, we receive the following output (we will use <code>-q</code> to show only the errors reported by Valgrind – no header and no statistics at the end):</p>
 <pre><code>mihai@keldon:/tmp/mm/valgrind$ valgrind -q ./a.out
 ==11757== Mismatched free() / delete / delete []
@@ -233,18 +235,18 @@
 ==11757==    by 0x400632: f() (1.c:6)
 ==11757==    by 0x400649: main (1.c:12)</code></pre>
 <p>Before finishing this section, let’s consider the case of freeing from inside an allocated block. See this code:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb8-1"><a href="#cb8-1"></a><span class="dt">void</span> *f()</span>
-<span id="cb8-2"><a href="#cb8-2"></a>{</span>
-<span id="cb8-3"><a href="#cb8-3"></a>	<span class="dt">int</span> *a = calloc(<span class="dv">16</span>, <span class="kw">sizeof</span>(a[<span class="dv">0</span>]));</span>
-<span id="cb8-4"><a href="#cb8-4"></a>	<span class="cf">return</span> a + <span class="dv">4</span>;</span>
-<span id="cb8-5"><a href="#cb8-5"></a>}</span>
-<span id="cb8-6"><a href="#cb8-6"></a></span>
-<span id="cb8-7"><a href="#cb8-7"></a><span class="dt">int</span> main()</span>
-<span id="cb8-8"><a href="#cb8-8"></a>{</span>
-<span id="cb8-9"><a href="#cb8-9"></a>	<span class="dt">int</span> *a = f();</span>
-<span id="cb8-10"><a href="#cb8-10"></a>	free(a);</span>
-<span id="cb8-11"><a href="#cb8-11"></a>	<span class="cf">return</span> <span class="dv">0</span>;</span>
-<span id="cb8-12"><a href="#cb8-12"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a><span class="dt">void</span> *f()</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true"></a>{</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true"></a>	<span class="dt">int</span> *a = calloc(<span class="dv">16</span>, <span class="kw">sizeof</span>(a[<span class="dv">0</span>]));</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true"></a>	<span class="cf">return</span> a + <span class="dv">4</span>;</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true"></a>}</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true"></a></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true"></a><span class="dt">int</span> main()</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true"></a>{</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true"></a>	<span class="dt">int</span> *a = f();</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true"></a>	free(a);</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true"></a>	<span class="cf">return</span> <span class="dv">0</span>;</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true"></a>}</span></code></pre></div>
 <p><a href="http://valgrind.org/">Valgrind</a> gives the following output:</p>
 <pre><code>mihai@keldon:/tmp/mm/valgrind$ valgrind -q ./a.out
 ==11765== Invalid free() / delete / delete[] / realloc()
@@ -259,31 +261,31 @@
 <section id="incorrect-usage-of-memory" class="level3">
 <h3>Incorrect usage of memory</h3>
 <p>Let’s see this simple code:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb10-1"><a href="#cb10-1"></a><span class="kw">struct</span> s {</span>
-<span id="cb10-2"><a href="#cb10-2"></a>	<span class="dt">int</span> a, b;</span>
-<span id="cb10-3"><a href="#cb10-3"></a>};</span>
-<span id="cb10-4"><a href="#cb10-4"></a></span>
-<span id="cb10-5"><a href="#cb10-5"></a><span class="dt">int</span> main()</span>
-<span id="cb10-6"><a href="#cb10-6"></a>{</span>
-<span id="cb10-7"><a href="#cb10-7"></a>	<span class="kw">struct</span> s s;</span>
-<span id="cb10-8"><a href="#cb10-8"></a>	s.a = <span class="dv">42</span>;</span>
-<span id="cb10-9"><a href="#cb10-9"></a>	<span class="cf">if</span> (s.b)</span>
-<span id="cb10-10"><a href="#cb10-10"></a>		printf(<span class="st">&quot;s.b</span><span class="sc">\n</span><span class="st">&quot;</span>);</span>
-<span id="cb10-11"><a href="#cb10-11"></a>	<span class="cf">return</span> <span class="dv">0</span>;</span>
-<span id="cb10-12"><a href="#cb10-12"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true"></a><span class="kw">struct</span> s {</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true"></a>	<span class="dt">int</span> a, b;</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true"></a>};</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true"></a></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true"></a><span class="dt">int</span> main()</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true"></a>{</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true"></a>	<span class="kw">struct</span> s s;</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true"></a>	s.a = <span class="dv">42</span>;</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true"></a>	<span class="cf">if</span> (s.b)</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true"></a>		printf(<span class="st">&quot;s.b</span><span class="sc">\n</span><span class="st">&quot;</span>);</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true"></a>	<span class="cf">return</span> <span class="dv">0</span>;</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true"></a>}</span></code></pre></div>
 <p>We didn’t initialize <code>s.b</code>. <a href="http://valgrind.org/">Valgrind</a> reports this:</p>
 <pre><code>mihai@keldon:/tmp/mm/valgrind$ valgrind -q ./a.out
 ==11868== Conditional jump or move depends on uninitialised value(s)
 ==11868==    at 0x4004F0: main (1.c:12)
 ==11868==</code></pre>
 <p>This was simple. Now, consider this common case:</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb12-1"><a href="#cb12-1"></a><span class="dt">int</span> main()</span>
-<span id="cb12-2"><a href="#cb12-2"></a>{</span>
-<span id="cb12-3"><a href="#cb12-3"></a>	<span class="dt">char</span> *s = strdup(<span class="st">&quot;Valgrind rocks&quot;</span>);</span>
-<span id="cb12-4"><a href="#cb12-4"></a>	<span class="dt">char</span> *q = malloc(strlen(s));</span>
-<span id="cb12-5"><a href="#cb12-5"></a>	strcpy(q, s);</span>
-<span id="cb12-6"><a href="#cb12-6"></a>	<span class="cf">return</span> <span class="dv">0</span>;</span>
-<span id="cb12-7"><a href="#cb12-7"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true"></a><span class="dt">int</span> main()</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true"></a>{</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true"></a>	<span class="dt">char</span> *s = strdup(<span class="st">&quot;Valgrind rocks&quot;</span>);</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true"></a>	<span class="dt">char</span> *q = malloc(strlen(s));</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true"></a>	strcpy(q, s);</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true"></a>	<span class="cf">return</span> <span class="dv">0</span>;</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true"></a>}</span></code></pre></div>
 <p>This code looks perfectly valid. Does it? <a href="http://valgrind.org/">Valgrind</a> says otherwise:</p>
 <pre><code>mihai@keldon:/tmp/mm/valgrind$ valgrind -q ./a.out
 ==12038== Invalid write of size 1
@@ -294,12 +296,12 @@
 ==12038==    by 0x4005E5: main (1.c:8)</code></pre>
 <p>Indeed, we missed space for the <code>\0</code> terminating character. Suppose we do this fix: we change <code>strcpy(q, s)</code> with <code>strcpy(q, s + 1)</code>. This works.</p>
 <p>Now, let us assume that – by mistake – we also change <code>q</code>:</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb14-1"><a href="#cb14-1"></a><span class="dt">int</span> main()</span>
-<span id="cb14-2"><a href="#cb14-2"></a>{</span>
-<span id="cb14-3"><a href="#cb14-3"></a>	<span class="dt">char</span> *s = strdup(<span class="st">&quot;Valgrind rocks&quot;</span>);</span>
-<span id="cb14-4"><a href="#cb14-4"></a>	strcpy(s, s + <span class="dv">1</span>);</span>
-<span id="cb14-5"><a href="#cb14-5"></a>	<span class="cf">return</span> <span class="dv">0</span>;</span>
-<span id="cb14-6"><a href="#cb14-6"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true"></a><span class="dt">int</span> main()</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true"></a>{</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true"></a>	<span class="dt">char</span> *s = strdup(<span class="st">&quot;Valgrind rocks&quot;</span>);</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true"></a>	strcpy(s, s + <span class="dv">1</span>);</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true"></a>	<span class="cf">return</span> <span class="dv">0</span>;</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true"></a>}</span></code></pre></div>
 <p><a href="http://valgrind.org/">Valgrind</a> is prompt to show us that we use <code>strcpy</code> in a wrong way, possibly destroying content:</p>
 <pre><code>mihai@keldon:/tmp/mm/valgrind$ valgrind -q ./a.out
 ==12058== Source and destination overlap in strcpy(0x51d2040, 0x51d2041)

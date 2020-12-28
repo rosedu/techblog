@@ -97,6 +97,8 @@
         <span class="tags"><a title="All pages tagged 'python'." href="./tags/python.html">python</a>, <a title="All pages tagged 'virtualenv'." href="./tags/virtualenv.html">virtualenv</a>, <a title="All pages tagged 'pip'." href="./tags/pip.html">pip</a></span>
       </span>
 
+      
+
       <p>This article is a quick guide to setting up a Python work environment. It walks you through installing Python with some basic package management tools (<code>distribute</code>, <code>pip</code>, <code>virtualenv</code>), setting up projects, and installing packages.</p>
 <!--more-->
 <section id="bootstrapping" class="level3">
@@ -115,11 +117,11 @@
 $ $MYPYTHON/bin/easy_install pip
 $ $MYPYTHON/bin/pip install virtualenv</code></pre>
 <p>If everything worked out fine, you should have a script called <code>virtualenv</code> in <code>$MYPYTHON/bin</code>, and you can safely remove <code>distribute_setup.py</code> and <code>distribute-x.y.z.tar.gz</code>.</p>
-<p>That’s all you normally install in the global Python folder. Maybe throw in some commonly-used, slow-to-change, takes-a-while-to-compile package like <a href="http://www.pythonware.com/products/pil/">PIL</a> or <a href="http://www.scipy.org/">SciPy</a>, or the odd manually-installed kits on Windows, but everything else goes into a virtualenv.</p>
+<p>That’s all you normally install in the global Python folder. Maybe throw in some commonly-used, slow-to-change, takes-a-while-to-compile package like <a href="https://pillow.readthedocs.io/en/stable/">PIL</a> or <a href="http://www.scipy.org/">SciPy</a>, or the odd manually-installed kits on Windows, but everything else goes into a virtualenv.</p>
 </section>
 <section id="virtual-insanity" class="level3">
 <h3>Virtual insanity</h3>
-<p>Say you want to work on <a href="https://projects.rosedu.org/projects/wousodjango">WoUSO</a>, and the documentation tells you that you need to install <a href="https://www.djangoproject.com/">Django</a>. The very first thing you do is create a virtualenv. We’ll use <code>$MYENV</code> as placeholder for the path to a new folder where you want to work:</p>
+<p>Say you want to work on <a href="https://github.com/rosedu/wouso">WoUSO</a>, and the documentation tells you that you need to install <a href="https://www.djangoproject.com/">Django</a>. The very first thing you do is create a virtualenv. We’ll use <code>$MYENV</code> as placeholder for the path to a new folder where you want to work:</p>
 <pre><code>$ $MYPYTHON/bin/virtualenv $MYENV</code></pre>
 <p><code>virtualenv</code> will create the folder, write some files, then run off and get <code>distribute</code> and <code>pip</code>; it should all take a few seconds. When it’s done, you have <code>$MYENV/bin/python</code>, which is a fully functional Python interpreter. Next to it, there is <code>$MYENV/bin/pip</code>, which you can now use to install things:</p>
 <pre><code>$ $MYENV/bin/pip install Django</code></pre>

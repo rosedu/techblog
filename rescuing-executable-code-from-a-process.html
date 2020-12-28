@@ -97,6 +97,8 @@
         <span class="tags"><a title="All pages tagged 'process'." href="./tags/process.html">process</a>, <a title="All pages tagged 'procfs'." href="./tags/procfs.html">procfs</a>, <a title="All pages tagged '/proc'." href="./tags/proc.html">/proc</a>, <a title="All pages tagged 'file descriptor'." href="./tags/file-descriptor.html">file descriptor</a></span>
       </span>
 
+      
+
       <p>A <code>process</code> is an instance of a binary executable file. This means that when you ‘run’ a binary, the code from the storage media is copied into the system’s memory, more precisely, into the process’ <code>virtual memory space</code>. From a single binary, several processes can be spawned.</p>
 <!--more-->
 <p>The virtual memory of a process, made up of pages, is mapped to several things, like shared objects(libraries), shared memory, stack and heap space, read-only space and executable space. A good way to view what is mapped to what is with the <code>pmap</code> utility, or by just looking in the <code>/proc</code> directory hierarchy. The <code>/proc/$PID/maps</code> file (where <code>$PID</code> is the process ID of the targeted process) has the page mappings. Also in <code>/proc/$PID</code>, you can find other useful files, like the <code>exe</code> file that contains a symlink to the executable or the <code>fd</code> directory that contains symlinks to all the files opened as <em>file descriptors</em> in a process.</p>

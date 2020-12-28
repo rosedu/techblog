@@ -97,6 +97,8 @@
         <span class="tags"><a title="All pages tagged 'SQL'." href="./tags/sql.html">SQL</a>, <a title="All pages tagged 'RDBMS'." href="./tags/rdbms.html">RDBMS</a></span>
       </span>
 
+      
+
       <p>Rather than relying on dry explanations of mathematical set theory, this tutorial is organized as a survey of SQL statements and techniques. It is designed to let you infer from examples what SQL is all about as well as the kinds of problems it can help you solve.</p>
 <!--more-->
 <p>The promise of this tutorial is that you invest 30 minutes of your time and it will enable you to “speak” SQL right here, right now.</p>
@@ -129,30 +131,30 @@ sqlite&gt;</code></pre>
 <p>You communicate your intent to SQLite by typing in SQL statements.</p>
 <p>As we already mentioned, when we start working on a new database, the first thing we do is create a table.</p>
 <p>At the <code>sqlite&gt;</code> prompt, type the following SQL statement:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> presidencies (</span>
-<span id="cb5-2"><a href="#cb5-2"></a>  <span class="kw">id</span> <span class="dt">INTEGER</span> <span class="kw">PRIMARY</span> <span class="kw">KEY</span> AUTOINCREMENT <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
-<span id="cb5-3"><a href="#cb5-3"></a>  first_name <span class="dt">VARCHAR</span>(<span class="dv">255</span>),</span>
-<span id="cb5-4"><a href="#cb5-4"></a>  other_names <span class="dt">VARCHAR</span>(<span class="dv">255</span>),</span>
-<span id="cb5-5"><a href="#cb5-5"></a>  year_from <span class="dt">INTEGER</span>,</span>
-<span id="cb5-6"><a href="#cb5-6"></a>  year_to <span class="dt">INTEGER</span>,</span>
-<span id="cb5-7"><a href="#cb5-7"></a>  notes TEXT</span>
-<span id="cb5-8"><a href="#cb5-8"></a>);</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> presidencies (</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a>  <span class="kw">id</span> <span class="dt">INTEGER</span> <span class="kw">PRIMARY</span> <span class="kw">KEY</span> AUTOINCREMENT <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a>  first_name <span class="dt">VARCHAR</span>(<span class="dv">255</span>),</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true"></a>  other_names <span class="dt">VARCHAR</span>(<span class="dv">255</span>),</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true"></a>  year_from <span class="dt">INTEGER</span>,</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true"></a>  year_to <span class="dt">INTEGER</span>,</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true"></a>  notes TEXT</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true"></a>);</span></code></pre></div>
 <p>SQLite does not give any output in response, and that means it has successfully executed the statement.</p>
 <p>We now have an empty table called <code>presidencies</code>.</p>
 <p>Having an empty table in a database is like having an empty spreadsheet in front of you.</p>
 <p>The next step is therefore to populate the table with some data.</p>
 <p>We do this by using the <code>INSERT</code> statement. Try this:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb6-1"><a href="#cb6-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (</span>
-<span id="cb6-2"><a href="#cb6-2"></a>  <span class="kw">NULL</span>,</span>
-<span id="cb6-3"><a href="#cb6-3"></a>  <span class="ot">&quot;Barack&quot;</span>,</span>
-<span id="cb6-4"><a href="#cb6-4"></a>  <span class="ot">&quot;Obama&quot;</span>,</span>
-<span id="cb6-5"><a href="#cb6-5"></a>  <span class="dv">2009</span>,</span>
-<span id="cb6-6"><a href="#cb6-6"></a>  <span class="dv">2012</span>,</span>
-<span id="cb6-7"><a href="#cb6-7"></a>  <span class="ot">&quot;Won against John McCain&quot;</span></span>
-<span id="cb6-8"><a href="#cb6-8"></a>);</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a>  <span class="kw">NULL</span>,</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a>  <span class="ot">&quot;Barack&quot;</span>,</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true"></a>  <span class="ot">&quot;Obama&quot;</span>,</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true"></a>  <span class="dv">2009</span>,</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true"></a>  <span class="dv">2012</span>,</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true"></a>  <span class="ot">&quot;Won against John McCain&quot;</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true"></a>);</span></code></pre></div>
 <p>Again, SQLite is not giving us any response, which means the <code>INSERT</code> statement was successfully executed.</p>
 <p>If we now query the contents of the table, we should see the newly inserted row. Try this:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb7-1"><a href="#cb7-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> presidencies;</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> presidencies;</span></code></pre></div>
 <p>The output you should see is this:</p>
 <pre><code>1|Barack|Obama|2009|2012|Won against John McCain</code></pre>
 <p>As you can probably tell, the output is in the format:</p>
@@ -164,75 +166,75 @@ sqlite&gt;</code></pre>
 <li>The RDBMS will therefore enforce the uniqueness of this key and use this information to optimize its execution of SQL statements against this table.</li>
 </ul>
 <p>Let’s put this behavior to the test. Try the same <code>INSERT</code> statement as before, only replace <code>NULL</code> with <code>1</code> (an already existing <code>id</code>):</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb10-1"><a href="#cb10-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (</span>
-<span id="cb10-2"><a href="#cb10-2"></a>  <span class="dv">1</span>,</span>
-<span id="cb10-3"><a href="#cb10-3"></a>  <span class="ot">&quot;Barack&quot;</span>,</span>
-<span id="cb10-4"><a href="#cb10-4"></a>  <span class="ot">&quot;Obama&quot;</span>,</span>
-<span id="cb10-5"><a href="#cb10-5"></a>  <span class="dv">2009</span>,</span>
-<span id="cb10-6"><a href="#cb10-6"></a>  <span class="dv">2012</span>,</span>
-<span id="cb10-7"><a href="#cb10-7"></a>  <span class="ot">&quot;Won against John McCain&quot;</span></span>
-<span id="cb10-8"><a href="#cb10-8"></a>);</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true"></a>  <span class="dv">1</span>,</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true"></a>  <span class="ot">&quot;Barack&quot;</span>,</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true"></a>  <span class="ot">&quot;Obama&quot;</span>,</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true"></a>  <span class="dv">2009</span>,</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true"></a>  <span class="dv">2012</span>,</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true"></a>  <span class="ot">&quot;Won against John McCain&quot;</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true"></a>);</span></code></pre></div>
 <p>The output you should see is:</p>
 <pre><code>Error: PRIMARY KEY must be unique</code></pre>
 <p>To change a record in the table, we are going to use an <code>UPDATE</code> statement with a precisely targeted <code>WHERE</code> clause:</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb12-1"><a href="#cb12-1"></a><span class="kw">UPDATE</span> presidencies <span class="kw">SET</span> notes <span class="op">=</span> <span class="ot">&quot;His campaign slogan was yes-we-can&quot;</span> <span class="kw">WHERE</span> <span class="kw">id</span> <span class="op">=</span> <span class="dv">1</span>;</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true"></a><span class="kw">UPDATE</span> presidencies <span class="kw">SET</span> notes <span class="op">=</span> <span class="ot">&quot;His campaign slogan was yes-we-can&quot;</span> <span class="kw">WHERE</span> <span class="kw">id</span> <span class="op">=</span> <span class="dv">1</span>;</span></code></pre></div>
 <p>Query the whole table again to see the changes:</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb13-1"><a href="#cb13-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> presidencies;</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> presidencies;</span></code></pre></div>
 <p>The output you should see is this:</p>
 <pre><code>1|Barack|Obama|2009|2012|His campaign slogan was yes-we-can</code></pre>
 <p>To remove a record from the table, we are going to use a precisely targeted <code>DELETE</code> statement:</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb15-1"><a href="#cb15-1"></a><span class="kw">DELETE</span> <span class="kw">FROM</span> presidencies <span class="kw">WHERE</span> <span class="kw">id</span> <span class="op">=</span> <span class="dv">1</span>;</span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true"></a><span class="kw">DELETE</span> <span class="kw">FROM</span> presidencies <span class="kw">WHERE</span> <span class="kw">id</span> <span class="op">=</span> <span class="dv">1</span>;</span></code></pre></div>
 <p>Query the whole table again to verify that it’s empty.</p>
 <p>To continue exploring the features of SQL we are going to need a lot more data.</p>
 <p>Paste the statements below at the <code>sqlite&gt;</code> prompt:</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb16-1"><a href="#cb16-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Theodore&quot;</span>, <span class="ot">&quot;Roosevelt&quot;</span>, <span class="dv">1905</span>, <span class="dv">1908</span>, <span class="ot">&quot;&quot;</span>);</span>
-<span id="cb16-2"><a href="#cb16-2"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;William&quot;</span>, <span class="ot">&quot;Taft&quot;</span>, <span class="dv">1909</span>, <span class="dv">1912</span>, <span class="ot">&quot;&quot;</span>);</span>
-<span id="cb16-3"><a href="#cb16-3"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Woodrow&quot;</span>, <span class="ot">&quot;Wilson&quot;</span>, <span class="dv">1913</span>, <span class="dv">1916</span>, <span class="ot">&quot;1st term; WW 1 begins&quot;</span>);</span>
-<span id="cb16-4"><a href="#cb16-4"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Woodrow&quot;</span>, <span class="ot">&quot;Wilson&quot;</span>, <span class="dv">1917</span>, <span class="dv">1920</span>, <span class="ot">&quot;2nd term; WW 1 ends&quot;</span>);</span>
-<span id="cb16-5"><a href="#cb16-5"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Warren&quot;</span>, <span class="ot">&quot;Harding&quot;</span>, <span class="dv">1921</span>, <span class="dv">1922</span>, <span class="ot">&quot;&quot;</span>);</span>
-<span id="cb16-6"><a href="#cb16-6"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Calvin&quot;</span>, <span class="ot">&quot;Coolidge&quot;</span>, <span class="dv">1923</span>, <span class="dv">1924</span>, <span class="ot">&quot;1st term&quot;</span>);</span>
-<span id="cb16-7"><a href="#cb16-7"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Calvin&quot;</span>, <span class="ot">&quot;Coolidge&quot;</span>, <span class="dv">1925</span>, <span class="dv">1928</span>, <span class="ot">&quot;2nd term&quot;</span>);</span>
-<span id="cb16-8"><a href="#cb16-8"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Herbert&quot;</span>, <span class="ot">&quot;Hoover&quot;</span>, <span class="dv">1929</span>, <span class="dv">1932</span>, <span class="ot">&quot;&quot;</span>);</span>
-<span id="cb16-9"><a href="#cb16-9"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Franklin&quot;</span>, <span class="ot">&quot;D. Roosevelt&quot;</span>, <span class="dv">1933</span>, <span class="dv">1936</span>, <span class="ot">&quot;1st term&quot;</span>);</span>
-<span id="cb16-10"><a href="#cb16-10"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Franklin&quot;</span>, <span class="ot">&quot;D. Roosevelt&quot;</span>, <span class="dv">1937</span>, <span class="dv">1940</span>, <span class="ot">&quot;2nd term; WW 2 begins&quot;</span>);</span>
-<span id="cb16-11"><a href="#cb16-11"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Franklin&quot;</span>, <span class="ot">&quot;D. Roosevelt&quot;</span>, <span class="dv">1941</span>, <span class="dv">1944</span>, <span class="ot">&quot;3rd term&quot;</span>);</span>
-<span id="cb16-12"><a href="#cb16-12"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Harry&quot;</span>, <span class="ot">&quot;Truman&quot;</span>, <span class="dv">1945</span>, <span class="dv">1948</span>, <span class="ot">&quot;1st term; WW 2 ends&quot;</span>);</span>
-<span id="cb16-13"><a href="#cb16-13"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Harry&quot;</span>, <span class="ot">&quot;Truman&quot;</span>, <span class="dv">1949</span>, <span class="dv">1952</span>, <span class="ot">&quot;2nd term&quot;</span>);</span>
-<span id="cb16-14"><a href="#cb16-14"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Dwight&quot;</span>, <span class="ot">&quot;Eisenhower&quot;</span>, <span class="dv">1953</span>, <span class="dv">1956</span>, <span class="ot">&quot;1st term&quot;</span>);</span>
-<span id="cb16-15"><a href="#cb16-15"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Dwight&quot;</span>, <span class="ot">&quot;Eisenhower&quot;</span>, <span class="dv">1957</span>, <span class="dv">1960</span>, <span class="ot">&quot;2nd term&quot;</span>);</span>
-<span id="cb16-16"><a href="#cb16-16"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;John&quot;</span>, <span class="ot">&quot;F. Kennedy&quot;</span>, <span class="dv">1961</span>, <span class="dv">1963</span>, <span class="ot">&quot;&quot;</span>);</span>
-<span id="cb16-17"><a href="#cb16-17"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Lyndon&quot;</span>, <span class="ot">&quot;Johnson&quot;</span>, <span class="dv">1964</span>, <span class="dv">1964</span>, <span class="ot">&quot;Took over when JFK was assassinated&quot;</span>);</span>
-<span id="cb16-18"><a href="#cb16-18"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Lyndon&quot;</span>, <span class="ot">&quot;Johnson&quot;</span>, <span class="dv">1965</span>, <span class="dv">1968</span>, <span class="ot">&quot;2nd term&quot;</span>);</span>
-<span id="cb16-19"><a href="#cb16-19"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Richard&quot;</span>, <span class="ot">&quot;Nixon&quot;</span>, <span class="dv">1969</span>, <span class="dv">1972</span>, <span class="ot">&quot;1st term&quot;</span>);</span>
-<span id="cb16-20"><a href="#cb16-20"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Richard&quot;</span>, <span class="ot">&quot;Nixon&quot;</span>, <span class="dv">1973</span>, <span class="dv">1974</span>, <span class="ot">&quot;2nd term&quot;</span>);</span>
-<span id="cb16-21"><a href="#cb16-21"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Gerald&quot;</span>, <span class="ot">&quot;Ford&quot;</span>, <span class="dv">1975</span>, <span class="dv">1976</span>, <span class="ot">&quot;&quot;</span>);</span>
-<span id="cb16-22"><a href="#cb16-22"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Jimmy&quot;</span>, <span class="ot">&quot;Carter&quot;</span>, <span class="dv">1977</span>, <span class="dv">1980</span>, <span class="ot">&quot;&quot;</span>);</span>
-<span id="cb16-23"><a href="#cb16-23"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Ronald&quot;</span>, <span class="ot">&quot;Reagan&quot;</span>, <span class="dv">1981</span>, <span class="dv">1984</span>, <span class="ot">&quot;1st term&quot;</span>);</span>
-<span id="cb16-24"><a href="#cb16-24"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Ronald&quot;</span>, <span class="ot">&quot;Reagan&quot;</span>, <span class="dv">1985</span>, <span class="dv">1988</span>, <span class="ot">&quot;2nd term&quot;</span>);</span>
-<span id="cb16-25"><a href="#cb16-25"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;George&quot;</span>, <span class="ot">&quot;H. W. Bush&quot;</span>, <span class="dv">1989</span>, <span class="dv">1992</span>, <span class="ot">&quot;&quot;</span>);</span>
-<span id="cb16-26"><a href="#cb16-26"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Bill&quot;</span>, <span class="ot">&quot;Clinton&quot;</span>, <span class="dv">1993</span>, <span class="dv">1996</span>, <span class="ot">&quot;1st term&quot;</span>);</span>
-<span id="cb16-27"><a href="#cb16-27"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Bill&quot;</span>, <span class="ot">&quot;Clinton&quot;</span>, <span class="dv">1997</span>, <span class="dv">2000</span>, <span class="ot">&quot;2nd term&quot;</span>);</span>
-<span id="cb16-28"><a href="#cb16-28"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;George&quot;</span>, <span class="ot">&quot;W. Bush&quot;</span>, <span class="dv">2001</span>, <span class="dv">2004</span>, <span class="ot">&quot;1st term&quot;</span>);</span>
-<span id="cb16-29"><a href="#cb16-29"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;George&quot;</span>, <span class="ot">&quot;W. Bush&quot;</span>, <span class="dv">2005</span>, <span class="dv">2008</span>, <span class="ot">&quot;2nd term&quot;</span>);</span>
-<span id="cb16-30"><a href="#cb16-30"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Barack&quot;</span>, <span class="ot">&quot;Obama&quot;</span>, <span class="dv">2009</span>, <span class="dv">2012</span>, <span class="ot">&quot;&quot;</span>);</span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Theodore&quot;</span>, <span class="ot">&quot;Roosevelt&quot;</span>, <span class="dv">1905</span>, <span class="dv">1908</span>, <span class="ot">&quot;&quot;</span>);</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;William&quot;</span>, <span class="ot">&quot;Taft&quot;</span>, <span class="dv">1909</span>, <span class="dv">1912</span>, <span class="ot">&quot;&quot;</span>);</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Woodrow&quot;</span>, <span class="ot">&quot;Wilson&quot;</span>, <span class="dv">1913</span>, <span class="dv">1916</span>, <span class="ot">&quot;1st term; WW 1 begins&quot;</span>);</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Woodrow&quot;</span>, <span class="ot">&quot;Wilson&quot;</span>, <span class="dv">1917</span>, <span class="dv">1920</span>, <span class="ot">&quot;2nd term; WW 1 ends&quot;</span>);</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Warren&quot;</span>, <span class="ot">&quot;Harding&quot;</span>, <span class="dv">1921</span>, <span class="dv">1922</span>, <span class="ot">&quot;&quot;</span>);</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Calvin&quot;</span>, <span class="ot">&quot;Coolidge&quot;</span>, <span class="dv">1923</span>, <span class="dv">1924</span>, <span class="ot">&quot;1st term&quot;</span>);</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Calvin&quot;</span>, <span class="ot">&quot;Coolidge&quot;</span>, <span class="dv">1925</span>, <span class="dv">1928</span>, <span class="ot">&quot;2nd term&quot;</span>);</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Herbert&quot;</span>, <span class="ot">&quot;Hoover&quot;</span>, <span class="dv">1929</span>, <span class="dv">1932</span>, <span class="ot">&quot;&quot;</span>);</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Franklin&quot;</span>, <span class="ot">&quot;D. Roosevelt&quot;</span>, <span class="dv">1933</span>, <span class="dv">1936</span>, <span class="ot">&quot;1st term&quot;</span>);</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Franklin&quot;</span>, <span class="ot">&quot;D. Roosevelt&quot;</span>, <span class="dv">1937</span>, <span class="dv">1940</span>, <span class="ot">&quot;2nd term; WW 2 begins&quot;</span>);</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Franklin&quot;</span>, <span class="ot">&quot;D. Roosevelt&quot;</span>, <span class="dv">1941</span>, <span class="dv">1944</span>, <span class="ot">&quot;3rd term&quot;</span>);</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Harry&quot;</span>, <span class="ot">&quot;Truman&quot;</span>, <span class="dv">1945</span>, <span class="dv">1948</span>, <span class="ot">&quot;1st term; WW 2 ends&quot;</span>);</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Harry&quot;</span>, <span class="ot">&quot;Truman&quot;</span>, <span class="dv">1949</span>, <span class="dv">1952</span>, <span class="ot">&quot;2nd term&quot;</span>);</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Dwight&quot;</span>, <span class="ot">&quot;Eisenhower&quot;</span>, <span class="dv">1953</span>, <span class="dv">1956</span>, <span class="ot">&quot;1st term&quot;</span>);</span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Dwight&quot;</span>, <span class="ot">&quot;Eisenhower&quot;</span>, <span class="dv">1957</span>, <span class="dv">1960</span>, <span class="ot">&quot;2nd term&quot;</span>);</span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;John&quot;</span>, <span class="ot">&quot;F. Kennedy&quot;</span>, <span class="dv">1961</span>, <span class="dv">1963</span>, <span class="ot">&quot;&quot;</span>);</span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Lyndon&quot;</span>, <span class="ot">&quot;Johnson&quot;</span>, <span class="dv">1964</span>, <span class="dv">1964</span>, <span class="ot">&quot;Took over when JFK was assassinated&quot;</span>);</span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Lyndon&quot;</span>, <span class="ot">&quot;Johnson&quot;</span>, <span class="dv">1965</span>, <span class="dv">1968</span>, <span class="ot">&quot;2nd term&quot;</span>);</span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Richard&quot;</span>, <span class="ot">&quot;Nixon&quot;</span>, <span class="dv">1969</span>, <span class="dv">1972</span>, <span class="ot">&quot;1st term&quot;</span>);</span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Richard&quot;</span>, <span class="ot">&quot;Nixon&quot;</span>, <span class="dv">1973</span>, <span class="dv">1974</span>, <span class="ot">&quot;2nd term&quot;</span>);</span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Gerald&quot;</span>, <span class="ot">&quot;Ford&quot;</span>, <span class="dv">1975</span>, <span class="dv">1976</span>, <span class="ot">&quot;&quot;</span>);</span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Jimmy&quot;</span>, <span class="ot">&quot;Carter&quot;</span>, <span class="dv">1977</span>, <span class="dv">1980</span>, <span class="ot">&quot;&quot;</span>);</span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Ronald&quot;</span>, <span class="ot">&quot;Reagan&quot;</span>, <span class="dv">1981</span>, <span class="dv">1984</span>, <span class="ot">&quot;1st term&quot;</span>);</span>
+<span id="cb16-24"><a href="#cb16-24" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Ronald&quot;</span>, <span class="ot">&quot;Reagan&quot;</span>, <span class="dv">1985</span>, <span class="dv">1988</span>, <span class="ot">&quot;2nd term&quot;</span>);</span>
+<span id="cb16-25"><a href="#cb16-25" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;George&quot;</span>, <span class="ot">&quot;H. W. Bush&quot;</span>, <span class="dv">1989</span>, <span class="dv">1992</span>, <span class="ot">&quot;&quot;</span>);</span>
+<span id="cb16-26"><a href="#cb16-26" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Bill&quot;</span>, <span class="ot">&quot;Clinton&quot;</span>, <span class="dv">1993</span>, <span class="dv">1996</span>, <span class="ot">&quot;1st term&quot;</span>);</span>
+<span id="cb16-27"><a href="#cb16-27" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Bill&quot;</span>, <span class="ot">&quot;Clinton&quot;</span>, <span class="dv">1997</span>, <span class="dv">2000</span>, <span class="ot">&quot;2nd term&quot;</span>);</span>
+<span id="cb16-28"><a href="#cb16-28" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;George&quot;</span>, <span class="ot">&quot;W. Bush&quot;</span>, <span class="dv">2001</span>, <span class="dv">2004</span>, <span class="ot">&quot;1st term&quot;</span>);</span>
+<span id="cb16-29"><a href="#cb16-29" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;George&quot;</span>, <span class="ot">&quot;W. Bush&quot;</span>, <span class="dv">2005</span>, <span class="dv">2008</span>, <span class="ot">&quot;2nd term&quot;</span>);</span>
+<span id="cb16-30"><a href="#cb16-30" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> presidencies <span class="kw">VALUES</span> (<span class="kw">NULL</span>, <span class="ot">&quot;Barack&quot;</span>, <span class="ot">&quot;Obama&quot;</span>, <span class="dv">2009</span>, <span class="dv">2012</span>, <span class="ot">&quot;&quot;</span>);</span></code></pre></div>
 <p>Let’s see how many records our table contains now:</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb17-1"><a href="#cb17-1"></a><span class="kw">SELECT</span> <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">FROM</span> presidencies;</span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true"></a><span class="kw">SELECT</span> <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">FROM</span> presidencies;</span></code></pre></div>
 <p>The table has 30 rows.</p>
 <p>We want to generate a deduplicated list of all persons who held office.</p>
 <p>The SQL keyword <code>DISTINCT</code> performs the deduplication magic, and we are going to make use of the SQL text concatenation operator <code>||</code>:</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb18-1"><a href="#cb18-1"></a><span class="kw">SELECT</span> <span class="kw">DISTINCT</span> first_name <span class="op">||</span> <span class="st">' '</span> <span class="op">||</span> other_names <span class="kw">AS</span> full_name <span class="kw">FROM</span> presidencies;</span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true"></a><span class="kw">SELECT</span> <span class="kw">DISTINCT</span> first_name <span class="op">||</span> <span class="st">' '</span> <span class="op">||</span> other_names <span class="kw">AS</span> full_name <span class="kw">FROM</span> presidencies;</span></code></pre></div>
 <p>We want to find out how many presidencies began in the second half of the 20th century.</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb19-1"><a href="#cb19-1"></a><span class="kw">SELECT</span> <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">FROM</span> presidencies <span class="kw">WHERE</span> year_from <span class="kw">BETWEEN</span> <span class="dv">1950</span> <span class="kw">AND</span> <span class="dv">1999</span>;</span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true"></a><span class="kw">SELECT</span> <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">FROM</span> presidencies <span class="kw">WHERE</span> year_from <span class="kw">BETWEEN</span> <span class="dv">1950</span> <span class="kw">AND</span> <span class="dv">1999</span>;</span></code></pre></div>
 <p>The answer to that question is 14 records.</p>
 <p>In 1941, the surprise attack at Pearl Harbor happened.</p>
 <p>We would like to know who was president of the United States at that time.</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb20-1"><a href="#cb20-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> presidencies <span class="kw">WHERE</span> <span class="dv">1941</span> <span class="kw">BETWEEN</span> year_from <span class="kw">AND</span> year_to;</span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> presidencies <span class="kw">WHERE</span> <span class="dv">1941</span> <span class="kw">BETWEEN</span> year_from <span class="kw">AND</span> year_to;</span></code></pre></div>
 <p>The expected output:</p>
 <pre><code>12|Franklin|D. Roosevelt|1941|1944|3rd term</code></pre>
 <p>We stored some notes on when both world wars began and ended. Let’s query that information by asking for all records that contain the string " WW " inside the <code>notes</code> column.</p>
 <p>To perform text matching we need to use the <code>LIKE</code> predicate.</p>
 <p>Note: The percent sign has wildcard semantics in SQL.</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb22-1"><a href="#cb22-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> presidencies <span class="kw">WHERE</span> notes <span class="kw">LIKE</span> <span class="st">'% WW %'</span> <span class="kw">ORDER</span> <span class="kw">BY</span> year_from;</span></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> presidencies <span class="kw">WHERE</span> notes <span class="kw">LIKE</span> <span class="st">'% WW %'</span> <span class="kw">ORDER</span> <span class="kw">BY</span> year_from;</span></code></pre></div>
 <p>The expected output:</p>
 <pre><code>4|Woodrow|Wilson|1913|1916|1st term; WW 1 begins
 5|Woodrow|Wilson|1917|1920|2nd term; WW 1 ends
@@ -240,13 +242,13 @@ sqlite&gt;</code></pre>
 13|Harry|Truman|1945|1948|1st term; WW 2 ends</code></pre>
 <p>We want a breakdown of how many presidencies were full-term (lasted the full 4 years) versus how many lasted 1 or 2 or 3 years.</p>
 <p>That can also be done in SQL, however the syntax is slightly more convoluted.</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb24-1"><a href="#cb24-1"></a><span class="kw">SELECT</span></span>
-<span id="cb24-2"><a href="#cb24-2"></a>  <span class="dv">1</span> <span class="op">+</span> year_to <span class="op">-</span> year_from <span class="kw">AS</span> duration, <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> cnt</span>
-<span id="cb24-3"><a href="#cb24-3"></a><span class="kw">FROM</span></span>
-<span id="cb24-4"><a href="#cb24-4"></a>  presidencies</span>
-<span id="cb24-5"><a href="#cb24-5"></a><span class="kw">GROUP</span> <span class="kw">BY</span></span>
-<span id="cb24-6"><a href="#cb24-6"></a>  duration</span>
-<span id="cb24-7"><a href="#cb24-7"></a><span class="kw">ORDER</span> <span class="kw">BY</span> cnt <span class="kw">DESC</span>;</span></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true"></a><span class="kw">SELECT</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true"></a>  <span class="dv">1</span> <span class="op">+</span> year_to <span class="op">-</span> year_from <span class="kw">AS</span> duration, <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> cnt</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true"></a><span class="kw">FROM</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true"></a>  presidencies</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true"></a><span class="kw">GROUP</span> <span class="kw">BY</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true"></a>  duration</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true"></a><span class="kw">ORDER</span> <span class="kw">BY</span> cnt <span class="kw">DESC</span>;</span></code></pre></div>
 <p>The expected output:</p>
 <pre><code>4|24
 2|4
@@ -258,8 +260,8 @@ sqlite&gt;</code></pre>
 <p>The database engine performs these <code>WHERE</code> lookups significantly faster when it can rely on indexes.</p>
 <p>Let’s say we know ahead of time that the most frequent queries are going to filter by <code>year_from</code> and <code>year_to</code>.</p>
 <p>In that case we need to create indexes on both fields:</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb26-1"><a href="#cb26-1"></a><span class="kw">CREATE</span> <span class="kw">INDEX</span> index_on_year_from <span class="kw">ON</span> presidencies (year_from);</span>
-<span id="cb26-2"><a href="#cb26-2"></a><span class="kw">CREATE</span> <span class="kw">INDEX</span> index_on_year_to   <span class="kw">ON</span> presidencies (year_to);</span></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true"></a><span class="kw">CREATE</span> <span class="kw">INDEX</span> index_on_year_from <span class="kw">ON</span> presidencies (year_from);</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true"></a><span class="kw">CREATE</span> <span class="kw">INDEX</span> index_on_year_to   <span class="kw">ON</span> presidencies (year_to);</span></code></pre></div>
 <p>Indexes do not make a big difference on a table with 30 records, but it is recommended to get into the habit of thinking about indexes before SQL execution times start to grow out of control.</p>
 </section>
 <section id="foreign-key-relationships-the-one-to-many-case" class="level3">
@@ -276,20 +278,20 @@ sqlite&gt;</code></pre>
 <li>A country belongs to only one continent</li>
 </ul>
 <p>To create tables for each of the three information entities, run the following commands:</p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb27-1"><a href="#cb27-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> continents (</span>
-<span id="cb27-2"><a href="#cb27-2"></a>  <span class="kw">id</span> <span class="dt">INTEGER</span> <span class="kw">PRIMARY</span> <span class="kw">KEY</span> AUTOINCREMENT <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
-<span id="cb27-3"><a href="#cb27-3"></a>  continent_name <span class="dt">VARCHAR</span>(<span class="dv">255</span>)</span>
-<span id="cb27-4"><a href="#cb27-4"></a>);</span>
-<span id="cb27-5"><a href="#cb27-5"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> countries (</span>
-<span id="cb27-6"><a href="#cb27-6"></a>  <span class="kw">id</span> <span class="dt">INTEGER</span> <span class="kw">PRIMARY</span> <span class="kw">KEY</span> AUTOINCREMENT <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
-<span id="cb27-7"><a href="#cb27-7"></a>  continent_id <span class="dt">INTEGER</span> <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
-<span id="cb27-8"><a href="#cb27-8"></a>  country_name <span class="dt">VARCHAR</span>(<span class="dv">255</span>)</span>
-<span id="cb27-9"><a href="#cb27-9"></a>);</span>
-<span id="cb27-10"><a href="#cb27-10"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> cities (</span>
-<span id="cb27-11"><a href="#cb27-11"></a>  <span class="kw">id</span> <span class="dt">INTEGER</span> <span class="kw">PRIMARY</span> <span class="kw">KEY</span> AUTOINCREMENT <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
-<span id="cb27-12"><a href="#cb27-12"></a>  country_id <span class="dt">INTEGER</span> <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
-<span id="cb27-13"><a href="#cb27-13"></a>  city_name <span class="dt">VARCHAR</span>(<span class="dv">255</span>)</span>
-<span id="cb27-14"><a href="#cb27-14"></a>);</span></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> continents (</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true"></a>  <span class="kw">id</span> <span class="dt">INTEGER</span> <span class="kw">PRIMARY</span> <span class="kw">KEY</span> AUTOINCREMENT <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true"></a>  continent_name <span class="dt">VARCHAR</span>(<span class="dv">255</span>)</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true"></a>);</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> countries (</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true"></a>  <span class="kw">id</span> <span class="dt">INTEGER</span> <span class="kw">PRIMARY</span> <span class="kw">KEY</span> AUTOINCREMENT <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true"></a>  continent_id <span class="dt">INTEGER</span> <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true"></a>  country_name <span class="dt">VARCHAR</span>(<span class="dv">255</span>)</span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true"></a>);</span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> cities (</span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true"></a>  <span class="kw">id</span> <span class="dt">INTEGER</span> <span class="kw">PRIMARY</span> <span class="kw">KEY</span> AUTOINCREMENT <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true"></a>  country_id <span class="dt">INTEGER</span> <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true"></a>  city_name <span class="dt">VARCHAR</span>(<span class="dv">255</span>)</span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true"></a>);</span></code></pre></div>
 <p>Note: SQL experts will notice something is missing from the table definitions above. I have deliberately chosen not to cover foreign key constraints in this beginner-level tutorial in order not to place too much of a cognitive burden on the reader.</p>
 <p>Let’s populate these tables with some data I have prepared for you in a file.</p>
 <p>Quit SQLite with Ctrl-D, download and inspect the file as shown below:</p>
@@ -300,20 +302,20 @@ less /tmp/geography.sql</code></pre>
 <p>Now open the database again and let’s write some queries.</p>
 <pre><code>sqlite3 /tmp/dev.db</code></pre>
 <p>The query:</p>
-<div class="sourceCode" id="cb31"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb31-1"><a href="#cb31-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> continents;</span></code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> continents;</span></code></pre></div>
 <p>behaves the way you expect.</p>
 <p>Next, go ahead and run the query below, and see what happens:</p>
-<div class="sourceCode" id="cb32"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb32-1"><a href="#cb32-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> continents <span class="kw">AS</span> c1, continents <span class="kw">AS</span> c2;</span></code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> continents <span class="kw">AS</span> c1, continents <span class="kw">AS</span> c2;</span></code></pre></div>
 <p>The above is definitely a valid SQL statement, and I’m just showing it to you in order for you to get comfortable with the idea that SQL statements may reference more than one database table, and if you reference the same table twice, the output will be the cartesian product of the table’s row set with itself.</p>
 <p>Next, try this:</p>
-<div class="sourceCode" id="cb33"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb33-1"><a href="#cb33-1"></a><span class="kw">SELECT</span></span>
-<span id="cb33-2"><a href="#cb33-2"></a>  country_name, continent_name</span>
-<span id="cb33-3"><a href="#cb33-3"></a><span class="kw">FROM</span></span>
-<span id="cb33-4"><a href="#cb33-4"></a>  countries, continents</span>
-<span id="cb33-5"><a href="#cb33-5"></a><span class="kw">WHERE</span></span>
-<span id="cb33-6"><a href="#cb33-6"></a>  countries.continent_id <span class="op">=</span> continents.<span class="kw">id</span></span>
-<span id="cb33-7"><a href="#cb33-7"></a><span class="kw">ORDER</span> <span class="kw">BY</span></span>
-<span id="cb33-8"><a href="#cb33-8"></a>  country_name;</span></code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true"></a><span class="kw">SELECT</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true"></a>  country_name, continent_name</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true"></a><span class="kw">FROM</span></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true"></a>  countries, continents</span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true"></a><span class="kw">WHERE</span></span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true"></a>  countries.continent_id <span class="op">=</span> continents.<span class="kw">id</span></span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true"></a><span class="kw">ORDER</span> <span class="kw">BY</span></span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true"></a>  country_name;</span></code></pre></div>
 <p>What we just did is formally called “traversing a foreign key relationship”.</p>
 <p>We retrieved some records from the <code>countries</code> table, found some “pointers” in the <code>continent_id</code> column, went to the <code>continents</code> table, retrieved the continent descriptions pertaining to those pointers, and then brought back those results and associated them with each row in the <code>countries</code> table.</p>
 <p>Congratulations, you have just learned about the “R” in “RDBMS”, this is what we mean by “relational”.</p>
@@ -321,46 +323,46 @@ less /tmp/geography.sql</code></pre>
 <p>Before we go on, we want to take care of performance-by-design.</p>
 <p>The lookups which happen during foreign key relationship traversal would be much more efficient when supported by the appropriate indexes.</p>
 <p>Let’s create indexes on those foreign key columns.</p>
-<div class="sourceCode" id="cb34"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb34-1"><a href="#cb34-1"></a><span class="kw">CREATE</span> <span class="kw">INDEX</span> index_on_country_id   <span class="kw">ON</span> cities    (country_id);</span>
-<span id="cb34-2"><a href="#cb34-2"></a><span class="kw">CREATE</span> <span class="kw">INDEX</span> index_on_continent_id <span class="kw">ON</span> countries (continent_id);</span></code></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true"></a><span class="kw">CREATE</span> <span class="kw">INDEX</span> index_on_country_id   <span class="kw">ON</span> cities    (country_id);</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true"></a><span class="kw">CREATE</span> <span class="kw">INDEX</span> index_on_continent_id <span class="kw">ON</span> countries (continent_id);</span></code></pre></div>
 <p>Moreover, <code>country_name</code> and <code>city_name</code> are also worth indexing, since in the future we are very likely to need to locate records based on them.</p>
-<div class="sourceCode" id="cb35"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb35-1"><a href="#cb35-1"></a><span class="kw">CREATE</span> <span class="kw">INDEX</span> index_on_city_name    <span class="kw">ON</span> cities    (city_name);</span>
-<span id="cb35-2"><a href="#cb35-2"></a><span class="kw">CREATE</span> <span class="kw">INDEX</span> index_on_country_name <span class="kw">ON</span> countries (country_name);</span></code></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true"></a><span class="kw">CREATE</span> <span class="kw">INDEX</span> index_on_city_name    <span class="kw">ON</span> cities    (city_name);</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true"></a><span class="kw">CREATE</span> <span class="kw">INDEX</span> index_on_country_name <span class="kw">ON</span> countries (country_name);</span></code></pre></div>
 <p>Let us now write a query that performs a three-way join:</p>
-<div class="sourceCode" id="cb36"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb36-1"><a href="#cb36-1"></a><span class="kw">SELECT</span></span>
-<span id="cb36-2"><a href="#cb36-2"></a>  city_name, country_name, continent_name</span>
-<span id="cb36-3"><a href="#cb36-3"></a><span class="kw">FROM</span></span>
-<span id="cb36-4"><a href="#cb36-4"></a>  cities, countries, continents</span>
-<span id="cb36-5"><a href="#cb36-5"></a><span class="kw">WHERE</span></span>
-<span id="cb36-6"><a href="#cb36-6"></a>  cities.country_id <span class="op">=</span> countries.<span class="kw">id</span></span>
-<span id="cb36-7"><a href="#cb36-7"></a>  <span class="kw">AND</span></span>
-<span id="cb36-8"><a href="#cb36-8"></a>  countries.continent_id <span class="op">=</span> continents.<span class="kw">id</span></span>
-<span id="cb36-9"><a href="#cb36-9"></a><span class="kw">ORDER</span> <span class="kw">BY</span></span>
-<span id="cb36-10"><a href="#cb36-10"></a>  city_name;</span></code></pre></div>
+<div class="sourceCode" id="cb36"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true"></a><span class="kw">SELECT</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true"></a>  city_name, country_name, continent_name</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true"></a><span class="kw">FROM</span></span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true"></a>  cities, countries, continents</span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true"></a><span class="kw">WHERE</span></span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true"></a>  cities.country_id <span class="op">=</span> countries.<span class="kw">id</span></span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true"></a>  <span class="kw">AND</span></span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true"></a>  countries.continent_id <span class="op">=</span> continents.<span class="kw">id</span></span>
+<span id="cb36-9"><a href="#cb36-9" aria-hidden="true"></a><span class="kw">ORDER</span> <span class="kw">BY</span></span>
+<span id="cb36-10"><a href="#cb36-10" aria-hidden="true"></a>  city_name;</span></code></pre></div>
 <p>In order to avoid repeated typing of complex queries, SQL allows us to store a given <code>SELECT</code> statement under a specific name.</p>
 <p>The resulting database object is called a view.</p>
 <p>Let’s create a view for the previous <code>SELECT</code> statement:</p>
-<div class="sourceCode" id="cb37"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb37-1"><a href="#cb37-1"></a><span class="kw">CREATE</span> <span class="kw">VIEW</span> augmented_cities <span class="kw">AS</span></span>
-<span id="cb37-2"><a href="#cb37-2"></a><span class="kw">SELECT</span></span>
-<span id="cb37-3"><a href="#cb37-3"></a>  city_name, country_name, continent_name</span>
-<span id="cb37-4"><a href="#cb37-4"></a><span class="kw">FROM</span></span>
-<span id="cb37-5"><a href="#cb37-5"></a>  cities, countries, continents</span>
-<span id="cb37-6"><a href="#cb37-6"></a><span class="kw">WHERE</span></span>
-<span id="cb37-7"><a href="#cb37-7"></a>  cities.country_id <span class="op">=</span> countries.<span class="kw">id</span></span>
-<span id="cb37-8"><a href="#cb37-8"></a>  <span class="kw">AND</span></span>
-<span id="cb37-9"><a href="#cb37-9"></a>  countries.continent_id <span class="op">=</span> continents.<span class="kw">id</span>;</span></code></pre></div>
+<div class="sourceCode" id="cb37"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true"></a><span class="kw">CREATE</span> <span class="kw">VIEW</span> augmented_cities <span class="kw">AS</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true"></a><span class="kw">SELECT</span></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true"></a>  city_name, country_name, continent_name</span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true"></a><span class="kw">FROM</span></span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true"></a>  cities, countries, continents</span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true"></a><span class="kw">WHERE</span></span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true"></a>  cities.country_id <span class="op">=</span> countries.<span class="kw">id</span></span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true"></a>  <span class="kw">AND</span></span>
+<span id="cb37-9"><a href="#cb37-9" aria-hidden="true"></a>  countries.continent_id <span class="op">=</span> continents.<span class="kw">id</span>;</span></code></pre></div>
 <p>Using the newly created view, we can more comfortably find out all of the information about e.g. the city of London which our database has to offer:</p>
-<div class="sourceCode" id="cb38"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb38-1"><a href="#cb38-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> augmented_cities <span class="kw">WHERE</span> city_name <span class="op">=</span> <span class="st">'London'</span>;</span></code></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> augmented_cities <span class="kw">WHERE</span> city_name <span class="op">=</span> <span class="st">'London'</span>;</span></code></pre></div>
 <p>The output:</p>
 <pre><code>London|United Kingdom|Europe</code></pre>
 <p>Next, let’s look at an example of a subquery. Try this:</p>
-<div class="sourceCode" id="cb40"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb40-1"><a href="#cb40-1"></a><span class="kw">SELECT</span></span>
-<span id="cb40-2"><a href="#cb40-2"></a>  continent_name, how_many_countries</span>
-<span id="cb40-3"><a href="#cb40-3"></a><span class="kw">FROM</span></span>
-<span id="cb40-4"><a href="#cb40-4"></a>  continents,</span>
-<span id="cb40-5"><a href="#cb40-5"></a>  (<span class="kw">SELECT</span> continent_id, <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> how_many_countries <span class="kw">FROM</span> countries <span class="kw">GROUP</span> <span class="kw">BY</span> continent_id) <span class="kw">AS</span> breakdows</span>
-<span id="cb40-6"><a href="#cb40-6"></a><span class="kw">WHERE</span></span>
-<span id="cb40-7"><a href="#cb40-7"></a>  continents.<span class="kw">id</span> <span class="op">=</span> breakdows.continent_id;</span></code></pre></div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true"></a><span class="kw">SELECT</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true"></a>  continent_name, how_many_countries</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true"></a><span class="kw">FROM</span></span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true"></a>  continents,</span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true"></a>  (<span class="kw">SELECT</span> continent_id, <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> how_many_countries <span class="kw">FROM</span> countries <span class="kw">GROUP</span> <span class="kw">BY</span> continent_id) <span class="kw">AS</span> breakdows</span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true"></a><span class="kw">WHERE</span></span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true"></a>  continents.<span class="kw">id</span> <span class="op">=</span> breakdows.continent_id;</span></code></pre></div>
 <p>The output:</p>
 <pre><code>North America|4
 South America|9
@@ -371,14 +373,14 @@ Oceania|2</code></pre>
 <p>What we did here is we joined a real table (<code>continents</code>) with a virtual one called a subquery (the result of a <code>SELECT</code> statement).</p>
 <p>We can do this because SQL doesn’t really join tables, it joins rectangular result sets consisting of rows and columns.</p>
 <p>Let’s store this query in a view, we are going to make use of it in a future tutorial.</p>
-<div class="sourceCode" id="cb42"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb42-1"><a href="#cb42-1"></a><span class="kw">CREATE</span> <span class="kw">VIEW</span> continent_statistics <span class="kw">AS</span></span>
-<span id="cb42-2"><a href="#cb42-2"></a><span class="kw">SELECT</span></span>
-<span id="cb42-3"><a href="#cb42-3"></a>  continent_name, how_many_countries</span>
-<span id="cb42-4"><a href="#cb42-4"></a><span class="kw">FROM</span></span>
-<span id="cb42-5"><a href="#cb42-5"></a>  continents,</span>
-<span id="cb42-6"><a href="#cb42-6"></a>  (<span class="kw">SELECT</span> continent_id, <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> how_many_countries <span class="kw">FROM</span> countries <span class="kw">GROUP</span> <span class="kw">BY</span> continent_id) <span class="kw">AS</span> breakdows</span>
-<span id="cb42-7"><a href="#cb42-7"></a><span class="kw">WHERE</span></span>
-<span id="cb42-8"><a href="#cb42-8"></a>  continents.<span class="kw">id</span> <span class="op">=</span> breakdows.continent_id;</span></code></pre></div>
+<div class="sourceCode" id="cb42"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true"></a><span class="kw">CREATE</span> <span class="kw">VIEW</span> continent_statistics <span class="kw">AS</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true"></a><span class="kw">SELECT</span></span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true"></a>  continent_name, how_many_countries</span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true"></a><span class="kw">FROM</span></span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true"></a>  continents,</span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true"></a>  (<span class="kw">SELECT</span> continent_id, <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> how_many_countries <span class="kw">FROM</span> countries <span class="kw">GROUP</span> <span class="kw">BY</span> continent_id) <span class="kw">AS</span> breakdows</span>
+<span id="cb42-7"><a href="#cb42-7" aria-hidden="true"></a><span class="kw">WHERE</span></span>
+<span id="cb42-8"><a href="#cb42-8" aria-hidden="true"></a>  continents.<span class="kw">id</span> <span class="op">=</span> breakdows.continent_id;</span></code></pre></div>
 </section>
 <section id="foreign-key-relationships-the-many-to-many-case" class="level3">
 <h3>Foreign key relationships: the MANY-TO-MANY case</h3>
@@ -410,76 +412,76 @@ Oceania|2</code></pre>
 <li>A contributorship belongs to a project</li>
 </ul>
 <p>Let’s go ahead and create tables for those three information entities:</p>
-<div class="sourceCode" id="cb43"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb43-1"><a href="#cb43-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> users (</span>
-<span id="cb43-2"><a href="#cb43-2"></a>  <span class="kw">id</span> <span class="dt">INTEGER</span> <span class="kw">PRIMARY</span> <span class="kw">KEY</span> AUTOINCREMENT <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
-<span id="cb43-3"><a href="#cb43-3"></a>  user_name <span class="dt">VARCHAR</span>(<span class="dv">255</span>)</span>
-<span id="cb43-4"><a href="#cb43-4"></a>);</span>
-<span id="cb43-5"><a href="#cb43-5"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> projects (</span>
-<span id="cb43-6"><a href="#cb43-6"></a>  <span class="kw">id</span> <span class="dt">INTEGER</span> <span class="kw">PRIMARY</span> <span class="kw">KEY</span> AUTOINCREMENT <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
-<span id="cb43-7"><a href="#cb43-7"></a>  project_name <span class="dt">VARCHAR</span>(<span class="dv">255</span>)</span>
-<span id="cb43-8"><a href="#cb43-8"></a>);</span>
-<span id="cb43-9"><a href="#cb43-9"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> contributorships (</span>
-<span id="cb43-10"><a href="#cb43-10"></a>  <span class="kw">id</span> <span class="dt">INTEGER</span> <span class="kw">PRIMARY</span> <span class="kw">KEY</span> AUTOINCREMENT <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
-<span id="cb43-11"><a href="#cb43-11"></a>  user_id <span class="dt">INTEGER</span> <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
-<span id="cb43-12"><a href="#cb43-12"></a>  project_id <span class="dt">INTEGER</span> <span class="kw">NOT</span> <span class="kw">NULL</span></span>
-<span id="cb43-13"><a href="#cb43-13"></a>);</span></code></pre></div>
+<div class="sourceCode" id="cb43"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> users (</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true"></a>  <span class="kw">id</span> <span class="dt">INTEGER</span> <span class="kw">PRIMARY</span> <span class="kw">KEY</span> AUTOINCREMENT <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true"></a>  user_name <span class="dt">VARCHAR</span>(<span class="dv">255</span>)</span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true"></a>);</span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> projects (</span>
+<span id="cb43-6"><a href="#cb43-6" aria-hidden="true"></a>  <span class="kw">id</span> <span class="dt">INTEGER</span> <span class="kw">PRIMARY</span> <span class="kw">KEY</span> AUTOINCREMENT <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb43-7"><a href="#cb43-7" aria-hidden="true"></a>  project_name <span class="dt">VARCHAR</span>(<span class="dv">255</span>)</span>
+<span id="cb43-8"><a href="#cb43-8" aria-hidden="true"></a>);</span>
+<span id="cb43-9"><a href="#cb43-9" aria-hidden="true"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> contributorships (</span>
+<span id="cb43-10"><a href="#cb43-10" aria-hidden="true"></a>  <span class="kw">id</span> <span class="dt">INTEGER</span> <span class="kw">PRIMARY</span> <span class="kw">KEY</span> AUTOINCREMENT <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb43-11"><a href="#cb43-11" aria-hidden="true"></a>  user_id <span class="dt">INTEGER</span> <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb43-12"><a href="#cb43-12" aria-hidden="true"></a>  project_id <span class="dt">INTEGER</span> <span class="kw">NOT</span> <span class="kw">NULL</span></span>
+<span id="cb43-13"><a href="#cb43-13" aria-hidden="true"></a>);</span></code></pre></div>
 <p>And let’s populate the tables with some sample data (5 users, 9 projects):</p>
-<div class="sourceCode" id="cb44"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb44-1"><a href="#cb44-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> users <span class="kw">VALUES</span> (<span class="dv">1</span>, <span class="ot">&quot;alex-morega&quot;</span>);</span>
-<span id="cb44-2"><a href="#cb44-2"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> users <span class="kw">VALUES</span> (<span class="dv">2</span>, <span class="ot">&quot;gvoicu&quot;</span>);</span>
-<span id="cb44-3"><a href="#cb44-3"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> users <span class="kw">VALUES</span> (<span class="dv">3</span>, <span class="ot">&quot;igstan&quot;</span>);</span>
-<span id="cb44-4"><a href="#cb44-4"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> users <span class="kw">VALUES</span> (<span class="dv">4</span>, <span class="ot">&quot;dserban&quot;</span>);</span>
-<span id="cb44-5"><a href="#cb44-5"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> users <span class="kw">VALUES</span> (<span class="dv">5</span>, <span class="ot">&quot;torvalds&quot;</span>);</span>
-<span id="cb44-6"><a href="#cb44-6"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> projects <span class="kw">VALUES</span> (<span class="dv">1</span>, <span class="ot">&quot;torvalds/linux&quot;</span>);</span>
-<span id="cb44-7"><a href="#cb44-7"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> projects <span class="kw">VALUES</span> (<span class="dv">2</span>, <span class="ot">&quot;rosedu/WebDev&quot;</span>);</span>
-<span id="cb44-8"><a href="#cb44-8"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> projects <span class="kw">VALUES</span> (<span class="dv">3</span>, <span class="ot">&quot;rosedu/wouso&quot;</span>);</span>
-<span id="cb44-9"><a href="#cb44-9"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> projects <span class="kw">VALUES</span> (<span class="dv">4</span>, <span class="ot">&quot;rosedu/techblog&quot;</span>);</span>
-<span id="cb44-10"><a href="#cb44-10"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> projects <span class="kw">VALUES</span> (<span class="dv">5</span>, <span class="ot">&quot;rosedu/StartTheDark&quot;</span>);</span>
-<span id="cb44-11"><a href="#cb44-11"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> projects <span class="kw">VALUES</span> (<span class="dv">6</span>, <span class="ot">&quot;gvoicu/miniflow&quot;</span>);</span>
-<span id="cb44-12"><a href="#cb44-12"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> projects <span class="kw">VALUES</span> (<span class="dv">7</span>, <span class="ot">&quot;rails/rails&quot;</span>);</span>
-<span id="cb44-13"><a href="#cb44-13"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> projects <span class="kw">VALUES</span> (<span class="dv">8</span>, <span class="ot">&quot;sinatra/sinatra&quot;</span>);</span>
-<span id="cb44-14"><a href="#cb44-14"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> projects <span class="kw">VALUES</span> (<span class="dv">9</span>, <span class="ot">&quot;mitsuhiko/flask&quot;</span>);</span>
-<span id="cb44-15"><a href="#cb44-15"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> contributorships <span class="kw">VALUES</span> ( <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">2</span>);</span>
-<span id="cb44-16"><a href="#cb44-16"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> contributorships <span class="kw">VALUES</span> ( <span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">3</span>);</span>
-<span id="cb44-17"><a href="#cb44-17"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> contributorships <span class="kw">VALUES</span> ( <span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">9</span>);</span>
-<span id="cb44-18"><a href="#cb44-18"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> contributorships <span class="kw">VALUES</span> ( <span class="dv">4</span>, <span class="dv">2</span>, <span class="dv">2</span>);</span>
-<span id="cb44-19"><a href="#cb44-19"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> contributorships <span class="kw">VALUES</span> ( <span class="dv">5</span>, <span class="dv">2</span>, <span class="dv">6</span>);</span>
-<span id="cb44-20"><a href="#cb44-20"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> contributorships <span class="kw">VALUES</span> ( <span class="dv">6</span>, <span class="dv">2</span>, <span class="dv">7</span>);</span>
-<span id="cb44-21"><a href="#cb44-21"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> contributorships <span class="kw">VALUES</span> ( <span class="dv">7</span>, <span class="dv">2</span>, <span class="dv">8</span>);</span>
-<span id="cb44-22"><a href="#cb44-22"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> contributorships <span class="kw">VALUES</span> ( <span class="dv">8</span>, <span class="dv">3</span>, <span class="dv">2</span>);</span>
-<span id="cb44-23"><a href="#cb44-23"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> contributorships <span class="kw">VALUES</span> ( <span class="dv">9</span>, <span class="dv">3</span>, <span class="dv">6</span>);</span>
-<span id="cb44-24"><a href="#cb44-24"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> contributorships <span class="kw">VALUES</span> (<span class="dv">10</span>, <span class="dv">4</span>, <span class="dv">1</span>);</span>
-<span id="cb44-25"><a href="#cb44-25"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> contributorships <span class="kw">VALUES</span> (<span class="dv">11</span>, <span class="dv">4</span>, <span class="dv">2</span>);</span>
-<span id="cb44-26"><a href="#cb44-26"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> contributorships <span class="kw">VALUES</span> (<span class="dv">12</span>, <span class="dv">4</span>, <span class="dv">3</span>);</span>
-<span id="cb44-27"><a href="#cb44-27"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> contributorships <span class="kw">VALUES</span> (<span class="dv">13</span>, <span class="dv">4</span>, <span class="dv">4</span>);</span>
-<span id="cb44-28"><a href="#cb44-28"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> contributorships <span class="kw">VALUES</span> (<span class="dv">14</span>, <span class="dv">4</span>, <span class="dv">5</span>);</span>
-<span id="cb44-29"><a href="#cb44-29"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> contributorships <span class="kw">VALUES</span> (<span class="dv">15</span>, <span class="dv">4</span>, <span class="dv">6</span>);</span>
-<span id="cb44-30"><a href="#cb44-30"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> contributorships <span class="kw">VALUES</span> (<span class="dv">16</span>, <span class="dv">4</span>, <span class="dv">7</span>);</span>
-<span id="cb44-31"><a href="#cb44-31"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> contributorships <span class="kw">VALUES</span> (<span class="dv">17</span>, <span class="dv">4</span>, <span class="dv">8</span>);</span>
-<span id="cb44-32"><a href="#cb44-32"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> contributorships <span class="kw">VALUES</span> (<span class="dv">18</span>, <span class="dv">5</span>, <span class="dv">1</span>);</span></code></pre></div>
+<div class="sourceCode" id="cb44"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> users <span class="kw">VALUES</span> (<span class="dv">1</span>, <span class="ot">&quot;alex-morega&quot;</span>);</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> users <span class="kw">VALUES</span> (<span class="dv">2</span>, <span class="ot">&quot;gvoicu&quot;</span>);</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> users <span class="kw">VALUES</span> (<span class="dv">3</span>, <span class="ot">&quot;igstan&quot;</span>);</span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> users <span class="kw">VALUES</span> (<span class="dv">4</span>, <span class="ot">&quot;dserban&quot;</span>);</span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> users <span class="kw">VALUES</span> (<span class="dv">5</span>, <span class="ot">&quot;torvalds&quot;</span>);</span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> projects <span class="kw">VALUES</span> (<span class="dv">1</span>, <span class="ot">&quot;torvalds/linux&quot;</span>);</span>
+<span id="cb44-7"><a href="#cb44-7" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> projects <span class="kw">VALUES</span> (<span class="dv">2</span>, <span class="ot">&quot;rosedu/WebDev&quot;</span>);</span>
+<span id="cb44-8"><a href="#cb44-8" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> projects <span class="kw">VALUES</span> (<span class="dv">3</span>, <span class="ot">&quot;rosedu/wouso&quot;</span>);</span>
+<span id="cb44-9"><a href="#cb44-9" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> projects <span class="kw">VALUES</span> (<span class="dv">4</span>, <span class="ot">&quot;rosedu/techblog&quot;</span>);</span>
+<span id="cb44-10"><a href="#cb44-10" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> projects <span class="kw">VALUES</span> (<span class="dv">5</span>, <span class="ot">&quot;rosedu/StartTheDark&quot;</span>);</span>
+<span id="cb44-11"><a href="#cb44-11" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> projects <span class="kw">VALUES</span> (<span class="dv">6</span>, <span class="ot">&quot;gvoicu/miniflow&quot;</span>);</span>
+<span id="cb44-12"><a href="#cb44-12" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> projects <span class="kw">VALUES</span> (<span class="dv">7</span>, <span class="ot">&quot;rails/rails&quot;</span>);</span>
+<span id="cb44-13"><a href="#cb44-13" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> projects <span class="kw">VALUES</span> (<span class="dv">8</span>, <span class="ot">&quot;sinatra/sinatra&quot;</span>);</span>
+<span id="cb44-14"><a href="#cb44-14" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> projects <span class="kw">VALUES</span> (<span class="dv">9</span>, <span class="ot">&quot;mitsuhiko/flask&quot;</span>);</span>
+<span id="cb44-15"><a href="#cb44-15" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> contributorships <span class="kw">VALUES</span> ( <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">2</span>);</span>
+<span id="cb44-16"><a href="#cb44-16" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> contributorships <span class="kw">VALUES</span> ( <span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">3</span>);</span>
+<span id="cb44-17"><a href="#cb44-17" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> contributorships <span class="kw">VALUES</span> ( <span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">9</span>);</span>
+<span id="cb44-18"><a href="#cb44-18" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> contributorships <span class="kw">VALUES</span> ( <span class="dv">4</span>, <span class="dv">2</span>, <span class="dv">2</span>);</span>
+<span id="cb44-19"><a href="#cb44-19" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> contributorships <span class="kw">VALUES</span> ( <span class="dv">5</span>, <span class="dv">2</span>, <span class="dv">6</span>);</span>
+<span id="cb44-20"><a href="#cb44-20" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> contributorships <span class="kw">VALUES</span> ( <span class="dv">6</span>, <span class="dv">2</span>, <span class="dv">7</span>);</span>
+<span id="cb44-21"><a href="#cb44-21" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> contributorships <span class="kw">VALUES</span> ( <span class="dv">7</span>, <span class="dv">2</span>, <span class="dv">8</span>);</span>
+<span id="cb44-22"><a href="#cb44-22" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> contributorships <span class="kw">VALUES</span> ( <span class="dv">8</span>, <span class="dv">3</span>, <span class="dv">2</span>);</span>
+<span id="cb44-23"><a href="#cb44-23" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> contributorships <span class="kw">VALUES</span> ( <span class="dv">9</span>, <span class="dv">3</span>, <span class="dv">6</span>);</span>
+<span id="cb44-24"><a href="#cb44-24" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> contributorships <span class="kw">VALUES</span> (<span class="dv">10</span>, <span class="dv">4</span>, <span class="dv">1</span>);</span>
+<span id="cb44-25"><a href="#cb44-25" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> contributorships <span class="kw">VALUES</span> (<span class="dv">11</span>, <span class="dv">4</span>, <span class="dv">2</span>);</span>
+<span id="cb44-26"><a href="#cb44-26" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> contributorships <span class="kw">VALUES</span> (<span class="dv">12</span>, <span class="dv">4</span>, <span class="dv">3</span>);</span>
+<span id="cb44-27"><a href="#cb44-27" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> contributorships <span class="kw">VALUES</span> (<span class="dv">13</span>, <span class="dv">4</span>, <span class="dv">4</span>);</span>
+<span id="cb44-28"><a href="#cb44-28" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> contributorships <span class="kw">VALUES</span> (<span class="dv">14</span>, <span class="dv">4</span>, <span class="dv">5</span>);</span>
+<span id="cb44-29"><a href="#cb44-29" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> contributorships <span class="kw">VALUES</span> (<span class="dv">15</span>, <span class="dv">4</span>, <span class="dv">6</span>);</span>
+<span id="cb44-30"><a href="#cb44-30" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> contributorships <span class="kw">VALUES</span> (<span class="dv">16</span>, <span class="dv">4</span>, <span class="dv">7</span>);</span>
+<span id="cb44-31"><a href="#cb44-31" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> contributorships <span class="kw">VALUES</span> (<span class="dv">17</span>, <span class="dv">4</span>, <span class="dv">8</span>);</span>
+<span id="cb44-32"><a href="#cb44-32" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> contributorships <span class="kw">VALUES</span> (<span class="dv">18</span>, <span class="dv">5</span>, <span class="dv">1</span>);</span></code></pre></div>
 <p>Now before we start issuing queries, let’s take care of the performance-by-design side of things.</p>
 <p>We anticipate that we’ll need to do heavy querying by <code>user_name</code> and by <code>project_name</code>.</p>
 <p>Therefore we need indexes on those columns:</p>
-<div class="sourceCode" id="cb45"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb45-1"><a href="#cb45-1"></a><span class="kw">CREATE</span> <span class="kw">INDEX</span> index_on_user_name    <span class="kw">ON</span> users    (user_name);</span>
-<span id="cb45-2"><a href="#cb45-2"></a><span class="kw">CREATE</span> <span class="kw">INDEX</span> index_on_project_name <span class="kw">ON</span> projects (project_name);</span></code></pre></div>
+<div class="sourceCode" id="cb45"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true"></a><span class="kw">CREATE</span> <span class="kw">INDEX</span> index_on_user_name    <span class="kw">ON</span> users    (user_name);</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true"></a><span class="kw">CREATE</span> <span class="kw">INDEX</span> index_on_project_name <span class="kw">ON</span> projects (project_name);</span></code></pre></div>
 <p>It goes without saying that we need to index the foreign key columns:</p>
-<div class="sourceCode" id="cb46"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb46-1"><a href="#cb46-1"></a><span class="kw">CREATE</span> <span class="kw">INDEX</span> index_on_user_id    <span class="kw">ON</span> contributorships (user_id);</span>
-<span id="cb46-2"><a href="#cb46-2"></a><span class="kw">CREATE</span> <span class="kw">INDEX</span> index_on_project_id <span class="kw">ON</span> contributorships (project_id);</span></code></pre></div>
+<div class="sourceCode" id="cb46"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true"></a><span class="kw">CREATE</span> <span class="kw">INDEX</span> index_on_user_id    <span class="kw">ON</span> contributorships (user_id);</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true"></a><span class="kw">CREATE</span> <span class="kw">INDEX</span> index_on_project_id <span class="kw">ON</span> contributorships (project_id);</span></code></pre></div>
 <p>We also need to make sure that duplicate contributorships cannot exist.</p>
 <p>We achieve this by creating a unique index on the combination of <code>user_id</code> and <code>project_id</code>:</p>
-<div class="sourceCode" id="cb47"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb47-1"><a href="#cb47-1"></a><span class="kw">CREATE</span> <span class="kw">UNIQUE</span> <span class="kw">INDEX</span> unique_index_on_user_id_and_project_id <span class="kw">ON</span> contributorships (user_id,project_id);</span></code></pre></div>
+<div class="sourceCode" id="cb47"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true"></a><span class="kw">CREATE</span> <span class="kw">UNIQUE</span> <span class="kw">INDEX</span> unique_index_on_user_id_and_project_id <span class="kw">ON</span> contributorships (user_id,project_id);</span></code></pre></div>
 <p>First, let’s list all contributorships in human readable format:</p>
-<div class="sourceCode" id="cb48"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb48-1"><a href="#cb48-1"></a><span class="kw">SELECT</span></span>
-<span id="cb48-2"><a href="#cb48-2"></a>  user_name <span class="op">||</span> <span class="ot">&quot; contributes to &quot;</span> <span class="op">||</span> project_name</span>
-<span id="cb48-3"><a href="#cb48-3"></a><span class="kw">FROM</span></span>
-<span id="cb48-4"><a href="#cb48-4"></a>  contributorships,</span>
-<span id="cb48-5"><a href="#cb48-5"></a>  users,</span>
-<span id="cb48-6"><a href="#cb48-6"></a>  projects</span>
-<span id="cb48-7"><a href="#cb48-7"></a><span class="kw">WHERE</span></span>
-<span id="cb48-8"><a href="#cb48-8"></a>  users.<span class="kw">id</span> <span class="op">=</span> contributorships.user_id</span>
-<span id="cb48-9"><a href="#cb48-9"></a>  <span class="kw">AND</span></span>
-<span id="cb48-10"><a href="#cb48-10"></a>  projects.<span class="kw">id</span> <span class="op">=</span> contributorships.project_id</span>
-<span id="cb48-11"><a href="#cb48-11"></a><span class="kw">ORDER</span> <span class="kw">BY</span></span>
-<span id="cb48-12"><a href="#cb48-12"></a>  user_name, project_name;</span></code></pre></div>
+<div class="sourceCode" id="cb48"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true"></a><span class="kw">SELECT</span></span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true"></a>  user_name <span class="op">||</span> <span class="ot">&quot; contributes to &quot;</span> <span class="op">||</span> project_name</span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true"></a><span class="kw">FROM</span></span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true"></a>  contributorships,</span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true"></a>  users,</span>
+<span id="cb48-6"><a href="#cb48-6" aria-hidden="true"></a>  projects</span>
+<span id="cb48-7"><a href="#cb48-7" aria-hidden="true"></a><span class="kw">WHERE</span></span>
+<span id="cb48-8"><a href="#cb48-8" aria-hidden="true"></a>  users.<span class="kw">id</span> <span class="op">=</span> contributorships.user_id</span>
+<span id="cb48-9"><a href="#cb48-9" aria-hidden="true"></a>  <span class="kw">AND</span></span>
+<span id="cb48-10"><a href="#cb48-10" aria-hidden="true"></a>  projects.<span class="kw">id</span> <span class="op">=</span> contributorships.project_id</span>
+<span id="cb48-11"><a href="#cb48-11" aria-hidden="true"></a><span class="kw">ORDER</span> <span class="kw">BY</span></span>
+<span id="cb48-12"><a href="#cb48-12" aria-hidden="true"></a>  user_name, project_name;</span></code></pre></div>
 <p>The output you should get is:</p>
 <pre><code>alex-morega contributes to mitsuhiko/flask
 alex-morega contributes to rosedu/WebDev
@@ -500,57 +502,57 @@ igstan contributes to gvoicu/miniflow
 igstan contributes to rosedu/WebDev
 torvalds contributes to torvalds/linux</code></pre>
 <p>Now let’s determine all projects for a given user, as well as the list of all people who contribute to a given project.</p>
-<div class="sourceCode" id="cb50"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb50-1"><a href="#cb50-1"></a><span class="kw">SELECT</span></span>
-<span id="cb50-2"><a href="#cb50-2"></a>  project_name</span>
-<span id="cb50-3"><a href="#cb50-3"></a><span class="kw">FROM</span></span>
-<span id="cb50-4"><a href="#cb50-4"></a>  contributorships,</span>
-<span id="cb50-5"><a href="#cb50-5"></a>  users,</span>
-<span id="cb50-6"><a href="#cb50-6"></a>  projects</span>
-<span id="cb50-7"><a href="#cb50-7"></a><span class="kw">WHERE</span></span>
-<span id="cb50-8"><a href="#cb50-8"></a>  users.user_name <span class="op">=</span> <span class="st">'gvoicu'</span></span>
-<span id="cb50-9"><a href="#cb50-9"></a>  <span class="kw">AND</span></span>
-<span id="cb50-10"><a href="#cb50-10"></a>  users.<span class="kw">id</span> <span class="op">=</span> contributorships.user_id</span>
-<span id="cb50-11"><a href="#cb50-11"></a>  <span class="kw">AND</span></span>
-<span id="cb50-12"><a href="#cb50-12"></a>  projects.<span class="kw">id</span> <span class="op">=</span> contributorships.project_id</span>
-<span id="cb50-13"><a href="#cb50-13"></a><span class="kw">ORDER</span> <span class="kw">BY</span></span>
-<span id="cb50-14"><a href="#cb50-14"></a>  project_name;</span></code></pre></div>
+<div class="sourceCode" id="cb50"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true"></a><span class="kw">SELECT</span></span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true"></a>  project_name</span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true"></a><span class="kw">FROM</span></span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true"></a>  contributorships,</span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true"></a>  users,</span>
+<span id="cb50-6"><a href="#cb50-6" aria-hidden="true"></a>  projects</span>
+<span id="cb50-7"><a href="#cb50-7" aria-hidden="true"></a><span class="kw">WHERE</span></span>
+<span id="cb50-8"><a href="#cb50-8" aria-hidden="true"></a>  users.user_name <span class="op">=</span> <span class="st">'gvoicu'</span></span>
+<span id="cb50-9"><a href="#cb50-9" aria-hidden="true"></a>  <span class="kw">AND</span></span>
+<span id="cb50-10"><a href="#cb50-10" aria-hidden="true"></a>  users.<span class="kw">id</span> <span class="op">=</span> contributorships.user_id</span>
+<span id="cb50-11"><a href="#cb50-11" aria-hidden="true"></a>  <span class="kw">AND</span></span>
+<span id="cb50-12"><a href="#cb50-12" aria-hidden="true"></a>  projects.<span class="kw">id</span> <span class="op">=</span> contributorships.project_id</span>
+<span id="cb50-13"><a href="#cb50-13" aria-hidden="true"></a><span class="kw">ORDER</span> <span class="kw">BY</span></span>
+<span id="cb50-14"><a href="#cb50-14" aria-hidden="true"></a>  project_name;</span></code></pre></div>
 <p>The output you should get is:</p>
 <pre><code>gvoicu/miniflow
 rails/rails
 rosedu/WebDev
 sinatra/sinatra</code></pre>
 <p>To list a given project’s contributors:</p>
-<div class="sourceCode" id="cb52"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb52-1"><a href="#cb52-1"></a><span class="kw">SELECT</span></span>
-<span id="cb52-2"><a href="#cb52-2"></a>  user_name</span>
-<span id="cb52-3"><a href="#cb52-3"></a><span class="kw">FROM</span></span>
-<span id="cb52-4"><a href="#cb52-4"></a>  contributorships,</span>
-<span id="cb52-5"><a href="#cb52-5"></a>  users,</span>
-<span id="cb52-6"><a href="#cb52-6"></a>  projects</span>
-<span id="cb52-7"><a href="#cb52-7"></a><span class="kw">WHERE</span></span>
-<span id="cb52-8"><a href="#cb52-8"></a>  projects.project_name <span class="op">=</span> <span class="st">'rosedu/WebDev'</span></span>
-<span id="cb52-9"><a href="#cb52-9"></a>  <span class="kw">AND</span></span>
-<span id="cb52-10"><a href="#cb52-10"></a>  users.<span class="kw">id</span> <span class="op">=</span> contributorships.user_id</span>
-<span id="cb52-11"><a href="#cb52-11"></a>  <span class="kw">AND</span></span>
-<span id="cb52-12"><a href="#cb52-12"></a>  projects.<span class="kw">id</span> <span class="op">=</span> contributorships.project_id</span>
-<span id="cb52-13"><a href="#cb52-13"></a><span class="kw">ORDER</span> <span class="kw">BY</span></span>
-<span id="cb52-14"><a href="#cb52-14"></a>  user_name;</span></code></pre></div>
+<div class="sourceCode" id="cb52"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true"></a><span class="kw">SELECT</span></span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true"></a>  user_name</span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true"></a><span class="kw">FROM</span></span>
+<span id="cb52-4"><a href="#cb52-4" aria-hidden="true"></a>  contributorships,</span>
+<span id="cb52-5"><a href="#cb52-5" aria-hidden="true"></a>  users,</span>
+<span id="cb52-6"><a href="#cb52-6" aria-hidden="true"></a>  projects</span>
+<span id="cb52-7"><a href="#cb52-7" aria-hidden="true"></a><span class="kw">WHERE</span></span>
+<span id="cb52-8"><a href="#cb52-8" aria-hidden="true"></a>  projects.project_name <span class="op">=</span> <span class="st">'rosedu/WebDev'</span></span>
+<span id="cb52-9"><a href="#cb52-9" aria-hidden="true"></a>  <span class="kw">AND</span></span>
+<span id="cb52-10"><a href="#cb52-10" aria-hidden="true"></a>  users.<span class="kw">id</span> <span class="op">=</span> contributorships.user_id</span>
+<span id="cb52-11"><a href="#cb52-11" aria-hidden="true"></a>  <span class="kw">AND</span></span>
+<span id="cb52-12"><a href="#cb52-12" aria-hidden="true"></a>  projects.<span class="kw">id</span> <span class="op">=</span> contributorships.project_id</span>
+<span id="cb52-13"><a href="#cb52-13" aria-hidden="true"></a><span class="kw">ORDER</span> <span class="kw">BY</span></span>
+<span id="cb52-14"><a href="#cb52-14" aria-hidden="true"></a>  user_name;</span></code></pre></div>
 <p>The output you should get is:</p>
 <pre><code>alex-morega
 dserban
 gvoicu
 igstan</code></pre>
 <p>Finally, let’s create a view which will make it easier for us to go back and forth between users and projects:</p>
-<div class="sourceCode" id="cb54"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb54-1"><a href="#cb54-1"></a><span class="kw">CREATE</span> <span class="kw">VIEW</span> augmented_contributorships <span class="kw">AS</span></span>
-<span id="cb54-2"><a href="#cb54-2"></a><span class="kw">SELECT</span></span>
-<span id="cb54-3"><a href="#cb54-3"></a>  user_name, project_name</span>
-<span id="cb54-4"><a href="#cb54-4"></a><span class="kw">FROM</span></span>
-<span id="cb54-5"><a href="#cb54-5"></a>  contributorships,</span>
-<span id="cb54-6"><a href="#cb54-6"></a>  users,</span>
-<span id="cb54-7"><a href="#cb54-7"></a>  projects</span>
-<span id="cb54-8"><a href="#cb54-8"></a><span class="kw">WHERE</span></span>
-<span id="cb54-9"><a href="#cb54-9"></a>  users.<span class="kw">id</span> <span class="op">=</span> contributorships.user_id</span>
-<span id="cb54-10"><a href="#cb54-10"></a>  <span class="kw">AND</span></span>
-<span id="cb54-11"><a href="#cb54-11"></a>  projects.<span class="kw">id</span> <span class="op">=</span> contributorships.project_id;</span></code></pre></div>
+<div class="sourceCode" id="cb54"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true"></a><span class="kw">CREATE</span> <span class="kw">VIEW</span> augmented_contributorships <span class="kw">AS</span></span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true"></a><span class="kw">SELECT</span></span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true"></a>  user_name, project_name</span>
+<span id="cb54-4"><a href="#cb54-4" aria-hidden="true"></a><span class="kw">FROM</span></span>
+<span id="cb54-5"><a href="#cb54-5" aria-hidden="true"></a>  contributorships,</span>
+<span id="cb54-6"><a href="#cb54-6" aria-hidden="true"></a>  users,</span>
+<span id="cb54-7"><a href="#cb54-7" aria-hidden="true"></a>  projects</span>
+<span id="cb54-8"><a href="#cb54-8" aria-hidden="true"></a><span class="kw">WHERE</span></span>
+<span id="cb54-9"><a href="#cb54-9" aria-hidden="true"></a>  users.<span class="kw">id</span> <span class="op">=</span> contributorships.user_id</span>
+<span id="cb54-10"><a href="#cb54-10" aria-hidden="true"></a>  <span class="kw">AND</span></span>
+<span id="cb54-11"><a href="#cb54-11" aria-hidden="true"></a>  projects.<span class="kw">id</span> <span class="op">=</span> contributorships.project_id;</span></code></pre></div>
 </section>
 <section id="closing-words" class="level3">
 <h3>Closing words</h3>

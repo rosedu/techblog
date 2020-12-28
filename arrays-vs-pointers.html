@@ -97,25 +97,27 @@
         <span class="tags"><a title="All pages tagged 'arrays'." href="./tags/arrays.html">arrays</a>, <a title="All pages tagged 'pointers'." href="./tags/pointers.html">pointers</a>, <a title="All pages tagged 'strings'." href="./tags/strings.html">strings</a>, <a title="All pages tagged '.rodata'." href="./tags/.rodata.html">.rodata</a></span>
       </span>
 
+      
+
       <p>This post will shed some light on the differences between arrays and pointers specifically when it comes about referencing string literals. We will base our discussion on the following two programs:</p>
 <!--more-->
 <p><img style="float:right" src="./images/arrays-vs-pointers/arrays-vs-pointers.png" alt="Array and pointer representation" width="376" height="192" /></p>
 <p><strong>array.c</strong></p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb1-1"><a href="#cb1-1"></a><span class="dt">char</span> a[] = <span class="st">&quot;ROSEdu&quot;</span>;</span>
-<span id="cb1-2"><a href="#cb1-2"></a><span class="dt">int</span> main(<span class="dt">void</span>)</span>
-<span id="cb1-3"><a href="#cb1-3"></a>{</span>
-<span id="cb1-4"><a href="#cb1-4"></a>	a[<span class="dv">0</span>] = <span class="ch">'r'</span>;</span>
-<span id="cb1-5"><a href="#cb1-5"></a>	printf(<span class="st">&quot;</span><span class="sc">%s\n</span><span class="st">&quot;</span>, a);</span>
-<span id="cb1-6"><a href="#cb1-6"></a>	<span class="cf">return</span> <span class="dv">0</span>;</span>
-<span id="cb1-7"><a href="#cb1-7"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="dt">char</span> a[] = <span class="st">&quot;ROSEdu&quot;</span>;</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="dt">int</span> main(<span class="dt">void</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a>{</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a>	a[<span class="dv">0</span>] = <span class="ch">'r'</span>;</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true"></a>	printf(<span class="st">&quot;</span><span class="sc">%s\n</span><span class="st">&quot;</span>, a);</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true"></a>	<span class="cf">return</span> <span class="dv">0</span>;</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true"></a>}</span></code></pre></div>
 <p><strong>pointer.c</strong></p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb2-1"><a href="#cb2-1"></a><span class="dt">char</span> *p = <span class="st">&quot;ROSEdu&quot;</span>;</span>
-<span id="cb2-2"><a href="#cb2-2"></a><span class="dt">int</span> main(<span class="dt">void</span>)</span>
-<span id="cb2-3"><a href="#cb2-3"></a>{</span>
-<span id="cb2-4"><a href="#cb2-4"></a>	*p = <span class="ch">'r'</span>;</span>
-<span id="cb2-5"><a href="#cb2-5"></a>	printf(<span class="st">&quot;</span><span class="sc">%s\n</span><span class="st">&quot;</span>, p);</span>
-<span id="cb2-6"><a href="#cb2-6"></a>	<span class="cf">return</span> <span class="dv">0</span>;</span>
-<span id="cb2-7"><a href="#cb2-7"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="dt">char</span> *p = <span class="st">&quot;ROSEdu&quot;</span>;</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a><span class="dt">int</span> main(<span class="dt">void</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a>{</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a>	*p = <span class="ch">'r'</span>;</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a>	printf(<span class="st">&quot;</span><span class="sc">%s\n</span><span class="st">&quot;</span>, p);</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true"></a>	<span class="cf">return</span> <span class="dv">0</span>;</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true"></a>}</span></code></pre></div>
 <p>Program <code>array.c</code> defines an array of char whose elements are initialized with character string literals, while <code>pointer.c</code> defines a pointer to char and initializes it with the address of a memory area holding a string literal.</p>
 <p>Notice array <code>a</code> and pointer <code>p</code> allocations in the image above. Can you make a guess about size of <code>a</code> and size of <code>p</code>?</p>
 <p>Next, both programs modify the first character of the string literal <code>"ROSEdu"</code>.</p>

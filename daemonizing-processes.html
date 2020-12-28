@@ -97,99 +97,101 @@
         <span class="tags"><a title="All pages tagged 'C'." href="./tags/c.html">C</a>, <a title="All pages tagged 'daemon'." href="./tags/daemon.html">daemon</a>, <a title="All pages tagged 'fork'." href="./tags/fork.html">fork</a>, <a title="All pages tagged 'setsid'." href="./tags/setsid.html">setsid</a>, <a title="All pages tagged 'nohup'." href="./tags/nohup.html">nohup</a>, <a title="All pages tagged 'disown'." href="./tags/disown.html">disown</a></span>
       </span>
 
+      
+
       <p>A special category of processes in Linux is that formed by <strong>daemon</strong> processes.</p>
 <!--more-->
 <section id="what-is-a-daemon" class="level3">
 <h3>What is a daemon?</h3>
 <p>A daemon is a program that runs as a background process, forever, without being directly affected by any user. Let’s run a command to see examples of some daemons.</p>
 <p>We need to run a command which will tell us what processes are started by the <code>init</code> process (they must have a <code>PPID</code> of 1):</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">ps</span> -ef <span class="kw">|</span> <span class="fu">awk</span> <span class="st">'$3 == 1'</span></span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="fu">ps</span> -ef <span class="kw">|</span> <span class="fu">awk</span> <span class="st">'$3 == 1'</span></span></code></pre></div>
 <p>The trimmed result will be the following:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1"></a>$ <span class="fu">ps</span> -ef <span class="kw">|</span> <span class="fu">awk</span> <span class="st">'$3 == 1'</span></span>
-<span id="cb2-2"><a href="#cb2-2"></a><span class="ex">root</span>       367     1  0 Mar08 ?        00:00:00 upstart-udev-bridge --daemon</span>
-<span id="cb2-3"><a href="#cb2-3"></a><span class="ex">root</span>       398     1  0 Mar08 ?        00:00:00 /sbin/udevd --daemon</span>
-<span id="cb2-4"><a href="#cb2-4"></a><span class="ex">syslog</span>     521     1  0 Mar08 ?        00:00:03 rsyslogd -c5</span>
-<span id="cb2-5"><a href="#cb2-5"></a><span class="ex">102</span>        525     1  0 Mar08 ?        00:00:15 dbus-daemon --system --fork --activation=upstart</span>
-<span id="cb2-6"><a href="#cb2-6"></a><span class="ex">avahi</span>      816     1  0 Mar08 ?        00:00:00 avahi-daemon: running [matei-Satellite-C660.local]</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a>$ <span class="fu">ps</span> -ef <span class="kw">|</span> <span class="fu">awk</span> <span class="st">'$3 == 1'</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a><span class="ex">root</span>       367     1  0 Mar08 ?        00:00:00 upstart-udev-bridge --daemon</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a><span class="ex">root</span>       398     1  0 Mar08 ?        00:00:00 /sbin/udevd --daemon</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a><span class="ex">syslog</span>     521     1  0 Mar08 ?        00:00:03 rsyslogd -c5</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a><span class="ex">102</span>        525     1  0 Mar08 ?        00:00:15 dbus-daemon --system --fork --activation=upstart</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true"></a><span class="ex">avahi</span>      816     1  0 Mar08 ?        00:00:00 avahi-daemon: running [matei-Satellite-C660.local]</span></code></pre></div>
 <p>In Linux, the parent process of a daemon is often the <code>init</code> process. To create a daemon, we need to <code>fork()</code> a child process and then exit (after that the process will be an <em>orphan process</em>), causing <code>init</code> to adopt the it as a child. A daemon is often started at boot time having the task of handling network requests or hardware activity.</p>
 </section>
 <section id="lets-code-a-daemon" class="level3">
 <h3>Let’s code a Daemon</h3>
 <p>In this article we will show how one can write a simple daemon process. First, we will show the long path of using <code>fork()</code> and <code>setsid()</code>.</p>
 <p>First step (see <a href="http://web.archive.org/web/20120914180018/http://www.steve.org.uk/Reference/Unix/faq_2.html#SEC16" title="How to code a daemon">this FAQ</a> for reference) is to <code>fork</code> and <code>exit</code> such that the process is no longer a process leader:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb3-1"><a href="#cb3-1"></a><span class="co">/*</span></span>
-<span id="cb3-2"><a href="#cb3-2"></a><span class="co"> * Fork the parent process</span></span>
-<span id="cb3-3"><a href="#cb3-3"></a><span class="co"> */</span></span>
-<span id="cb3-4"><a href="#cb3-4"></a>pid = fork();</span>
-<span id="cb3-5"><a href="#cb3-5"></a><span class="co">/* On failure, -1 is returned in the parent</span></span>
-<span id="cb3-6"><a href="#cb3-6"></a><span class="co"> * No child process is created</span></span>
-<span id="cb3-7"><a href="#cb3-7"></a><span class="co"> */</span></span>
-<span id="cb3-8"><a href="#cb3-8"></a><span class="cf">if</span> (pid &lt; <span class="dv">0</span>) {</span>
-<span id="cb3-9"><a href="#cb3-9"></a>    perror(<span class="st">&quot;fork&quot;</span>);</span>
-<span id="cb3-10"><a href="#cb3-10"></a>    exit(EXIT_FAILURE);</span>
-<span id="cb3-11"><a href="#cb3-11"></a>}</span>
-<span id="cb3-12"><a href="#cb3-12"></a></span>
-<span id="cb3-13"><a href="#cb3-13"></a><span class="co">/* We are now killing the parent process</span></span>
-<span id="cb3-14"><a href="#cb3-14"></a><span class="co"> * parent exits -&gt; init &quot;takes the lead&quot;</span></span>
-<span id="cb3-15"><a href="#cb3-15"></a><span class="co"> */</span></span>
-<span id="cb3-16"><a href="#cb3-16"></a><span class="cf">if</span> (pid &gt; <span class="dv">0</span>)</span>
-<span id="cb3-17"><a href="#cb3-17"></a>    exit(EXIT_SUCCESS);</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="co">/*</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="co"> * Fork the parent process</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a><span class="co"> */</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true"></a>pid = fork();</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true"></a><span class="co">/* On failure, -1 is returned in the parent</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true"></a><span class="co"> * No child process is created</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true"></a><span class="co"> */</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true"></a><span class="cf">if</span> (pid &lt; <span class="dv">0</span>) {</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true"></a>    perror(<span class="st">&quot;fork&quot;</span>);</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true"></a>    exit(EXIT_FAILURE);</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true"></a>}</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true"></a></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true"></a><span class="co">/* We are now killing the parent process</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true"></a><span class="co"> * parent exits -&gt; init &quot;takes the lead&quot;</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true"></a><span class="co"> */</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true"></a><span class="cf">if</span> (pid &gt; <span class="dv">0</span>)</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true"></a>    exit(EXIT_SUCCESS);</span></code></pre></div>
 <p>Because we want to have a completely new controlling terminal we need to make our process be a session leader using <code>setsid()</code>. The above <code>fork</code> was needed just to allow this to succeed:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb4-1"><a href="#cb4-1"></a>sessionID=setsid();</span>
-<span id="cb4-2"><a href="#cb4-2"></a><span class="cf">if</span> (sessionID &lt; <span class="dv">0</span>) {</span>
-<span id="cb4-3"><a href="#cb4-3"></a>    perror(<span class="st">&quot;setsid&quot;</span>);</span>
-<span id="cb4-4"><a href="#cb4-4"></a>    exit(EXIT_FAILURE);</span>
-<span id="cb4-5"><a href="#cb4-5"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a>sessionID=setsid();</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a><span class="cf">if</span> (sessionID &lt; <span class="dv">0</span>) {</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true"></a>    perror(<span class="st">&quot;setsid&quot;</span>);</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true"></a>    exit(EXIT_FAILURE);</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true"></a>}</span></code></pre></div>
 <p>Next step is to <code>fork()/exit()</code> again. Since the session leader is now dead our process can never get access to a controlling terminal:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb5-1"><a href="#cb5-1"></a>pid = fork();</span>
-<span id="cb5-2"><a href="#cb5-2"></a><span class="cf">if</span> (pid &lt; <span class="dv">0</span>) {</span>
-<span id="cb5-3"><a href="#cb5-3"></a>    perror(<span class="st">&quot;fork&quot;</span>);</span>
-<span id="cb5-4"><a href="#cb5-4"></a>    exit(EXIT_FAILURE);</span>
-<span id="cb5-5"><a href="#cb5-5"></a>}</span>
-<span id="cb5-6"><a href="#cb5-6"></a></span>
-<span id="cb5-7"><a href="#cb5-7"></a><span class="cf">if</span> (pid &gt; <span class="dv">0</span>)</span>
-<span id="cb5-8"><a href="#cb5-8"></a>    exit(EXIT_SUCCESS);</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a>pid = fork();</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a><span class="cf">if</span> (pid &lt; <span class="dv">0</span>) {</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a>    perror(<span class="st">&quot;fork&quot;</span>);</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true"></a>    exit(EXIT_FAILURE);</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true"></a>}</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true"></a><span class="cf">if</span> (pid &gt; <span class="dv">0</span>)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true"></a>    exit(EXIT_SUCCESS);</span></code></pre></div>
 <p>Now, we will switch to the directory which contains the files needed for this daemon to run (for example in case of <code>dovecot</code> we would switch to <code>/run/dovectot</code> which contains the sockets for different mail queues). Or, we could switch to <code>/</code> (like <code>apache2</code> and <code>sshd</code> do for example) if we don’t want to change to a specific directory. Anyway, it is essential to change the current running directory to prevent cases where if the program was started in a <code>cwd</code> from a different partition that partition could no longer be <code>umount</code>ed.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb6-1"><a href="#cb6-1"></a>change_dir = chdir(<span class="st">&quot;/&quot;</span>);</span>
-<span id="cb6-2"><a href="#cb6-2"></a><span class="cf">if</span> (change_dir &lt; <span class="dv">0</span> ) {</span>
-<span id="cb6-3"><a href="#cb6-3"></a>    perror(<span class="st">&quot;chdir&quot;</span>);</span>
-<span id="cb6-4"><a href="#cb6-4"></a>    exit(EXIT_FAILURE);</span>
-<span id="cb6-5"><a href="#cb6-5"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a>change_dir = chdir(<span class="st">&quot;/&quot;</span>);</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a><span class="cf">if</span> (change_dir &lt; <span class="dv">0</span> ) {</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a>    perror(<span class="st">&quot;chdir&quot;</span>);</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true"></a>    exit(EXIT_FAILURE);</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true"></a>}</span></code></pre></div>
 <p>Though the following steps are optional, it is better to do them too to ensure a reproducible behaviour of our executable, no matter what state the system was when we started it.</p>
 <p>Because a child process inherits file descriptors and file descriptors from his parent, we need to close them. We use <code>sysconf</code> to get the maximum number of opened file descriptors in order to close all of them and prevent leaks. Then, we will set <code>umask</code> to 0 to gain complete permissions over anything we write.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb7-1"><a href="#cb7-1"></a>maxfd = sysconf(_SC_OPEN_MAX);</span>
-<span id="cb7-2"><a href="#cb7-2"></a><span class="cf">if</span> (maxfd &lt; <span class="dv">0</span>) {</span>
-<span id="cb7-3"><a href="#cb7-3"></a>    perror(<span class="st">&quot;sysconf _SC_OPEN_MAX&quot;</span>);</span>
-<span id="cb7-4"><a href="#cb7-4"></a>    exit(EXIT_FAILURE);</span>
-<span id="cb7-5"><a href="#cb7-5"></a>}</span>
-<span id="cb7-6"><a href="#cb7-6"></a></span>
-<span id="cb7-7"><a href="#cb7-7"></a><span class="cf">for</span> (fd = <span class="dv">0</span>; fd &lt; maxfd; fd++)</span>
-<span id="cb7-8"><a href="#cb7-8"></a>    <span class="co">/* note that we ignore return code here */</span></span>
-<span id="cb7-9"><a href="#cb7-9"></a>    close(fd);</span>
-<span id="cb7-10"><a href="#cb7-10"></a></span>
-<span id="cb7-11"><a href="#cb7-11"></a>umask(<span class="dv">0</span>);</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a>maxfd = sysconf(_SC_OPEN_MAX);</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true"></a><span class="cf">if</span> (maxfd &lt; <span class="dv">0</span>) {</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true"></a>    perror(<span class="st">&quot;sysconf _SC_OPEN_MAX&quot;</span>);</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true"></a>    exit(EXIT_FAILURE);</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true"></a>}</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true"></a><span class="cf">for</span> (fd = <span class="dv">0</span>; fd &lt; maxfd; fd++)</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true"></a>    <span class="co">/* note that we ignore return code here */</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true"></a>    close(fd);</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true"></a></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true"></a>umask(<span class="dv">0</span>);</span></code></pre></div>
 <p>Now we should reopen the 3 standard file descriptors. We can point them to <code>/dev/null</code> or to specific log files. Here we open all of them to <code>/dev/null</code>:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb8-1"><a href="#cb8-1"></a>fd = open(<span class="st">&quot;/dev/null&quot;</span>, <span class="dv">0</span>);</span>
-<span id="cb8-2"><a href="#cb8-2"></a><span class="cf">if</span> (fd &lt; <span class="dv">0</span>) {</span>
-<span id="cb8-3"><a href="#cb8-3"></a>    perror(<span class="st">&quot;open /dev/null&quot;</span>);</span>
-<span id="cb8-4"><a href="#cb8-4"></a>    exit(EXIT_FAILURE);</span>
-<span id="cb8-5"><a href="#cb8-5"></a>}</span>
-<span id="cb8-6"><a href="#cb8-6"></a></span>
-<span id="cb8-7"><a href="#cb8-7"></a>status = dup2(fd, <span class="dv">0</span>);</span>
-<span id="cb8-8"><a href="#cb8-8"></a><span class="cf">if</span> (status &lt; <span class="dv">0</span>) {</span>
-<span id="cb8-9"><a href="#cb8-9"></a>    perror(<span class="st">&quot;dup 0&quot;</span>);</span>
-<span id="cb8-10"><a href="#cb8-10"></a>    exit(EXIT_FAILURE);</span>
-<span id="cb8-11"><a href="#cb8-11"></a>}</span>
-<span id="cb8-12"><a href="#cb8-12"></a>status = dup2(fd, <span class="dv">1</span>);</span>
-<span id="cb8-13"><a href="#cb8-13"></a><span class="cf">if</span> (status &lt; <span class="dv">0</span>) {</span>
-<span id="cb8-14"><a href="#cb8-14"></a>    perror(<span class="st">&quot;dup 1&quot;</span>);</span>
-<span id="cb8-15"><a href="#cb8-15"></a>    exit(EXIT_FAILURE);</span>
-<span id="cb8-16"><a href="#cb8-16"></a>}</span>
-<span id="cb8-17"><a href="#cb8-17"></a>status = dup2(fd, <span class="dv">2</span>);</span>
-<span id="cb8-18"><a href="#cb8-18"></a><span class="cf">if</span> (status &lt; <span class="dv">0</span>) {</span>
-<span id="cb8-19"><a href="#cb8-19"></a>    perror(<span class="st">&quot;dup 2&quot;</span>);</span>
-<span id="cb8-20"><a href="#cb8-20"></a>    exit(EXIT_FAILURE);</span>
-<span id="cb8-21"><a href="#cb8-21"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a>fd = open(<span class="st">&quot;/dev/null&quot;</span>, <span class="dv">0</span>);</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true"></a><span class="cf">if</span> (fd &lt; <span class="dv">0</span>) {</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true"></a>    perror(<span class="st">&quot;open /dev/null&quot;</span>);</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true"></a>    exit(EXIT_FAILURE);</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true"></a>}</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true"></a></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true"></a>status = dup2(fd, <span class="dv">0</span>);</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true"></a><span class="cf">if</span> (status &lt; <span class="dv">0</span>) {</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true"></a>    perror(<span class="st">&quot;dup 0&quot;</span>);</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true"></a>    exit(EXIT_FAILURE);</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true"></a>}</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true"></a>status = dup2(fd, <span class="dv">1</span>);</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true"></a><span class="cf">if</span> (status &lt; <span class="dv">0</span>) {</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true"></a>    perror(<span class="st">&quot;dup 1&quot;</span>);</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true"></a>    exit(EXIT_FAILURE);</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true"></a>}</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true"></a>status = dup2(fd, <span class="dv">2</span>);</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true"></a><span class="cf">if</span> (status &lt; <span class="dv">0</span>) {</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true"></a>    perror(<span class="st">&quot;dup 2&quot;</span>);</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true"></a>    exit(EXIT_FAILURE);</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true"></a>}</span></code></pre></div>
 <p>We now, have a fully working daemon, created by us. However, certain considerations must be taken:</p>
 <ol type="1">
 <li>First, if our code is to be launched by <code>inetd</code> then only the <code>chdir</code> and <code>umask</code> steps are useful. No <code>fork</code> and <code>setsid</code> should be called (otherwise <code>inetd</code> will get confused) and all other steps are already done by <code>inetd</code>.</li>
@@ -200,58 +202,58 @@
 <section id="using-nohup-for-daemonizing-processes" class="level3">
 <h3>Using nohup for daemonizing processes</h3>
 <p><code>nohup</code> is a command which is used to run a command which ignores the HUP (hangup) signal. The HUP signal is used by a terminal to warn dependent processes of logout. Thus, processes started with <code>nohup</code> won’t be killed after the <code>tty</code> is destroyed.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1"></a>$ <span class="fu">nohup</span> sleep 10000 <span class="kw">&amp;</span></span>
-<span id="cb9-2"><a href="#cb9-2"></a>[<span class="ex">1</span>] 5470</span>
-<span id="cb9-3"><a href="#cb9-3"></a><span class="ex">nohup</span>: ignoring input and appending output to ‘nohup.out’</span>
-<span id="cb9-4"><a href="#cb9-4"></a>$ <span class="bu">exit</span></span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a>$ <span class="fu">nohup</span> sleep 10000 <span class="kw">&amp;</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true"></a>[<span class="ex">1</span>] 5470</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true"></a><span class="ex">nohup</span>: ignoring input and appending output to ‘nohup.out’</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true"></a>$ <span class="bu">exit</span></span></code></pre></div>
 <p>Now open a new terminal and</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1"></a>$ <span class="ex">pgrep</span> sleep</span>
-<span id="cb10-2"><a href="#cb10-2"></a><span class="ex">5470</span></span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true"></a>$ <span class="ex">pgrep</span> sleep</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true"></a><span class="ex">5470</span></span></code></pre></div>
 <p>We can simulate <code>nohup</code> inside our C code too. Let’s configure signal handlers:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb11-1"><a href="#cb11-1"></a>memset (&amp;sig_act, <span class="dv">0</span> , <span class="kw">sizeof</span>(sig_act));</span>
-<span id="cb11-2"><a href="#cb11-2"></a><span class="co">/* Ignore SIGHUP signal */</span></span>
-<span id="cb11-3"><a href="#cb11-3"></a><span class="cf">if</span> (signal(SIGHUP, SIG_IGN) == SIG_ERR){</span>
-<span id="cb11-4"><a href="#cb11-4"></a>    perror(<span class="st">&quot;signal&quot;</span>);</span>
-<span id="cb11-5"><a href="#cb11-5"></a>    exit(EXIT_FAILURE);</span>
-<span id="cb11-6"><a href="#cb11-6"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true"></a>memset (&amp;sig_act, <span class="dv">0</span> , <span class="kw">sizeof</span>(sig_act));</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true"></a><span class="co">/* Ignore SIGHUP signal */</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true"></a><span class="cf">if</span> (signal(SIGHUP, SIG_IGN) == SIG_ERR){</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true"></a>    perror(<span class="st">&quot;signal&quot;</span>);</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true"></a>    exit(EXIT_FAILURE);</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true"></a>}</span></code></pre></div>
 <p>Now, if <code>stdout</code> is a terminal we have to redirect output to a file, just like the original command does:</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb12-1"><a href="#cb12-1"></a><span class="cf">if</span>(isatty(fileno(stdout))) {</span>
-<span id="cb12-2"><a href="#cb12-2"></a>    rc = open (<span class="st">&quot;nohup.out&quot;</span>, O_WRONLY | O_CREAT, <span class="bn">0644</span>);</span>
-<span id="cb12-3"><a href="#cb12-3"></a>    <span class="cf">if</span> (rc &lt; <span class="dv">0</span>) {</span>
-<span id="cb12-4"><a href="#cb12-4"></a>        perror(<span class="st">&quot;open&quot;</span>);</span>
-<span id="cb12-5"><a href="#cb12-5"></a>        exit(EXIT_FAILURE);</span>
-<span id="cb12-6"><a href="#cb12-6"></a>    }</span>
-<span id="cb12-7"><a href="#cb12-7"></a>    rc = dup2(rc, STDOUT_FILENO);</span>
-<span id="cb12-8"><a href="#cb12-8"></a>    <span class="cf">if</span> (rc &lt; <span class="dv">0</span>) {</span>
-<span id="cb12-9"><a href="#cb12-9"></a>        perror(<span class="st">&quot;dup2&quot;</span>);</span>
-<span id="cb12-10"><a href="#cb12-10"></a>        exit(EXIT_FAILURE);</span>
-<span id="cb12-11"><a href="#cb12-11"></a>    }</span>
-<span id="cb12-12"><a href="#cb12-12"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true"></a><span class="cf">if</span>(isatty(fileno(stdout))) {</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true"></a>    rc = open (<span class="st">&quot;nohup.out&quot;</span>, O_WRONLY | O_CREAT, <span class="bn">0644</span>);</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true"></a>    <span class="cf">if</span> (rc &lt; <span class="dv">0</span>) {</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true"></a>        perror(<span class="st">&quot;open&quot;</span>);</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true"></a>        exit(EXIT_FAILURE);</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true"></a>    }</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true"></a>    rc = dup2(rc, STDOUT_FILENO);</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true"></a>    <span class="cf">if</span> (rc &lt; <span class="dv">0</span>) {</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true"></a>        perror(<span class="st">&quot;dup2&quot;</span>);</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true"></a>        exit(EXIT_FAILURE);</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true"></a>    }</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true"></a>}</span></code></pre></div>
 <p>Then we can <code>fork</code> and <code>exec</code> to get to our new process.</p>
 <p>Let’s test it now (<code>./a.out</code> is our test binary, it receives as arguments the command line to execute in <code>exec</code>):</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1"></a>$ <span class="ex">./a.out</span> gedit <span class="kw">&amp;</span></span>
-<span id="cb13-2"><a href="#cb13-2"></a>[<span class="ex">1</span>] 22727</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true"></a>$ <span class="ex">./a.out</span> gedit <span class="kw">&amp;</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true"></a>[<span class="ex">1</span>] 22727</span></code></pre></div>
 <p>After we close the terminal and open a new one, we clearly see that the process will be adopted by <code>init</code>:</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1"></a>$ <span class="fu">ps</span> -ef <span class="kw">|</span> <span class="fu">grep</span> gedit</span>
-<span id="cb14-2"><a href="#cb14-2"></a><span class="ex">matei</span>    22727     1  2 18:25 ?        00:00:01 gedit</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true"></a>$ <span class="fu">ps</span> -ef <span class="kw">|</span> <span class="fu">grep</span> gedit</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true"></a><span class="ex">matei</span>    22727     1  2 18:25 ?        00:00:01 gedit</span></code></pre></div>
 </section>
 <section id="disowning-a-process" class="level3">
 <h3>Disowning a process</h3>
 <p>What if we already started the process and forgot to use <code>nohup</code>? We can use <code>disown</code> to remove the process from the current session hierarchy, thus making it able to survive when the <code>tty</code> is closed.</p>
 <p>Our first job is to use <code>^Z</code> to stop/pause the program and to go back to terminal. Then we have to use <code>bg</code> to run it in the background.</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1"></a>$ <span class="ex">gedit</span></span>
-<span id="cb15-2"><a href="#cb15-2"></a>^<span class="ex">Z</span></span>
-<span id="cb15-3"><a href="#cb15-3"></a>[<span class="ex">1</span>]+  Stopped                 gedit</span>
-<span id="cb15-4"><a href="#cb15-4"></a>$ <span class="bu">bg</span></span>
-<span id="cb15-5"><a href="#cb15-5"></a>[<span class="ex">1</span>]+ gedit <span class="kw">&amp;</span></span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true"></a>$ <span class="ex">gedit</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true"></a>^<span class="ex">Z</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true"></a>[<span class="ex">1</span>]+  Stopped                 gedit</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true"></a>$ <span class="bu">bg</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true"></a>[<span class="ex">1</span>]+ gedit <span class="kw">&amp;</span></span></code></pre></div>
 <p>Now, we use <code>disown</code> with the <code>-h</code> option, to mark the process so that <code>SIGHUP</code> is not gonna be received. If we don’t use the <code>-h</code> option the process is also removed from the current jobs table, which is something we like to do anyway:</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1"></a>$ <span class="bu">disown</span></span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true"></a>$ <span class="bu">disown</span></span></code></pre></div>
 <p>If we go to another terminal, we should see that the process has been adopted by <code>init</code>:</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1"></a>$ <span class="fu">ps</span> -ef <span class="kw">|</span> <span class="fu">grep</span> gedit</span>
-<span id="cb17-2"><a href="#cb17-2"></a><span class="ex">matei</span>    23087 22921  8 18:38 pts/6    00:00:01 gedit</span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true"></a>$ <span class="fu">ps</span> -ef <span class="kw">|</span> <span class="fu">grep</span> gedit</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true"></a><span class="ex">matei</span>    23087 22921  8 18:38 pts/6    00:00:01 gedit</span></code></pre></div>
 <p>What happened? Our <code>gedit</code> process is not adopted by <code>init</code>. This is because we haven’t yet closed the terminal in which we have launched it. After closing it we have</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1"></a>$ <span class="fu">ps</span> -ef <span class="kw">|</span> <span class="fu">grep</span> gedit</span>
-<span id="cb18-2"><a href="#cb18-2"></a><span class="ex">matei</span>    12490     1  1 07:07 ?        00:00:00 gedit</span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true"></a>$ <span class="fu">ps</span> -ef <span class="kw">|</span> <span class="fu">grep</span> gedit</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true"></a><span class="ex">matei</span>    12490     1  1 07:07 ?        00:00:00 gedit</span></code></pre></div>
 <p>To conclude:</p>
 <ul>
 <li>we need to use daemons for autonomous tasks</li>
