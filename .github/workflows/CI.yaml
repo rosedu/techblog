@@ -30,10 +30,10 @@ jobs:
         run: stack build
       - name: Build the site
         run: stack exec -- techblog generate
-      - name: Validating URLs in the site
-        run: stack exec -- techblog validate
+      # name: Validating URLs in the site
+      # run: stack exec -- techblog validate
       - name: Deploying the site
         if: ${{ github.event_name == 'push' }}
         run: |
-          git fetch gh-pages
+          git fetch origin gh-pages
           stack exec -- techblog deploy
