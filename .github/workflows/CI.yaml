@@ -5,8 +5,7 @@ on:
     branches: [master]
 
 jobs:
-  build-generator:
-    name: Generating the binary
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -23,19 +22,9 @@ jobs:
             stack-cache-${{ hashFiles('stack.yaml') }}
       - name: Build
         run: stack build
-      - name: Debug
-        run: pwd
       - name: Build the site
-        run: ls -a
-  build-site:
-    name: Generating the website
-    needs: build-generator
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Debug
-        run: pwd
-      - name: Build the site
-        run: ls -a
-      - name: Debug
-        run: echo "OK, works"
+        run: stack exec -- techblog generate
+      - name: Validating URLs in the site
+        run: stack exec -- techblog validate
+      - name: Deploying the site
+        run: echo stack exec -- techblog deploy
