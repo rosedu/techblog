@@ -138,4 +138,4 @@ to suggest writing a new article.
 If the request is approved, someone (could be you) will write the article and
 both the author and the author of the proposal will be credited.
 
-[^1]: Last updated 2020/04/26.
+[^1]: Last updated 2020/12/28.
