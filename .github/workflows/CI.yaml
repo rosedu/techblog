@@ -3,9 +3,15 @@ name: CI
 on:
   push:
     branches: [master]
+  pull_request:
+    branches: [master]
+    types: [opened, synchronize]
+  pull_request_review:
+    branches: [master]
+    types: [submitted]
 
 jobs:
-  build:
+  all-jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -27,4 +33,5 @@ jobs:
       - name: Validating URLs in the site
         run: stack exec -- techblog validate
       - name: Deploying the site
-        run: echo stack exec -- techblog deploy
+        if: ${{ github.event_name == 'push' }}
+        run: stack exec -- techblog deploy
