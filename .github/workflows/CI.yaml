@@ -32,9 +32,10 @@ jobs:
         run: stack build
       - name: Build the site
         run: stack exec -- techblog generate
-      - name: Validating URLs in the site
-        run: stack exec -- techblog validate
-      # Cannot immediately deploy as pushes to the branch are disabled
+      # TODO(mihaimaruseac): Validation is flaky, so we disable it for now
+      # name: Validating URLs in the site
+      # run: stack exec -- techblog validate
+      # TODO(mihaimaruseac): Cannot immediately deploy as pushes to the branch are disabled
       # (https://github.community/t/allowing-github-actions-bot-to-push-to-protected-branch/16536/2)
       #- name: Deploying the site
       #  if: ${{ github.event_name == 'push' }}
