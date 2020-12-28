@@ -32,11 +32,13 @@ jobs:
         run: stack build
       - name: Build the site
         run: stack exec -- techblog generate
-      # name: Validating URLs in the site
-      # run: stack exec -- techblog validate
-      - name: Deploying the site
-        if: ${{ github.event_name == 'push' }}
-        run: |
-          git config --global user.email "techblog@rosedu.org"
-          git config --global user.name "ROSEdu Techblog"
-          stack exec -- techblog deploy
+      - name: Validating URLs in the site
+        run: stack exec -- techblog validate
+      # Cannot immediately deploy as pushes to the branch are disabled
+      # (https://github.community/t/allowing-github-actions-bot-to-push-to-protected-branch/16536/2)
+      #- name: Deploying the site
+      #  if: ${{ github.event_name == 'push' }}
+      #  run: |
+      #    git config --global user.email "techblog@rosedu.org"
+      #    git config --global user.name "ROSEdu Techblog"
+      #    stack exec -- techblog deploy
