@@ -98,8 +98,7 @@ blog from a locally generated copy.
 
 Once pull requests are merged into `master`, to update the site you will have
 to manually run `stack exec techblog -- deploy` (or `techblog deploy` if you
-ran `stack install` before) after pulling from the GitHub remote. In the
-future, this process will be automated via GitHub actions.
+ran `stack install` before) after pulling from the GitHub remote.
 
 The binary has one additional running mode, `techblog validate` where all
 articles are scanned and all links are checked to see that their server
@@ -109,6 +108,13 @@ Finally, to completely clean the generated website and all associated caches,
 you can run `techblog clean`. You will need to do this again if you compile a
 new version of the tool.
 
+#### Automation
+
+Most of these steps have been automated with [GitHub
+actions](https://github.com/rosedu/techblog/blob/master/.github/workflows/CI.yaml).
+However, automatically pushing to the GitHub page that serves the blog is not
+possible, hence one curator will still need to run `stack exec -- techblog
+deploy` after merging the PR.
 
 ### I have seen a bug
 
